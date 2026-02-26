@@ -528,6 +528,9 @@ body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;}
 .dex-passive-hint{font-size:.58rem;color:var(--gold);margin-top:.2rem;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .dex-caught-badge{position:absolute;top:.28rem;right:.35rem;font-size:.7rem;}
+.dex-lore{display:none;font-size:.64rem;color:#a9a9bf;line-height:1.35;margin-top:.3rem;text-align:left;
+  border-top:1px dashed var(--border);padding-top:.3rem;}
+.dex-card.show-lore .dex-lore{display:block;}
 
 /* Partsdex */
 #screen-partsdex{padding:1.2rem;align-items:center;gap:.9rem;}
@@ -4750,6 +4753,7 @@ function buildDexGrid() {
     const typeColor = TC[dex.type] || '#aaa';
     const passiveTxt = dex.passive && isSeen
       ? `<div class="dex-passive-hint">${dex.passive.emoji} ${dex.passive.name}</div>` : '';
+    const loreTxt = isSeen ? `<div class="dex-lore">${dex.lore}</div>` : '';
     const caughtBadge = isCaught ? '<div class="dex-caught-badge">o.</div>' : '';
     const bossTag = dex.isBoss ? '<div style="font-size:.55rem;color:var(--gold);margin-top:.1rem">\u{1F451} BOSS</div>' : '';
     card.innerHTML = `
@@ -4760,9 +4764,12 @@ function buildDexGrid() {
       <div class="dex-type-tag" style="color:${isSeen ? typeColor : '#555'}">${isSeen ? dex.type : '?????'}</div>
       ${bossTag}
       ${passiveTxt}
+      ${loreTxt}
     `;
     if (isSeen) {
       card.title = dex.lore;
+      card.style.cursor = 'pointer';
+      card.onclick = () => card.classList.toggle('show-lore');
     }
     grid.appendChild(card);
   });
