@@ -621,6 +621,88 @@ body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;}
 #save-indicator{position:fixed;bottom:1rem;right:1rem;font-family:'Press Start 2P',monospace;
   font-size:.3rem;color:var(--dim);letter-spacing:.1em;opacity:0;transition:opacity .5s;z-index:300;}
 #save-indicator.show{opacity:1;}
+
+/* ..........................................
+   MOBILE RESPONSIVE
+.......................................... */
+@media (max-width: 980px) {
+  .btn{font-size:.52rem;padding:.75rem 1rem;}
+  #screen-campaign{flex-direction:column!important;}
+  .camp-sidebar{width:100%;min-width:0;border-right:none;border-bottom:2px solid var(--border);padding:.8rem;max-height:none;}
+  .camp-main{padding:.8rem;}
+  .assembly-container{grid-template-columns:1fr;gap:1rem;}
+  #screen-assembly{padding:.8rem;}
+  .parts-list{max-height:250px;}
+  .preview-display{flex-wrap:wrap;gap:.5rem;}
+  .stage-node{max-width:100%;}
+  .chars-grid{grid-template-columns:repeat(auto-fit,minmax(165px,1fr));}
+  .pdx-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));}
+}
+
+@media (max-width: 760px) {
+  body{font-size:15px;}
+  .btn{font-size:.46rem;padding:.72rem .82rem;}
+  .title-btns{gap:.55rem;}
+  .title-btns .btn{width:100%;max-width:420px;}
+  #screen-title{padding:1rem .7rem;}
+  #screen-charselect{padding:.7rem;}
+  .chars-grid{grid-template-columns:1fr;gap:.65rem;}
+  .char-card{padding:.85rem .72rem;}
+
+  .battle-topbar{padding:.45rem .6rem;}
+  .topbar-left{font-size:.32rem;}
+  .arena{padding:.55rem .38rem;gap:.2rem;min-height:188px;grid-template-columns:1fr 38px 1fr;}
+  .f-label{font-size:.28rem;margin-bottom:.28rem;}
+  .f-name{font-size:.35rem;margin:.24rem 0 .12rem;}
+  .type-badge{font-size:.5rem;padding:.1rem .35rem;margin-bottom:.32rem;}
+  .hp-wrap{width:128px;}
+  .hp-track{height:10px;}
+  .fspr{font-size:clamp(2.2rem,13vw,3.3rem);width:clamp(2.2rem,13vw,3.3rem);height:clamp(2.2rem,13vw,3.3rem);}
+  .fspr.composite{width:88px;height:88px;}
+  .pp-dots{margin-top:.22rem;}
+  #battle-xp-bar{margin-top:.12rem!important;}
+  .battle-center{min-width:36px;gap:.2rem;}
+  .round-badge{font-size:.26rem;}
+
+  .type-legend{margin:.2rem .45rem;padding:.36rem .42rem;gap:.35rem;}
+  .log-panel,.move-panel{margin:0 .45rem .35rem;}
+  .log-body{max-height:108px;padding:.42rem .55rem;}
+  .move-grid{grid-template-columns:1fr;gap:.35rem;padding:.42rem;}
+  .move-btn{padding:.42rem .5rem;}
+  .mb-name{font-size:.37rem;}
+  .mb-desc{font-size:.6rem;}
+  .battle-controls{padding:.45rem;gap:.4rem;}
+  .battle-controls .btn{flex:1 1 30%;min-width:102px;}
+
+  .starter-grid{grid-template-columns:1fr;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .stat-cell{padding:.45rem .3rem;}
+  .assembly-buttons{gap:.5rem;flex-wrap:wrap;margin-top:.8rem;}
+  .btn-assembly{max-width:none;min-width:120px;}
+  .honker-canvas{width:210px;height:210px;}
+
+  .loot-grid{grid-template-columns:1fr;gap:.7rem;}
+  #screen-loot{padding:1rem .6rem;}
+  .loot-shop{padding:.6rem .7rem;}
+  .loot-shop-row{font-size:.66rem;gap:.4rem;}
+  .loot-shop-buy{font-size:.3rem;padding:.3rem .5rem;}
+
+  #screen-dex,#screen-partsdex{padding:.7rem .5rem;}
+  .dex-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.45rem;}
+  .pdx-controls{gap:.35rem;}
+  .pdx-ctl{min-width:0;flex:1 1 46%;}
+  .pdx-ctl.pdx-search{flex:1 1 100%;max-width:none;min-width:0;}
+  .pdx-grid{grid-template-columns:1fr;}
+}
+
+@media (max-width: 430px) {
+  .battle-controls .btn{flex:1 1 100%;}
+  .hp-wrap{width:114px;}
+  .arena{grid-template-columns:1fr 28px 1fr;min-height:176px;}
+  .fspr.composite{width:78px;height:78px;}
+  .map-title{font-size:.46rem;}
+  .sn-name{font-size:.48rem;}
+}
 </style>
 </head>
 <body>
@@ -1678,6 +1760,7 @@ function generateStage(n) {
   const emojiPool  = dex ? null : (isBoss ? BOSS_EMOJIS : (ENEMY_EMOJIS[type] || ENEMY_EMOJIS.Normal));
   const emoji      = dex ? dex.emoji : emojiPool[Math.floor(rng() * emojiPool.length)];
   const passive    = dex ? (dex.passive || null) : null;
+  const enemyLevel = Math.max(1, Math.round(n * 0.22) + (isBoss ? 1 : 0));
   const difficulty = isBoss ? 5 : Math.min(4, Math.ceil(n / 4));
   const xpReward   = Math.round(55 + n * 24 + (isBoss ? n * 12 : 0));
 
@@ -1698,15 +1781,16 @@ function generateStage(n) {
 
   return { num: n, name: location, desc: lore, isBoss, difficulty, xpReward,
     enemy: { name: enemyName, emoji, type, hp, luck, atk:genAtk, def:genDef, spd:genSpd,
-             moves, passive, dexId: dex?.id || null, assembledParts } };
+             moves, passive, dexId: dex?.id || null, assembledParts, level: enemyLevel } };
 }
 
 // "?"? POWER BALANCE DISPLAY "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
 // Returns a rough numeric "threat level" for a stage used in the map UI
 function stageThreat(n) { return Math.round(100 + n * 19 + Math.pow(n, 1.35) * 1.8); }
 function playerPower(pb) {
-  const hp = (pb.hp||175)+(pb.maxHPBonus||0)+(CAMPAIGN.level-1)*12;
-  const atk = (pb.atkMult||1) * (50 + (pb.atkFlat||0));
+  const hp = getHonkerMaxHP(pb);
+  const atkBase = Math.round((pb.atk || 80) * levelStatScale(pb.level || 1, 'atk'));
+  const atk = (pb.atkMult||1) * (atkBase + (pb.atkFlat||0));
   return Math.round(hp * 0.6 + atk * 2);
 }
 
@@ -1888,6 +1972,12 @@ let bDead     = false;
 let eventState = {};
 let lastEventRound = -5;
 let bFaintedPartyIdx = new Set(); // tracks fainted party member indices this battle
+const LEVEL_GROWTH = { hp: 0.045, atk: 0.035, def: 0.035, spd: 0.03 };
+function levelStatScale(level, key) {
+  const lv = Math.max(1, Number(level) || 1);
+  const g = LEVEL_GROWTH[key] || 0;
+  return 1 + g * (lv - 1);
+}
 
 // "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
 //  HONKER CLASS
@@ -1903,7 +1993,7 @@ class Honker {
     this.stabBonus  = campBoosts.stabBonus||1.25;
     this.chaosMod   = campBoosts.chaosMod||1;
     this.ppBonus    = campBoosts.ppBonus||0;
-    this.level      = campBoosts.level||1;
+    this.level      = campBoosts.level ?? this.level ?? 1;
     this.movePP     = campBoosts.movePP||null;
     this.statusEffects = {}; // burn, frozen, paralyzed, cursed, shielded, pumped
     this.moves.forEach(m=>{
@@ -1911,12 +2001,12 @@ class Honker {
       const saved = this.movePP ? this.movePP[m.name] : null;
       m.pp = saved == null ? m.maxPP : Math.max(0, Math.min(m.maxPP, saved));
     });
-    this.maxHP = this.hp + this.maxHPBonus + (this.level-1)*12;
-    this.currentHP = campBoosts.currentHP ?? this.maxHP;
+    this.maxHP = Math.max(1, Math.round(((this.hp || 0) + this.maxHPBonus) * levelStatScale(this.level, 'hp')));
+    this.currentHP = Math.max(0, Math.min(this.maxHP, campBoosts.currentHP ?? this.maxHP));
     // Base stats  -  default to 80 (neutral) if not defined
-    this.atk = this.atk || 80;
-    this.def = this.def || 80;
-    this.spd = this.spd || 80;
+    this.atk = Math.max(1, Math.round((this.atk || 80) * levelStatScale(this.level, 'atk')));
+    this.def = Math.max(1, Math.round((this.def || 80) * levelStatScale(this.level, 'def')));
+    this.spd = Math.max(1, Math.round((this.spd || 80) * levelStatScale(this.level, 'spd')));
   }
   get hpPct() { return Math.max(0, this.currentHP/this.maxHP); }
   isDead() { return this.currentHP<=0; }
@@ -2264,7 +2354,7 @@ function selectPart(slot, part) {
 
 function getHonkerMaxHP(h) {
   if (!h) return 0;
-  return (h.hp || 0) + (h.maxHPBonus || 0) + ((h.level || 1) - 1) * 12;
+  return Math.max(1, Math.round(((h.hp || 0) + (h.maxHPBonus || 0)) * levelStatScale(h.level || 1, 'hp')));
 }
 function extractMovePPMap(h) {
   const out = {};
@@ -2700,7 +2790,7 @@ function refreshCampaignSidebar() {
   document.getElementById('xp-nums').textContent=`${xp}/${need}`;
   document.getElementById('xp-fill').style.width=(xp/need*100)+'%';
 
-  const maxHP=(pb.hp||200)+(pb.maxHPBonus||0)+(lv-1)*12;
+  const maxHP=getHonkerMaxHP(pb);
   const invLabel = document.getElementById('inv-title-label');
   if (invLabel) invLabel.textContent = (pb.inventory?.length || CAMPAIGN.inventory.length) ? pb.name + "'S ITEMS" : 'INVENTORY';
   document.getElementById('cs-maxhp').textContent=maxHP;
@@ -3686,17 +3776,18 @@ function onCatchSuccess(enemy) {
   log('g', `Y <b>${enemy.name}</b> has been caught! Welcome to the party!`);
 
   // Build a clean copy of the caught honker
+  const enemyBase = CAMPAIGN._currentStage?.enemy || enemy;
   const caught = {
     id: 'caught_' + Date.now(),
     name: enemy.name,
     emoji: enemy.emoji,
     type: enemy.type,
     type2: enemy.type2 || null,
-    hp: Math.round(enemy.maxHP * 0.85), // slightly reduced base HP
+    hp: Math.max(60, Math.round((enemyBase.hp || enemy.maxHP || 120) * 0.9)),
     // Slight random stat variance (±12%)  -  every catch is a little different
-    atk: Math.round((enemy.atk||80) * (0.88 + Math.random()*0.24)),
-    def: Math.round((enemy.def||80) * (0.88 + Math.random()*0.24)),
-    spd: Math.round((enemy.spd||80) * (0.88 + Math.random()*0.24)),
+    atk: Math.round((enemyBase.atk||80) * (0.88 + Math.random()*0.24)),
+    def: Math.round((enemyBase.def||80) * (0.88 + Math.random()*0.24)),
+    spd: Math.round((enemyBase.spd||80) * (0.88 + Math.random()*0.24)),
     assembledParts: enemy.assembledParts || null,
     luck: enemy.luck || 50,
     lore: 'A wild honker captured in the heat of battle.',
@@ -3704,7 +3795,7 @@ function onCatchSuccess(enemy) {
     maxHPBonus: 0, atkFlat: 0, atkMult: 1,
     luckBonus: 0, stabBonus: 1.25, chaosMod: 1, ppBonus: 0,
     passive: (CAMPAIGN._currentStage?.isBoss && CAMPAIGN._currentStage?.enemy?.passive) ? CAMPAIGN._currentStage.enemy.passive : null,
-    level: 1, xp: 0, xpNeeded: 100,
+    level: Math.max(1, enemyBase.level || 1), xp: 0, xpNeeded: xpNeededForLevel(enemyBase.level || 1),
     isCaught: true,
   };
   // Don't push yet if full  -  handled after replace choice
@@ -3957,7 +4048,7 @@ function showSwitchOverlay(aliveMembers) {
     const card = document.createElement('div');
     card.className = 'sw-card';
     const passiveTxt = h.passive ? '<div class="sw-passive">' + h.passive.emoji + ' ' + h.passive.name + '</div>' : '';
-    const maxHpVal = h.hp + (h.maxHPBonus || 0) + ((h.level||1) - 1) * 12;
+    const maxHpVal = getHonkerMaxHP(h);
     const curHpVal = Math.max(0, Math.min(maxHpVal, h.currentHP ?? maxHpVal));
     card.innerHTML = '<span class="sw-emoji">' + h.emoji + '</span><div class="sw-name">' + h.name + '</div><div class="sw-type" style="color:' + TC[h.type] + '">' + h.type + '</div><div class="sw-hp">HP ' + curHpVal + '/' + maxHpVal + '</div>' + passiveTxt;
     card.onclick = (function(idx){ return function(){ switchInPartyMember(idx); }; })(i);
@@ -4067,7 +4158,7 @@ function addXP(amount, callback, honker) {
 function onLevelUp(h) {
   const name = h ? h.name : '???';
   const lv   = h ? h.level : '?';
-  log('g', `🎉 <b>${name}</b> reached <b>LV ${lv}</b>! Max HP +12!`);
+  log('g', `🎉 <b>${name}</b> reached <b>LV ${lv}</b>! Stats scaled up (HP/ATK/DEF/SPD).`);
   updateBattleLevelBar();
 }
 
@@ -4769,6 +4860,12 @@ function buildPartsDexGrid() {
     c.title = unlocked ? (p.description || '').replace(/<[^>]*>/g, '') : 'Locked';
     grid.appendChild(c);
   });
+}
+function xpNeededForLevel(level) {
+  let need = 100;
+  const lv = Math.max(1, Number(level) || 1);
+  for (let i = 1; i < lv; i++) need = Math.round(need * 1.28);
+  return need;
 }
 
 // "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
