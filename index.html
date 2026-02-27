@@ -1469,7 +1469,7 @@ const MOVE_POOLS = {
     {name:'Frost Bite',   emoji:'*',desc:'Consistent icy jab.',                pMult:.92, acc:92, pp:15},
     {name:'Cryo Burst',   emoji:'*',desc:'Detonates on impact.',                pMult:1.3, acc:80, pp:8 },
     {name:'Flash Freeze', emoji:'*',desc:'May lock the enemy solid.',           pMult:.5,  acc:90, pp:15, effect:'frozen',  effectTarget:'enemy', effectChance:75, effectDur:1},
-    {name:'Ice Shell',    emoji:'*',desc:'Wraps self in a frigid barrier.',     pMult:0,   acc:100,pp:12, effect:'shielded',  effectTarget:'self',  effectChance:100,effectDur:3},
+    {name:'Ice Shell',    emoji:'*',desc:'Wraps self in a frigid barrier. Stacks shield.',     pMult:0,   acc:100,pp:12, effect:'shielded',  effectTarget:'self',  effectChance:100,effectDur:3},
     {name:'Permafrost',   emoji:'*',desc:'Guarantees freeze. Low damage.',      pMult:.45, acc:88, pp:12, effect:'frozen', effectTarget:'enemy', effectChance:100, effectDur:1},
     {name:'Glacial Slam', emoji:'*',desc:'Slow but crushingly powerful.',       pMult:1.75,acc:70, pp:4 },
   ],
@@ -1493,7 +1493,7 @@ const MOVE_POOLS = {
     {name:'Void Touch',   emoji:'*',desc:'Dark and draining.',                 pMult:.92, acc:93, pp:15, drain:0.20},
     {name:'Eclipse Strike',emoji:'*',desc:'Blots out hope itself.',             pMult:1.3, acc:79, pp:8 },
     {name:'Hex',          emoji:'*',desc:'A dark curse saps their strength.',   pMult:.4,  acc:92, pp:15, effect:'cursed',  effectTarget:'enemy', effectChance:90, effectDur:3},
-    {name:'Umbral Veil',  emoji:'*',desc:'Cloaks self in protective darkness.',pMult:0,   acc:100,pp:12, effect:'shielded',  effectTarget:'self',  effectChance:100,effectDur:3},
+    {name:'Umbral Veil',  emoji:'*',desc:'Cloaks self in protective darkness. Stacks shield.',pMult:0,   acc:100,pp:12, effect:'shielded',  effectTarget:'self',  effectChance:100,effectDur:3},
     {name:'Oblivion',     emoji:'*',desc:'Terrifying. Unreliable. Legendary.',  pMult:2.1, acc:52, pp:3 },
     {name:'Leech Feather',emoji:'*',desc:'Drains 40% of damage as healing.',    pMult:.80, acc:90, pp:14, drain:0.40},
   ],
@@ -1505,7 +1505,7 @@ const MOVE_POOLS = {
     {name:'Talon Strike', emoji:'*',desc:'Reliable talon.',                     pMult:.82, acc:100,pp:20},
     {name:'Wild Flap',    emoji:'*',desc:'Chaotic but earnest.',               pMult:1.1, acc:78, pp:10},
     {name:'Battle Cry',   emoji:'*',desc:'A rousing shout empowers attacks.',   pMult:0,   acc:100,pp:12, effect:'pumped',   effectTarget:'self',  effectChance:100,effectDur:2},
-    {name:'Feather Guard',emoji:'*',desc:'Raises a defensive wing shield.',     pMult:0,   acc:100,pp:12, effect:'shielded', effectTarget:'self',  effectChance:100,effectDur:3},
+    {name:'Feather Guard',emoji:'*',desc:'Raises a defensive wing shield. Stacks shield.',     pMult:0,   acc:100,pp:12, effect:'shielded', effectTarget:'self',  effectChance:100,effectDur:3},
     {name:'Quick Strike', emoji:'*',desc:'Always moves first. Low damage.',     pMult:.55, acc:100,pp:20, priority:true},
     {name:'Bulldoze',     emoji:'*',desc:'Brute force. Never misses.',          pMult:1.15,acc:100,pp:8 },
     {name:'Berserker Charge',emoji:'*',desc:'Massive. 25% recoil damage.',     pMult:1.9, acc:82, pp:5, recoil:0.25},
@@ -2012,8 +2012,8 @@ const LOOT_POOL = [
     desc:'Adds <b>Zap Field</b> (Lightning). <i>Paralyzes the enemy, reducing their accuracy.</i>',
     apply:(p)=>{ if(!p.moves.find(m=>m.name==='Zap Field')) p.moves.push({name:'Zap Field',type:'Lightning',emoji:'*',desc:'Paralyzes the foe with static.',power:0,acc:93,pp:15,maxPP:15,effect:'paralyzed',effectTarget:'enemy',effectChance:90,effectDur:3}); }},
   { id:'move_shield',  name:'Learn: Iron Guard',  emoji:'*', rarity:'rare',  color:'#00ff88',
-    desc:'Adds <b>Iron Guard</b> (Normal). <i>Shields self, reducing incoming damage by 40%.</i>',
-    apply:(p)=>{ if(!p.moves.find(m=>m.name==='Iron Guard')) p.moves.push({name:'Iron Guard',type:'Normal',emoji:'*',desc:'Raises an iron defensive shield.',power:0,acc:100,pp:12,maxPP:12,effect:'shielded',effectTarget:'self',effectChance:100,effectDur:3}); }},
+    desc:'Adds <b>Iron Guard</b> (Normal). <i>Applies stackable Shield (max 4), persistent until swap/boss clear.</i>',
+    apply:(p)=>{ if(!p.moves.find(m=>m.name==='Iron Guard')) p.moves.push({name:'Iron Guard',type:'Normal',emoji:'*',desc:'Raises an iron defensive shield. Stacks shield.',power:0,acc:100,pp:12,maxPP:12,effect:'shielded',effectTarget:'self',effectChance:100,effectDur:3}); }},
   { id:'move_rampage', name:'Learn: Rampage',     emoji:'*', rarity:'legendary', color:'#ffd700',
     desc:'Adds <b>Rampage</b> (Normal, PWR 110) to your moveset. <i>Extremely powerful, low accuracy.</i>',
     apply:(p)=>{ if(!p.moves.find(m=>m.name==='Rampage')) p.moves.push({name:'Rampage',type:'Normal',emoji:'*',desc:'Unstoppable. Unreliable. Legendary.',power:110,acc:60,pp:5,maxPP:5}); }},
@@ -3234,7 +3234,7 @@ function startStageBattle(stageIdx, isRetry=false) {
 
   // Apply shield_wall passive
   if (pb.passive && pb.passive.id === 'shield_wall') {
-    bFighters[0].statusEffects.shielded = 1;
+    bFighters[0].statusEffects.shielded = Math.max(1, Math.min(4, (bFighters[0].statusEffects.shielded || 0) + 1));
     refreshStatusBadges(bFighters[0]);
   }
   if (stage.isBoss) {
@@ -3894,7 +3894,8 @@ function doMove(atk, def, move, cb) {
       // "?"? CHANCE TO APPLY BONUS STATUS ON DAMAGE MOVES "?"?
       if (move.effect && move.power > 0 && Math.random() * 100 <= (move.effectChance || 0)) {
         const statusTarget = move.effectTarget === 'self' ? atk : def;
-        if (!statusTarget.statusEffects[move.effect]) {
+        const canApply = STACKABLE_EFFECTS.includes(move.effect) || !statusTarget.statusEffects[move.effect];
+        if (canApply) {
           applyStatusEffect(statusTarget, move.effect, move.effectDur || 2);
           spawnPtcl(statusTarget.side, STATUS_META[move.effect]?.color || '#fff', STATUS_META[move.effect]?.emoji || 'o');
         }
@@ -4315,7 +4316,7 @@ function switchInPartyMember(partyIdx) {
     bFighters[1].statusEffects.cursed = 2; refreshStatusBadges(bFighters[1]);
   }
   if (pb.passive && pb.passive.id === 'shield_wall') {
-    newFighter.statusEffects.shielded = 1; refreshStatusBadges(newFighter);
+    newFighter.statusEffects.shielded = Math.max(1, Math.min(4, (newFighter.statusEffects.shielded || 0) + 1)); refreshStatusBadges(newFighter);
   }
   const ps = document.getElementById('passive-left');
   if (pb.passive) { ps.textContent = pb.passive.emoji + ' ' + pb.passive.name; ps.style.display = ''; }
