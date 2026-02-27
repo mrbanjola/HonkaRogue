@@ -1426,6 +1426,7 @@ const E_BOSS_SUFFIXES = [
   'Ascendant','the Undying','of the Void',
 ];
 
+
 const STAGE_LORE = [
   'Its honk shakes the foundations of reality.',
   'Defeated champions line its nest like trophies.',
@@ -1670,31 +1671,56 @@ function getStarterUnlockedPartIds() {
   }
   return [...out];
 }
-function ensureUnlockedPartsState() {
-  if (!Array.isArray(CAMPAIGN.unlockedParts)) CAMPAIGN.unlockedParts = [];
+function ensurePartTrackingState() {
+  if (!Array.isArray(CAMPAIGN.caughtParts)) CAMPAIGN.caughtParts = [];
+  if (!Array.isArray(CAMPAIGN.partsSeen)) CAMPAIGN.partsSeen = [];
 }
 function getAllPartIds() {
   return (PARTS_DATA?.parts || []).map(p => p.id);
 }
-function unlockAllParts() {
-  CAMPAIGN.unlockedParts = getAllPartIds();
-}
-function isPartUnlocked(partOrId) {
+function isPartCaught(partOrId) {
   const id = typeof partOrId === 'string' ? partOrId : partOrId?.id;
   if (!id) return false;
-  ensureUnlockedPartsState();
-  return CAMPAIGN.unlockedParts.includes(id);
+  ensurePartTrackingState();
+  return CAMPAIGN.caughtParts.includes(id);
 }
-function unlockPartIds(ids) {
-  ensureUnlockedPartsState();
-  const before = CAMPAIGN.unlockedParts.length;
-  const set = new Set(CAMPAIGN.unlockedParts);
+function isPartSeen(partOrId) {
+  const id = typeof partOrId === 'string' ? partOrId : partOrId?.id;
+  if (!id) return false;
+  ensurePartTrackingState();
+  return CAMPAIGN.partsSeen.includes(id);
+}
+function isPartUnlocked(partOrId) {
+  // For backwards compatibility: unlocked = caught (can use in assembly)
+  return isPartCaught(partOrId);
+}
+function catchPartIds(ids) {
+  ensurePartTrackingState();
+  const caughtBefore = CAMPAIGN.caughtParts.length;
+  const caughtSet = new Set(CAMPAIGN.caughtParts);
+  const seenSet = new Set(CAMPAIGN.partsSeen);
+  (ids || []).forEach(id => { 
+    if (id) { 
+      caughtSet.add(id);
+      seenSet.add(id); 
+    } 
+  });
+  CAMPAIGN.caughtParts = [...caughtSet];
+  CAMPAIGN.partsSeen = [...seenSet];
+  return CAMPAIGN.caughtParts.length - caughtBefore;
+}
+function seePartIds(ids) {
+  ensurePartTrackingState();
+  const before = CAMPAIGN.partsSeen.length;
+  const set = new Set(CAMPAIGN.partsSeen);
   (ids || []).forEach(id => { if (id) set.add(id); });
-  CAMPAIGN.unlockedParts = [...set];
-  return CAMPAIGN.unlockedParts.length - before;
+  CAMPAIGN.partsSeen = [...set];
+  return CAMPAIGN.partsSeen.length - before;
 }
-function resetStarterUnlockedParts() {
-  unlockAllParts();
+function resetStarterCaughtParts() {
+  ensurePartTrackingState();
+  CAMPAIGN.caughtParts = getStarterUnlockedPartIds();
+  CAMPAIGN.partsSeen = getStarterUnlockedPartIds();
 }
 function unlockedPartsByFamilyType(type) {
   const fams = TYPE_TO_PART_FAMILIES[type] || [];
@@ -1703,15 +1729,18 @@ function unlockedPartsByFamilyType(type) {
   return (PARTS_DATA?.parts || []).filter(p => set.has(p.family?.name));
 }
 function grantCatchPartUnlocks(caught, enemyRef) {
-  const unlockIds = [];
+  const catchIds = [];
+  const seeIds = [];
   const sourceParts = enemyRef?.assembledParts || null;
   if (sourceParts) {
+    // Direct enemy: unlock the parts that composed them
     ['head', 'torso', 'wings', 'legs'].forEach(slot => {
       const id = sourceParts[slot]?.id;
-      if (id) unlockIds.push(id);
+      if (id) catchIds.push(id);
     });
   } else {
-    const pool = unlockedPartsByFamilyType(caught?.type).filter(p => !isPartUnlocked(p.id));
+    // Procedural enemy: give random uncaught parts of matching type
+    const pool = unlockedPartsByFamilyType(caught?.type).filter(p => !isPartCaught(p.id));
     for (let i = pool.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       const t = pool[i]; pool[i] = pool[j]; pool[j] = t;
@@ -1722,69 +1751,58 @@ function grantCatchPartUnlocks(caught, enemyRef) {
       bySlot.set(p.slot, p.id);
       if (bySlot.size >= 2) break;
     }
-    unlockIds.push(...bySlot.values());
+    catchIds.push(...bySlot.values());
   }
-  return unlockPartIds(unlockIds);
+  // Always see the enemy's type-matching parts
+  seeIds.push(...(sourceParts ? catchIds : unlockedPartsByFamilyType(caught?.type).slice(0, 3).map(p => p.id)));
+  const newCaught = catchPartIds(catchIds);
+  seePartIds(seeIds);
+  return newCaught;
+}
+function enemyHasUncaughtParts(enemyData) {
+  if (!enemyData) return false;
+  const sourceParts = enemyData.assembledParts;
+  if (sourceParts) {
+    // Named honker: check if any of its 4 parts are uncaught
+    return ['head', 'torso', 'wings', 'legs'].some(slot => {
+      const id = sourceParts[slot]?.id;
+      return id && !isPartCaught(id);
+    });
+  } else {
+    // Procedural enemy: check if type has uncaught parts
+    const pool = unlockedPartsByFamilyType(enemyData.type);
+    return pool.some(p => !isPartCaught(p.id));
+  }
 }
 
 const DEX_PARTS_OVERRIDES = {
+  // Kevin - Underdog with legendary all-rounder parts
   kevin: {
-    head: {
-      id: 'head-sprite_132',
-      slot: 'head',
-      file: 'Heads/sprite_132.png',
-      family: { id: 8, name: 'Bloomcrest', theme: 'wild' },
-      variant: 16,
-      rarity: 'common',
-      archetype: 'balanced',
-      stats: { hp: 10, atk: 53, def: 7, spd: 12, luck: 15 },
-      powerScore: 110,
-      tags: ['wild', 'balanced', 'prime', 'night', 'sprite_132'],
-      description: 'Bloomcrest headpiece with a balanced profile. Visual theme aligned to sprite style.',
-      moveIds: ['normal_battle_cry', 'normal_feather_guard'],
-    },
-    torso: {
-      id: 'torso-sprite_133',
-      slot: 'torso',
-      file: 'Torsos/sprite_133.png',
-      family: { id: 8, name: 'Bloomcrest', theme: 'wild' },
-      variant: 16,
-      rarity: 'legendary',
-      archetype: 'bulwark',
-      stats: { hp: 55, atk: 6, def: 27, spd: 2, luck: 2 },
-      powerScore: 57.95,
-      tags: ['wild', 'bulwark', 'brutal', 'gloom', 'sprite_133'],
-      description: 'Bloomcrest torso profile aligned for Normal typing.',
-      moveIds: ['normal_berserker_charge', 'normal_feather_guard'],
-    },
-    wings: {
-      id: 'wings-sprite_124',
-      slot: 'wings',
-      file: 'Wings/sprite_124.png',
-      family: { id: 8, name: 'Bloomcrest', theme: 'wild' },
-      variant: 14,
-      rarity: 'legendary',
-      archetype: 'trickster',
-      stats: { hp: 4, atk: 8, def: 4, spd: 33, luck: 12 },
-      powerScore: 60.980000000000004,
-      tags: ['wild', 'trickster', 'arc', 'thunder', 'sprite_124'],
-      description: 'Bloomcrest wing rig with a trickster profile. Visual theme aligned to sprite style.',
-      moveIds: ['normal_berserker_charge', 'normal_quick_strike'],
-    },
-    legs: {
-      id: 'legs-sprite_127',
-      slot: 'legs',
-      file: 'Legs/sprite_127.png',
-      family: { id: 8, name: 'Bloomcrest', theme: 'wild' },
-      variant: 47,
-      rarity: 'rare',
-      archetype: 'balanced',
-      stats: { hp: 14, atk: 6, def: 8, spd: 14, luck: 2 },
-      powerScore: 38.38000000000001,
-      tags: ['wild', 'balanced', 'razor', 'sprite_127'],
-      description: 'Bloomcrest legs profile aligned for Normal typing.',
-      moveIds: ['normal_quick_strike', 'normal_berserker_charge'],
-    },
+    head: { id: 'head-sprite_132', slot: 'head', file: 'Heads/sprite_132.png', family: { id: 8, name: 'Bloomcrest', theme: 'wild' }, variant: 16, rarity: 'common', archetype: 'balanced', stats: { hp: 10, atk: 53, def: 7, spd: 12, luck: 15 }, powerScore: 110, tags: ['wild', 'balanced', 'prime', 'night', 'sprite_132'], description: 'Bloomcrest headpiece with a balanced profile. Visual theme aligned to sprite style.', moveIds: ['normal_battle_cry', 'normal_feather_guard'] },
+    torso: { id: 'torso-sprite_133', slot: 'torso', file: 'Torsos/sprite_133.png', family: { id: 8, name: 'Bloomcrest', theme: 'wild' }, variant: 16, rarity: 'legendary', archetype: 'bulwark', stats: { hp: 55, atk: 6, def: 27, spd: 2, luck: 2 }, powerScore: 57.95, tags: ['wild', 'bulwark', 'brutal', 'gloom', 'sprite_133'], description: 'Bloomcrest torso profile aligned for Normal typing.', moveIds: ['normal_berserker_charge', 'normal_feather_guard'] },
+    wings: { id: 'wings-sprite_124', slot: 'wings', file: 'Wings/sprite_124.png', family: { id: 8, name: 'Bloomcrest', theme: 'wild' }, variant: 14, rarity: 'legendary', archetype: 'trickster', stats: { hp: 4, atk: 8, def: 4, spd: 33, luck: 12 }, powerScore: 60.980000000000004, tags: ['wild', 'trickster', 'arc', 'thunder', 'sprite_124'], description: 'Bloomcrest wing rig with a trickster profile. Visual theme aligned to sprite style.', moveIds: ['normal_berserker_charge', 'normal_quick_strike'] },
+    legs: { id: 'legs-sprite_127', slot: 'legs', file: 'Legs/sprite_127.png', family: { id: 8, name: 'Bloomcrest', theme: 'wild' }, variant: 47, rarity: 'rare', archetype: 'balanced', stats: { hp: 14, atk: 6, def: 8, spd: 14, luck: 2 }, powerScore: 38.38000000000001, tags: ['wild', 'balanced', 'razor', 'sprite_127'], description: 'Bloomcrest legs profile aligned for Normal typing.', moveIds: ['normal_quick_strike', 'normal_berserker_charge'] },
+  },
+  // Voidwing - Shadow boss with rare arcane combination
+  voidwing: {
+    head: { id: 'head-sprite_092', slot: 'head', file: 'Heads/sprite_092.png', family: { id: 9, name: 'Voidgild', theme: 'arcane' }, variant: 12, rarity: 'rare', archetype: 'balanced', stats: { hp: 14, atk: 43, def: 9, spd: 13, luck: 19 }, powerScore: 103.39999999999999, tags: ['arcane', 'balanced', 'swift', 'thunder', 'sprite_092'], description: 'Voidgild rare headpiece with exceptional stats.', moveIds: ['shadow_soul_drain', 'shadow_dark_pulse'] },
+    torso: { id: 'torso-sprite_016', slot: 'torso', file: 'Torsos/sprite_016.png', family: { id: 9, name: 'Voidgild', theme: 'arcane' }, variant: 3, rarity: 'common', archetype: 'balanced', stats: { hp: 54, atk: 6, def: 32, spd: 1, luck: 8 }, powerScore: 67.3, tags: ['arcane', 'balanced', 'ancient', 'marsh', 'sprite_016'], description: 'Voidgild ancient torso with strong defense.', moveIds: ['shadow_soul_drain', 'shadow_dark_pulse'] },
+    wings: { id: 'wings-sprite_085', slot: 'wings', file: 'Wings/sprite_085.png', family: { id: 3, name: 'Frostplume', theme: 'ice' }, variant: 10, rarity: 'rare', archetype: 'trickster', stats: { hp: 2, atk: 7, def: 1, spd: 16, luck: 6 }, powerScore: 31, tags: ['ice', 'trickster', 'arc', 'glacier', 'sprite_085'], description: 'Rare wings with extreme speed, speed-based shadow power.', moveIds: ['shadow_void_collapse', 'shadow_eclipse_strike'] },
+    legs: { id: 'legs-sprite_006', slot: 'legs', file: 'Legs/sprite_006.png', family: { id: 6, name: 'Duskveil', theme: 'shadow' }, variant: 4, rarity: 'rare', archetype: 'balanced', stats: { hp: 11, atk: 6, def: 7, spd: 11, luck: 3 }, powerScore: 32, tags: ['shadow', 'balanced', 'hollow', 'marsh', 'sprite_006'], description: 'Duskveil rare legs with shadow synergy.', moveIds: ['shadow_soul_drain', 'shadow_void_touch'] },
+  },
+  // Magnaroo Rex - Fire boss with legendary pyro combo
+  magnaroo: {
+    head: { id: 'head-sprite_129', slot: 'head', file: 'Heads/sprite_129.png', family: { id: 7, name: 'Sunflare', theme: 'solar' }, variant: 15, rarity: 'rare', archetype: 'raider', stats: { hp: 14, atk: 46, def: 11, spd: 10, luck: 19 }, powerScore: 108.6, tags: ['solar', 'raider', 'swift', 'iron', 'sprite_129'], description: 'Sunflare rare head designed for high attack.', moveIds: ['fire_scorchblast', 'fire_magma_crash'] },
+    torso: { id: 'torso-sprite_035', slot: 'torso', file: 'Torsos/sprite_035.png', family: { id: 2, name: 'Embercrest', theme: 'fire' }, variant: 6, rarity: 'common', archetype: 'bulwark', stats: { hp: 22, atk: 2, def: 12, spd: 0, luck: 1 }, powerScore: 24, tags: ['fire', 'bulwark', 'ancient', 'ember', 'sprite_035'], description: 'Embercrest ancient torso, extremely tanky.', moveIds: ['fire_magma_crash', 'fire_inferno_wave'] },
+    wings: { id: 'wings-sprite_065', slot: 'wings', file: 'Wings/sprite_065.png', family: { id: 2, name: 'Embercrest', theme: 'fire' }, variant: 9, rarity: 'common', archetype: 'balanced', stats: { hp: 2, atk: 6, def: 1, spd: 15, luck: 5 }, powerScore: 28, tags: ['fire', 'balanced', 'mythic', 'rime', 'sprite_065'], description: 'Embercrest wings optimized for fire attacks.', moveIds: ['fire_magma_crash', 'fire_eruption'] },
+    legs: { id: 'legs-sprite_045', slot: 'legs', file: 'Legs/sprite_045.png', family: { id: 2, name: 'Embercrest', theme: 'fire' }, variant: 24, rarity: 'rare', archetype: 'balanced', stats: { hp: 15, atk: 6, def: 7, spd: 12, luck: 3 }, powerScore: 34.6, tags: ['fire', 'balanced', 'hollow', 'anvil', 'sprite_045'], description: 'Embercrest rare legs with fire affinity.', moveIds: ['fire_magma_crash', 'fire_lava_spit'] },
+  },
+  // Eclipsar - Shadow final boss with maximum rare synergy
+  eclipsar: {
+    head: { id: 'head-sprite_092', slot: 'head', file: 'Heads/sprite_092.png', family: { id: 9, name: 'Voidgild', theme: 'arcane' }, variant: 12, rarity: 'rare', archetype: 'balanced', stats: { hp: 14, atk: 43, def: 9, spd: 13, luck: 19 }, powerScore: 103.39999999999999, tags: ['arcane', 'balanced', 'swift', 'thunder', 'sprite_092'], description: 'Voidgild rare head for eclipse power.', moveIds: ['shadow_oblivion', 'shadow_eclipse_strike'] },
+    torso: { id: 'torso-sprite_016', slot: 'torso', file: 'Torsos/sprite_016.png', family: { id: 9, name: 'Voidgild', theme: 'arcane' }, variant: 3, rarity: 'common', archetype: 'balanced', stats: { hp: 54, atk: 6, def: 32, spd: 1, luck: 8 }, powerScore: 67.3, tags: ['arcane', 'balanced', 'ancient', 'marsh', 'sprite_016'], description: 'Voidgild torso for shadow durability.', moveIds: ['shadow_oblivion', 'shadow_void_collapse'] },
+    wings: { id: 'wings-sprite_085', slot: 'wings', file: 'Wings/sprite_085.png', family: { id: 3, name: 'Frostplume', theme: 'ice' }, variant: 10, rarity: 'rare', archetype: 'trickster', stats: { hp: 2, atk: 7, def: 1, spd: 16, luck: 6 }, powerScore: 31, tags: ['ice', 'trickster', 'arc', 'glacier', 'sprite_085'], description: 'Rare wings for evasion against eclipse.', moveIds: ['shadow_eclipse_strike', 'shadow_void_collapse'] },
+    legs: { id: 'legs-sprite_015', slot: 'legs', file: 'Legs/sprite_015.png', family: { id: 6, name: 'Duskveil', theme: 'shadow' }, variant: 9, rarity: 'rare', archetype: 'balanced', stats: { hp: 12, atk: 6, def: 8, spd: 12, luck: 3 }, powerScore: 34.4, tags: ['shadow', 'balanced', 'hollow', 'ember', 'sprite_015'], description: 'Duskveil rare legs for shadow mastery.', moveIds: ['shadow_oblivion', 'shadow_leech_feather'] },
   },
 };
 
@@ -1905,8 +1923,23 @@ function generateStage(n) {
   const rng    = seededRng(n * 7919 + 31337);
   const biome = getBiomeForStage(n);
   const isBoss = (n % 5 === 0);
-  const useDex = isBoss ? (rng() < 0.9) : (n <= 35 ? true : rng() < 0.82);
+  // Named honkers are rare encounters that players discover more as they progress
+  // Early game (stages 1-20): 2-5% chance, Mid game (21-50): 8-12%, Late game (50+): 15%+
+  rng(); rng(); // Burn entropy
+  const rngRoll = rng();
+  let dexThreshold;
+  if (n <= 20) {
+    dexThreshold = isBoss ? 0.05 : 0.02;  // Very rare early on
+  } else if (n <= 50) {
+    dexThreshold = isBoss ? 0.12 : 0.08;  // Moderate mid-game
+  } else {
+    dexThreshold = isBoss ? 0.20 : 0.15;  // More common late game
+  }
+  const useDex = rngRoll < dexThreshold;
+  // DEBUG: show spawn determination
+  console.log(`Stage ${n} | RNG: ${rngRoll.toFixed(3)} | Threshold: ${(dexThreshold*100).toFixed(0)}% | UseDex: ${useDex} | ${useDex ? '✦ RARE' : 'PROCEDURAL'}`);
   const dex    = useDex ? chooseDexForStage(n, isBoss, rng, biome) : null;
+  if (dex) console.log(`  → Named Honker: ${dex.name}`);
   const dexBlueprint = dex ? buildDexPartBlueprint(dex) : null;
   const types  = ['Fire','Ice','Lightning','Shadow','Normal'];
   let type   = dex ? (dexBlueprint?.derived?.type || dex.type) : (pickBiomeType(biome, rng, isBoss) || types[Math.floor(rng() * (isBoss ? 4 : 5))]);
@@ -1999,10 +2032,13 @@ function generateStage(n) {
       legs:  pickPart('legs'),
     };
   }
+  
+  const enemyData = { name: enemyName, emoji, type, hp, luck, atk:genAtk, def:genDef, spd:genSpd,
+                      moves, passive, dexId: dex?.id || null, assembledParts, level: enemyLevel };
+  const hasNewParts = enemyHasUncaughtParts(enemyData);
 
-  return { num: n, name: location, desc: lore, isBoss, difficulty, xpReward,
-    enemy: { name: enemyName, emoji, type, hp, luck, atk:genAtk, def:genDef, spd:genSpd,
-             moves, passive, dexId: dex?.id || null, assembledParts, level: enemyLevel } };
+  return { num: n, name: location, desc: lore, isBoss, difficulty, xpReward, hasNewParts,
+    enemy: enemyData };
 }
 
 // "?"? POWER BALANCE DISPLAY "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
@@ -3256,6 +3292,8 @@ function startStageBattle(stageIdx, isRetry=false) {
     new Honker(JSON.parse(JSON.stringify(stage.enemy)), 'right', {}),
   ];
   bFighters[1]._dexId = stage.enemy.dexId || null;
+  bFighters[1]._isBoss = stage.isBoss || false;
+  bFighters[1]._hasNewParts = stage.hasNewParts || false;
   if (isRetry && CAMPAIGN._savedPlayerHP) bFighters[0].currentHP = CAMPAIGN._savedPlayerHP;
 
   CAMPAIGN._currentStageIdx = stageIdx;
@@ -3422,12 +3460,54 @@ function setupFighterUI(f, side) {
   }
 
   document.getElementById(`nm-${side}`).textContent = f.name;
+  // Add encounter badge for named honkers
+  const nameEl = document.getElementById(`nm-${side}`);
+  const existingBadge = nameEl.nextElementSibling?.classList?.contains('encounter-badge') ? nameEl.nextElementSibling : null;
+  if (f.dexId && !existingBadge) {
+    const badge = document.createElement('div');
+    badge.className = 'encounter-badge';
+    const isBoss = f._isBoss;
+    badge.textContent = isBoss ? '⚔ LEGENDARY ENCOUNTER ⚔' : '✦ EPIC ENCOUNTER ✦';
+    badge.style.textAlign = 'center';
+    badge.style.color = isBoss ? '#ff6a00' : '#ffd700';
+    badge.style.fontSize = '11px';
+    badge.style.fontWeight = 'bold';
+    badge.style.marginTop = '4px';
+    badge.style.textShadow = isBoss ? '1px 1px 0 #8b0000' : '1px 1px 0 #000';
+    nameEl.after(badge);
+  } else if (!f.dexId && existingBadge) {
+    existingBadge.remove();
+  } else if (f.dexId && existingBadge) {
+    // Update badge if boss status changed
+    const isBoss = f._isBoss;
+    existingBadge.textContent = isBoss ? '⚔ LEGENDARY ENCOUNTER ⚔' : '✦ EPIC ENCOUNTER ✦';
+    existingBadge.style.color = isBoss ? '#ff6a00' : '#ffd700';
+    existingBadge.style.textShadow = isBoss ? '1px 1px 0 #8b0000' : '1px 1px 0 #000';
+  }
+  
+  // Add NEW PARTS badge if enemy has uncaught parts
+  const partsParent = nameEl.parentElement;
+  const existingPartsBadge = partsParent.querySelector('.new-parts-badge');
+  if (f._hasNewParts && !existingPartsBadge) {
+    const partsBadge = document.createElement('div');
+    partsBadge.className = 'new-parts-badge';
+    partsBadge.textContent = '✨ NEW PARTS ✨';
+    partsBadge.style.textAlign = 'center';
+    partsBadge.style.color = '#00ff88';
+    partsBadge.style.fontSize = '11px';
+    partsBadge.style.fontWeight = 'bold';
+    partsBadge.style.marginTop = '2px';
+    partsBadge.style.textShadow = '1px 1px 0 #004400';
+    partsBadge.style.animation = 'pulse 1.5s infinite';
+    partsParent.appendChild(partsBadge);
+  } else if (!f._hasNewParts && existingPartsBadge) {
+    existingPartsBadge.remove();
+  }
   const tb = document.getElementById(`tb-${side}`);
   tb.textContent = f.type2 ? `${f.type}/${f.type2}` : f.type; tb.className = `type-badge ${TCC[f.type]}`;
   tb.style.color = TC[f.type]; tb.style.borderColor = TC[f.type];
   updateHP(f, side);
   updatePPDots(f, side);
-  const nameEl = document.getElementById(`nm-${side}`);
   let statStrip = nameEl.parentElement.querySelector('.f-stats');
   if (!statStrip) {
     statStrip = document.createElement('div');
@@ -5154,8 +5234,9 @@ function buildDexGrid() {
 // "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
 let _partsDexFromScreen = 'screen-title';
 function showPartsDex(fromScreen) {
-  if (!Array.isArray(CAMPAIGN.unlockedParts) || CAMPAIGN.unlockedParts.length === 0) {
-    resetStarterUnlockedParts();
+  ensurePartTrackingState();
+  if (CAMPAIGN.caughtParts.length === 0) {
+    resetStarterCaughtParts();
   }
   _partsDexFromScreen = fromScreen || document.querySelector('.screen.active')?.id || 'screen-title';
   initPartsDexControls();
@@ -5189,6 +5270,7 @@ function buildPartsDexGrid() {
   const grid = document.getElementById('partsdex-grid');
   const prog = document.getElementById('partsdex-progress');
   if (!grid || !prog) return;
+  ensurePartTrackingState();
 
   const q = (document.getElementById('pdx-search')?.value || '').trim().toLowerCase();
   const slot = document.getElementById('pdx-slot')?.value || 'all';
@@ -5199,7 +5281,8 @@ function buildPartsDexGrid() {
   const slotEmoji = { head:'\u{1F5E3}\uFE0F', torso:'\u{1F4AA}', wings:'\u{1FABD}', legs:'\u{1F9B5}' };
   const rarityColor = { common:'#aaaacc', rare:'#00c8ff', legendary:'#ffd700' };
   const totalParts = (PARTS_DATA?.parts || []).length;
-  const unlockedCount = (CAMPAIGN.unlockedParts || []).length;
+  const seenCount = (CAMPAIGN.partsSeen || []).length;
+  const caughtCount = (CAMPAIGN.caughtParts || []).length;
 
   let parts = [...(PARTS_DATA?.parts || [])];
   parts = parts.filter(p => {
@@ -5226,31 +5309,34 @@ function buildPartsDexGrid() {
   if (sort === 'name_desc') parts.sort((a,b) => -cmpByName(a,b));
 
   grid.innerHTML = '';
-  prog.textContent = `UNLOCKED ${unlockedCount}/${totalParts} • VIEW ${parts.length}/${totalParts}`;
+  prog.textContent = `SEEN ${seenCount}/${totalParts}  •  CAUGHT ${caughtCount}/${totalParts}`;
 
   parts.forEach(p => {
-    const unlocked = isPartUnlocked(p.id);
+    const caught = isPartCaught(p.id);
+    const seen = isPartSeen(p.id);
     const c = document.createElement('div');
-    c.className = 'pdx-card';
+    c.className = `pdx-card ${caught ? 'pc-caught' : seen ? 'pc-seen' : 'pc-unseen'}`;
+    const caughtBadge = caught ? '<div class="pdx-caught-badge" style="color:#ffd700;font-size:.7rem;font-weight:bold;position:absolute;top:.1rem;right:.1rem">o.</div>' : '';
     c.innerHTML = `
-      <div class="pdx-art"><img src="${p.file}" alt="${p.id}"></div>
+      ${caughtBadge}
+      <div class="pdx-art"><img src="${p.file}" alt="${p.id}" style="${!seen ? 'filter:grayscale(.8);opacity:.45;' : ''}"></div>
       <div class="pdx-meta">
-        <div class="pdx-name">${unlocked ? p.id : 'LOCKED PART'}</div>
+        <div class="pdx-name">${seen ? p.id : 'LOCKED PART'}</div>
         <div class="pdx-sub">
           <span class="pdx-pill">${slotEmoji[p.slot] || '?'} ${String(p.slot || '').toUpperCase()}</span>
-          <span class="pdx-pill" style="color:${rarityColor[p.rarity] || '#aaa'}">${String(p.rarity || '').toUpperCase()}</span>
-          <span class="pdx-pill">${p.family?.name || 'Unknown'}</span>
-          ${unlocked ? '' : '<span class="pdx-pill" style="color:#ff6a00;border-color:#ff6a00">LOCKED</span>'}
+          <span class="pdx-pill" style="color:${seen ? rarityColor[p.rarity] : '#555'}">${String(p.rarity || '').toUpperCase()}</span>
+          <span class="pdx-pill" style="color:${seen ? '#aaa' : '#555'}">${seen ? p.family?.name : 'Unknown'}</span>
+          ${caught ? '<span class="pdx-pill" style="color:#ffd700;border-color:#ffd700">CAUGHT</span>' : ''}
         </div>
-        <div class="pdx-power">${unlocked ? `PWR ${Math.round(p.powerScore || 0)}` : 'PWR ???'}</div>
-        <div class="pdx-stats">${unlocked ? `❤️${p.stats.hp} s"${p.stats.atk} Y>${p.stats.def} s${p.stats.spd} Y?${p.stats.luck}` : 'Catch honkers to unlock this part'}</div>
+        <div class="pdx-power">${seen ? `PWR ${Math.round(p.powerScore || 0)}` : 'PWR ???'}</div>
+        <div class="pdx-stats">${seen ? `❤️${p.stats.hp} ⚔️${p.stats.atk} 🛡️${p.stats.def} ⚡${p.stats.spd} 🍀${p.stats.luck}` : 'Catch honkers to see this part'}</div>
       </div>
     `;
-    if (!unlocked) {
+    if (!seen) {
       c.style.opacity = '.65';
       c.style.filter = 'grayscale(.85)';
     }
-    c.title = unlocked ? (p.description || '').replace(/<[^>]*>/g, '') : 'Locked';
+    c.title = seen ? (p.description || '').replace(/<[^>]*>/g, '') : 'Locked';
     grid.appendChild(c);
   });
 }
