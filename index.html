@@ -1847,14 +1847,69 @@ function buildDexPartBlueprint(dex) {
 }
 initDexPartPresets();
 
+const BIOMES = [
+  { id: 'meadow', name: 'Gosling Meadow', types: ['Normal', 'Fire'], families: ['Marshborn', 'Bloomcrest', 'Sunflare'],
+    arenas: ['Sunlit Field', 'Windmill Yard', 'Barnside Ring'],
+    lore: ['The wind carries feathers and old rivalry.', 'Friendly faces hide ruthless duelers.'] },
+  { id: 'tundra', name: 'Frost Tundra', types: ['Ice', 'Normal'], families: ['Frostplume', 'Ironbarb', 'Marshborn'],
+    arenas: ['Glacier Pass', 'Rime Basin', 'Snowglass Flats'],
+    lore: ['Every breath freezes before it lands.', 'One misstep and the ice answers back.'] },
+  { id: 'storm', name: 'Storm Frontier', types: ['Lightning', 'Normal'], families: ['Stormcall', 'Ironbarb', 'Bloomcrest'],
+    arenas: ['Voltage Cliffs', 'Static Causeway', 'Thunder Gate'],
+    lore: ['Sparks dance before every impact.', 'Metal sings when storms roll in.'] },
+  { id: 'ember', name: 'Ember Wastes', types: ['Fire', 'Shadow'], families: ['Embercrest', 'Sunflare', 'Duskveil'],
+    arenas: ['Cinder Pit', 'Ashen Span', 'Magma Court'],
+    lore: ['Heat haze makes distance lie.', 'The ground remembers every burn.'] },
+  { id: 'veil', name: 'Veil of Dusk', types: ['Shadow', 'Ice'], families: ['Duskveil', 'Voidgild', 'Frostplume'],
+    arenas: ['Moonlit Hollow', 'Gloom Bridge', 'Echo Crypt'],
+    lore: ['Whispers linger longer than footsteps.', 'Shadows move first.'] },
+];
+function getBiomeForStage(n) {
+  const idx = Math.floor((Math.max(1, n) - 1) / 5) % BIOMES.length;
+  return BIOMES[idx];
+}
+function pickWeightedIndex(weights, rng) {
+  const total = (weights || []).reduce((a, b) => a + Math.max(0, b || 0), 0);
+  if (!total) return 0;
+  let r = rng() * total;
+  for (let i = 0; i < weights.length; i++) {
+    r -= Math.max(0, weights[i] || 0);
+    if (r <= 0) return i;
+  }
+  return Math.max(0, weights.length - 1);
+}
+function pickBiomeType(biome, rng, isBoss) {
+  const base = biome?.types?.length ? biome.types : ['Normal'];
+  const pool = isBoss ? base : [...base, 'Normal'];
+  return pool[Math.floor(rng() * pool.length)] || 'Normal';
+}
+function chooseDexForStage(n, isBoss, rng, biome) {
+  const all = (HONKER_DEX || []).filter(d => !!d.isBoss === !!isBoss);
+  if (!all.length) return null;
+  const maxDex = Math.min(HONKER_DEX.length, Math.max(isBoss ? 5 : 6, Math.floor(6 + n * 1.15)));
+  const minDex = Math.max(1, maxDex - (isBoss ? 14 : 12));
+  let pool = all.filter(d => d.dexNum >= minDex && d.dexNum <= maxDex);
+  if (!pool.length) pool = all.slice();
+  const weights = pool.map(d => {
+    let w = 1;
+    if ((biome?.types || []).includes(d.type)) w *= 2.6;
+    const dist = Math.abs(d.dexNum - maxDex);
+    w *= Math.max(0.55, 1.2 - dist * 0.05);
+    return w;
+  });
+  return pool[pickWeightedIndex(weights, rng)] || pool[0];
+}
+
 // "?"? CORE GENERATOR "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
 function generateStage(n) {
   const rng    = seededRng(n * 7919 + 31337);
-  const dex    = n <= HONKER_DEX.length ? HONKER_DEX[n - 1] : null;
+  const biome = getBiomeForStage(n);
+  const isBoss = (n % 5 === 0);
+  const useDex = isBoss ? (rng() < 0.9) : (n <= 35 ? true : rng() < 0.82);
+  const dex    = useDex ? chooseDexForStage(n, isBoss, rng, biome) : null;
   const dexBlueprint = dex ? buildDexPartBlueprint(dex) : null;
-  const isBoss = dex ? !!dex.isBoss : (n % 5 === 0);
   const types  = ['Fire','Ice','Lightning','Shadow','Normal'];
-  let type   = dex ? (dexBlueprint?.derived?.type || dex.type) : types[Math.floor(rng() * (isBoss ? 4 : 5))];
+  let type   = dex ? (dexBlueprint?.derived?.type || dex.type) : (pickBiomeType(biome, rng, isBoss) || types[Math.floor(rng() * (isBoss ? 4 : 5))]);
   const earlyRamp = Math.min(1, n / 16);
   const earlyHpScale = n <= 15 ? (0.84 + earlyRamp * 0.16) : 1;
   const earlyPowScale = n <= 15 ? (0.72 + earlyRamp * 0.28) : 1;
@@ -1875,9 +1930,9 @@ function generateStage(n) {
     enemyName = `${p} ${b}`;
   }
 
-  const location = dex ? STAGE_LOCATIONS[(n - 1) % STAGE_LOCATIONS.length]
-                       : STAGE_LOCATIONS[(n - 1) % STAGE_LOCATIONS.length];
-  const loreRaw  = dex ? dex.lore : STAGE_LORE[Math.floor(rng() * STAGE_LORE.length)];
+  const arena = biome?.arenas?.[Math.floor(rng() * biome.arenas.length)] || STAGE_LOCATIONS[(n - 1) % STAGE_LOCATIONS.length];
+  const location = `${biome?.name || 'Honklands'} • ${arena}`;
+  const loreRaw  = dex ? dex.lore : (biome?.lore?.[Math.floor(rng() * biome.lore.length)] || STAGE_LORE[Math.floor(rng() * STAGE_LORE.length)]);
   const lore     = dex ? `"${loreRaw}"` : `"${loreRaw.replace('{n}', n)}"`;
 
   const hpBase  = Math.round(100 + n * 19 + Math.pow(n, 1.35) * 1.8);
@@ -1928,11 +1983,13 @@ function generateStage(n) {
   const difficulty = isBoss ? 5 : Math.min(4, Math.ceil(n / 4));
   const xpReward   = Math.round(55 + n * 24 + (isBoss ? n * 12 : 0));
 
-  // "?"? Procedural sprite for stages 31+ "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
+  // Procedural sprite fallback when not using a premade dex honker.
   let assembledParts = dexBlueprint?.assembledParts || null;
   if (!dex && PARTS_DATA && PARTS_DATA.parts) {
     const pickPart = slot => {
-      const pool = PARTS_DATA.parts.filter(p => p.slot === slot);
+      const famSet = new Set(biome?.families || []);
+      let pool = PARTS_DATA.parts.filter(p => p.slot === slot && famSet.has(p.family?.name));
+      if (!pool.length) pool = PARTS_DATA.parts.filter(p => p.slot === slot);
       return pool[Math.floor(rng() * pool.length)] || null;
     };
     assembledParts = {
@@ -2384,7 +2441,7 @@ function confirmCharSelect() {
   csSelected.luckBonus=0; csSelected.stabBonus=1.25; csSelected.chaosMod=1; csSelected.ppBonus=0;
   csSelected.level=1; csSelected.xp=0; csSelected.xpNeeded=100;
   initHonkerRunState(csSelected);
-  showCampaignMap();
+  startNextStageFromLoop();
 }
 
 // "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
@@ -2940,7 +2997,7 @@ function confirmAssembly() {
   newHonker.xpNeeded = 100;
   initHonkerRunState(newHonker);
   
-  showCampaignMap();
+  startNextStageFromLoop();
 }
 
 // "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
@@ -2953,6 +3010,24 @@ function showCampaignMap() {
   document.getElementById('camp-map-sub').textContent =
     `Stage ${CAMPAIGN.stageIdx + 1} of Infinite • Deepest: ${deepest}`;
   showScreen('screen-campaign');
+}
+function startNextStageFromLoop() {
+  if (!CAMPAIGN.party || CAMPAIGN.party.length === 0) {
+    showGameOver();
+    return;
+  }
+  const cur = CAMPAIGN.party[CAMPAIGN.activeIdx];
+  const curHP = cur ? (cur.currentHP ?? getHonkerMaxHP(cur)) : 0;
+  if (!cur || curHP <= 0) {
+    const aliveIdx = CAMPAIGN.party.findIndex(h => (h.currentHP ?? getHonkerMaxHP(h)) > 0);
+    if (aliveIdx < 0) {
+      showGameOver();
+      return;
+    }
+    CAMPAIGN.activeIdx = aliveIdx;
+    CAMPAIGN.playerBase = CAMPAIGN.party[aliveIdx];
+  }
+  startStageBattle(CAMPAIGN.stageIdx);
 }
 
 function refreshCampaignSidebar() {
@@ -4600,6 +4675,12 @@ function chooseLoot(item) {
 
 function applyLootItem(item, targetHonker) {
   const target = targetHonker || CAMPAIGN.playerBase;
+  const isMove = item?.id && item.id.startsWith('move_');
+  if (isMove && target && Array.isArray(target.moves) && target.moves.length >= 4) {
+    const partyIdx = Math.max(0, CAMPAIGN.party.indexOf(target));
+    showReplaceMove(target, partyIdx, item);
+    return;
+  }
   item.apply(target);
   const record = { ...item, taughtTo: target?.name };
   if (item.global) {
@@ -4723,8 +4804,7 @@ function cancelTeachMove() {
 function skipLoot() { afterLoot(); }
 
 function afterLoot() {
-  // Campaign is infinite  -  always return to the map
-  showCampaignMap();
+  startNextStageFromLoop();
 }
 
 // "?"? BOSS CLEAR MILESTONE "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
@@ -4742,13 +4822,13 @@ function showBossClear(stage, stageN, xpGain) {
   `;
   document.getElementById('vic-btns').innerHTML = `
     <button class="btn btn-gold" onclick="closeBossAndLoot()">YZ' CLAIM LOOT</button>
-    <button class="btn btn-red"  onclick="closeBossAndMap()">? SKIP TO MAP</button>
+    <button class="btn btn-red"  onclick="closeBossAndMap()">? SKIP LOOT</button>
   `;
   showScreen('screen-victory');
 }
 
 function closeBossAndLoot() { showLootScreen(window._pendingLootXP || 0); }
-function closeBossAndMap()  { showCampaignMap(); }
+function closeBossAndMap()  { startNextStageFromLoop(); }
 
 // "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
 //  AUTO BATTLE
@@ -4860,7 +4940,7 @@ async function continueCampaign(){
     showScreen('screen-title');
     return;
   }
-  showCampaignMap();
+  startNextStageFromLoop();
 }
 
 // "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
