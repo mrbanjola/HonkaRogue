@@ -975,6 +975,7 @@ body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;}
   <div class="battle-controls">
     <button class="btn btn-green" id="btn-auto" onclick="toggleAuto()">&#x25B6;&#x25B6; AUTO BATTLE</button>
     <button class="btn btn-catch" id="btn-catch" onclick="tryCatch()" disabled>&#x1F9A4; CATCH</button>
+    <button class="btn btn-blue" id="btn-swap" onclick="openBattleSwap()">&#x1F501; SWAP</button>
     <button class="btn btn-red" onclick="goToCampaign()">&#x21A9; RETREAT</button>
   </div>
 </div>
@@ -1718,6 +1719,10 @@ function generateStage(n) {
   const isBoss = dex ? !!dex.isBoss : (n % 5 === 0);
   const types  = ['Fire','Ice','Lightning','Shadow','Normal'];
   const type   = dex ? dex.type : types[Math.floor(rng() * (isBoss ? 4 : 5))];
+  const earlyRamp = Math.min(1, n / 16);
+  const earlyHpScale = n <= 15 ? (0.84 + earlyRamp * 0.16) : 1;
+  const earlyPowScale = n <= 15 ? (0.72 + earlyRamp * 0.28) : 1;
+  const earlyStatScale = n <= 15 ? (0.88 + earlyRamp * 0.12) : 1;
 
   // Name
   let enemyName;
@@ -1740,7 +1745,8 @@ function generateStage(n) {
   const lore     = dex ? `"${loreRaw}"` : `"${loreRaw.replace('{n}', n)}"`;
 
   const hpBase  = Math.round(100 + n * 19 + Math.pow(n, 1.35) * 1.8);
-  const hp      = isBoss ? Math.round(hpBase * 1.75) : hpBase;
+  const hpRaw   = isBoss ? Math.round(hpBase * 1.75) : hpBase;
+  const hp      = Math.round(hpRaw * earlyHpScale);
   const luck    = Math.min(88, Math.round(25 + n * 2.2));
   const basePow = 26 + n * 3.2 + (isBoss ? 18 : 0);
 
@@ -1762,20 +1768,23 @@ function generateStage(n) {
 
   const moves = picked.map(m => ({
     name: m.name, type: m.type, emoji: m.emoji, desc: m.desc,
-    power: Math.max(20, Math.round(basePow * (m.pMult||1))),
+    power: Math.max(20, Math.round(basePow * (m.pMult||1) * earlyPowScale)),
     acc: m.acc, pp: m.pp, maxPP: m.pp,
     ...(m.effect ? { effect: m.effect, effectTarget: m.effectTarget,
       effectChance: m.effectChance, effectDur: m.effectDur } : {}),
   }));
 
   // Procedural stats for stages beyond dex range
-  const genAtk = dex ? (dex.atk||80) : Math.min(130, Math.round(60 + n * 1.8 + (isBoss ? 18 : 0) + (rng()-0.5)*20));
-  const genDef = dex ? (dex.def||80) : Math.min(130, Math.round(60 + n * 1.4 + (isBoss ? 15 : 0) + (rng()-0.5)*20));
-  const genSpd = dex ? (dex.spd||80) : Math.min(130, Math.round(60 + n * 1.2 + (rng()-0.5)*25));
+  const rawAtk = dex ? (dex.atk||80) : Math.min(130, Math.round(60 + n * 1.8 + (isBoss ? 18 : 0) + (rng()-0.5)*20));
+  const rawDef = dex ? (dex.def||80) : Math.min(130, Math.round(60 + n * 1.4 + (isBoss ? 15 : 0) + (rng()-0.5)*20));
+  const rawSpd = dex ? (dex.spd||80) : Math.min(130, Math.round(60 + n * 1.2 + (rng()-0.5)*25));
+  const genAtk = Math.max(30, Math.round(rawAtk * earlyStatScale));
+  const genDef = Math.max(30, Math.round(rawDef * earlyStatScale));
+  const genSpd = Math.max(30, Math.round(rawSpd * earlyStatScale));
   const emojiPool  = dex ? null : (isBoss ? BOSS_EMOJIS : (ENEMY_EMOJIS[type] || ENEMY_EMOJIS.Normal));
   const emoji      = dex ? dex.emoji : emojiPool[Math.floor(rng() * emojiPool.length)];
   const passive    = dex ? (dex.passive || null) : null;
-  const enemyLevel = Math.max(1, Math.round(n * 0.22) + (isBoss ? 1 : 0));
+  const enemyLevel = Math.max(1, Math.round(n * 0.18) + (isBoss ? 1 : 0) - (n <= 15 ? 1 : 0));
   const difficulty = isBoss ? 5 : Math.min(4, Math.ceil(n / 4));
   const xpReward   = Math.round(55 + n * 24 + (isBoss ? n * 12 : 0));
 
@@ -1987,7 +1996,9 @@ let bDead     = false;
 let eventState = {};
 let lastEventRound = -5;
 let bFaintedPartyIdx = new Set(); // tracks fainted party member indices this battle
+let bSwapMode = false;
 const LEVEL_GROWTH = { hp: 0.045, atk: 0.035, def: 0.035, spd: 0.03 };
+const STACKABLE_EFFECTS = ['paralyzed', 'cursed', 'shielded', 'pumped'];
 function levelStatScale(level, key) {
   const lv = Math.max(1, Number(level) || 1);
   const g = LEVEL_GROWTH[key] || 0;
@@ -2010,6 +2021,7 @@ class Honker {
     this.ppBonus    = campBoosts.ppBonus||0;
     this.level      = campBoosts.level ?? this.level ?? 1;
     this.movePP     = campBoosts.movePP||null;
+    this.persistentEffects = campBoosts.persistentEffects || null;
     this.statusEffects = {}; // burn, frozen, paralyzed, cursed, shielded, pumped
     this.moves.forEach(m=>{
       m.maxPP += this.ppBonus;
@@ -2018,6 +2030,12 @@ class Honker {
     });
     this.maxHP = Math.max(1, Math.round(((this.hp || 0) + this.maxHPBonus) * levelStatScale(this.level, 'hp')));
     this.currentHP = Math.max(0, Math.min(this.maxHP, campBoosts.currentHP ?? this.maxHP));
+    if (this.persistentEffects) {
+      STACKABLE_EFFECTS.forEach(k => {
+        const v = this.persistentEffects[k] || 0;
+        if (v > 0) this.statusEffects[k] = Math.max(1, Math.min(4, v));
+      });
+    }
     // Base stats  -  default to 80 (neutral) if not defined
     this.atk = Math.max(1, Math.round((this.atk || 80) * levelStatScale(this.level, 'atk')));
     this.def = Math.max(1, Math.round((this.def || 80) * levelStatScale(this.level, 'def')));
@@ -2028,20 +2046,20 @@ class Honker {
   get effectiveLuck() { return Math.min(95, (this.luck||50)+(this.luckBonus||0)); }
   get atkModifier() {
     let m = 1;
-    if (this.statusEffects.cursed)  m *= 0.65;
-    if (this.statusEffects.pumped)  m *= 1.45;
+    if (this.statusEffects.cursed)  m *= Math.max(0.25, 1 - (0.15 * this.statusEffects.cursed));
+    if (this.statusEffects.pumped)  m *= (1 + (0.12 * this.statusEffects.pumped));
     if (this.passive?.id === 'underdog' && this.hpPct < 0.5) m *= 1.3;
     return m;
   }
   get defModifier() {
     let m = 1;
-    if (this.statusEffects.shielded) m *= 0.6;
+    if (this.statusEffects.shielded) m *= Math.max(0.4, 1 - (0.12 * this.statusEffects.shielded));
     if (this.passive?.id === 'thick_skin') m *= 0.8;
     return m;
   }
   get accModifier() {
     let m = 1;
-    if (this.statusEffects.paralyzed) m *= 0.55;
+    if (this.statusEffects.paralyzed) m *= Math.max(0.3, 1 - (0.12 * this.statusEffects.paralyzed));
     return m;
   }
   aiPickMove(enemy) {
@@ -2376,10 +2394,26 @@ function extractMovePPMap(h) {
   (h.moves || []).forEach(m => { out[m.name] = m.pp; });
   return out;
 }
+function extractPersistentEffects(h) {
+  const out = {};
+  STACKABLE_EFFECTS.forEach(k => {
+    const v = h?.statusEffects?.[k] || 0;
+    if (v > 0) out[k] = Math.max(1, Math.min(4, v));
+  });
+  return out;
+}
+function clearPersistentEffects(h) {
+  if (!h) return;
+  h.persistentEffects = {};
+}
+function clearPartyPersistentEffects() {
+  (CAMPAIGN.party || []).forEach(h => clearPersistentEffects(h));
+}
 function syncBattleStateToBase(base, fighter) {
   if (!base || !fighter) return;
   base.currentHP = Math.max(0, Math.min(getHonkerMaxHP(base), fighter.currentHP || 0));
   base.movePP = extractMovePPMap(fighter);
+  base.persistentEffects = extractPersistentEffects(fighter);
 }
 function fullRestoreHonker(h) {
   if (!h) return;
@@ -2399,6 +2433,7 @@ function initHonkerRunState(h) {
   if (!h) return;
   h.currentHP = getHonkerMaxHP(h);
   h.movePP = {};
+  h.persistentEffects = {};
   (h.moves || []).forEach(m => { h.movePP[m.name] = m.maxPP; });
 }
 
@@ -2987,6 +3022,7 @@ function startStageBattle(stageIdx, isRetry=false) {
     chaosMod:   pb.chaosMod||1,   ppBonus: pb.ppBonus||0, level: pb.level||1,
     currentHP:  pb.currentHP ?? getHonkerMaxHP(pb),
     movePP:     pb.movePP || null,
+    persistentEffects: pb.persistentEffects || null,
   };
   if (isRetry && CAMPAIGN._savedPlayerHP) pBoosts.currentHP = CAMPAIGN._savedPlayerHP;
 
@@ -3002,6 +3038,7 @@ function startStageBattle(stageIdx, isRetry=false) {
   CAMPAIGN._savedPlayerHP   = bFighters[0].maxHP;
 
   bRound=0; bPhase='p1'; bAutoOn=false; bAutoTurn=0; bDead=false;
+  bSwapMode=false;
   typeOverride=false; eventState={}; lastEventRound=-5;
   bFaintedPartyIdx = new Set();
   stopAuto();
@@ -3017,6 +3054,8 @@ function startStageBattle(stageIdx, isRetry=false) {
   buildTypeLegend();
   setupFighterUI(bFighters[0], 'left');
   setupFighterUI(bFighters[1], 'right');
+  refreshStatusBadges(bFighters[0]);
+  refreshStatusBadges(bFighters[1]);
   document.getElementById('round-badge').textContent = 'ROUND 1';
   document.getElementById('arena-bg').className = stage.isBoss ? 'arena-bg event-active' : 'arena-bg';
   document.getElementById('log').innerHTML = '';
@@ -3026,8 +3065,7 @@ function startStageBattle(stageIdx, isRetry=false) {
     const el = document.getElementById(`spr-${s}`);
     resetSpriteClass(s); el.style = '';
   });
-  // Clear any lingering status effects
-  bFighters.forEach(f => { f.statusEffects = {}; });
+  // Fresh fighter objects already carry intended status state.
 
   // Apply player passive effects at battle start
   if (pb.passive?.id === 'cursed_aura') {
@@ -3477,7 +3515,8 @@ function refreshStatusBadges(f) {
     if (!val || val <= 0) return;
     const meta = STATUS_META[key];
     if (!meta) return;
-    addStatusBadge(f.side, `${meta.emoji} ${meta.label}${val>1?' -'+val:''}`, meta.color);
+    const suffix = STACKABLE_EFFECTS.includes(key) ? ` x${Math.max(1, Math.min(4, val))}` : (val>1 ? ` ·${val}` : '');
+    addStatusBadge(f.side, `${meta.emoji} ${meta.label}${suffix}`, meta.color);
   });
 }
 
@@ -3492,17 +3531,23 @@ function applyStatusEffect(target, effect, duration) {
     log('n', `🔥 <b>${target.name}</b>'s Heat Proof passive blocks burn!`);
     return;
   }
-  // Don't stack same effect  -  just refresh duration
-  target.statusEffects[effect] = duration;
+  if (STACKABLE_EFFECTS.includes(effect)) {
+    const cur = target.statusEffects[effect] || 0;
+    target.statusEffects[effect] = Math.max(1, Math.min(4, cur + 1));
+  } else {
+    // Classic timed effects (burn/frozen)
+    target.statusEffects[effect] = duration;
+  }
   refreshStatusBadges(target);
   const meta = STATUS_META[effect];
+  const stackTxt = STACKABLE_EFFECTS.includes(effect) ? ` (stack ${target.statusEffects[effect]}/4)` : '';
   const msgs = {
     burn:      `🔥 <b>${target.name}</b> is now <span style="color:#ff4e00">BURNING</span>! Takes damage each round.`,
     frozen:    `❄️ <b>${target.name}</b> is <span style="color:#00c8ff">FROZEN SOLID</span>! Will skip their next turn!`,
-    paralyzed: `⚡ <b>${target.name}</b> is <span style="color:#ffe600">PARALYZED</span>! Accuracy reduced.`,
-    cursed:    `🌑 <b>${target.name}</b> is <span style="color:#a020f0">CURSED</span>! Attack power reduced.`,
-    shielded:  `🛡️ <b>${target.name}</b> raises a <span style="color:#00ff88">SHIELD</span>! Incoming damage reduced.`,
-    pumped:    `💪 <b>${target.name}</b> is <span style="color:#ff9800">PUMPED UP</span>! Attack power increased.`,
+    paralyzed: `⚡ <b>${target.name}</b> is <span style="color:#ffe600">PARALYZED</span>! Accuracy reduced${stackTxt}.`,
+    cursed:    `🌑 <b>${target.name}</b> is <span style="color:#a020f0">CURSED</span>! Attack power reduced${stackTxt}.`,
+    shielded:  `🛡️ <b>${target.name}</b> raises a <span style="color:#00ff88">SHIELD</span>! Incoming damage reduced${stackTxt}.`,
+    pumped:    `💪 <b>${target.name}</b> is <span style="color:#ff9800">PUMPED UP</span>! Attack power increased${stackTxt}.`,
   };
   log('ev', msgs[effect] || `${meta.emoji} ${target.name} gains ${effect}!`);
 }
@@ -3533,17 +3578,7 @@ function tickStatusEffects(f) {
     }
     if (f.isDead()) return true; // signal death from burn
   }
-  // Tick other durations
-  ['paralyzed','cursed','shielded','pumped'].forEach(key => {
-    if (f.statusEffects[key] > 0) {
-      f.statusEffects[key]--;
-      if (f.statusEffects[key] <= 0) {
-        delete f.statusEffects[key];
-        const meta = STATUS_META[key];
-        log('n', `${meta.emoji} ${f.name}'s ${meta.label.toLowerCase()} effect ends.`);
-      }
-    }
-  });
+  // Stackable effects (paralyzed/cursed/shielded/pumped) persist until cleared.
   refreshStatusBadges(f);
   return false;
 }
@@ -3835,7 +3870,10 @@ function onCatchSuccess(enemy) {
   const coinGain = Math.round((CAMPAIGN._currentStage?.isBoss ? 60 : 24) + stageN * 2);
   CAMPAIGN.coins = (CAMPAIGN.coins || 0) + coinGain;
   const unlockedNow = grantCatchPartUnlocks(caught, enemy);
-  if (CAMPAIGN._currentStage?.isBoss) fullRestorePartyAfterBoss();
+  if (CAMPAIGN._currentStage?.isBoss) {
+    clearPartyPersistentEffects();
+    fullRestorePartyAfterBoss();
+  }
   CAMPAIGN.totalXP += xpGain;
 
   setTimeout(() => {
@@ -3937,7 +3975,10 @@ function onPlayerWin(player) {
   const coinGain = Math.round((stage?.isBoss ? 75 : 30) + stageN * 2);
   CAMPAIGN.coins = (CAMPAIGN.coins || 0) + coinGain;
   CAMPAIGN.totalXP += xpGain;
-  if (stage.isBoss) fullRestorePartyAfterBoss();
+  if (stage.isBoss) {
+    clearPartyPersistentEffects();
+    fullRestorePartyAfterBoss();
+  }
 
   addXP(xpGain, () => {
     saveCampaign();
@@ -3951,17 +3992,19 @@ function onPlayerWin(player) {
 }
 
 function onPlayerLose(player) {
+  bSwapMode = false;
   // Auto-release the fainted honker
   const faintedIdx = CAMPAIGN.activeIdx;
   const fainted = CAMPAIGN.party[faintedIdx];
   syncActiveFighterToCampaign();
+  if (fainted) clearPersistentEffects(fainted);
   log('x', `💀 <b>${fainted ? fainted.name : 'Your honker'}</b> has been released...`);
   releaseHonker(faintedIdx, false, true); // silent release, no confirm, store as fallen
 
   if (CAMPAIGN.party.length > 0) {
     // Switch to next available member
     const alive = CAMPAIGN.party.map((h, i) => ({ h, i }));
-    showSwitchOverlay(alive);
+    showSwitchOverlay(alive, 'faint');
   } else {
     // No more honkers
     CAMPAIGN.retries--;
@@ -4054,10 +4097,14 @@ function skipReplace() {
   showLootScreen(xpGain);
 }
 
-function showSwitchOverlay(aliveMembers) {
+function showSwitchOverlay(aliveMembers, reason='faint') {
+  const ttl = document.querySelector('#switch-overlay .sw-title');
   const sub = document.getElementById('sw-sub');
   const grid = document.getElementById('sw-grid');
-  sub.textContent = aliveMembers.length + ' honker' + (aliveMembers.length > 1 ? 's' : '') + ' remaining  -  choose your next fighter!';
+  if (ttl) ttl.textContent = reason === 'swap' ? '🔁 SWITCH HONKER' : '⚠ HONKER FAINTED!';
+  sub.textContent = reason === 'swap'
+    ? 'Choose a party member to switch in. Switching consumes your turn.'
+    : aliveMembers.length + ' honker' + (aliveMembers.length > 1 ? 's' : '') + ' remaining  -  choose your next fighter!';
   grid.innerHTML = '';
   aliveMembers.forEach(function({ h, i }) {
     const card = document.createElement('div');
@@ -4073,6 +4120,11 @@ function showSwitchOverlay(aliveMembers) {
 }
 
 function switchInPartyMember(partyIdx) {
+  const oldIdx = CAMPAIGN.activeIdx;
+  if (bSwapMode) {
+    syncActiveFighterToCampaign();
+    clearPersistentEffects(CAMPAIGN.party[oldIdx]);
+  }
   document.getElementById('switch-overlay').classList.remove('show');
   CAMPAIGN.activeIdx = partyIdx;
   CAMPAIGN.playerBase = CAMPAIGN.party[partyIdx];
@@ -4083,6 +4135,7 @@ function switchInPartyMember(partyIdx) {
     chaosMod: pb.chaosMod||1, ppBonus: pb.ppBonus||0, level: pb.level||1,
     currentHP: pb.currentHP ?? getHonkerMaxHP(pb),
     movePP: pb.movePP || null,
+    persistentEffects: pb.persistentEffects || null,
   };
   const newFighter = new Honker(JSON.parse(JSON.stringify(pb)), 'left', pBoosts);
   bFighters[0] = newFighter;
@@ -4100,6 +4153,37 @@ function switchInPartyMember(partyIdx) {
   else { ps.style.display = 'none'; }
   log('ev', '<b style="color:' + TC[pb.type] + '">' + pb.name + '</b> enters the arena!');
   renderMovePanel(); updateCatchButton();
+  if (bSwapMode) {
+    bSwapMode = false;
+    bPhase = 'p2';
+    renderMovePanel();
+    setTimeout(() => {
+      if (bDead) return;
+      const aiMove = bFighters[1].aiPickMove(bFighters[0]);
+      bPhase = 'busy';
+      doMove(bFighters[1], bFighters[0], aiMove, () => {
+        if (bDead) return;
+        tickEventState();
+        bPhase = 'p1';
+        renderMovePanel();
+        updateCatchButton();
+      });
+    }, 420);
+  }
+}
+
+function openBattleSwap() {
+  if (bDead || bPhase !== 'p1' || bAutoOn) return;
+  const currentIdx = CAMPAIGN.activeIdx;
+  const options = CAMPAIGN.party
+    .map((h, i) => ({ h, i }))
+    .filter(({ h, i }) => i !== currentIdx && ((h.currentHP ?? getHonkerMaxHP(h)) > 0));
+  if (!options.length) {
+    log('w', 'No other healthy party member is available to swap.');
+    return;
+  }
+  bSwapMode = true;
+  showSwitchOverlay(options, 'swap');
 }
 
 function showGameOverRetry() {
@@ -4597,6 +4681,7 @@ function serializeHonkerForSave(h) {
     chaosMod: h.chaosMod||1, ppBonus: h.ppBonus||0,
     currentHP: h.currentHP ?? getHonkerMaxHP(h),
     movePP: h.movePP || null,
+    persistentEffects: h.persistentEffects || {},
   };
 }
 function hydrateSavedHonker(saved) {
@@ -4623,6 +4708,7 @@ function hydrateSavedHonker(saved) {
   h.assembledParts = saved.assembledParts || null;
   h.currentHP  = saved.currentHP ?? getHonkerMaxHP(h);
   h.movePP     = saved.movePP || null;
+  h.persistentEffects = saved.persistentEffects || {};
   if (saved.passive) h.passive = saved.passive;
   return h;
 }
