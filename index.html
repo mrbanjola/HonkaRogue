@@ -1728,6 +1728,16 @@ function unlockedPartsByFamilyType(type) {
   const set = new Set(fams);
   return (PARTS_DATA?.parts || []).filter(p => set.has(p.family?.name));
 }
+function resetStarterUnlockedParts() {
+  // Reset parts to starter unlock state (parts available at game start)
+  resetStarterCaughtParts();
+}
+function unlockAllParts() {
+  // Unlock all parts for assembly UI (for visual browsing)
+  ensurePartTrackingState();
+  CAMPAIGN.caughtParts = getAllPartIds();
+  CAMPAIGN.partsSeen = getAllPartIds();
+}
 function grantCatchPartUnlocks(caught, enemyRef) {
   const catchIds = [];
   const seeIds = [];
