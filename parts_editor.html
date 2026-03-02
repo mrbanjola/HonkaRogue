@@ -1,0 +1,1151 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HonkaRogue Parts Editor</title>
+  <style>
+    :root {
+      --bg: #0b0f1a;
+      --panel: #151b2a;
+      --panel2: #101623;
+      --text: #e6ebff;
+      --muted: #8f9ab8;
+      --accent: #35d0ff;
+      --ok: #00d084;
+      --warn: #ffb020;
+      --border: #2a3550;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Segoe UI, Arial, sans-serif; color: var(--text); background: var(--bg); }
+    .wrap { display: grid; grid-template-columns: 360px 1fr; min-height: 100vh; }
+    .left, .right { padding: 14px; }
+    .left { border-right: 1px solid var(--border); background: var(--panel2); }
+    .card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 12px; }
+    h1 { font-size: 20px; margin: 0 0 8px; }
+    h2 { font-size: 14px; margin: 0 0 10px; color: var(--muted); font-weight: 600; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+    .row3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px; }
+    .row5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 8px; }
+    .stack { display: grid; gap: 8px; }
+    label { font-size: 12px; color: var(--muted); }
+    input, select, textarea, button {
+      width: 100%; border-radius: 8px; border: 1px solid var(--border); background: #0d1422; color: var(--text);
+      padding: 8px; font-size: 13px;
+    }
+    textarea { min-height: 110px; resize: vertical; }
+    button { cursor: pointer; }
+    .btn-primary { background: #15324f; border-color: #21507f; color: #d7eeff; }
+    .btn-ok { background: #123a2b; border-color: #1f7a54; color: #c5ffe6; }
+    .btn-warn { background: #443116; border-color: #8a632a; color: #ffe6b4; }
+    .btn-danger { background: #4a1d1d; border-color: #853434; color: #ffd9d9; }
+    .toolbar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .toolbar3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .status { font-size: 12px; color: var(--muted); min-height: 16px; }
+    .status.ok { color: var(--ok); }
+    .status.warn { color: var(--warn); }
+    .list { max-height: calc(100vh - 250px); overflow: auto; border: 1px solid var(--border); border-radius: 8px; }
+    .list-sm { max-height: 220px; overflow: auto; border: 1px solid var(--border); border-radius: 8px; }
+    .part-item {
+      display: grid; grid-template-columns: 42px 1fr; gap: 8px; align-items: center;
+      border-bottom: 1px solid #1c2538; padding: 8px; cursor: pointer;
+    }
+    .part-item:last-child { border-bottom: 0; }
+    .part-item.active { background: #12233a; }
+    .thumb { width: 42px; height: 42px; border: 1px solid var(--border); border-radius: 6px; object-fit: contain; background: #0a111d; }
+    .meta-a { font-weight: 600; font-size: 12px; }
+    .meta-b { font-size: 11px; color: var(--muted); }
+    .preview { width: 120px; height: 120px; border: 1px solid var(--border); border-radius: 8px; object-fit: contain; background: #0a111d; }
+    .headbar { display: grid; grid-template-columns: 120px 1fr; gap: 12px; align-items: center; }
+    .ps-chart { max-height: 320px; overflow: auto; border: 1px solid var(--border); border-radius: 8px; padding: 8px; background: #0c1320; }
+    .ps-row { display: grid; grid-template-columns: 160px 1fr 56px; gap: 8px; align-items: center; margin-bottom: 6px; }
+    .ps-id { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ps-track { height: 14px; border-radius: 8px; background: #1a2336; border: 1px solid #2b3958; overflow: hidden; }
+    .ps-fill { height: 100%; border-radius: 8px; }
+    .ps-val { font-size: 11px; text-align: right; color: #cdd8f7; }
+    .r-common { background: linear-gradient(90deg, #8e96aa, #b1b8c8); }
+    .r-rare { background: linear-gradient(90deg, #2e9fff, #67e6ff); }
+    .r-legendary { background: linear-gradient(90deg, #ffb72b, #ffe46c); }
+    .move-picker {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      max-height: 260px;
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px;
+      background: #0c1320;
+    }
+    .move-card {
+      border: 1px solid #2b3958;
+      border-radius: 8px;
+      padding: 8px;
+      background: #121b2d;
+      cursor: pointer;
+      user-select: none;
+    }
+    .move-card:hover { border-color: #4b6ea1; }
+    .move-card.selected {
+      border-color: #ffd84a;
+      box-shadow: 0 0 0 1px rgba(255, 216, 74, 0.35) inset;
+      background: #1a2338;
+    }
+    .move-card.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .move-card .m-name { font-size: 12px; font-weight: 600; color: var(--text); }
+    .move-card .m-id { font-size: 11px; color: var(--muted); }
+    .move-card .m-meta { font-size: 11px; color: #cdd8f7; margin-top: 4px; }
+    .move-empty {
+      border: 1px dashed #2b3958;
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 10px;
+      text-align: center;
+    }
+    @media (max-width: 1120px) {
+      .wrap { grid-template-columns: 1fr; }
+      .left { border-right: 0; border-bottom: 1px solid var(--border); }
+      .list { max-height: 280px; }
+      .ps-row { grid-template-columns: 120px 1fr 48px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <aside class="left">
+      <h1>Parts Editor</h1>
+      <h2>Edit all part identifiers/properties and save to <code>data/parts_data.json</code></h2>
+      <div class="card">
+        <div class="stack">
+          <div>
+            <label>Search (id / slot / family / tags)</label>
+            <input id="search" placeholder="search parts">
+          </div>
+          <div class="row">
+            <div>
+              <label>Slot</label>
+              <select id="slotFilter">
+                <option value="">All</option>
+                <option>head</option>
+                <option>torso</option>
+                <option>wings</option>
+                <option>legs</option>
+              </select>
+            </div>
+            <div>
+              <label>Rarity</label>
+              <select id="rarityFilter">
+                <option value="">All</option>
+                <option>common</option>
+                <option>rare</option>
+                <option>legendary</option>
+              </select>
+            </div>
+          </div>
+          <div class="toolbar3">
+            <button id="addBtn" class="btn-primary">Add</button>
+            <button id="dupBtn" class="btn-primary">Duplicate</button>
+            <button id="delBtn" class="btn-danger">Delete</button>
+          </div>
+          <div id="countLbl" class="status"></div>
+        </div>
+      </div>
+      <div id="partsList" class="list"></div>
+      <div class="card" style="margin-top:12px">
+        <div class="toolbar" style="margin-bottom:8px">
+          <button id="refreshUnassignedBtn">Refresh Unassigned</button>
+          <div id="unassignedCount" class="status"></div>
+        </div>
+        <div id="unassignedList" class="list-sm"></div>
+      </div>
+    </aside>
+
+    <main class="right">
+      <div class="card">
+        <div class="row">
+          <div>
+            <label>Data Version</label>
+            <input id="metaVersion">
+          </div>
+          <div>
+            <label>Source</label>
+            <input id="metaSource">
+          </div>
+        </div>
+        <div class="toolbar3">
+          <button id="reloadBtn">Reload</button>
+          <button id="downloadBtn">Download JSON</button>
+          <button id="saveAllBtn" class="btn-ok">Save parts_data.json</button>
+        </div>
+        <div id="dirtyState" class="status"></div>
+        <div id="status" class="status"></div>
+      </div>
+
+      <div class="card">
+        <div class="headbar">
+          <img id="preview" class="preview" alt="preview">
+          <div>
+            <h1 id="selTitle" style="margin:0 0 6px">No part selected</h1>
+            <h2 id="selSub">Select or create a part from the list.</h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h1 style="font-size:16px">PowerScore Chart (filtered)</h1>
+        <div id="psChart" class="ps-chart"></div>
+      </div>
+
+      <div class="card">
+        <h1 style="font-size:16px">Structured Fields</h1>
+        <div class="row">
+          <div>
+            <label>Family (registry)</label>
+            <select id="f_family_preset"></select>
+          </div>
+          <div>
+            <label>id</label><input id="f_id">
+          </div>
+        </div>
+        <div class="row3">
+          <div><label>slot</label><select id="f_slot"><option>head</option><option>torso</option><option>wings</option><option>legs</option></select></div>
+          <div><label>file</label><input id="f_file"></div>
+          <div><label>variant</label><input id="f_variant" type="number"></div>
+        </div>
+        <div class="row">
+          <div><label>rarity</label><select id="f_rarity"><option>common</option><option>rare</option><option>legendary</option></select></div>
+          <div><label>archetype</label><select id="f_archetype"><option>balanced</option><option>bulwark</option><option>raider</option><option>trickster</option></select></div>
+        </div>
+        <div class="row">
+          <div><label>family.id</label><input id="f_family_id" type="number"></div>
+          <div><label>family.name</label><input id="f_family_name"></div>
+        </div>
+        <div class="row">
+          <div><label>family.theme</label><input id="f_family_theme"></div>
+          <div><label>family.type</label><select id="f_family_type"><option>Normal</option><option>Fire</option><option>Ice</option><option>Lightning</option><option>Shadow</option></select></div>
+        </div>
+        <div class="row5">
+          <div><label>stats.hp</label><input id="f_hp" type="number"></div>
+          <div><label>stats.atk</label><input id="f_atk" type="number"></div>
+          <div><label>stats.def</label><input id="f_def" type="number"></div>
+          <div><label>stats.spd</label><input id="f_spd" type="number"></div>
+          <div><label>stats.luck</label><input id="f_luck" type="number"></div>
+        </div>
+        <div class="toolbar3" style="margin-bottom:8px">
+          <button id="baseSelBtn" class="btn-primary">Rarity Base -> Selected</button>
+          <button id="baseAllBtn" class="btn-primary">Rarity Base -> All</button>
+          <button id="recalcPowerBtn">Recalc PowerScore</button>
+        </div>
+        <div class="row">
+          <div><label>powerScore</label><input id="f_powerScore" type="number" step="0.01"></div>
+          <div><label>tags (comma-separated)</label><input id="f_tags"></div>
+        </div>
+        <div>
+          <label>description</label>
+          <textarea id="f_description"></textarea>
+        </div>
+        <div style="margin-top:8px">
+          <label>part.moveIds override (leave empty to inherit family base moves)</label>
+          <div id="part-moves-picker" class="move-picker"></div>
+          <div class="toolbar" style="margin-top:8px">
+            <button id="partMovesFromFamilyBtn">Use Family Moves</button>
+            <button id="partMovesClearBtn">Clear Override (Inherit)</button>
+          </div>
+          <div id="partMovesSummary" class="status"></div>
+        </div>
+        <div style="margin-top:8px">
+          <label>Extra properties JSON (for any additional fields like moveIds)</label>
+          <textarea id="f_extraJson"></textarea>
+        </div>
+        <div class="toolbar" style="margin-top:8px">
+          <button id="applyFormBtn" class="btn-primary">Apply Form to Part</button>
+          <button id="revertBtn">Revert Form</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h1 style="font-size:16px">Families</h1>
+        <div class="row">
+          <div>
+            <label>Select Family</label>
+            <select id="fml-select"></select>
+          </div>
+          <div class="toolbar3" style="align-self:end">
+            <button id="fml-new" class="btn-primary">New</button>
+            <button id="fml-apply" class="btn-primary">Apply</button>
+            <button id="fml-delete" class="btn-danger">Delete</button>
+          </div>
+        </div>
+        <div class="row">
+          <div><label>id</label><input id="fml-id" type="number"></div>
+          <div><label>name</label><input id="fml-name"></div>
+        </div>
+        <div class="row">
+          <div><label>theme</label><input id="fml-theme"></div>
+          <div><label>type</label><select id="fml-type"><option>Normal</option><option>Fire</option><option>Ice</option><option>Lightning</option><option>Shadow</option></select></div>
+        </div>
+        <div class="row">
+          <div><label>description</label><textarea id="fml-description" style="min-height:72px"></textarea></div>
+          <div>
+            <label>baseMoveIds</label>
+            <div id="fml-moves-picker" class="move-picker"></div>
+            <div style="margin-top:8px"><button id="fml-moves-by-type">Load Moves By Family Type</button></div>
+            <div id="fmlMovesSummary" class="status"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h1 style="font-size:16px">Raw Selected Part JSON</h1>
+        <textarea id="rawJson" style="min-height:240px"></textarea>
+        <div class="toolbar" style="margin-top:8px">
+          <button id="applyRawBtn" class="btn-primary">Apply Raw JSON to Part</button>
+          <button id="refreshRawBtn">Refresh Raw from Part</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const state = {
+      data: null, filteredIdx: [], selectedIdx: -1, dirty: false,
+      familyPresets: [], unassignedImages: [], selectedFamilyId: null,
+      movePool: [], selectedFamilyMoveIds: [], selectedPartMoveIds: []
+    };
+    const KNOWN = new Set(['id','slot','file','family','variant','rarity','archetype','stats','powerScore','tags','description']);
+    const RARITY_BASE = { common: 20, rare: 30, legendary: 40 };
+    const FAMILY_NAME_TYPE_HINT = {
+      Marshborn:'Normal', Embercrest:'Fire', Frostplume:'Ice', Stormcall:'Lightning',
+      Ironbarb:'Normal', Duskveil:'Shadow', Sunflare:'Fire', Bloomcrest:'Normal', Voidgild:'Shadow',
+    };
+    const FAMILY_THEME_TYPE_HINT = {
+      fire:'Fire', solar:'Fire', ice:'Ice', lightning:'Lightning',
+      shadow:'Shadow', arcane:'Shadow', bog:'Normal', stone:'Normal', wild:'Normal', normal:'Normal',
+    };
+
+    function el(id) { return document.getElementById(id); }
+    function asInt(v, fallback = 0) { const n = Number(v); return Number.isFinite(n) ? Math.round(n) : fallback; }
+    function asNum(v, fallback = 0) { const n = Number(v); return Number.isFinite(n) ? n : fallback; }
+    function clone(v) { return JSON.parse(JSON.stringify(v)); }
+    function inferFamilyType(typeRaw, nameRaw, themeRaw) {
+      const explicit = String(typeRaw || '').trim();
+      if (explicit) return explicit;
+      const byName = FAMILY_NAME_TYPE_HINT[String(nameRaw || '').trim()];
+      if (byName) return byName;
+      const byTheme = FAMILY_THEME_TYPE_HINT[String(themeRaw || '').trim().toLowerCase()];
+      if (byTheme) return byTheme;
+      return 'Normal';
+    }
+    function normalizeMoveId(raw) { return String(raw ?? '').trim(); }
+    function getMoveId(m) { return normalizeMoveId(m?.id ?? m?.moveId ?? m?.key); }
+    function getMoveName(m, moveId) { return String(m?.name || moveId || '(unnamed move)'); }
+    function getMoveType(m) {
+      if (Array.isArray(m?.types) && m.types.length) return String(m.types[0] || 'Normal');
+      return String(m?.type || 'Normal');
+    }
+    function getMovePower(m) { return Number(m?.basePower ?? m?.power ?? 0) || 0; }
+    function getMovePP(m) { return Number(m?.pp ?? m?.maxPP ?? 0) || 0; }
+    function getMovePoolCards() {
+      const out = [];
+      for (let i = 0; i < (state.movePool || []).length; i += 1) {
+        const m = state.movePool[i] || {};
+        const moveId = getMoveId(m);
+        out.push({ ...m, _moveId: moveId, _idx: i });
+      }
+      return out;
+    }
+    function setSummary(elId, selectedIds) {
+      const s = el(elId);
+      if (!s) return;
+      s.textContent = `Selected ${selectedIds.length} move${selectedIds.length === 1 ? '' : 's'}`;
+    }
+    function renderMovePicker(containerId, selectedIds, onToggle) {
+      const host = el(containerId);
+      if (!host) return;
+      const cards = getMovePoolCards();
+      if (!cards.length) {
+        host.innerHTML = '<div class="move-empty">No moves loaded.</div>';
+        return;
+      }
+      const selected = new Set((selectedIds || []).map(normalizeMoveId).filter(Boolean));
+      host.innerHTML = cards.map((m) => {
+        const moveId = m._moveId;
+        const disabled = !moveId;
+        const isSel = moveId && selected.has(moveId);
+        const name = getMoveName(m, moveId);
+        const type = getMoveType(m);
+        const pwr = getMovePower(m);
+        const pp = getMovePP(m);
+        return `<div class="move-card ${isSel ? 'selected' : ''} ${disabled ? 'disabled' : ''}" data-mid="${moveId}" data-idx="${m._idx}">
+          <div class="m-name">${name}</div>
+          <div class="m-id">${moveId || '(missing id)'}</div>
+          <div class="m-meta">${type} · PWR ${pwr} · PP ${pp}</div>
+        </div>`;
+      }).join('');
+      host.querySelectorAll('.move-card').forEach(card => {
+        card.onclick = () => {
+          const moveId = normalizeMoveId(card.getAttribute('data-mid'));
+          if (!moveId) return;
+          onToggle(moveId);
+        };
+      });
+    }
+    function toggleSelectedMove(listKey, moveId) {
+      const id = normalizeMoveId(moveId);
+      if (!id) return;
+      const arr = Array.isArray(state[listKey]) ? [...state[listKey]] : [];
+      const i = arr.indexOf(id);
+      if (i >= 0) arr.splice(i, 1);
+      else arr.push(id);
+      state[listKey] = [...new Set(arr)];
+    }
+    function renderFamilyMovePicker() {
+      renderMovePicker('fml-moves-picker', state.selectedFamilyMoveIds, (moveId) => {
+        toggleSelectedMove('selectedFamilyMoveIds', moveId);
+        renderFamilyMovePicker();
+      });
+      setSummary('fmlMovesSummary', state.selectedFamilyMoveIds || []);
+    }
+    function renderPartMovePicker() {
+      renderMovePicker('part-moves-picker', state.selectedPartMoveIds, (moveId) => {
+        toggleSelectedMove('selectedPartMoveIds', moveId);
+        renderPartMovePicker();
+      });
+      setSummary('partMovesSummary', state.selectedPartMoveIds || []);
+    }
+    function setStatus(msg, cls = '') { const s = el('status'); s.className = `status ${cls}`.trim(); s.textContent = msg; }
+    function updateDirtyUi() {
+      const d = el('dirtyState');
+      if (!d) return;
+      if (state.dirty) {
+        d.className = 'status warn';
+        d.textContent = 'Unsaved changes';
+      } else {
+        d.className = 'status ok';
+        d.textContent = 'All changes saved';
+      }
+    }
+    function recalcPowerScore(part) {
+      const s = part?.stats || {};
+      const hp = Number(s.hp) || 0;
+      const atk = Number(s.atk) || 0;
+      const def = Number(s.def) || 0;
+      const spd = Number(s.spd) || 0;
+      const luck = Number(s.luck) || 0;
+      part.powerScore = hp + atk + def + spd + luck;
+    }
+    function applyRarityBaseToPart(part) {
+      if (!part) return;
+      const base = RARITY_BASE[part.rarity] || RARITY_BASE.common;
+      if (!part.stats || typeof part.stats !== 'object') part.stats = {};
+      part.stats.hp = base;
+      part.stats.atk = base;
+      part.stats.def = base;
+      part.stats.spd = base;
+      if (!Number.isFinite(Number(part.stats.luck))) part.stats.luck = 1;
+      recalcPowerScore(part);
+    }    function ensureFamiliesArray() {
+      if (!state.data) return;
+      if (!Array.isArray(state.data.families)) state.data.families = [];
+      const byId = new Map();
+      for (const f of state.data.families) {
+        if (!f || !f.name) continue;
+        const id = Number(f.id) || 0;
+        if (!id) continue;
+        byId.set(id, {
+          id,
+          name: String(f.name),
+          theme: String(f.theme || ''),
+          type: inferFamilyType(f.type, f.name, f.theme),
+          description: String(f.description || ''),
+          baseMoveIds: Array.isArray(f.baseMoveIds) ? [...new Set(f.baseMoveIds.filter(Boolean))] : [],
+        });
+      }
+      for (const p of (state.data.parts || [])) {
+        const pid = Number(p.familyId || p.family?.id) || 0;
+        const pname = String(p.family?.name || '').trim();
+        const ptheme = String(p.family?.theme || '').trim();
+        const ptype = String(p.family?.type || '').trim();
+        let fam = pid ? byId.get(pid) : null;
+        if (!fam && pname) fam = [...byId.values()].find(x => x.name.toLowerCase() === pname.toLowerCase()) || null;
+        if (!fam) {
+          const nextId = pid || (Math.max(0, ...byId.keys()) + 1);
+          const nextName = pname || `Family${nextId}`;
+          const nextTheme = ptheme || 'normal';
+          fam = { id: nextId, name: nextName, theme: nextTheme, type: inferFamilyType(ptype, nextName, nextTheme), description: '', baseMoveIds: [] };
+          byId.set(nextId, fam);
+        }
+        fam.type = inferFamilyType(fam.type || ptype, fam.name, fam.theme);
+        p.familyId = fam.id;
+        p.family = { id: fam.id, name: fam.name, theme: fam.theme, type: fam.type };
+      }
+      state.data.families = [...byId.values()].sort((a, b) => a.id - b.id || a.name.localeCompare(b.name));
+    }
+    function getFamilyById(id) {
+      const famId = Number(id) || 0;
+      if (!famId) return null;
+      return (state.data?.families || []).find(f => Number(f.id) === famId) || null;
+    }
+    function buildFamilyPresets() {
+      ensureFamiliesArray();
+      state.familyPresets = [...(state.data?.families || [])].sort((a, b) => a.name.localeCompare(b.name) || a.id - b.id);
+      const sel = el('f_family_preset');
+      sel.innerHTML = '<option value="">Custom...</option>' + state.familyPresets
+        .map(f => `<option value="${f.id}">${f.name} (#${f.id}) - ${f.theme || 'n/a'}</option>`)
+        .join('');
+      const fsel = el('fml-select');
+      if (fsel) fsel.innerHTML = state.familyPresets.map(f => `<option value="${f.id}">${f.name} (#${f.id})</option>`).join('');
+      if (state.selectedFamilyId == null && state.familyPresets.length) state.selectedFamilyId = state.familyPresets[0].id;
+      renderFamilyEditor();
+    }
+    function renderFamilyEditor() {
+      const f = getFamilyById(state.selectedFamilyId) || state.familyPresets[0] || null;
+      const sel = el('fml-select');
+      if (sel) sel.value = f ? String(f.id) : '';
+      el('fml-id').value = f?.id ?? '';
+      el('fml-name').value = f?.name || '';
+      el('fml-theme').value = f?.theme || '';
+      el('fml-type').value = inferFamilyType(f?.type, f?.name, f?.theme);
+      el('fml-description').value = f?.description || '';
+      state.selectedFamilyMoveIds = [...new Set((f?.baseMoveIds || []).map(normalizeMoveId).filter(Boolean))];
+      renderFamilyMovePicker();
+    }
+
+    async function loadMovePool() {
+      try {
+        const r = await fetch('/api/move-pool', { cache: 'no-store' });
+        if (!r.ok) throw new Error(`(${r.status})`);
+        const d = await r.json();
+        state.movePool = Array.isArray(d.items) ? d.items : [];
+      } catch (_) {
+        state.movePool = [];
+      }
+      state.movePool = (state.movePool || []).map((m, i) => {
+        const mid = getMoveId(m);
+        return { ...m, id: mid || m.id || m.moveId || `move_${i + 1}` };
+      });
+      renderFamilyEditor();
+      renderPartMovePicker();
+    }
+
+    async function loadAll() {
+      setStatus('Loading...');
+      const r = await fetch('/api/parts-data', { cache: 'no-store' });
+      if (!r.ok) throw new Error(`Failed to load parts data (${r.status})`);
+      const d = await r.json();
+      if (!d || !Array.isArray(d.parts)) throw new Error('Invalid parts_data.json payload');
+      state.data = d;
+      state.selectedIdx = d.parts.length ? 0 : -1;
+      state.dirty = false;
+      bindMeta();
+      buildFamilyPresets();
+      renderList();
+      renderSelected();
+      await loadMovePool();
+      await loadUnassignedImages();
+      setStatus(`Loaded ${d.parts.length} parts.`, 'ok');
+      updateDirtyUi();
+    }
+
+    async function loadUnassignedImages() {
+      const lbl = el('unassignedCount');
+      try {
+        const r = await fetch('/api/unassigned-part-images', { cache: 'no-store' });
+        if (!r.ok) throw new Error(`(${r.status})`);
+        const d = await r.json();
+        state.unassignedImages = Array.isArray(d.items) ? d.items : [];
+        renderUnassignedList();
+        lbl.textContent = `Unassigned: ${state.unassignedImages.length}`;
+        lbl.className = 'status';
+      } catch (e) {
+        state.unassignedImages = [];
+        renderUnassignedList();
+        lbl.textContent = `Unassigned unavailable ${e.message || ''}`.trim();
+        lbl.className = 'status warn';
+      }
+    }
+
+    function bindMeta() {
+      el('metaVersion').value = state.data.version || '';
+      el('metaSource').value = state.data.source || '';
+    }
+
+    function applyFilters() {
+      const q = (el('search').value || '').trim().toLowerCase();
+      const slot = el('slotFilter').value;
+      const rarity = el('rarityFilter').value;
+      state.filteredIdx = [];
+      state.data.parts.forEach((p, idx) => {
+        if (slot && p.slot !== slot) return;
+        if (rarity && p.rarity !== rarity) return;
+        if (q) {
+          const hay = [
+            p.id, p.slot, p.file, p.rarity, p.archetype, p.family && p.family.name,
+            p.family && p.family.theme, (p.tags || []).join(' ')
+          ].join(' ').toLowerCase();
+          if (!hay.includes(q)) return;
+        }
+        state.filteredIdx.push(idx);
+      });
+    }
+
+    function renderList() {
+      applyFilters();
+      const list = el('partsList');
+      list.innerHTML = '';
+      state.filteredIdx.forEach(idx => {
+        const p = state.data.parts[idx];
+        const item = document.createElement('div');
+        item.className = `part-item ${idx === state.selectedIdx ? 'active' : ''}`;
+        item.onclick = () => { state.selectedIdx = idx; renderList(); renderSelected(); };
+        item.innerHTML = `
+          <img class="thumb" src="${p.file || ''}" alt="">
+          <div>
+            <div class="meta-a">${p.id || '(no id)'}</div>
+            <div class="meta-b">${p.slot || '?'} | ${p.rarity || '?'} | ${p.family?.name || 'Unknown'}</div>
+          </div>
+        `;
+        list.appendChild(item);
+      });
+      el('countLbl').textContent = `Showing ${state.filteredIdx.length}/${state.data.parts.length}`;
+      renderPowerChart();
+      updateDirtyUi();
+    }
+
+    function renderPowerChart() {
+      const chart = el('psChart');
+      if (!chart) return;
+      chart.innerHTML = '';
+      const parts = state.filteredIdx.map(i => state.data.parts[i]).filter(Boolean);
+      if (!parts.length) {
+        chart.innerHTML = '<div class="status">No parts in current filter.</div>';
+        return;
+      }
+      const ranked = [...parts].sort((a, b) => (b.powerScore || 0) - (a.powerScore || 0));
+      const maxScore = Math.max(1, ...ranked.map(p => Number(p.powerScore) || 0));
+      for (const p of ranked) {
+        const score = Number(p.powerScore) || 0;
+        const pct = Math.max(0, Math.min(100, (score / maxScore) * 100));
+        const rarityClass = p.rarity === 'legendary' ? 'r-legendary' : (p.rarity === 'rare' ? 'r-rare' : 'r-common');
+        const row = document.createElement('div');
+        row.className = 'ps-row';
+        row.innerHTML = `
+          <div class="ps-id" title="${p.id}">${p.id}</div>
+          <div class="ps-track"><div class="ps-fill ${rarityClass}" style="width:${pct}%"></div></div>
+          <div class="ps-val">${Math.round(score)}</div>
+        `;
+        chart.appendChild(row);
+      }
+    }
+
+    function renderUnassignedList() {
+      const root = el('unassignedList');
+      if (!root) return;
+      root.innerHTML = '';
+      if (!state.unassignedImages.length) {
+        root.innerHTML = '<div class="status" style="padding:8px">No unassigned images found.</div>';
+        return;
+      }
+      for (const img of state.unassignedImages) {
+        const row = document.createElement('div');
+        row.className = 'part-item';
+        row.innerHTML = `
+          <img class="thumb" src="${img.file}" alt="">
+          <div>
+            <div class="meta-a">${img.name}</div>
+            <div class="meta-b">${img.slot} | ${img.file}</div>
+            <div style="margin-top:6px"><button data-file="${img.file}" class="btn-primary assign-btn">Assign</button></div>
+          </div>
+        `;
+        root.appendChild(row);
+      }
+      root.querySelectorAll('.assign-btn').forEach(btn => {
+        btn.addEventListener('click', () => assignUnassignedFile(btn.getAttribute('data-file')));
+      });
+    }
+
+    function makeUniquePartId(baseId) {
+      const existing = new Set((state.data?.parts || []).map(p => String(p.id || '').toLowerCase()));
+      let out = baseId;
+      let n = 2;
+      while (existing.has(out.toLowerCase())) {
+        out = `${baseId}-${n}`;
+        n += 1;
+      }
+      return out;
+    }
+
+    function nextVariantForSlot(slot) {
+      const nums = (state.data?.parts || [])
+        .filter(p => p.slot === slot)
+        .map(p => Number(p.variant) || 0);
+      return Math.max(0, ...nums) + 1;
+    }
+
+    function assignUnassignedFile(file) {
+      if (!state.data) return;
+      ensureFamiliesArray();
+      const normalized = String(file || '').replace(/\\/g, '/');
+      const first = normalized.split('/')[0].toLowerCase();
+      const slot = first.startsWith('heads') ? 'head'
+        : first.startsWith('torsos') ? 'torso'
+        : first.startsWith('wings') ? 'wings'
+        : first.startsWith('legs') ? 'legs'
+        : 'head';
+      const stem = normalized.split('/').pop().replace(/\.[^.]+$/, '');
+      const id = makeUniquePartId(`${slot}-${stem}`.toLowerCase());
+      let unassignedFam = (state.data.families || []).find(f => String(f.name || '').toLowerCase() === 'unassigned');
+      if (!unassignedFam) {
+        const nextFamId = Math.max(0, ...((state.data.families || []).map(f => Number(f.id) || 0))) + 1;
+        unassignedFam = { id: nextFamId, name: 'Unassigned', theme: 'normal', type: 'Normal', description: '', baseMoveIds: [] };
+        state.data.families.push(unassignedFam);
+      }
+      const part = {
+        id,
+        slot,
+        file: normalized,
+        familyId: unassignedFam.id,
+        family: { id: unassignedFam.id, name: unassignedFam.name, theme: unassignedFam.theme, type: inferFamilyType(unassignedFam.type, unassignedFam.name, unassignedFam.theme) },
+        variant: nextVariantForSlot(slot),
+        rarity: 'common',
+        archetype: 'balanced',
+        stats: { hp: 20, atk: 20, def: 20, spd: 20, luck: 1 },
+        powerScore: 81,
+        tags: [slot, stem.toLowerCase()],
+        description: 'Newly assigned from unreferenced image.',
+      };
+      recalcPowerScore(part);
+      state.data.parts.push(part);
+      state.selectedIdx = state.data.parts.length - 1;
+      state.dirty = true;
+      buildFamilyPresets();
+      renderList();
+      renderSelected();
+      state.unassignedImages = state.unassignedImages.filter(x => x.file !== normalized);
+      renderUnassignedList();
+      const lbl = el('unassignedCount');
+      if (lbl) lbl.textContent = `Unassigned: ${state.unassignedImages.length}`;
+      setStatus(`Assigned ${normalized} as ${id}. Save to persist.`, 'warn');
+    }
+
+    function getSelectedPart() {
+      if (state.selectedIdx < 0) return null;
+      return state.data.parts[state.selectedIdx] || null;
+    }
+
+    function fillFormFromPart(p) {
+      el('f_id').value = p.id || '';
+      el('f_slot').value = p.slot || 'head';
+      el('f_file').value = p.file || '';
+      el('f_variant').value = p.variant ?? 1;
+      el('f_rarity').value = p.rarity || 'common';
+      el('f_archetype').value = p.archetype || 'balanced';
+      el('f_family_id').value = p.family?.id ?? 0;
+      el('f_family_name').value = p.family?.name || '';
+      el('f_family_theme').value = p.family?.theme || '';
+      el('f_family_type').value = inferFamilyType(p.family?.type, p.family?.name, p.family?.theme);
+      const famId = Number(p.familyId || p.family?.id) || 0;
+      el('f_family_preset').value = famId ? String(famId) : '';
+      el('f_hp').value = p.stats?.hp ?? 0;
+      el('f_atk').value = p.stats?.atk ?? 0;
+      el('f_def').value = p.stats?.def ?? 0;
+      el('f_spd').value = p.stats?.spd ?? 0;
+      el('f_luck').value = p.stats?.luck ?? 0;
+      el('f_powerScore').value = p.powerScore ?? 0;
+      el('f_tags').value = Array.isArray(p.tags) ? p.tags.join(', ') : '';
+      el('f_description').value = p.description || '';
+      const extra = {};
+      Object.keys(p).forEach(k => { if (!KNOWN.has(k)) extra[k] = p[k]; });
+      el('f_extraJson').value = JSON.stringify(extra, null, 2);
+      state.selectedPartMoveIds = Array.isArray(p.moveIds) ? [...new Set(p.moveIds.map(normalizeMoveId).filter(Boolean))] : [];
+      renderPartMovePicker();
+    }
+
+    function updateRawFromPart(p) {
+      el('rawJson').value = JSON.stringify(p, null, 2);
+    }
+
+    function renderSelected() {
+      const p = getSelectedPart();
+      if (!p) {
+        el('selTitle').textContent = 'No part selected';
+        el('selSub').textContent = 'Select or create a part from the list.';
+        el('preview').src = '';
+        return;
+      }
+      el('selTitle').textContent = p.id || '(no id)';
+      el('selSub').textContent = `${p.slot || '?'} | ${p.rarity || '?'} | ${p.family?.name || 'Unknown'}`;
+      el('preview').src = p.file || '';
+      fillFormFromPart(p);
+      updateRawFromPart(p);
+    }
+
+    function applyFormToSelected() {
+      const p = getSelectedPart();
+      if (!p) return;
+      let extra = {};
+      try {
+        extra = el('f_extraJson').value.trim() ? JSON.parse(el('f_extraJson').value) : {};
+      } catch (err) {
+        setStatus(`Extra JSON invalid: ${err.message}`, 'warn');
+        return;
+      }
+      if (!extra || Array.isArray(extra) || typeof extra !== 'object') {
+        setStatus('Extra JSON must be an object.', 'warn');
+        return;
+      }
+      const merged = clone(p);
+      Object.keys(extra).forEach(k => { if (!KNOWN.has(k)) merged[k] = extra[k]; });
+      merged.id = el('f_id').value.trim();
+      merged.slot = el('f_slot').value;
+      merged.file = el('f_file').value.trim();
+      merged.variant = asInt(el('f_variant').value, 1);
+      merged.rarity = el('f_rarity').value;
+      merged.archetype = el('f_archetype').value;
+      merged.family = {
+        id: asInt(el('f_family_id').value, 0),
+        name: el('f_family_name').value.trim(),
+        theme: el('f_family_theme').value.trim(),
+        type: inferFamilyType(el('f_family_type').value, el('f_family_name').value.trim(), el('f_family_theme').value.trim()),
+      };
+      merged.familyId = merged.family.id || 0;
+      merged.stats = {
+        hp: asInt(el('f_hp').value, 0),
+        atk: asInt(el('f_atk').value, 0),
+        def: asInt(el('f_def').value, 0),
+        spd: asInt(el('f_spd').value, 0),
+        luck: asInt(el('f_luck').value, 0),
+      };
+      recalcPowerScore(merged);
+      merged.tags = el('f_tags').value.split(',').map(v => v.trim()).filter(Boolean);
+      merged.description = el('f_description').value;
+      const selectedMoveIds = [...new Set((state.selectedPartMoveIds || []).map(normalizeMoveId).filter(Boolean))];
+      if (selectedMoveIds.length) merged.moveIds = selectedMoveIds;
+      else delete merged.moveIds;
+      state.data.parts[state.selectedIdx] = merged;
+      state.dirty = true;
+      buildFamilyPresets();
+      renderList();
+      renderSelected();
+      setStatus('Form applied to selected part. Save file to persist.', 'warn');
+    }
+
+    function applyRawToSelected() {
+      const p = getSelectedPart();
+      if (!p) return;
+      let parsed;
+      try {
+        parsed = JSON.parse(el('rawJson').value);
+      } catch (err) {
+        setStatus(`Raw JSON invalid: ${err.message}`, 'warn');
+        return;
+      }
+      if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+        setStatus('Raw JSON must be a part object.', 'warn');
+        return;
+      }
+      state.data.parts[state.selectedIdx] = parsed;
+      state.dirty = true;
+      buildFamilyPresets();
+      renderList();
+      renderSelected();
+      setStatus('Raw JSON applied to selected part. Save file to persist.', 'warn');
+    }
+    function applyRarityBaseSelected() {
+      const p = getSelectedPart();
+      if (!p) return;
+      applyRarityBaseToPart(p);
+      state.dirty = true;
+      renderList();
+      renderSelected();
+      setStatus(`Applied rarity base to ${p.id}.`, 'warn');
+    }
+    function applyRarityBaseAll() {
+      if (!state.data?.parts?.length) return;
+      state.data.parts.forEach(applyRarityBaseToPart);
+      state.dirty = true;
+      renderList();
+      renderSelected();
+      setStatus(`Applied rarity base to all ${state.data.parts.length} parts.`, 'warn');
+    }
+    function recalcPowerAll() {
+      if (!state.data?.parts?.length) return;
+      state.data.parts.forEach(recalcPowerScore);
+      state.dirty = true;
+      renderList();
+      renderSelected();
+      setStatus('Recalculated powerScore for all parts.', 'warn');
+    }
+
+    function addPart() {
+      ensureFamiliesArray();
+      const fallbackFam = state.data.families?.[0] || { id: 1, name: 'Marshborn', theme: 'bog', type: 'Normal' };
+      const part = {
+        id: `new-part-${Date.now()}`,
+        slot: 'head',
+        file: 'Heads/sprite_001.png',
+        familyId: Number(fallbackFam.id) || 1,
+        family: {
+          id: Number(fallbackFam.id) || 1,
+          name: fallbackFam.name || 'Family1',
+          theme: fallbackFam.theme || 'normal',
+          type: inferFamilyType(fallbackFam.type, fallbackFam.name, fallbackFam.theme),
+        },
+        variant: 1,
+        rarity: 'common',
+        archetype: 'balanced',
+        stats: { hp: 1, atk: 1, def: 1, spd: 1, luck: 1 },
+        powerScore: 1,
+        tags: [],
+        description: '',
+      };
+      state.data.parts.push(part);
+      state.selectedIdx = state.data.parts.length - 1;
+      state.dirty = true;
+      buildFamilyPresets();
+      renderList();
+      renderSelected();
+      setStatus('New part added.', 'warn');
+    }
+
+    function duplicatePart() {
+      const p = getSelectedPart();
+      if (!p) return;
+      const copy = clone(p);
+      copy.id = `${p.id || 'part'}-copy-${Date.now()}`;
+      state.data.parts.push(copy);
+      state.selectedIdx = state.data.parts.length - 1;
+      state.dirty = true;
+      buildFamilyPresets();
+      renderList();
+      renderSelected();
+      setStatus('Part duplicated.', 'warn');
+    }
+
+    function deletePart() {
+      const p = getSelectedPart();
+      if (!p) return;
+      if (!confirm(`Delete part "${p.id}"?`)) return;
+      state.data.parts.splice(state.selectedIdx, 1);
+      if (state.selectedIdx >= state.data.parts.length) state.selectedIdx = state.data.parts.length - 1;
+      state.dirty = true;
+      buildFamilyPresets();
+      renderList();
+      renderSelected();
+      setStatus('Part deleted.', 'warn');
+    }
+
+    function applyFamilyEditor() {
+      ensureFamiliesArray();
+      const id = asInt(el('fml-id').value, 0);
+      const name = el('fml-name').value.trim();
+      const theme = el('fml-theme').value.trim();
+      const type = inferFamilyType(el('fml-type').value, name, theme);
+      if (!id || !name) {
+        setStatus('Family id and name are required.', 'warn');
+        return;
+      }
+      const description = el('fml-description').value.trim();
+      const baseMoveIds = [...new Set((state.selectedFamilyMoveIds || []).map(normalizeMoveId).filter(Boolean))];
+      let fam = getFamilyById(id);
+      if (!fam) {
+        fam = { id, name, theme, type, description, baseMoveIds: [...new Set(baseMoveIds)] };
+        state.data.families.push(fam);
+      } else {
+        fam.name = name;
+        fam.theme = theme;
+        fam.type = type;
+        fam.description = description;
+        fam.baseMoveIds = [...new Set(baseMoveIds)];
+      }
+      for (const p of (state.data.parts || [])) {
+        if (Number(p.familyId || p.family?.id) === id) {
+          p.familyId = id;
+          p.family = { id, name, theme, type };
+        }
+      }
+      state.selectedFamilyId = id;
+      state.dirty = true;
+      buildFamilyPresets();
+      renderList();
+      renderSelected();
+      setStatus(`Family ${name} applied.`, 'warn');
+    }
+
+    function newFamily() {
+      ensureFamiliesArray();
+      const nextId = Math.max(0, ...((state.data.families || []).map(f => Number(f.id) || 0))) + 1;
+      state.selectedFamilyId = nextId;
+      el('fml-id').value = nextId;
+      el('fml-name').value = `Family${nextId}`;
+      el('fml-theme').value = 'normal';
+      el('fml-type').value = 'Normal';
+      el('fml-description').value = '';
+      state.selectedFamilyMoveIds = [];
+      renderFamilyMovePicker();
+    }
+    function loadFamilyMovesByType() {
+      const familyType = inferFamilyType(el('fml-type').value, el('fml-name').value.trim(), el('fml-theme').value.trim());
+      const ids = (state.movePool || [])
+        .filter(m => {
+          const types = Array.isArray(m.types) && m.types.length ? m.types : [m.type].filter(Boolean);
+          return types.includes(familyType);
+        })
+        .map(m => getMoveId(m))
+        .filter(Boolean);
+      state.selectedFamilyMoveIds = [...new Set(ids)];
+      renderFamilyMovePicker();
+      setStatus(`Loaded ${state.selectedFamilyMoveIds.length} ${familyType} move(s) for this family. Apply to persist.`, 'warn');
+    }
+    function useFamilyMovesForPartForm() {
+      const p = getSelectedPart();
+      if (!p) return;
+      const famId = asInt(el('f_family_id').value, 0) || Number(p.familyId || p.family?.id) || 0;
+      const fam = getFamilyById(famId);
+      state.selectedPartMoveIds = [...new Set((fam?.baseMoveIds || []).map(normalizeMoveId).filter(Boolean))];
+      renderPartMovePicker();
+      setStatus(`Loaded ${state.selectedPartMoveIds.length} family move(s) into part override. Apply form to persist.`, 'warn');
+    }
+    function clearPartMoveOverrideForm() {
+      state.selectedPartMoveIds = [];
+      renderPartMovePicker();
+      setStatus('Part move override cleared in form. Apply form to persist inheritance.', 'warn');
+    }
+
+    function deleteFamily() {
+      ensureFamiliesArray();
+      const id = asInt(el('fml-id').value, 0);
+      const fam = getFamilyById(id);
+      if (!fam) return;
+      if (!confirm(`Delete family "${fam.name}" (#${fam.id})? Parts keep current inline family values.`)) return;
+      state.data.families = (state.data.families || []).filter(f => Number(f.id) !== id);
+      if (state.selectedFamilyId === id) state.selectedFamilyId = state.data.families[0]?.id || null;
+      state.dirty = true;
+      buildFamilyPresets();
+      renderList();
+      renderSelected();
+      setStatus(`Family ${fam.name} deleted from registry.`, 'warn');
+    }
+
+    function recomputeSummary(parts) {
+      const summary = {
+        totalParts: parts.length,
+        perSlot: { head: 0, torso: 0, wings: 0, legs: 0 },
+        rarityBreakdown: {},
+        archetypeBreakdown: {},
+      };
+      parts.forEach(p => {
+        if (summary.perSlot[p.slot] != null) summary.perSlot[p.slot] += 1;
+        summary.rarityBreakdown[p.rarity] = (summary.rarityBreakdown[p.rarity] || 0) + 1;
+        summary.archetypeBreakdown[p.archetype] = (summary.archetypeBreakdown[p.archetype] || 0) + 1;
+      });
+      return summary;
+    }
+
+    async function saveAll() {
+      if (!state.data) return;
+      ensureFamiliesArray();
+      state.data.version = el('metaVersion').value.trim() || state.data.version || '1.0.0';
+      state.data.source = el('metaSource').value.trim() || 'Edited via parts_editor.html';
+      state.data.generatedAt = new Date().toISOString();
+      state.data.families = (state.data.families || []).map(f => ({
+        id: asInt(f.id, 0),
+        name: String(f.name || '').trim(),
+        theme: String(f.theme || '').trim(),
+        type: inferFamilyType(f.type, f.name, f.theme),
+        description: String(f.description || '').trim(),
+        baseMoveIds: [...new Set((f.baseMoveIds || []).map(x => String(x || '').trim()).filter(Boolean))],
+      })).filter(f => f.id && f.name);
+      state.data.summary = recomputeSummary(state.data.parts || []);
+      const r = await fetch('/api/parts-data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(state.data),
+      });
+      if (!r.ok) {
+        const txt = await r.text().catch(() => '');
+        throw new Error(`Save failed (${r.status}). ${txt || 'Restart the Node server and try again.'}`);
+      }
+      state.dirty = false;
+      setStatus('Saved to data/parts_data.json', 'ok');
+      renderList();
+      renderSelected();
+    }
+
+    function downloadJson() {
+      if (!state.data) return;
+      const blob = new Blob([JSON.stringify(state.data, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'parts_data.json';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function wire() {
+      el('search').addEventListener('input', renderList);
+      el('slotFilter').addEventListener('change', renderList);
+      el('rarityFilter').addEventListener('change', renderList);
+      el('addBtn').onclick = addPart;
+      el('dupBtn').onclick = duplicatePart;
+      el('delBtn').onclick = deletePart;
+      el('refreshUnassignedBtn').onclick = () => loadUnassignedImages();
+      el('baseSelBtn').onclick = applyRarityBaseSelected;
+      el('baseAllBtn').onclick = applyRarityBaseAll;
+      el('recalcPowerBtn').onclick = recalcPowerAll;
+      el('f_family_preset').addEventListener('change', () => {
+        const id = Number(el('f_family_preset').value) || 0;
+        if (!id) return;
+        const found = getFamilyById(id);
+        if (!found) return;
+        el('f_family_id').value = found.id;
+        el('f_family_name').value = found.name;
+        el('f_family_theme').value = found.theme;
+        el('f_family_type').value = inferFamilyType(found.type, found.name, found.theme);
+      });
+      el('fml-select').addEventListener('change', () => {
+        state.selectedFamilyId = Number(el('fml-select').value) || null;
+        renderFamilyEditor();
+      });
+      el('fml-new').onclick = newFamily;
+      el('fml-apply').onclick = applyFamilyEditor;
+      el('fml-delete').onclick = deleteFamily;
+      el('fml-moves-by-type').onclick = loadFamilyMovesByType;
+      el('partMovesFromFamilyBtn').onclick = useFamilyMovesForPartForm;
+      el('partMovesClearBtn').onclick = clearPartMoveOverrideForm;
+      el('applyFormBtn').onclick = applyFormToSelected;
+      el('applyRawBtn').onclick = applyRawToSelected;
+      el('refreshRawBtn').onclick = () => { const p = getSelectedPart(); if (p) updateRawFromPart(p); };
+      el('revertBtn').onclick = () => renderSelected();
+      el('reloadBtn').onclick = () => loadAll().catch(err => setStatus(err.message, 'warn'));
+      el('saveAllBtn').onclick = () => saveAll().catch(err => {
+        setStatus(err.message, 'warn');
+        alert(`Save failed.\n\n${err.message}`);
+      });
+      el('downloadBtn').onclick = downloadJson;
+      window.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+          e.preventDefault();
+          saveAll().catch(err => {
+            setStatus(err.message, 'warn');
+            alert(`Save failed.\n\n${err.message}`);
+          });
+        }
+      });
+      window.addEventListener('beforeunload', (e) => {
+        if (!state.dirty) return;
+        e.preventDefault();
+        e.returnValue = '';
+      });
+    }
+
+    wire();
+    loadAll().catch(err => setStatus(err.message, 'warn'));
+  </script>
+</body>
+</html>
+

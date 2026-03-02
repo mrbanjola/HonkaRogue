@@ -1,0 +1,4795 @@
+{
+  "version": "1.2.1",
+  "generatedAt": "2026-03-02T16:07:28.632Z",
+  "source": "Family registry migration (families[] + part.familyId)",
+  "statsGuide": {
+    "hp": "Max HP contribution",
+    "atk": "Attack contribution",
+    "def": "Defense contribution",
+    "spd": "Speed contribution",
+    "luck": "Luck contribution"
+  },
+  "summary": {
+    "totalParts": 97,
+    "perSlot": {
+      "head": 17,
+      "torso": 17,
+      "wings": 15,
+      "legs": 48
+    },
+    "rarityBreakdown": {
+      "common": 76,
+      "rare": 20,
+      "legendary": 1
+    },
+    "archetypeBreakdown": {
+      "balanced": 81,
+      "raider": 2,
+      "bulwark": 10,
+      "trickster": 4
+    }
+  },
+  "parts": [
+    {
+      "id": "head-sprite_007",
+      "slot": "head",
+      "file": "Heads/sprite_007.png",
+      "family": {
+        "id": 6,
+        "name": "Duskveil",
+        "theme": "shadow",
+        "type": "Shadow"
+      },
+      "variant": 1,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 12
+      },
+      "powerScore": 92,
+      "tags": [
+        "shadow",
+        "balanced",
+        "prime",
+        "fen",
+        "sprite_007"
+      ],
+      "description": "Duskveil headpiece with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 6,
+      "moveIds": [
+        "move_32",
+        "move_33",
+        "move_34",
+        "move_35",
+        "move_36",
+        "move_37",
+        "move_38",
+        "move_39",
+        "move_40",
+        "move_41",
+        "move_42"
+      ]
+    },
+    {
+      "id": "head-sprite_011",
+      "slot": "head",
+      "file": "Heads/sprite_011.png",
+      "family": {
+        "id": 6,
+        "name": "Duskveil",
+        "theme": "shadow",
+        "type": "Shadow"
+      },
+      "variant": 2,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 16
+      },
+      "powerScore": 96,
+      "tags": [
+        "shadow",
+        "balanced",
+        "rugged",
+        "marsh",
+        "sprite_011"
+      ],
+      "description": "Duskveil headpiece with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 6,
+      "moveIds": [
+        "move_32",
+        "move_33",
+        "move_34",
+        "move_35",
+        "move_36",
+        "move_37",
+        "move_38",
+        "move_39",
+        "move_40",
+        "move_41",
+        "move_42"
+      ]
+    },
+    {
+      "id": "head-sprite_023",
+      "slot": "head",
+      "file": "Heads/sprite_023.png",
+      "family": {
+        "id": 9,
+        "name": "Voidgild",
+        "theme": "arcane",
+        "type": "Shadow"
+      },
+      "variant": 3,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 19
+      },
+      "powerScore": 99,
+      "tags": [
+        "arcane",
+        "balanced",
+        "swift",
+        "reed",
+        "sprite_023"
+      ],
+      "description": "Voidgild headpiece with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 9,
+      "moveIds": [
+        "move_32",
+        "move_33",
+        "move_34",
+        "move_35",
+        "move_36",
+        "move_37",
+        "move_38",
+        "move_39",
+        "move_40",
+        "move_41",
+        "move_42"
+      ]
+    },
+    {
+      "id": "head-sprite_024",
+      "slot": "head",
+      "file": "Heads/sprite_024.png",
+      "family": {
+        "id": 9,
+        "name": "Voidgild",
+        "theme": "arcane",
+        "type": "Shadow"
+      },
+      "variant": 4,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 12
+      },
+      "powerScore": 92,
+      "tags": [
+        "arcane",
+        "balanced",
+        "prime",
+        "ash",
+        "sprite_024"
+      ],
+      "description": "Voidgild headpiece with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 9,
+      "moveIds": [
+        "move_32",
+        "move_33",
+        "move_34",
+        "move_35",
+        "move_36",
+        "move_37",
+        "move_38",
+        "move_39",
+        "move_40",
+        "move_41",
+        "move_42"
+      ]
+    },
+    {
+      "id": "head-sprite_034",
+      "slot": "head",
+      "file": "Heads/sprite_034.png",
+      "family": {
+        "id": 5,
+        "name": "Ironbarb",
+        "theme": "stone",
+        "type": "Normal"
+      },
+      "variant": 5,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 16
+      },
+      "powerScore": 96,
+      "tags": [
+        "stone",
+        "balanced",
+        "rugged",
+        "ember",
+        "sprite_034"
+      ],
+      "description": "Ironbarb headpiece with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 5,
+      "moveIds": [
+        "move_43",
+        "move_44",
+        "move_45",
+        "move_46",
+        "move_47",
+        "move_48",
+        "move_49",
+        "move_50",
+        "move_51",
+        "move_52",
+        "move_53",
+        "move_54",
+        "move_55",
+        "move_56",
+        "move_57",
+        "move_58"
+      ]
+    },
+    {
+      "id": "head-sprite_036",
+      "slot": "head",
+      "file": "Heads/sprite_036.png",
+      "family": {
+        "id": 5,
+        "name": "Ironbarb",
+        "theme": "stone",
+        "type": "Normal"
+      },
+      "variant": 6,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 19
+      },
+      "powerScore": 99,
+      "tags": [
+        "stone",
+        "balanced",
+        "swift",
+        "cinder",
+        "sprite_036"
+      ],
+      "description": "Ironbarb headpiece with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 5,
+      "moveIds": [
+        "move_43",
+        "move_44",
+        "move_45",
+        "move_46",
+        "move_47",
+        "move_48",
+        "move_49",
+        "move_50",
+        "move_51",
+        "move_52",
+        "move_53",
+        "move_54",
+        "move_55",
+        "move_56",
+        "move_57",
+        "move_58"
+      ]
+    },
+    {
+      "id": "head-sprite_046",
+      "slot": "head",
+      "file": "Heads/sprite_046.png",
+      "family": {
+        "id": 2,
+        "name": "Embercrest",
+        "theme": "fire",
+        "type": "Fire"
+      },
+      "variant": 7,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 12
+      },
+      "powerScore": 92,
+      "tags": [
+        "fire",
+        "balanced",
+        "prime",
+        "frost",
+        "sprite_046"
+      ],
+      "description": "Embercrest headpiece with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 2,
+      "moveIds": [
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "head-sprite_047",
+      "slot": "head",
+      "file": "Heads/sprite_047.png",
+      "family": {
+        "id": 2,
+        "name": "Embercrest",
+        "theme": "fire",
+        "type": "Fire"
+      },
+      "variant": 8,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 16
+      },
+      "powerScore": 96,
+      "tags": [
+        "fire",
+        "balanced",
+        "rugged",
+        "rime",
+        "sprite_047"
+      ],
+      "description": "Embercrest headpiece with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 2,
+      "moveIds": [
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "head-sprite_064",
+      "slot": "head",
+      "file": "Heads/sprite_064.png",
+      "family": {
+        "id": 1,
+        "name": "Marshborn",
+        "theme": "bog",
+        "type": "Normal"
+      },
+      "variant": 9,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 19
+      },
+      "powerScore": 99,
+      "tags": [
+        "bog",
+        "balanced",
+        "swift",
+        "glacier",
+        "sprite_064"
+      ],
+      "description": "Marshborn headpiece with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 1,
+      "moveIds": [
+        "move_43",
+        "move_44",
+        "move_45",
+        "move_46",
+        "move_47",
+        "move_48",
+        "move_49",
+        "move_50",
+        "move_51",
+        "move_52",
+        "move_53",
+        "move_54",
+        "move_55",
+        "move_56",
+        "move_57",
+        "move_58"
+      ]
+    },
+    {
+      "id": "head-sprite_067",
+      "slot": "head",
+      "file": "Heads/sprite_067.png",
+      "family": {
+        "id": 7,
+        "name": "Sunflare",
+        "theme": "solar",
+        "type": "Fire"
+      },
+      "variant": 10,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 12
+      },
+      "powerScore": 92,
+      "tags": [
+        "solar",
+        "balanced",
+        "prime",
+        "arc",
+        "sprite_067"
+      ],
+      "description": "Sunflare headpiece with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 7,
+      "moveIds": [
+        "move_57",
+        "move_58",
+        "move_55",
+        "move_56",
+        "move_53",
+        "move_54",
+        "move_51",
+        "move_52",
+        "move_49",
+        "move_50",
+        "move_47",
+        "move_48",
+        "move_45",
+        "move_46",
+        "move_43",
+        "move_44",
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "head-sprite_087",
+      "slot": "head",
+      "file": "Heads/sprite_087.png",
+      "family": {
+        "id": 3,
+        "name": "Frostplume",
+        "theme": "ice",
+        "type": "Ice"
+      },
+      "variant": 11,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 16
+      },
+      "powerScore": 96,
+      "tags": [
+        "ice",
+        "balanced",
+        "rugged",
+        "volt",
+        "sprite_087"
+      ],
+      "description": "Frostplume headpiece with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 3,
+      "moveIds": [
+        "move_12",
+        "move_13",
+        "move_14",
+        "move_15",
+        "move_16",
+        "move_17",
+        "move_18",
+        "move_19",
+        "move_20",
+        "move_21"
+      ]
+    },
+    {
+      "id": "head-sprite_092",
+      "slot": "head",
+      "file": "Heads/sprite_092.png",
+      "family": {
+        "id": 9,
+        "name": "Voidgild",
+        "theme": "arcane",
+        "type": "Shadow"
+      },
+      "variant": 12,
+      "rarity": "rare",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 30,
+        "atk": 30,
+        "def": 30,
+        "spd": 30,
+        "luck": 19
+      },
+      "powerScore": 139,
+      "tags": [
+        "arcane",
+        "balanced",
+        "swift",
+        "thunder",
+        "sprite_092"
+      ],
+      "description": "Voidgild headpiece with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 9,
+      "moveIds": [
+        "move_32",
+        "move_33",
+        "move_34",
+        "move_35",
+        "move_36",
+        "move_37",
+        "move_38",
+        "move_39",
+        "move_40",
+        "move_41",
+        "move_42"
+      ]
+    },
+    {
+      "id": "head-sprite_107",
+      "slot": "head",
+      "file": "Heads/sprite_107.png",
+      "family": {
+        "id": 3,
+        "name": "Frostplume",
+        "theme": "ice",
+        "type": "Ice"
+      },
+      "variant": 13,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 12
+      },
+      "powerScore": 92,
+      "tags": [
+        "ice",
+        "balanced",
+        "prime",
+        "granite",
+        "sprite_107"
+      ],
+      "description": "Frostplume headpiece with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 3,
+      "moveIds": [
+        "move_12",
+        "move_13",
+        "move_14",
+        "move_15",
+        "move_16",
+        "move_17",
+        "move_18",
+        "move_19",
+        "move_20",
+        "move_21"
+      ]
+    },
+    {
+      "id": "head-sprite_112",
+      "slot": "head",
+      "file": "Heads/sprite_112.png",
+      "family": {
+        "id": 7,
+        "name": "Sunflare",
+        "theme": "solar",
+        "type": "Fire"
+      },
+      "variant": 14,
+      "rarity": "rare",
+      "archetype": "raider",
+      "stats": {
+        "hp": 30,
+        "atk": 30,
+        "def": 30,
+        "spd": 30,
+        "luck": 16
+      },
+      "powerScore": 136,
+      "tags": [
+        "solar",
+        "raider",
+        "rugged",
+        "anvil",
+        "sprite_112"
+      ],
+      "description": "Sunflare headpiece with a raider profile. Visual theme aligned to sprite style.",
+      "familyId": 7,
+      "moveIds": [
+        "move_57",
+        "move_58",
+        "move_55",
+        "move_56",
+        "move_53",
+        "move_54",
+        "move_51",
+        "move_52",
+        "move_49",
+        "move_50",
+        "move_47",
+        "move_48",
+        "move_45",
+        "move_46",
+        "move_43",
+        "move_44",
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "head-sprite_129",
+      "slot": "head",
+      "file": "Heads/sprite_129.png",
+      "family": {
+        "id": 7,
+        "name": "Sunflare",
+        "theme": "solar",
+        "type": "Fire"
+      },
+      "variant": 15,
+      "rarity": "rare",
+      "archetype": "raider",
+      "stats": {
+        "hp": 30,
+        "atk": 30,
+        "def": 30,
+        "spd": 30,
+        "luck": 19
+      },
+      "powerScore": 139,
+      "tags": [
+        "solar",
+        "raider",
+        "swift",
+        "iron",
+        "sprite_129"
+      ],
+      "description": "Sunflare headpiece with a raider profile. Visual theme aligned to sprite style.",
+      "familyId": 7,
+      "moveIds": [
+        "move_57",
+        "move_58",
+        "move_55",
+        "move_56",
+        "move_53",
+        "move_54",
+        "move_51",
+        "move_52",
+        "move_49",
+        "move_50",
+        "move_47",
+        "move_48",
+        "move_45",
+        "move_46",
+        "move_43",
+        "move_44",
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "head-sprite_132",
+      "slot": "head",
+      "file": "Heads/sprite_132.png",
+      "family": {
+        "id": 8,
+        "name": "Bloomcrest",
+        "theme": "wild",
+        "type": "Normal"
+      },
+      "variant": 16,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 12
+      },
+      "powerScore": 92,
+      "tags": [
+        "wild",
+        "balanced",
+        "prime",
+        "night",
+        "sprite_132"
+      ],
+      "description": "Bloomcrest headpiece with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 8,
+      "moveIds": [
+        "move_55",
+        "move_57",
+        "move_58",
+        "move_56",
+        "move_54",
+        "move_53",
+        "move_51",
+        "move_52",
+        "move_50",
+        "move_49",
+        "move_47",
+        "move_48",
+        "move_46",
+        "move_45",
+        "move_43",
+        "move_44"
+      ]
+    },
+    {
+      "id": "torso-sprite_001",
+      "slot": "torso",
+      "file": "Torsos/sprite_001.png",
+      "family": {
+        "id": 6,
+        "name": "Duskveil",
+        "theme": "shadow",
+        "type": "Shadow"
+      },
+      "variant": 1,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 8
+      },
+      "powerScore": 88,
+      "tags": [
+        "shadow",
+        "balanced",
+        "brutal",
+        "sprite_001"
+      ],
+      "description": "Duskveil torso core with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 6,
+      "moveIds": [
+        "move_32",
+        "move_33",
+        "move_34",
+        "move_35",
+        "move_36",
+        "move_37",
+        "move_38",
+        "move_39",
+        "move_40",
+        "move_41",
+        "move_42"
+      ]
+    },
+    {
+      "id": "torso-sprite_009",
+      "slot": "torso",
+      "file": "Torsos/sprite_009.png",
+      "family": {
+        "id": 6,
+        "name": "Duskveil",
+        "theme": "shadow",
+        "type": "Shadow"
+      },
+      "variant": 2,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 8
+      },
+      "powerScore": 88,
+      "tags": [
+        "shadow",
+        "balanced",
+        "evasive",
+        "fen",
+        "sprite_009"
+      ],
+      "description": "Duskveil torso core with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 6,
+      "moveIds": [
+        "move_32",
+        "move_33",
+        "move_34",
+        "move_35",
+        "move_36",
+        "move_37",
+        "move_38",
+        "move_39",
+        "move_40",
+        "move_41",
+        "move_42"
+      ]
+    },
+    {
+      "id": "torso-sprite_016",
+      "slot": "torso",
+      "file": "Torsos/sprite_016.png",
+      "family": {
+        "id": 9,
+        "name": "Voidgild",
+        "theme": "arcane",
+        "type": "Shadow"
+      },
+      "variant": 3,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 8
+      },
+      "powerScore": 88,
+      "tags": [
+        "arcane",
+        "balanced",
+        "ancient",
+        "marsh",
+        "sprite_016"
+      ],
+      "description": "Voidgild torso core with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 9,
+      "moveIds": [
+        "move_32",
+        "move_33",
+        "move_34",
+        "move_35",
+        "move_36",
+        "move_37",
+        "move_38",
+        "move_39",
+        "move_40",
+        "move_41",
+        "move_42"
+      ]
+    },
+    {
+      "id": "torso-sprite_017",
+      "slot": "torso",
+      "file": "Torsos/sprite_017.png",
+      "family": {
+        "id": 5,
+        "name": "Ironbarb",
+        "theme": "stone",
+        "type": "Normal"
+      },
+      "variant": 4,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 1
+      },
+      "powerScore": 81,
+      "tags": [
+        "stone",
+        "balanced",
+        "brutal",
+        "flare",
+        "sprite_017"
+      ],
+      "description": "Ironbarb torso core with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 5,
+      "moveIds": [
+        "move_43",
+        "move_44",
+        "move_45",
+        "move_46",
+        "move_47",
+        "move_48",
+        "move_49",
+        "move_50",
+        "move_51",
+        "move_52",
+        "move_53",
+        "move_54",
+        "move_55",
+        "move_56",
+        "move_57",
+        "move_58"
+      ]
+    },
+    {
+      "id": "torso-sprite_030",
+      "slot": "torso",
+      "file": "Torsos/sprite_030.png",
+      "family": {
+        "id": 5,
+        "name": "Ironbarb",
+        "theme": "stone",
+        "type": "Normal"
+      },
+      "variant": 5,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 1
+      },
+      "powerScore": 81,
+      "tags": [
+        "stone",
+        "balanced",
+        "evasive",
+        "ash",
+        "sprite_030"
+      ],
+      "description": "Ironbarb torso core with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 5,
+      "moveIds": [
+        "move_43",
+        "move_44",
+        "move_45",
+        "move_46",
+        "move_47",
+        "move_48",
+        "move_49",
+        "move_50",
+        "move_51",
+        "move_52",
+        "move_53",
+        "move_54",
+        "move_55",
+        "move_56",
+        "move_57",
+        "move_58"
+      ]
+    },
+    {
+      "id": "torso-sprite_035",
+      "slot": "torso",
+      "file": "Torsos/sprite_035.png",
+      "family": {
+        "id": 2,
+        "name": "Embercrest",
+        "theme": "fire",
+        "type": "Fire"
+      },
+      "variant": 6,
+      "rarity": "common",
+      "archetype": "bulwark",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 1
+      },
+      "powerScore": 81,
+      "tags": [
+        "fire",
+        "bulwark",
+        "ancient",
+        "ember",
+        "sprite_035"
+      ],
+      "description": "Embercrest torso core with a bulwark profile. Visual theme aligned to sprite style.",
+      "familyId": 2,
+      "moveIds": [
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "torso-sprite_041",
+      "slot": "torso",
+      "file": "Torsos/sprite_041.png",
+      "family": {
+        "id": 2,
+        "name": "Embercrest",
+        "theme": "fire",
+        "type": "Fire"
+      },
+      "variant": 7,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 2
+      },
+      "powerScore": 82,
+      "tags": [
+        "fire",
+        "balanced",
+        "brutal",
+        "hail",
+        "sprite_041"
+      ],
+      "description": "Embercrest torso core with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 2,
+      "moveIds": [
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "torso-sprite_048",
+      "slot": "torso",
+      "file": "Torsos/sprite_048.png",
+      "family": {
+        "id": 2,
+        "name": "Embercrest",
+        "theme": "fire",
+        "type": "Fire"
+      },
+      "variant": 8,
+      "rarity": "common",
+      "archetype": "bulwark",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 2
+      },
+      "powerScore": 82,
+      "tags": [
+        "fire",
+        "bulwark",
+        "evasive",
+        "frost",
+        "sprite_048"
+      ],
+      "description": "Embercrest torso core with a bulwark profile. Visual theme aligned to sprite style.",
+      "familyId": 2,
+      "moveIds": [
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "torso-sprite_060",
+      "slot": "torso",
+      "file": "Torsos/sprite_060.png",
+      "family": {
+        "id": 2,
+        "name": "Embercrest",
+        "theme": "fire",
+        "type": "Fire"
+      },
+      "variant": 9,
+      "rarity": "common",
+      "archetype": "bulwark",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 2
+      },
+      "powerScore": 82,
+      "tags": [
+        "fire",
+        "bulwark",
+        "ancient",
+        "rime",
+        "sprite_060"
+      ],
+      "description": "Embercrest torso core with a bulwark profile. Visual theme aligned to sprite style.",
+      "familyId": 2,
+      "moveIds": [
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "torso-sprite_066",
+      "slot": "torso",
+      "file": "Torsos/sprite_066.png",
+      "family": {
+        "id": 2,
+        "name": "Embercrest",
+        "theme": "fire",
+        "type": "Fire"
+      },
+      "variant": 10,
+      "rarity": "common",
+      "archetype": "bulwark",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 1
+      },
+      "powerScore": 81,
+      "tags": [
+        "fire",
+        "bulwark",
+        "brutal",
+        "storm",
+        "sprite_066"
+      ],
+      "description": "Embercrest torso core with a bulwark profile. Visual theme aligned to sprite style.",
+      "familyId": 2,
+      "moveIds": [
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "torso-sprite_084",
+      "slot": "torso",
+      "file": "Torsos/sprite_084.png",
+      "family": {
+        "id": 3,
+        "name": "Frostplume",
+        "theme": "ice",
+        "type": "Ice"
+      },
+      "variant": 11,
+      "rarity": "common",
+      "archetype": "bulwark",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 1
+      },
+      "powerScore": 81,
+      "tags": [
+        "ice",
+        "bulwark",
+        "evasive",
+        "arc",
+        "sprite_084"
+      ],
+      "description": "Frostplume torso core with a bulwark profile. Visual theme aligned to sprite style.",
+      "familyId": 3,
+      "moveIds": [
+        "move_12",
+        "move_13",
+        "move_14",
+        "move_15",
+        "move_16",
+        "move_17",
+        "move_18",
+        "move_19",
+        "move_20",
+        "move_21"
+      ]
+    },
+    {
+      "id": "torso-sprite_088",
+      "slot": "torso",
+      "file": "Torsos/sprite_088.png",
+      "family": {
+        "id": 3,
+        "name": "Frostplume",
+        "theme": "ice",
+        "type": "Ice"
+      },
+      "variant": 12,
+      "rarity": "common",
+      "archetype": "bulwark",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 1
+      },
+      "powerScore": 81,
+      "tags": [
+        "ice",
+        "bulwark",
+        "ancient",
+        "volt",
+        "sprite_088"
+      ],
+      "description": "Frostplume torso core with a bulwark profile. Visual theme aligned to sprite style.",
+      "familyId": 3,
+      "moveIds": [
+        "move_12",
+        "move_13",
+        "move_14",
+        "move_15",
+        "move_16",
+        "move_17",
+        "move_18",
+        "move_19",
+        "move_20",
+        "move_21"
+      ]
+    },
+    {
+      "id": "torso-sprite_108",
+      "slot": "torso",
+      "file": "Torsos/sprite_108.png",
+      "family": {
+        "id": 4,
+        "name": "Stormcall",
+        "theme": "lightning",
+        "type": "Lightning"
+      },
+      "variant": 13,
+      "rarity": "common",
+      "archetype": "bulwark",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 2
+      },
+      "powerScore": 82,
+      "tags": [
+        "lightning",
+        "bulwark",
+        "brutal",
+        "slate",
+        "sprite_108"
+      ],
+      "description": "Stormcall torso core with a bulwark profile. Visual theme aligned to sprite style.",
+      "familyId": 4,
+      "moveIds": [
+        "move_22",
+        "move_23",
+        "move_24",
+        "move_25",
+        "move_26",
+        "move_27",
+        "move_28",
+        "move_29",
+        "move_30",
+        "move_31"
+      ]
+    },
+    {
+      "id": "torso-sprite_110",
+      "slot": "torso",
+      "file": "Torsos/sprite_110.png",
+      "family": {
+        "id": 8,
+        "name": "Bloomcrest",
+        "theme": "wild",
+        "type": "Normal"
+      },
+      "variant": 14,
+      "rarity": "rare",
+      "archetype": "bulwark",
+      "stats": {
+        "hp": 30,
+        "atk": 30,
+        "def": 30,
+        "spd": 30,
+        "luck": 2
+      },
+      "powerScore": 122,
+      "tags": [
+        "wild",
+        "bulwark",
+        "evasive",
+        "granite",
+        "sprite_110"
+      ],
+      "description": "Bloomcrest torso core with a bulwark profile. Visual theme aligned to sprite style.",
+      "familyId": 8,
+      "moveIds": [
+        "move_55",
+        "move_57",
+        "move_58",
+        "move_56",
+        "move_54",
+        "move_53",
+        "move_51",
+        "move_52",
+        "move_50",
+        "move_49",
+        "move_47",
+        "move_48",
+        "move_46",
+        "move_45",
+        "move_43",
+        "move_44"
+      ]
+    },
+    {
+      "id": "torso-sprite_131",
+      "slot": "torso",
+      "file": "Torsos/sprite_131.png",
+      "family": {
+        "id": 8,
+        "name": "Bloomcrest",
+        "theme": "wild",
+        "type": "Normal"
+      },
+      "variant": 15,
+      "rarity": "common",
+      "archetype": "bulwark",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 2
+      },
+      "powerScore": 82,
+      "tags": [
+        "wild",
+        "bulwark",
+        "ancient",
+        "anvil",
+        "sprite_131"
+      ],
+      "description": "Bloomcrest torso profile aligned for Normal typing.",
+      "familyId": 8,
+      "moveIds": [
+        "move_55",
+        "move_57",
+        "move_58",
+        "move_56",
+        "move_54",
+        "move_53",
+        "move_51",
+        "move_52",
+        "move_50",
+        "move_49",
+        "move_47",
+        "move_48",
+        "move_46",
+        "move_45",
+        "move_43",
+        "move_44"
+      ]
+    },
+    {
+      "id": "torso-sprite_133",
+      "slot": "torso",
+      "file": "Torsos/sprite_133.png",
+      "family": {
+        "id": 8,
+        "name": "Bloomcrest",
+        "theme": "wild",
+        "type": "Normal"
+      },
+      "variant": 16,
+      "rarity": "common",
+      "archetype": "bulwark",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 1
+      },
+      "powerScore": 81,
+      "tags": [
+        "wild",
+        "bulwark",
+        "brutal",
+        "gloom",
+        "sprite_133"
+      ],
+      "description": "Bloomcrest torso profile aligned for Normal typing.",
+      "familyId": 8,
+      "moveIds": [
+        "move_55",
+        "move_57",
+        "move_58",
+        "move_56",
+        "move_54",
+        "move_53",
+        "move_51",
+        "move_52",
+        "move_50",
+        "move_49",
+        "move_47",
+        "move_48",
+        "move_46",
+        "move_45",
+        "move_43",
+        "move_44"
+      ]
+    },
+    {
+      "id": "wings-sprite_003",
+      "slot": "wings",
+      "file": "Wings/sprite_003.png",
+      "family": {
+        "id": 6,
+        "name": "Duskveil",
+        "theme": "shadow",
+        "type": "Shadow"
+      },
+      "variant": 1,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 5
+      },
+      "powerScore": 85,
+      "tags": [
+        "shadow",
+        "balanced",
+        "mythic",
+        "marsh",
+        "sprite_003"
+      ],
+      "description": "Duskveil wing rig with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 6,
+      "moveIds": [
+        "move_32",
+        "move_33",
+        "move_34",
+        "move_35",
+        "move_36",
+        "move_37",
+        "move_38",
+        "move_39",
+        "move_40",
+        "move_41",
+        "move_42"
+      ]
+    },
+    {
+      "id": "wings-sprite_012",
+      "slot": "wings",
+      "file": "Wings/sprite_012.png",
+      "family": {
+        "id": 6,
+        "name": "Duskveil",
+        "theme": "shadow",
+        "type": "Shadow"
+      },
+      "variant": 2,
+      "rarity": "common",
+      "archetype": "trickster",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 6
+      },
+      "powerScore": 86,
+      "tags": [
+        "shadow",
+        "trickster",
+        "arc",
+        "reed",
+        "sprite_012"
+      ],
+      "description": "Duskveil wing rig with a trickster profile. Visual theme aligned to sprite style.",
+      "familyId": 6,
+      "moveIds": [
+        "move_32",
+        "move_33",
+        "move_34",
+        "move_35",
+        "move_36",
+        "move_37",
+        "move_38",
+        "move_39",
+        "move_40",
+        "move_41",
+        "move_42"
+      ]
+    },
+    {
+      "id": "wings-sprite_021",
+      "slot": "wings",
+      "file": "Wings/sprite_021.png",
+      "family": {
+        "id": 9,
+        "name": "Voidgild",
+        "theme": "arcane",
+        "type": "Shadow"
+      },
+      "variant": 3,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 3
+      },
+      "powerScore": 83,
+      "tags": [
+        "arcane",
+        "balanced",
+        "gale",
+        "sprite_021"
+      ],
+      "description": "Voidgild wing rig with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 9,
+      "moveIds": [
+        "move_32",
+        "move_33",
+        "move_34",
+        "move_35",
+        "move_36",
+        "move_37",
+        "move_38",
+        "move_39",
+        "move_40",
+        "move_41",
+        "move_42"
+      ]
+    },
+    {
+      "id": "wings-sprite_022",
+      "slot": "wings",
+      "file": "Wings/sprite_022.png",
+      "family": {
+        "id": 9,
+        "name": "Voidgild",
+        "theme": "arcane",
+        "type": "Shadow"
+      },
+      "variant": 4,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 4
+      },
+      "powerScore": 84,
+      "tags": [
+        "arcane",
+        "balanced",
+        "royal",
+        "fen",
+        "sprite_022"
+      ],
+      "description": "Voidgild wing rig with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 9,
+      "moveIds": [
+        "move_32",
+        "move_33",
+        "move_34",
+        "move_35",
+        "move_36",
+        "move_37",
+        "move_38",
+        "move_39",
+        "move_40",
+        "move_41",
+        "move_42"
+      ]
+    },
+    {
+      "id": "wings-sprite_032",
+      "slot": "wings",
+      "file": "Wings/sprite_032.png",
+      "family": {
+        "id": 7,
+        "name": "Sunflare",
+        "theme": "solar",
+        "type": "Fire"
+      },
+      "variant": 5,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 5
+      },
+      "powerScore": 85,
+      "tags": [
+        "solar",
+        "balanced",
+        "mythic",
+        "ember",
+        "sprite_032"
+      ],
+      "description": "Sunflare wing rig with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 7,
+      "moveIds": [
+        "move_57",
+        "move_58",
+        "move_55",
+        "move_56",
+        "move_53",
+        "move_54",
+        "move_51",
+        "move_52",
+        "move_49",
+        "move_50",
+        "move_47",
+        "move_48",
+        "move_45",
+        "move_46",
+        "move_43",
+        "move_44",
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "wings-sprite_033",
+      "slot": "wings",
+      "file": "Wings/sprite_033.png",
+      "family": {
+        "id": 7,
+        "name": "Sunflare",
+        "theme": "solar",
+        "type": "Fire"
+      },
+      "variant": 6,
+      "rarity": "common",
+      "archetype": "trickster",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 6
+      },
+      "powerScore": 86,
+      "tags": [
+        "solar",
+        "trickster",
+        "arc",
+        "cinder",
+        "sprite_033"
+      ],
+      "description": "Sunflare wing rig with a trickster profile. Visual theme aligned to sprite style.",
+      "familyId": 7,
+      "moveIds": [
+        "move_57",
+        "move_58",
+        "move_55",
+        "move_56",
+        "move_53",
+        "move_54",
+        "move_51",
+        "move_52",
+        "move_49",
+        "move_50",
+        "move_47",
+        "move_48",
+        "move_45",
+        "move_46",
+        "move_43",
+        "move_44",
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "wings-sprite_039",
+      "slot": "wings",
+      "file": "Wings/sprite_039.png",
+      "family": {
+        "id": 2,
+        "name": "Embercrest",
+        "theme": "fire",
+        "type": "Fire"
+      },
+      "variant": 7,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 3
+      },
+      "powerScore": 83,
+      "tags": [
+        "fire",
+        "balanced",
+        "gale",
+        "flare",
+        "sprite_039"
+      ],
+      "description": "Embercrest wing rig with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 2,
+      "moveIds": [
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "wings-sprite_044",
+      "slot": "wings",
+      "file": "Wings/sprite_044.png",
+      "family": {
+        "id": 2,
+        "name": "Embercrest",
+        "theme": "fire",
+        "type": "Fire"
+      },
+      "variant": 8,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 4
+      },
+      "powerScore": 84,
+      "tags": [
+        "fire",
+        "balanced",
+        "royal",
+        "ash",
+        "sprite_044"
+      ],
+      "description": "Embercrest wing rig with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 2,
+      "moveIds": [
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "wings-sprite_065",
+      "slot": "wings",
+      "file": "Wings/sprite_065.png",
+      "family": {
+        "id": 2,
+        "name": "Embercrest",
+        "theme": "fire",
+        "type": "Fire"
+      },
+      "variant": 9,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 5
+      },
+      "powerScore": 85,
+      "tags": [
+        "fire",
+        "balanced",
+        "mythic",
+        "rime",
+        "sprite_065"
+      ],
+      "description": "Embercrest wing rig with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 2,
+      "moveIds": [
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "wings-sprite_085",
+      "slot": "wings",
+      "file": "Wings/sprite_085.png",
+      "family": {
+        "id": 3,
+        "name": "Frostplume",
+        "theme": "ice",
+        "type": "Ice"
+      },
+      "variant": 10,
+      "rarity": "rare",
+      "archetype": "trickster",
+      "stats": {
+        "hp": 30,
+        "atk": 30,
+        "def": 30,
+        "spd": 30,
+        "luck": 6
+      },
+      "powerScore": 126,
+      "tags": [
+        "ice",
+        "trickster",
+        "arc",
+        "glacier",
+        "sprite_085"
+      ],
+      "description": "Frostplume wing rig with a trickster profile. Visual theme aligned to sprite style.",
+      "familyId": 3,
+      "moveIds": [
+        "move_12",
+        "move_13",
+        "move_14",
+        "move_15",
+        "move_16",
+        "move_17",
+        "move_18",
+        "move_19",
+        "move_20",
+        "move_21"
+      ]
+    },
+    {
+      "id": "wings-sprite_089",
+      "slot": "wings",
+      "file": "Wings/sprite_089.png",
+      "family": {
+        "id": 3,
+        "name": "Frostplume",
+        "theme": "ice",
+        "type": "Ice"
+      },
+      "variant": 11,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 3
+      },
+      "powerScore": 83,
+      "tags": [
+        "ice",
+        "balanced",
+        "gale",
+        "hail",
+        "sprite_089"
+      ],
+      "description": "Frostplume wing rig with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 3,
+      "moveIds": [
+        "move_12",
+        "move_13",
+        "move_14",
+        "move_15",
+        "move_16",
+        "move_17",
+        "move_18",
+        "move_19",
+        "move_20",
+        "move_21"
+      ]
+    },
+    {
+      "id": "wings-sprite_109",
+      "slot": "wings",
+      "file": "Wings/sprite_109.png",
+      "family": {
+        "id": 3,
+        "name": "Frostplume",
+        "theme": "ice",
+        "type": "Ice"
+      },
+      "variant": 12,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 4
+      },
+      "powerScore": 84,
+      "tags": [
+        "ice",
+        "balanced",
+        "royal",
+        "frost",
+        "sprite_109"
+      ],
+      "description": "Frostplume wing rig with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 3,
+      "moveIds": [
+        "move_12",
+        "move_13",
+        "move_14",
+        "move_15",
+        "move_16",
+        "move_17",
+        "move_18",
+        "move_19",
+        "move_20",
+        "move_21"
+      ]
+    },
+    {
+      "id": "wings-sprite_111",
+      "slot": "wings",
+      "file": "Wings/sprite_111.png",
+      "family": {
+        "id": 8,
+        "name": "Bloomcrest",
+        "theme": "wild",
+        "type": "Normal"
+      },
+      "variant": 13,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 5
+      },
+      "powerScore": 85,
+      "tags": [
+        "wild",
+        "balanced",
+        "mythic",
+        "volt",
+        "sprite_111"
+      ],
+      "description": "Bloomcrest wing rig with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 8,
+      "moveIds": [
+        "move_55",
+        "move_57",
+        "move_58",
+        "move_56",
+        "move_54",
+        "move_53",
+        "move_51",
+        "move_52",
+        "move_50",
+        "move_49",
+        "move_47",
+        "move_48",
+        "move_46",
+        "move_45",
+        "move_43",
+        "move_44"
+      ]
+    },
+    {
+      "id": "wings-sprite_124",
+      "slot": "wings",
+      "file": "Wings/sprite_124.png",
+      "family": {
+        "id": 8,
+        "name": "Bloomcrest",
+        "theme": "wild",
+        "type": "Normal"
+      },
+      "variant": 14,
+      "rarity": "common",
+      "archetype": "trickster",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 6
+      },
+      "powerScore": 86,
+      "tags": [
+        "wild",
+        "trickster",
+        "arc",
+        "thunder",
+        "sprite_124"
+      ],
+      "description": "Bloomcrest wing rig with a trickster profile. Visual theme aligned to sprite style.",
+      "familyId": 8,
+      "moveIds": [
+        "move_55",
+        "move_57",
+        "move_58",
+        "move_56",
+        "move_54",
+        "move_53",
+        "move_51",
+        "move_52",
+        "move_50",
+        "move_49",
+        "move_47",
+        "move_48",
+        "move_46",
+        "move_45",
+        "move_43",
+        "move_44"
+      ]
+    },
+    {
+      "id": "wings-sprite_130",
+      "slot": "wings",
+      "file": "Wings/sprite_130.png",
+      "family": {
+        "id": 4,
+        "name": "Stormcall",
+        "theme": "lightning",
+        "type": "Lightning"
+      },
+      "variant": 15,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 3
+      },
+      "powerScore": 83,
+      "tags": [
+        "lightning",
+        "balanced",
+        "gale",
+        "storm",
+        "sprite_130"
+      ],
+      "description": "Stormcall wing rig with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 4,
+      "moveIds": [
+        "move_22",
+        "move_23",
+        "move_24",
+        "move_25",
+        "move_26",
+        "move_27",
+        "move_28",
+        "move_29",
+        "move_30",
+        "move_31"
+      ]
+    },
+    {
+      "id": "legs-sprite_002",
+      "slot": "legs",
+      "file": "Legs/sprite_002.png",
+      "family": {
+        "id": 9,
+        "name": "Voidgild",
+        "theme": "arcane",
+        "type": "Shadow"
+      },
+      "variant": 1,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 4
+      },
+      "powerScore": 84,
+      "tags": [
+        "arcane",
+        "balanced",
+        "reinforced",
+        "reed",
+        "sprite_002"
+      ],
+      "description": "Voidgild leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 9,
+      "moveIds": [
+        "move_32",
+        "move_33",
+        "move_34",
+        "move_35",
+        "move_36",
+        "move_37",
+        "move_38",
+        "move_39",
+        "move_40",
+        "move_41",
+        "move_42"
+      ]
+    },
+    {
+      "id": "legs-sprite_004",
+      "slot": "legs",
+      "file": "Legs/sprite_004.png",
+      "family": {
+        "id": 9,
+        "name": "Voidgild",
+        "theme": "arcane",
+        "type": "Shadow"
+      },
+      "variant": 2,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 1
+      },
+      "powerScore": 81,
+      "tags": [
+        "arcane",
+        "balanced",
+        "razor",
+        "sprite_004"
+      ],
+      "description": "Voidgild leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 9,
+      "moveIds": [
+        "move_32",
+        "move_33",
+        "move_34",
+        "move_35",
+        "move_36",
+        "move_37",
+        "move_38",
+        "move_39",
+        "move_40",
+        "move_41",
+        "move_42"
+      ]
+    },
+    {
+      "id": "legs-sprite_005",
+      "slot": "legs",
+      "file": "Legs/sprite_005.png",
+      "family": {
+        "id": 4,
+        "name": "Stormcall",
+        "theme": "lightning",
+        "type": "Lightning"
+      },
+      "variant": 3,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 2
+      },
+      "powerScore": 82,
+      "tags": [
+        "lightning",
+        "balanced",
+        "velvet",
+        "fen",
+        "sprite_005"
+      ],
+      "description": "Stormcall leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 4,
+      "moveIds": [
+        "move_22",
+        "move_23",
+        "move_24",
+        "move_25",
+        "move_26",
+        "move_27",
+        "move_28",
+        "move_29",
+        "move_30",
+        "move_31"
+      ]
+    },
+    {
+      "id": "legs-sprite_006",
+      "slot": "legs",
+      "file": "Legs/sprite_006.png",
+      "family": {
+        "id": 6,
+        "name": "Duskveil",
+        "theme": "shadow",
+        "type": "Shadow"
+      },
+      "variant": 4,
+      "rarity": "rare",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 30,
+        "atk": 30,
+        "def": 30,
+        "spd": 30,
+        "luck": 3
+      },
+      "powerScore": 123,
+      "tags": [
+        "shadow",
+        "balanced",
+        "hollow",
+        "marsh",
+        "sprite_006"
+      ],
+      "description": "Duskveil leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 6,
+      "moveIds": [
+        "move_32",
+        "move_33",
+        "move_34",
+        "move_35",
+        "move_36",
+        "move_37",
+        "move_38",
+        "move_39",
+        "move_40",
+        "move_41",
+        "move_42"
+      ]
+    },
+    {
+      "id": "legs-sprite_008",
+      "slot": "legs",
+      "file": "Legs/sprite_008.png",
+      "family": {
+        "id": 5,
+        "name": "Ironbarb",
+        "theme": "stone",
+        "type": "Normal"
+      },
+      "variant": 5,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 4
+      },
+      "powerScore": 84,
+      "tags": [
+        "stone",
+        "balanced",
+        "titan",
+        "reed",
+        "sprite_008"
+      ],
+      "description": "Ironbarb leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 5,
+      "moveIds": [
+        "move_43",
+        "move_44",
+        "move_45",
+        "move_46",
+        "move_47",
+        "move_48",
+        "move_49",
+        "move_50",
+        "move_51",
+        "move_52",
+        "move_53",
+        "move_54",
+        "move_55",
+        "move_56",
+        "move_57",
+        "move_58"
+      ]
+    },
+    {
+      "id": "legs-sprite_010",
+      "slot": "legs",
+      "file": "Legs/sprite_010.png",
+      "family": {
+        "id": 5,
+        "name": "Ironbarb",
+        "theme": "stone",
+        "type": "Normal"
+      },
+      "variant": 6,
+      "rarity": "rare",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 30,
+        "atk": 30,
+        "def": 30,
+        "spd": 30,
+        "luck": 4
+      },
+      "powerScore": 124,
+      "tags": [
+        "stone",
+        "balanced",
+        "reinforced",
+        "cinder",
+        "sprite_010"
+      ],
+      "description": "Ironbarb leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 5,
+      "moveIds": [
+        "move_43",
+        "move_44",
+        "move_45",
+        "move_46",
+        "move_47",
+        "move_48",
+        "move_49",
+        "move_50",
+        "move_51",
+        "move_52",
+        "move_53",
+        "move_54",
+        "move_55",
+        "move_56",
+        "move_57",
+        "move_58"
+      ]
+    },
+    {
+      "id": "legs-sprite_013",
+      "slot": "legs",
+      "file": "Legs/sprite_013.png",
+      "family": {
+        "id": 6,
+        "name": "Duskveil",
+        "theme": "shadow",
+        "type": "Shadow"
+      },
+      "variant": 7,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 1
+      },
+      "powerScore": 81,
+      "tags": [
+        "shadow",
+        "balanced",
+        "razor",
+        "flare",
+        "sprite_013"
+      ],
+      "description": "Duskveil leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 6,
+      "moveIds": [
+        "move_32",
+        "move_33",
+        "move_34",
+        "move_35",
+        "move_36",
+        "move_37",
+        "move_38",
+        "move_39",
+        "move_40",
+        "move_41",
+        "move_42"
+      ]
+    },
+    {
+      "id": "legs-sprite_014",
+      "slot": "legs",
+      "file": "Legs/sprite_014.png",
+      "family": {
+        "id": 9,
+        "name": "Voidgild",
+        "theme": "arcane",
+        "type": "Shadow"
+      },
+      "variant": 8,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 2
+      },
+      "powerScore": 82,
+      "tags": [
+        "arcane",
+        "balanced",
+        "velvet",
+        "ash",
+        "sprite_014"
+      ],
+      "description": "Voidgild leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 9,
+      "moveIds": [
+        "move_32",
+        "move_33",
+        "move_34",
+        "move_35",
+        "move_36",
+        "move_37",
+        "move_38",
+        "move_39",
+        "move_40",
+        "move_41",
+        "move_42"
+      ]
+    },
+    {
+      "id": "legs-sprite_015",
+      "slot": "legs",
+      "file": "Legs/sprite_015.png",
+      "family": {
+        "id": 6,
+        "name": "Duskveil",
+        "theme": "shadow",
+        "type": "Shadow"
+      },
+      "variant": 9,
+      "rarity": "rare",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 30,
+        "atk": 30,
+        "def": 30,
+        "spd": 30,
+        "luck": 3
+      },
+      "powerScore": 123,
+      "tags": [
+        "shadow",
+        "balanced",
+        "hollow",
+        "ember",
+        "sprite_015"
+      ],
+      "description": "Duskveil leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 6,
+      "moveIds": [
+        "move_32",
+        "move_33",
+        "move_34",
+        "move_35",
+        "move_36",
+        "move_37",
+        "move_38",
+        "move_39",
+        "move_40",
+        "move_41",
+        "move_42"
+      ]
+    },
+    {
+      "id": "legs-sprite_018",
+      "slot": "legs",
+      "file": "Legs/sprite_018.png",
+      "family": {
+        "id": 6,
+        "name": "Duskveil",
+        "theme": "shadow",
+        "type": "Shadow"
+      },
+      "variant": 10,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 4
+      },
+      "powerScore": 84,
+      "tags": [
+        "shadow",
+        "balanced",
+        "titan",
+        "cinder",
+        "sprite_018"
+      ],
+      "description": "Duskveil leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 6,
+      "moveIds": [
+        "move_32",
+        "move_33",
+        "move_34",
+        "move_35",
+        "move_36",
+        "move_37",
+        "move_38",
+        "move_39",
+        "move_40",
+        "move_41",
+        "move_42"
+      ]
+    },
+    {
+      "id": "legs-sprite_019",
+      "slot": "legs",
+      "file": "Legs/sprite_019.png",
+      "family": {
+        "id": 9,
+        "name": "Voidgild",
+        "theme": "arcane",
+        "type": "Shadow"
+      },
+      "variant": 11,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 4
+      },
+      "powerScore": 84,
+      "tags": [
+        "arcane",
+        "balanced",
+        "reinforced",
+        "glacier",
+        "sprite_019"
+      ],
+      "description": "Voidgild leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 9,
+      "moveIds": [
+        "move_32",
+        "move_33",
+        "move_34",
+        "move_35",
+        "move_36",
+        "move_37",
+        "move_38",
+        "move_39",
+        "move_40",
+        "move_41",
+        "move_42"
+      ]
+    },
+    {
+      "id": "legs-sprite_020",
+      "slot": "legs",
+      "file": "Legs/sprite_020.png",
+      "family": {
+        "id": 9,
+        "name": "Voidgild",
+        "theme": "arcane",
+        "type": "Shadow"
+      },
+      "variant": 12,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 1
+      },
+      "powerScore": 81,
+      "tags": [
+        "arcane",
+        "balanced",
+        "razor",
+        "hail",
+        "sprite_020"
+      ],
+      "description": "Voidgild leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 9,
+      "moveIds": [
+        "move_32",
+        "move_33",
+        "move_34",
+        "move_35",
+        "move_36",
+        "move_37",
+        "move_38",
+        "move_39",
+        "move_40",
+        "move_41",
+        "move_42"
+      ]
+    },
+    {
+      "id": "legs-sprite_025",
+      "slot": "legs",
+      "file": "Legs/sprite_025.png",
+      "family": {
+        "id": 5,
+        "name": "Ironbarb",
+        "theme": "stone",
+        "type": "Normal"
+      },
+      "variant": 13,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 2
+      },
+      "powerScore": 82,
+      "tags": [
+        "stone",
+        "balanced",
+        "velvet",
+        "frost",
+        "sprite_025"
+      ],
+      "description": "Ironbarb leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 5,
+      "moveIds": [
+        "move_43",
+        "move_44",
+        "move_45",
+        "move_46",
+        "move_47",
+        "move_48",
+        "move_49",
+        "move_50",
+        "move_51",
+        "move_52",
+        "move_53",
+        "move_54",
+        "move_55",
+        "move_56",
+        "move_57",
+        "move_58"
+      ]
+    },
+    {
+      "id": "legs-sprite_026",
+      "slot": "legs",
+      "file": "Legs/sprite_026.png",
+      "family": {
+        "id": 1,
+        "name": "Marshborn",
+        "theme": "bog",
+        "type": "Normal"
+      },
+      "variant": 14,
+      "rarity": "rare",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 30,
+        "atk": 30,
+        "def": 30,
+        "spd": 30,
+        "luck": 3
+      },
+      "powerScore": 123,
+      "tags": [
+        "bog",
+        "balanced",
+        "hollow",
+        "rime",
+        "sprite_026"
+      ],
+      "description": "Marshborn leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 1,
+      "moveIds": [
+        "move_43",
+        "move_44",
+        "move_45",
+        "move_46",
+        "move_47",
+        "move_48",
+        "move_49",
+        "move_50",
+        "move_51",
+        "move_52",
+        "move_53",
+        "move_54",
+        "move_55",
+        "move_56",
+        "move_57",
+        "move_58"
+      ]
+    },
+    {
+      "id": "legs-sprite_027",
+      "slot": "legs",
+      "file": "Legs/sprite_027.png",
+      "family": {
+        "id": 4,
+        "name": "Stormcall",
+        "theme": "lightning",
+        "type": "Lightning"
+      },
+      "variant": 15,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 4
+      },
+      "powerScore": 84,
+      "tags": [
+        "lightning",
+        "balanced",
+        "titan",
+        "glacier",
+        "sprite_027"
+      ],
+      "description": "Stormcall leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 4,
+      "moveIds": [
+        "move_22",
+        "move_23",
+        "move_24",
+        "move_25",
+        "move_26",
+        "move_27",
+        "move_28",
+        "move_29",
+        "move_30",
+        "move_31"
+      ]
+    },
+    {
+      "id": "legs-sprite_028",
+      "slot": "legs",
+      "file": "Legs/sprite_028.png",
+      "family": {
+        "id": 4,
+        "name": "Stormcall",
+        "theme": "lightning",
+        "type": "Lightning"
+      },
+      "variant": 16,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 4
+      },
+      "powerScore": 84,
+      "tags": [
+        "lightning",
+        "balanced",
+        "reinforced",
+        "thunder",
+        "sprite_028"
+      ],
+      "description": "Stormcall leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 4,
+      "moveIds": [
+        "move_22",
+        "move_23",
+        "move_24",
+        "move_25",
+        "move_26",
+        "move_27",
+        "move_28",
+        "move_29",
+        "move_30",
+        "move_31"
+      ]
+    },
+    {
+      "id": "legs-sprite_029",
+      "slot": "legs",
+      "file": "Legs/sprite_029.png",
+      "family": {
+        "id": 4,
+        "name": "Stormcall",
+        "theme": "lightning",
+        "type": "Lightning"
+      },
+      "variant": 17,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 1
+      },
+      "powerScore": 81,
+      "tags": [
+        "lightning",
+        "balanced",
+        "razor",
+        "storm",
+        "sprite_029"
+      ],
+      "description": "Stormcall leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 4,
+      "moveIds": [
+        "move_22",
+        "move_23",
+        "move_24",
+        "move_25",
+        "move_26",
+        "move_27",
+        "move_28",
+        "move_29",
+        "move_30",
+        "move_31"
+      ]
+    },
+    {
+      "id": "legs-sprite_031",
+      "slot": "legs",
+      "file": "Legs/sprite_031.png",
+      "family": {
+        "id": 4,
+        "name": "Stormcall",
+        "theme": "lightning",
+        "type": "Lightning"
+      },
+      "variant": 18,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 2
+      },
+      "powerScore": 82,
+      "tags": [
+        "lightning",
+        "balanced",
+        "velvet",
+        "arc",
+        "sprite_031"
+      ],
+      "description": "Stormcall leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 4,
+      "moveIds": [
+        "move_22",
+        "move_23",
+        "move_24",
+        "move_25",
+        "move_26",
+        "move_27",
+        "move_28",
+        "move_29",
+        "move_30",
+        "move_31"
+      ]
+    },
+    {
+      "id": "legs-sprite_037",
+      "slot": "legs",
+      "file": "Legs/sprite_037.png",
+      "family": {
+        "id": 7,
+        "name": "Sunflare",
+        "theme": "solar",
+        "type": "Fire"
+      },
+      "variant": 19,
+      "rarity": "rare",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 30,
+        "atk": 30,
+        "def": 30,
+        "spd": 30,
+        "luck": 3
+      },
+      "powerScore": 123,
+      "tags": [
+        "solar",
+        "balanced",
+        "hollow",
+        "volt",
+        "sprite_037"
+      ],
+      "description": "Sunflare leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 7,
+      "moveIds": [
+        "move_57",
+        "move_58",
+        "move_55",
+        "move_56",
+        "move_53",
+        "move_54",
+        "move_51",
+        "move_52",
+        "move_49",
+        "move_50",
+        "move_47",
+        "move_48",
+        "move_45",
+        "move_46",
+        "move_43",
+        "move_44",
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "legs-sprite_038",
+      "slot": "legs",
+      "file": "Legs/sprite_038.png",
+      "family": {
+        "id": 2,
+        "name": "Embercrest",
+        "theme": "fire",
+        "type": "Fire"
+      },
+      "variant": 20,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 4
+      },
+      "powerScore": 84,
+      "tags": [
+        "fire",
+        "balanced",
+        "titan",
+        "thunder",
+        "sprite_038"
+      ],
+      "description": "Embercrest leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 2,
+      "moveIds": [
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "legs-sprite_040",
+      "slot": "legs",
+      "file": "Legs/sprite_040.png",
+      "family": {
+        "id": 7,
+        "name": "Sunflare",
+        "theme": "solar",
+        "type": "Fire"
+      },
+      "variant": 21,
+      "rarity": "rare",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 30,
+        "atk": 30,
+        "def": 30,
+        "spd": 30,
+        "luck": 4
+      },
+      "powerScore": 124,
+      "tags": [
+        "solar",
+        "balanced",
+        "reinforced",
+        "iron",
+        "sprite_040"
+      ],
+      "description": "Sunflare leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 7,
+      "moveIds": [
+        "move_57",
+        "move_58",
+        "move_55",
+        "move_56",
+        "move_53",
+        "move_54",
+        "move_51",
+        "move_52",
+        "move_49",
+        "move_50",
+        "move_47",
+        "move_48",
+        "move_45",
+        "move_46",
+        "move_43",
+        "move_44",
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "legs-sprite_042",
+      "slot": "legs",
+      "file": "Legs/sprite_042.png",
+      "family": {
+        "id": 2,
+        "name": "Embercrest",
+        "theme": "fire",
+        "type": "Fire"
+      },
+      "variant": 22,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 1
+      },
+      "powerScore": 81,
+      "tags": [
+        "fire",
+        "balanced",
+        "razor",
+        "slate",
+        "sprite_042"
+      ],
+      "description": "Embercrest leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 2,
+      "moveIds": [
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "legs-sprite_043",
+      "slot": "legs",
+      "file": "Legs/sprite_043.png",
+      "family": {
+        "id": 2,
+        "name": "Embercrest",
+        "theme": "fire",
+        "type": "Fire"
+      },
+      "variant": 23,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 2
+      },
+      "powerScore": 82,
+      "tags": [
+        "fire",
+        "balanced",
+        "velvet",
+        "granite",
+        "sprite_043"
+      ],
+      "description": "Embercrest leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 2,
+      "moveIds": [
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "legs-sprite_045",
+      "slot": "legs",
+      "file": "Legs/sprite_045.png",
+      "family": {
+        "id": 2,
+        "name": "Embercrest",
+        "theme": "fire",
+        "type": "Fire"
+      },
+      "variant": 24,
+      "rarity": "rare",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 30,
+        "atk": 30,
+        "def": 30,
+        "spd": 30,
+        "luck": 3
+      },
+      "powerScore": 123,
+      "tags": [
+        "fire",
+        "balanced",
+        "hollow",
+        "anvil",
+        "sprite_045"
+      ],
+      "description": "Embercrest leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 2,
+      "moveIds": [
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "legs-sprite_056",
+      "slot": "legs",
+      "file": "Legs/sprite_056.png",
+      "family": {
+        "id": 7,
+        "name": "Sunflare",
+        "theme": "solar",
+        "type": "Fire"
+      },
+      "variant": 25,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 4
+      },
+      "powerScore": 84,
+      "tags": [
+        "solar",
+        "balanced",
+        "titan",
+        "iron",
+        "sprite_056"
+      ],
+      "description": "Sunflare leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 7,
+      "moveIds": [
+        "move_57",
+        "move_58",
+        "move_55",
+        "move_56",
+        "move_53",
+        "move_54",
+        "move_51",
+        "move_52",
+        "move_49",
+        "move_50",
+        "move_47",
+        "move_48",
+        "move_45",
+        "move_46",
+        "move_43",
+        "move_44",
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "legs-sprite_057",
+      "slot": "legs",
+      "file": "Legs/sprite_057.png",
+      "family": {
+        "id": 1,
+        "name": "Marshborn",
+        "theme": "bog",
+        "type": "Normal"
+      },
+      "variant": 26,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 4
+      },
+      "powerScore": 84,
+      "tags": [
+        "bog",
+        "balanced",
+        "reinforced",
+        "veil",
+        "sprite_057"
+      ],
+      "description": "Marshborn leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 1,
+      "moveIds": [
+        "move_43",
+        "move_44",
+        "move_45",
+        "move_46",
+        "move_47",
+        "move_48",
+        "move_49",
+        "move_50",
+        "move_51",
+        "move_52",
+        "move_53",
+        "move_54",
+        "move_55",
+        "move_56",
+        "move_57",
+        "move_58"
+      ]
+    },
+    {
+      "id": "legs-sprite_058",
+      "slot": "legs",
+      "file": "Legs/sprite_058.png",
+      "family": {
+        "id": 7,
+        "name": "Sunflare",
+        "theme": "solar",
+        "type": "Fire"
+      },
+      "variant": 27,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 1
+      },
+      "powerScore": 81,
+      "tags": [
+        "solar",
+        "balanced",
+        "razor",
+        "gloom",
+        "sprite_058"
+      ],
+      "description": "Sunflare leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 7,
+      "moveIds": [
+        "move_57",
+        "move_58",
+        "move_55",
+        "move_56",
+        "move_53",
+        "move_54",
+        "move_51",
+        "move_52",
+        "move_49",
+        "move_50",
+        "move_47",
+        "move_48",
+        "move_45",
+        "move_46",
+        "move_43",
+        "move_44",
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "legs-sprite_059",
+      "slot": "legs",
+      "file": "Legs/sprite_059.png",
+      "family": {
+        "id": 2,
+        "name": "Embercrest",
+        "theme": "fire",
+        "type": "Fire"
+      },
+      "variant": 28,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 2
+      },
+      "powerScore": 82,
+      "tags": [
+        "fire",
+        "balanced",
+        "velvet",
+        "night",
+        "sprite_059"
+      ],
+      "description": "Embercrest leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 2,
+      "moveIds": [
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "legs-sprite_061",
+      "slot": "legs",
+      "file": "Legs/sprite_061.png",
+      "family": {
+        "id": 3,
+        "name": "Frostplume",
+        "theme": "ice",
+        "type": "Ice"
+      },
+      "variant": 29,
+      "rarity": "rare",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 30,
+        "atk": 30,
+        "def": 30,
+        "spd": 30,
+        "luck": 3
+      },
+      "powerScore": 123,
+      "tags": [
+        "ice",
+        "balanced",
+        "hollow",
+        "shade",
+        "sprite_061"
+      ],
+      "description": "Frostplume leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 3,
+      "moveIds": [
+        "move_12",
+        "move_13",
+        "move_14",
+        "move_15",
+        "move_16",
+        "move_17",
+        "move_18",
+        "move_19",
+        "move_20",
+        "move_21"
+      ]
+    },
+    {
+      "id": "legs-sprite_062",
+      "slot": "legs",
+      "file": "Legs/sprite_062.png",
+      "family": {
+        "id": 2,
+        "name": "Embercrest",
+        "theme": "fire",
+        "type": "Fire"
+      },
+      "variant": 30,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 4
+      },
+      "powerScore": 84,
+      "tags": [
+        "fire",
+        "balanced",
+        "titan",
+        "veil",
+        "sprite_062"
+      ],
+      "description": "Embercrest leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 2,
+      "moveIds": [
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": "legs-sprite_079",
+      "slot": "legs",
+      "file": "Legs/sprite_079.png",
+      "family": {
+        "id": 3,
+        "name": "Frostplume",
+        "theme": "ice",
+        "type": "Ice"
+      },
+      "variant": 31,
+      "rarity": "rare",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 30,
+        "atk": 30,
+        "def": 30,
+        "spd": 30,
+        "luck": 4
+      },
+      "powerScore": 124,
+      "tags": [
+        "ice",
+        "balanced",
+        "reinforced",
+        "flare",
+        "sprite_079"
+      ],
+      "description": "Frostplume leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 3,
+      "moveIds": [
+        "move_12",
+        "move_13",
+        "move_14",
+        "move_15",
+        "move_16",
+        "move_17",
+        "move_18",
+        "move_19",
+        "move_20",
+        "move_21"
+      ]
+    },
+    {
+      "id": "legs-sprite_080",
+      "slot": "legs",
+      "file": "Legs/sprite_080.png",
+      "family": {
+        "id": 3,
+        "name": "Frostplume",
+        "theme": "ice",
+        "type": "Ice"
+      },
+      "variant": 32,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 1
+      },
+      "powerScore": 81,
+      "tags": [
+        "ice",
+        "balanced",
+        "razor",
+        "halo",
+        "sprite_080"
+      ],
+      "description": "Frostplume leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 3,
+      "moveIds": [
+        "move_12",
+        "move_13",
+        "move_14",
+        "move_15",
+        "move_16",
+        "move_17",
+        "move_18",
+        "move_19",
+        "move_20",
+        "move_21"
+      ]
+    },
+    {
+      "id": "legs-sprite_081",
+      "slot": "legs",
+      "file": "Legs/sprite_081.png",
+      "family": {
+        "id": 3,
+        "name": "Frostplume",
+        "theme": "ice",
+        "type": "Ice"
+      },
+      "variant": 33,
+      "rarity": "rare",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 30,
+        "atk": 30,
+        "def": 30,
+        "spd": 30,
+        "luck": 2
+      },
+      "powerScore": 122,
+      "tags": [
+        "ice",
+        "balanced",
+        "velvet",
+        "sun",
+        "sprite_081"
+      ],
+      "description": "Frostplume leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 3,
+      "moveIds": [
+        "move_12",
+        "move_13",
+        "move_14",
+        "move_15",
+        "move_16",
+        "move_17",
+        "move_18",
+        "move_19",
+        "move_20",
+        "move_21"
+      ]
+    },
+    {
+      "id": "legs-sprite_082",
+      "slot": "legs",
+      "file": "Legs/sprite_082.png",
+      "family": {
+        "id": 3,
+        "name": "Frostplume",
+        "theme": "ice",
+        "type": "Ice"
+      },
+      "variant": 34,
+      "rarity": "rare",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 30,
+        "atk": 30,
+        "def": 30,
+        "spd": 30,
+        "luck": 3
+      },
+      "powerScore": 123,
+      "tags": [
+        "ice",
+        "balanced",
+        "hollow",
+        "dawn",
+        "sprite_082"
+      ],
+      "description": "Frostplume leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 3,
+      "moveIds": [
+        "move_12",
+        "move_13",
+        "move_14",
+        "move_15",
+        "move_16",
+        "move_17",
+        "move_18",
+        "move_19",
+        "move_20",
+        "move_21"
+      ]
+    },
+    {
+      "id": "legs-sprite_083",
+      "slot": "legs",
+      "file": "Legs/sprite_083.png",
+      "family": {
+        "id": 8,
+        "name": "Bloomcrest",
+        "theme": "wild",
+        "type": "Normal"
+      },
+      "variant": 35,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 4
+      },
+      "powerScore": 84,
+      "tags": [
+        "wild",
+        "balanced",
+        "titan",
+        "flare",
+        "sprite_083"
+      ],
+      "description": "Bloomcrest leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 8,
+      "moveIds": [
+        "move_55",
+        "move_57",
+        "move_58",
+        "move_56",
+        "move_54",
+        "move_53",
+        "move_51",
+        "move_52",
+        "move_50",
+        "move_49",
+        "move_47",
+        "move_48",
+        "move_46",
+        "move_45",
+        "move_43",
+        "move_44"
+      ]
+    },
+    {
+      "id": "legs-sprite_086",
+      "slot": "legs",
+      "file": "Legs/sprite_086.png",
+      "family": {
+        "id": 3,
+        "name": "Frostplume",
+        "theme": "ice",
+        "type": "Ice"
+      },
+      "variant": 36,
+      "rarity": "rare",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 30,
+        "atk": 30,
+        "def": 30,
+        "spd": 30,
+        "luck": 4
+      },
+      "powerScore": 124,
+      "tags": [
+        "ice",
+        "balanced",
+        "reinforced",
+        "grove",
+        "sprite_086"
+      ],
+      "description": "Frostplume leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 3,
+      "moveIds": [
+        "move_12",
+        "move_13",
+        "move_14",
+        "move_15",
+        "move_16",
+        "move_17",
+        "move_18",
+        "move_19",
+        "move_20",
+        "move_21"
+      ]
+    },
+    {
+      "id": "legs-sprite_102",
+      "slot": "legs",
+      "file": "Legs/sprite_102.png",
+      "family": {
+        "id": 8,
+        "name": "Bloomcrest",
+        "theme": "wild",
+        "type": "Normal"
+      },
+      "variant": 37,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 1
+      },
+      "powerScore": 81,
+      "tags": [
+        "wild",
+        "balanced",
+        "razor",
+        "thorn",
+        "sprite_102"
+      ],
+      "description": "Bloomcrest leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 8,
+      "moveIds": [
+        "move_55",
+        "move_57",
+        "move_58",
+        "move_56",
+        "move_54",
+        "move_53",
+        "move_51",
+        "move_52",
+        "move_50",
+        "move_49",
+        "move_47",
+        "move_48",
+        "move_46",
+        "move_45",
+        "move_43",
+        "move_44"
+      ]
+    },
+    {
+      "id": "legs-sprite_103",
+      "slot": "legs",
+      "file": "Legs/sprite_103.png",
+      "family": {
+        "id": 5,
+        "name": "Ironbarb",
+        "theme": "stone",
+        "type": "Normal"
+      },
+      "variant": 38,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 2
+      },
+      "powerScore": 82,
+      "tags": [
+        "stone",
+        "balanced",
+        "velvet",
+        "bloom",
+        "sprite_103"
+      ],
+      "description": "Ironbarb leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 5,
+      "moveIds": [
+        "move_43",
+        "move_44",
+        "move_45",
+        "move_46",
+        "move_47",
+        "move_48",
+        "move_49",
+        "move_50",
+        "move_51",
+        "move_52",
+        "move_53",
+        "move_54",
+        "move_55",
+        "move_56",
+        "move_57",
+        "move_58"
+      ]
+    },
+    {
+      "id": "legs-sprite_104",
+      "slot": "legs",
+      "file": "Legs/sprite_104.png",
+      "family": {
+        "id": 5,
+        "name": "Ironbarb",
+        "theme": "stone",
+        "type": "Normal"
+      },
+      "variant": 39,
+      "rarity": "rare",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 30,
+        "atk": 30,
+        "def": 30,
+        "spd": 30,
+        "luck": 3
+      },
+      "powerScore": 123,
+      "tags": [
+        "stone",
+        "balanced",
+        "hollow",
+        "vine",
+        "sprite_104"
+      ],
+      "description": "Ironbarb leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 5,
+      "moveIds": [
+        "move_43",
+        "move_44",
+        "move_45",
+        "move_46",
+        "move_47",
+        "move_48",
+        "move_49",
+        "move_50",
+        "move_51",
+        "move_52",
+        "move_53",
+        "move_54",
+        "move_55",
+        "move_56",
+        "move_57",
+        "move_58"
+      ]
+    },
+    {
+      "id": "legs-sprite_105",
+      "slot": "legs",
+      "file": "Legs/sprite_105.png",
+      "family": {
+        "id": 5,
+        "name": "Ironbarb",
+        "theme": "stone",
+        "type": "Normal"
+      },
+      "variant": 40,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 4
+      },
+      "powerScore": 84,
+      "tags": [
+        "stone",
+        "balanced",
+        "titan",
+        "grove",
+        "sprite_105"
+      ],
+      "description": "Ironbarb leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 5,
+      "moveIds": [
+        "move_43",
+        "move_44",
+        "move_45",
+        "move_46",
+        "move_47",
+        "move_48",
+        "move_49",
+        "move_50",
+        "move_51",
+        "move_52",
+        "move_53",
+        "move_54",
+        "move_55",
+        "move_56",
+        "move_57",
+        "move_58"
+      ]
+    },
+    {
+      "id": "legs-sprite_106",
+      "slot": "legs",
+      "file": "Legs/sprite_106.png",
+      "family": {
+        "id": 5,
+        "name": "Ironbarb",
+        "theme": "stone",
+        "type": "Normal"
+      },
+      "variant": 41,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 4
+      },
+      "powerScore": 84,
+      "tags": [
+        "stone",
+        "balanced",
+        "reinforced",
+        "void",
+        "sprite_106"
+      ],
+      "description": "Ironbarb leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 5,
+      "moveIds": [
+        "move_43",
+        "move_44",
+        "move_45",
+        "move_46",
+        "move_47",
+        "move_48",
+        "move_49",
+        "move_50",
+        "move_51",
+        "move_52",
+        "move_53",
+        "move_54",
+        "move_55",
+        "move_56",
+        "move_57",
+        "move_58"
+      ]
+    },
+    {
+      "id": "legs-sprite_113",
+      "slot": "legs",
+      "file": "Legs/sprite_113.png",
+      "family": {
+        "id": 3,
+        "name": "Frostplume",
+        "theme": "ice",
+        "type": "Ice"
+      },
+      "variant": 42,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 1
+      },
+      "powerScore": 81,
+      "tags": [
+        "ice",
+        "balanced",
+        "razor",
+        "rune",
+        "sprite_113"
+      ],
+      "description": "Frostplume leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 3,
+      "moveIds": [
+        "move_12",
+        "move_13",
+        "move_14",
+        "move_15",
+        "move_16",
+        "move_17",
+        "move_18",
+        "move_19",
+        "move_20",
+        "move_21"
+      ]
+    },
+    {
+      "id": "legs-sprite_122",
+      "slot": "legs",
+      "file": "Legs/sprite_122.png",
+      "family": {
+        "id": 8,
+        "name": "Bloomcrest",
+        "theme": "wild",
+        "type": "Normal"
+      },
+      "variant": 43,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 2
+      },
+      "powerScore": 82,
+      "tags": [
+        "wild",
+        "balanced",
+        "velvet",
+        "sigil",
+        "sprite_122"
+      ],
+      "description": "Bloomcrest legs profile aligned for Normal typing.",
+      "familyId": 8,
+      "moveIds": [
+        "move_55",
+        "move_57",
+        "move_58",
+        "move_56",
+        "move_54",
+        "move_53",
+        "move_51",
+        "move_52",
+        "move_50",
+        "move_49",
+        "move_47",
+        "move_48",
+        "move_46",
+        "move_45",
+        "move_43",
+        "move_44"
+      ]
+    },
+    {
+      "id": "legs-sprite_123",
+      "slot": "legs",
+      "file": "Legs/sprite_123.png",
+      "family": {
+        "id": 5,
+        "name": "Ironbarb",
+        "theme": "stone",
+        "type": "Normal"
+      },
+      "variant": 44,
+      "rarity": "rare",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 30,
+        "atk": 30,
+        "def": 30,
+        "spd": 30,
+        "luck": 3
+      },
+      "powerScore": 123,
+      "tags": [
+        "stone",
+        "balanced",
+        "hollow",
+        "echo",
+        "sprite_123"
+      ],
+      "description": "Ironbarb leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 5,
+      "moveIds": [
+        "move_43",
+        "move_44",
+        "move_45",
+        "move_46",
+        "move_47",
+        "move_48",
+        "move_49",
+        "move_50",
+        "move_51",
+        "move_52",
+        "move_53",
+        "move_54",
+        "move_55",
+        "move_56",
+        "move_57",
+        "move_58"
+      ]
+    },
+    {
+      "id": "legs-sprite_125",
+      "slot": "legs",
+      "file": "Legs/sprite_125.png",
+      "family": {
+        "id": 4,
+        "name": "Stormcall",
+        "theme": "lightning",
+        "type": "Lightning"
+      },
+      "variant": 45,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 4
+      },
+      "powerScore": 84,
+      "tags": [
+        "lightning",
+        "balanced",
+        "titan",
+        "void",
+        "sprite_125"
+      ],
+      "description": "Stormcall leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 4,
+      "moveIds": [
+        "move_22",
+        "move_23",
+        "move_24",
+        "move_25",
+        "move_26",
+        "move_27",
+        "move_28",
+        "move_29",
+        "move_30",
+        "move_31"
+      ]
+    },
+    {
+      "id": "legs-sprite_126",
+      "slot": "legs",
+      "file": "Legs/sprite_126.png",
+      "family": {
+        "id": 1,
+        "name": "Marshborn",
+        "theme": "bog",
+        "type": "Normal"
+      },
+      "variant": 46,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 4
+      },
+      "powerScore": 84,
+      "tags": [
+        "bog",
+        "balanced",
+        "reinforced",
+        "reed",
+        "sprite_126"
+      ],
+      "description": "Marshborn leg frame with a balanced profile. Visual theme aligned to sprite style.",
+      "familyId": 1,
+      "moveIds": [
+        "move_43",
+        "move_44",
+        "move_45",
+        "move_46",
+        "move_47",
+        "move_48",
+        "move_49",
+        "move_50",
+        "move_51",
+        "move_52",
+        "move_53",
+        "move_54",
+        "move_55",
+        "move_56",
+        "move_57",
+        "move_58"
+      ]
+    },
+    {
+      "id": "legs-sprite_127",
+      "slot": "legs",
+      "file": "Legs/sprite_127.png",
+      "family": {
+        "id": 8,
+        "name": "Bloomcrest",
+        "theme": "wild",
+        "type": "Normal"
+      },
+      "variant": 47,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 1
+      },
+      "powerScore": 81,
+      "tags": [
+        "wild",
+        "balanced",
+        "razor",
+        "sprite_127"
+      ],
+      "description": "Bloomcrest legs profile aligned for Normal typing.",
+      "familyId": 8,
+      "moveIds": [
+        "move_55",
+        "move_57",
+        "move_58",
+        "move_56",
+        "move_54",
+        "move_53",
+        "move_51",
+        "move_52",
+        "move_50",
+        "move_49",
+        "move_47",
+        "move_48",
+        "move_46",
+        "move_45",
+        "move_43",
+        "move_44"
+      ]
+    },
+    {
+      "id": "legs-sprite_128",
+      "slot": "legs",
+      "file": "Legs/sprite_128.png",
+      "family": {
+        "id": 8,
+        "name": "Bloomcrest",
+        "theme": "wild",
+        "type": "Normal"
+      },
+      "variant": 48,
+      "rarity": "common",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 2
+      },
+      "powerScore": 82,
+      "tags": [
+        "wild",
+        "balanced",
+        "velvet",
+        "fen",
+        "sprite_128"
+      ],
+      "description": "Bloomcrest legs profile aligned for Normal typing.",
+      "familyId": 8,
+      "moveIds": [
+        "move_55",
+        "move_57",
+        "move_58",
+        "move_56",
+        "move_54",
+        "move_53",
+        "move_51",
+        "move_52",
+        "move_50",
+        "move_49",
+        "move_47",
+        "move_48",
+        "move_46",
+        "move_45",
+        "move_43",
+        "move_44"
+      ]
+    },
+    {
+      "id": "head-sprite_009",
+      "slot": "head",
+      "file": "Heads/sprite_009.png",
+      "family": {
+        "id": 8,
+        "name": "Bloomcrest",
+        "theme": "wild",
+        "type": "Normal"
+      },
+      "variant": 17,
+      "rarity": "legendary",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 40,
+        "atk": 40,
+        "def": 40,
+        "spd": 40,
+        "luck": 1
+      },
+      "powerScore": 161,
+      "tags": [
+        "head",
+        "sprite_009"
+      ],
+      "description": "Newly assigned from unreferenced image.",
+      "familyId": 8,
+      "moveIds": [
+        "move_55",
+        "move_57",
+        "move_58",
+        "move_56",
+        "move_54",
+        "move_53",
+        "move_51",
+        "move_52",
+        "move_50",
+        "move_49",
+        "move_47",
+        "move_48",
+        "move_46",
+        "move_45",
+        "move_43",
+        "move_44"
+      ]
+    },
+    {
+      "id": "torso-sprite_0431",
+      "slot": "torso",
+      "file": "Torsos/sprite_0431.png",
+      "familyId": 8,
+      "family": {
+        "id": 8,
+        "name": "Bloomcrest",
+        "theme": "wild",
+        "type": "Normal"
+      },
+      "variant": 17,
+      "rarity": "rare",
+      "archetype": "balanced",
+      "stats": {
+        "hp": 28,
+        "atk": 25,
+        "def": 33,
+        "spd": 20,
+        "luck": 43
+      },
+      "powerScore": 149,
+      "tags": [
+        "torso",
+        "sprite_0431"
+      ],
+      "description": "Newly assigned from unreferenced image.",
+      "moveIds": [
+        "move_55",
+        "move_57",
+        "move_58",
+        "move_56",
+        "move_54",
+        "move_53",
+        "move_51",
+        "move_52",
+        "move_50",
+        "move_49",
+        "move_47",
+        "move_48",
+        "move_46",
+        "move_45",
+        "move_43",
+        "move_44"
+      ]
+    }
+  ],
+  "families": [
+    {
+      "id": 1,
+      "name": "Marshborn",
+      "theme": "bog",
+      "type": "Normal",
+      "description": "",
+      "baseMoveIds": [
+        "move_43",
+        "move_44",
+        "move_45",
+        "move_46",
+        "move_47",
+        "move_48",
+        "move_49",
+        "move_50",
+        "move_51",
+        "move_52",
+        "move_53",
+        "move_54",
+        "move_55",
+        "move_56",
+        "move_57",
+        "move_58"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Embercrest",
+      "theme": "fire",
+      "type": "Fire",
+      "description": "",
+      "baseMoveIds": [
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Frostplume",
+      "theme": "ice",
+      "type": "Ice",
+      "description": "",
+      "baseMoveIds": [
+        "move_12",
+        "move_13",
+        "move_14",
+        "move_15",
+        "move_16",
+        "move_17",
+        "move_18",
+        "move_19",
+        "move_20",
+        "move_21"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Stormcall",
+      "theme": "lightning",
+      "type": "Lightning",
+      "description": "",
+      "baseMoveIds": [
+        "move_22",
+        "move_23",
+        "move_24",
+        "move_25",
+        "move_26",
+        "move_27",
+        "move_28",
+        "move_29",
+        "move_30",
+        "move_31"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Ironbarb",
+      "theme": "stone",
+      "type": "Normal",
+      "description": "",
+      "baseMoveIds": [
+        "move_43",
+        "move_44",
+        "move_45",
+        "move_46",
+        "move_47",
+        "move_48",
+        "move_49",
+        "move_50",
+        "move_51",
+        "move_52",
+        "move_53",
+        "move_54",
+        "move_55",
+        "move_56",
+        "move_57",
+        "move_58"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Duskveil",
+      "theme": "shadow",
+      "type": "Shadow",
+      "description": "",
+      "baseMoveIds": [
+        "move_32",
+        "move_33",
+        "move_34",
+        "move_35",
+        "move_36",
+        "move_37",
+        "move_38",
+        "move_39",
+        "move_40",
+        "move_41",
+        "move_42"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Sunflare",
+      "theme": "solar",
+      "type": "Fire",
+      "description": "",
+      "baseMoveIds": [
+        "move_57",
+        "move_58",
+        "move_55",
+        "move_56",
+        "move_53",
+        "move_54",
+        "move_51",
+        "move_52",
+        "move_49",
+        "move_50",
+        "move_47",
+        "move_48",
+        "move_45",
+        "move_46",
+        "move_43",
+        "move_44",
+        "move_1",
+        "move_2",
+        "move_3",
+        "move_4",
+        "move_5",
+        "move_6",
+        "move_7",
+        "move_8",
+        "move_9",
+        "move_10",
+        "move_11"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Bloomcrest",
+      "theme": "wild",
+      "type": "Normal",
+      "description": "",
+      "baseMoveIds": [
+        "move_55",
+        "move_57",
+        "move_58",
+        "move_56",
+        "move_54",
+        "move_53",
+        "move_51",
+        "move_52",
+        "move_50",
+        "move_49",
+        "move_47",
+        "move_48",
+        "move_46",
+        "move_45",
+        "move_43",
+        "move_44"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Voidgild",
+      "theme": "arcane",
+      "type": "Shadow",
+      "description": "",
+      "baseMoveIds": [
+        "move_32",
+        "move_33",
+        "move_34",
+        "move_35",
+        "move_36",
+        "move_37",
+        "move_38",
+        "move_39",
+        "move_40",
+        "move_41",
+        "move_42"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Unassigned",
+      "theme": "normal",
+      "type": "Normal",
+      "description": "",
+      "baseMoveIds": [
+        "move_43",
+        "move_44",
+        "move_45",
+        "move_46",
+        "move_47",
+        "move_48",
+        "move_49",
+        "move_50",
+        "move_51",
+        "move_52",
+        "move_53",
+        "move_54",
+        "move_55",
+        "move_56",
+        "move_57",
+        "move_58"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,529 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HonkaRogue Honker Editor</title>
+  <style>
+    :root {
+      --bg:#0b0f1a; --panel:#151b2a; --panel2:#101623; --text:#e6ebff; --muted:#8f9ab8;
+      --border:#2a3550; --ok:#00d084; --warn:#ffb020; --gold:#ffd84a;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Segoe UI, Arial, sans-serif; color:var(--text); background:var(--bg); }
+    .wrap { display:grid; grid-template-columns:360px 1fr; min-height:100vh; }
+    .left,.right { padding:14px; }
+    .left { border-right:1px solid var(--border); background:var(--panel2); }
+    .card { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:12px; margin-bottom:12px; }
+    .row { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px; }
+    .row3 { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-bottom:8px; }
+    .toolbar { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; }
+    .toolbar2 { display:grid; grid-template-columns:repeat(2, 1fr); gap:8px; }
+    input, select, textarea, button {
+      width:100%; border-radius:8px; border:1px solid var(--border); background:#0d1422; color:var(--text);
+      padding:8px; font-size:13px;
+    }
+    textarea { min-height:90px; resize:vertical; }
+    button { cursor:pointer; }
+    .status { font-size:12px; color:var(--muted); min-height:16px; }
+    .status.ok { color:var(--ok); } .status.warn { color:var(--warn); }
+    .list { max-height:calc(100vh - 250px); overflow:auto; border:1px solid var(--border); border-radius:8px; }
+    .item { padding:8px; border-bottom:1px solid #1c2538; cursor:pointer; }
+    .item:last-child { border-bottom:0; }
+    .item.active { background:#12233a; }
+    .meta { font-size:11px; color:var(--muted); }
+    .build-wrap { display:grid; grid-template-columns:380px 1fr; gap:12px; }
+    .preview-frame { background:#0c1320; border:1px solid var(--border); border-radius:10px; padding:10px; }
+    .viz {
+      position:relative; width:340px; height:360px; margin:0 auto; border:1px solid #213252; border-radius:10px;
+      background:radial-gradient(circle at 50% 20%, #1a2740 0%, #0c1320 70%);
+    }
+    .layer { position:absolute; left:50%; transform:translateX(-50%); object-fit:contain; image-rendering:pixelated; }
+    .legs { width:200px; height:140px; bottom:4px; z-index:1; }
+    .wings { width:300px; height:170px; top:108px; left:68%; z-index:2; }
+    .torso { width:220px; height:170px; top:95px; z-index:3; }
+    .head { width:180px; height:150px; top:14px; z-index:4; }
+    .stat-grid { display:grid; grid-template-columns:repeat(5, 1fr); gap:8px; margin-top:10px; }
+    .stat { background:#11192a; border:1px solid var(--border); border-radius:8px; padding:8px; text-align:center; }
+    .stat b { display:block; font-size:15px; color:#e8f1ff; }
+    .stat span { font-size:11px; color:var(--muted); }
+    .move-picker { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:8px; max-height:260px; overflow:auto; border:1px solid var(--border); border-radius:8px; padding:8px; background:#0c1320; }
+    .move-card { border:1px solid #2b3958; border-radius:8px; padding:8px; background:#121b2d; cursor:pointer; }
+    .move-card:hover { border-color:#4b6ea1; }
+    .move-card.selected { border-color:var(--gold); box-shadow:0 0 0 1px rgba(255,216,74,.35) inset; background:#1a2338; }
+    .move-card.disabled { opacity:.55; cursor:not-allowed; }
+    .move-card .m-name { font-size:12px; font-weight:600; }
+    .move-card .m-id { font-size:11px; color:var(--muted); }
+    .move-card .m-meta { font-size:11px; color:#cdd8f7; margin-top:4px; }
+    @media (max-width:1200px) {
+      .wrap { grid-template-columns:1fr; }
+      .left { border-right:0; border-bottom:1px solid var(--border); }
+      .list { max-height:280px; }
+      .build-wrap { grid-template-columns:1fr; }
+      .viz { width:300px; height:320px; }
+      .legs { width:175px; height:120px; } .wings { width:260px; height:150px; top:98px; left:68%; }
+      .torso { width:195px; height:150px; top:88px; } .head { width:160px; height:132px; top:14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <aside class="left">
+      <div class="card">
+        <h2 style="margin:0 0 8px">Honkedex Editor</h2>
+        <div class="row">
+          <input id="search" placeholder="search id/name/type">
+          <select id="typeFilter">
+            <option value="">All Types</option>
+            <option>Fire</option><option>Ice</option><option>Lightning</option><option>Shadow</option><option>Normal</option>
+          </select>
+        </div>
+        <div class="toolbar">
+          <button id="addBtn">Add</button>
+          <button id="dupBtn">Duplicate</button>
+          <button id="delBtn">Delete</button>
+        </div>
+        <div id="countLbl" class="status"></div>
+      </div>
+      <div id="list" class="list"></div>
+    </aside>
+    <main class="right">
+      <div class="card">
+        <div class="toolbar">
+          <button id="reloadBtn">Reload</button>
+          <button id="saveBtn">Save HONKEDex</button>
+          <button id="downloadBtn">Download JSON</button>
+        </div>
+        <div id="dirty" class="status"></div>
+        <div id="status" class="status"></div>
+      </div>
+
+      <div class="card build-wrap">
+        <div class="preview-frame">
+          <div class="viz">
+            <img id="pv-wings" class="layer wings" alt="wings">
+            <img id="pv-legs" class="layer legs" alt="legs">
+            <img id="pv-torso" class="layer torso" alt="torso">
+            <img id="pv-head" class="layer head" alt="head">
+          </div>
+          <div class="stat-grid">
+            <div class="stat"><b id="s-hp">0</b><span>HP</span></div>
+            <div class="stat"><b id="s-atk">0</b><span>ATK</span></div>
+            <div class="stat"><b id="s-def">0</b><span>DEF</span></div>
+            <div class="stat"><b id="s-spd">0</b><span>SPD</span></div>
+            <div class="stat"><b id="s-luck">0</b><span>LUCK</span></div>
+          </div>
+          <div id="partInfo" class="status" style="margin-top:8px"></div>
+        </div>
+        <div>
+          <div class="row3">
+            <div><label>dexNum</label><input id="f_dexNum" type="number"></div>
+            <div><label>id</label><input id="f_id"></div>
+            <div><label>name</label><input id="f_name"></div>
+          </div>
+          <div class="row">
+            <div><label>emoji</label><input id="f_emoji"></div>
+            <div><label>type</label><select id="f_type"><option>Fire</option><option>Ice</option><option>Lightning</option><option>Shadow</option><option>Normal</option></select></div>
+          </div>
+          <div class="row">
+            <div><label>lore</label><input id="f_lore"></div>
+            <div><label><input id="f_isBoss" type="checkbox" style="width:auto;margin-right:6px;">Boss Entry</label></div>
+          </div>
+          <div class="row3">
+            <div><label>Head</label><select id="p_head"></select></div>
+            <div><label>Torso</label><select id="p_torso"></select></div>
+            <div><label>Wings</label><select id="p_wings"></select></div>
+          </div>
+          <div class="row3">
+            <div><label>Legs</label><select id="p_legs"></select></div>
+            <div><label>Passive id</label><input id="f_passive_id"></div>
+            <div><label>Passive name</label><input id="f_passive_name"></div>
+          </div>
+          <div style="margin-bottom:8px"><label>Passive desc</label><textarea id="f_passive_desc"></textarea></div>
+          <div class="toolbar2" style="margin-bottom:8px">
+            <button id="autoMovesBtn">Auto Pick 4 From Parts</button>
+            <button id="applyBtn">Apply Form</button>
+          </div>
+          <div><label>Move set (select exactly 4, only from selected parts)</label></div>
+          <div id="movePicker" class="move-picker"></div>
+          <div id="moveSummary" class="status"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script>
+    const st = {
+      dex: [], partsData: null, movePool: [], dexOverrides: {}, idx: -1, filtered: [], dirty: false,
+      selectedMoveIds: [], partSel: { head:'', torso:'', wings:'', legs:'' }
+    };
+    const SLOT_KEYS = ['head', 'torso', 'wings', 'legs'];
+    const TYPE_FROM_THEME = { fire:'Fire', ice:'Ice', lightning:'Lightning', shadow:'Shadow', normal:'Normal' };
+    const TYPE_TO_PART_FAMILIES = {
+      Fire: ['Embercrest', 'Sunflare'],
+      Ice: ['Frostplume'],
+      Lightning: ['Stormcall'],
+      Shadow: ['Duskveil', 'Voidgild'],
+      Normal: ['Marshborn', 'Ironbarb', 'Bloomcrest'],
+    };
+    const el = id => document.getElementById(id);
+    const clone = v => JSON.parse(JSON.stringify(v));
+    const asInt = (v, d=0) => { const n = Number(v); return Number.isFinite(n) ? Math.round(n) : d; };
+    const moveId = m => String(m?.id ?? m?.moveId ?? '').trim();
+    function slugMoveName(s) {
+      return String(s || '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '_')
+        .replace(/^_+|_+$/g, '');
+    }
+    function canonicalMoveId(m) {
+      const explicit = moveId(m);
+      if (explicit) return explicit;
+      const types = Array.isArray(m?.types) && m.types.length ? m.types : [m?.type || 'Normal'];
+      const primary = String(types[0] || 'Normal');
+      return `${primary.toLowerCase()}_${slugMoveName(m?.name || '')}`;
+    }
+    function rebuildMoveLookup() {
+      st.moveByCanonicalId = new Map();
+      st.moveAliasToCanonical = new Map();
+      (st.movePool || []).forEach((m, idx) => {
+        const canonical = canonicalMoveId(m);
+        if (!canonical) return;
+        const rec = { ...m, id: canonical };
+        st.moveByCanonicalId.set(canonical, rec);
+        const aliases = [canonical, moveId(m), String(m?.moveId || '').trim(), `move_${idx + 1}`].filter(Boolean);
+        aliases.forEach(a => st.moveAliasToCanonical.set(a, canonical));
+      });
+    }
+    function resolveMoveId(rawId) {
+      const id = String(rawId || '').trim();
+      if (!id) return '';
+      return st.moveAliasToCanonical?.get(id) || id;
+    }
+    function hash32(str) {
+      let h = 2166136261 >>> 0;
+      const s = String(str || '');
+      for (let i = 0; i < s.length; i += 1) {
+        h ^= s.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return h >>> 0;
+    }
+    function seeded01(key) { return (hash32(String(key)) % 1000000) / 1000000; }
+    function rarityWeight(rarity) {
+      if (rarity === 'legendary') return 2;
+      if (rarity === 'rare') return 1;
+      return 0;
+    }
+    const setStatus = (msg, cls='') => { const s = el('status'); s.className = `status ${cls}`.trim(); s.textContent = msg; };
+    const setDirty = (v) => { st.dirty = !!v; const d = el('dirty'); d.className = `status ${st.dirty ? 'warn' : 'ok'}`; d.textContent = st.dirty ? 'Unsaved changes' : 'All changes saved'; };
+    function byPartId(id) { return (st.partsData?.parts || []).find(p => p.id === id) || null; }
+    function getFamily(part) {
+      if (!part) return null;
+      const id = Number(part.familyId || part.family?.id) || 0;
+      if (id) {
+        const byId = (st.partsData?.families || []).find(f => Number(f.id) === id);
+        if (byId) return byId;
+      }
+      const name = String(part.family?.name || '').toLowerCase();
+      if (name) return (st.partsData?.families || []).find(f => String(f.name || '').toLowerCase() === name) || null;
+      return null;
+    }
+    function partMoveIds(part) {
+      if (!part) return [];
+      if (Array.isArray(part.moveIds) && part.moveIds.length) return [...new Set(part.moveIds.map(x => String(x).trim()).filter(Boolean))];
+      const fam = getFamily(part);
+      return Array.isArray(fam?.baseMoveIds) ? [...new Set(fam.baseMoveIds.map(x => String(x).trim()).filter(Boolean))] : [];
+    }
+    function currentParts() {
+      return {
+        head: byPartId(st.partSel.head), torso: byPartId(st.partSel.torso),
+        wings: byPartId(st.partSel.wings), legs: byPartId(st.partSel.legs)
+      };
+    }
+    function computeDexPartIdForSlot(h, slot) {
+      const all = (st.partsData?.parts || []).filter(p => p.slot === slot);
+      if (!all.length) return '';
+      const fams = TYPE_TO_PART_FAMILIES[h?.type] || [];
+      let pool = all.filter(p => fams.includes(p.family?.name));
+      if (!pool.length) pool = all;
+      pool = pool.slice().sort((a, b) => {
+        const ra = rarityWeight(a.rarity);
+        const rb = rarityWeight(b.rarity);
+        if (ra !== rb) return ra - rb;
+        if ((a.powerScore || 0) !== (b.powerScore || 0)) return (a.powerScore || 0) - (b.powerScore || 0);
+        return String(a.id).localeCompare(String(b.id));
+      });
+      const roll = seeded01(`${h?.id || 'dex'}|${slot}|part`);
+      const bias = h?.isBoss ? 0.58 : 0.18;
+      const t = Math.max(0, Math.min(0.9999, bias + roll * (1 - bias)));
+      const idx = Math.floor(t * pool.length);
+      return String(pool[Math.min(pool.length - 1, idx)]?.id || '');
+    }
+    function sumStats(parts) {
+      const out = { hp:0, atk:0, def:0, spd:0, luck:0 };
+      for (const p of Object.values(parts)) {
+        if (!p?.stats) continue;
+        out.hp += asInt(p.stats.hp, 0); out.atk += asInt(p.stats.atk, 0); out.def += asInt(p.stats.def, 0);
+        out.spd += asInt(p.stats.spd, 0); out.luck += asInt(p.stats.luck, 0);
+      }
+      return out;
+    }
+    function inferType(parts) {
+      const counts = {};
+      for (const p of Object.values(parts)) {
+        if (!p) continue;
+        const fam = getFamily(p) || p.family || {};
+        const t = String(fam.type || '').trim() || TYPE_FROM_THEME[String(fam.theme || '').toLowerCase()] || 'Normal';
+        counts[t] = (counts[t] || 0) + 1;
+      }
+      const best = Object.entries(counts).sort((a,b) => b[1]-a[1])[0];
+      return best ? best[0] : 'Normal';
+    }
+    function candidateMoves(parts) {
+      const ids = [];
+      for (const p of Object.values(parts)) ids.push(...partMoveIds(p));
+      const resolved = ids.map(resolveMoveId).filter(Boolean);
+      const uniq = [...new Set(resolved)];
+      return uniq.map(id => ({ id, move: st.moveByCanonicalId?.get(id) || { id, name:id, type:'Normal', basePower:0, pp:0 } }));
+    }
+    function moveNameFromId(id) {
+      const mid = resolveMoveId(id);
+      if (!mid) return '';
+      const rec = st.moveByCanonicalId?.get(mid);
+      return rec?.name || mid;
+    }
+    function renderPartSelectors() {
+      for (const slot of SLOT_KEYS) {
+        const sel = el(`p_${slot}`);
+        const pool = (st.partsData?.parts || []).filter(p => p.slot === slot).sort((a,b) => String(a.id).localeCompare(String(b.id)));
+        sel.innerHTML = '<option value="">(none)</option>' + pool.map(p => `<option value="${p.id}">${p.id} [${p.rarity || '?'}]</option>`).join('');
+        sel.value = st.partSel[slot] || '';
+        sel.onchange = () => { st.partSel[slot] = sel.value; renderComputed(); renderMovePicker(); };
+      }
+    }
+    function renderComputed() {
+      const parts = currentParts();
+      const stats = sumStats(parts);
+      el('s-hp').textContent = stats.hp; el('s-atk').textContent = stats.atk; el('s-def').textContent = stats.def;
+      el('s-spd').textContent = stats.spd; el('s-luck').textContent = stats.luck;
+      el('partInfo').textContent = `Type inference: ${inferType(parts)} | Parts selected: ${Object.values(parts).filter(Boolean).length}/4`;
+      el('pv-head').src = parts.head?.file || ''; el('pv-torso').src = parts.torso?.file || '';
+      el('pv-wings').src = parts.wings?.file || ''; el('pv-legs').src = parts.legs?.file || '';
+    }
+    function renderMovePicker() {
+      const picks = candidateMoves(currentParts());
+      const selected = new Set(st.selectedMoveIds);
+      const host = el('movePicker');
+      host.innerHTML = picks.map(({ id, move }) => {
+        const types = Array.isArray(move.types) && move.types.length ? move.types[0] : (move.type || 'Normal');
+        const pwr = Number(move.basePower || move.power || 0) || 0;
+        const pp = Number(move.pp || move.maxPP || 0) || 0;
+        const on = selected.has(id);
+        return `<div class="move-card ${on ? 'selected' : ''}" data-id="${id}">
+          <div class="m-name">${move.name || id}</div><div class="m-id">${types} move</div>
+          <div class="m-meta">${types} · PWR ${pwr} · PP ${pp}</div>
+        </div>`;
+      }).join('') || '<div class="move-card disabled"><div class="m-name">No candidate moves from selected parts</div></div>';
+      host.querySelectorAll('.move-card[data-id]').forEach(card => {
+        card.onclick = () => {
+          const id = resolveMoveId(card.getAttribute('data-id'));
+          const i = st.selectedMoveIds.indexOf(id);
+          if (i >= 0) st.selectedMoveIds.splice(i, 1);
+          else if (st.selectedMoveIds.length < 4) st.selectedMoveIds.push(id);
+          renderMovePicker();
+        };
+      });
+      const validIds = new Set(picks.map(x => x.id));
+      st.selectedMoveIds = st.selectedMoveIds.map(resolveMoveId).filter(id => validIds.has(id)).slice(0, 4);
+      const selectedNames = st.selectedMoveIds.map(moveNameFromId).filter(Boolean);
+      el('moveSummary').textContent = selectedNames.length
+        ? `Selected ${st.selectedMoveIds.length}/4: ${selectedNames.join(', ')}`
+        : `Selected ${st.selectedMoveIds.length}/4 move(s)`;
+      el('moveSummary').className = `status ${st.selectedMoveIds.length === 4 ? 'ok' : 'warn'}`;
+    }
+    function autoPickMoves() {
+      const picks = candidateMoves(currentParts());
+      st.selectedMoveIds = picks.slice(0, 4).map(x => x.id);
+      renderMovePicker();
+    }
+    function cur() { return st.idx >= 0 ? st.dex[st.idx] : null; }
+    function extractPartSelection(h) {
+      st.partSel = { head:'', torso:'', wings:'', legs:'' };
+      const ids = h?.partIds || null;
+      if (ids) {
+        for (const slot of SLOT_KEYS) st.partSel[slot] = String(ids[slot] || '');
+      }
+      const ap = h?.assembledParts || null;
+      if (ap) {
+        for (const slot of SLOT_KEYS) if (!st.partSel[slot]) st.partSel[slot] = String(ap[slot]?.id || '');
+      }
+      const ov = st.dexOverrides?.[h?.id] || null;
+      if (ov) {
+        for (const slot of SLOT_KEYS) {
+          if (!st.partSel[slot]) st.partSel[slot] = String(ov[slot] || '');
+        }
+      }
+      for (const slot of SLOT_KEYS) {
+        if (!st.partSel[slot]) st.partSel[slot] = computeDexPartIdForSlot(h, slot);
+      }
+    }
+    function fillForm(h) {
+      el('f_dexNum').value = h.dexNum ?? '';
+      el('f_id').value = h.id || ''; el('f_name').value = h.name || ''; el('f_emoji').value = h.emoji || '';
+      el('f_type').value = h.type || 'Normal'; el('f_lore').value = h.lore || '';
+      el('f_isBoss').checked = !!h.isBoss;
+      el('f_passive_id').value = h.passive?.id || ''; el('f_passive_name').value = h.passive?.name || ''; el('f_passive_desc').value = h.passive?.desc || '';
+      st.selectedMoveIds = Array.isArray(h.moveIds)
+        ? [...new Set(h.moveIds.map(resolveMoveId).filter(Boolean))].slice(0, 4)
+        : [];
+      extractPartSelection(h);
+      renderPartSelectors();
+      renderComputed();
+      renderMovePicker();
+    }
+    function renderList() {
+      const q = (el('search').value || '').trim().toLowerCase();
+      const tf = el('typeFilter').value;
+      st.filtered = [];
+      for (let i = 0; i < st.dex.length; i += 1) {
+        const h = st.dex[i];
+        if (tf && String(h.type || '') !== tf) continue;
+        const hay = `${h.id || ''} ${h.name || ''} ${h.type || ''}`.toLowerCase();
+        if (q && !hay.includes(q)) continue;
+        st.filtered.push(i);
+      }
+      const list = el('list');
+      list.innerHTML = st.filtered.map(i => {
+        const h = st.dex[i];
+        const hasPartIds = !!(h.partIds?.head && h.partIds?.torso && h.partIds?.wings && h.partIds?.legs);
+        const parts = hasPartIds ? 'partIds' : (h.assembledParts ? 'assembled' : 'no-parts');
+        return `<div class="item ${i === st.idx ? 'active' : ''}" data-i="${i}">
+          <div><b>${h.id || '(no id)'}</b> - ${h.name || ''}</div>
+          <div class="meta">${h.type || 'Normal'} | ${parts} | moves ${(h.moveIds || []).length || 0}/4</div>
+        </div>`;
+      }).join('');
+      list.querySelectorAll('.item').forEach(it => {
+        it.onclick = () => { st.idx = Number(it.getAttribute('data-i')); renderList(); renderSel(); };
+      });
+      el('countLbl').textContent = `Showing ${st.filtered.length}/${st.dex.length}`;
+    }
+    function renderSel() {
+      const h = cur();
+      if (!h) return;
+      fillForm(h);
+    }
+    function applyForm() {
+      const h = cur(); if (!h) return;
+      if (st.selectedMoveIds.length !== 4) {
+        setStatus('Select exactly 4 moves from part-derived candidates before applying.', 'warn');
+        return;
+      }
+      const parts = currentParts();
+      if (!parts.head || !parts.torso || !parts.wings || !parts.legs) {
+        setStatus('Select all 4 parts before applying.', 'warn');
+        return;
+      }
+      const stats = sumStats(parts);
+      const out = clone(h);
+      out.dexNum = asInt(el('f_dexNum').value, out.dexNum || (st.idx + 1));
+      out.id = el('f_id').value.trim(); out.name = el('f_name').value.trim(); out.emoji = el('f_emoji').value;
+      out.type = el('f_type').value || inferType(parts); out.lore = el('f_lore').value;
+      out.isBoss = !!el('f_isBoss').checked;
+      out.hp = stats.hp; out.atk = stats.atk; out.def = stats.def; out.spd = stats.spd; out.luck = stats.luck;
+      out.passive = { id: el('f_passive_id').value.trim(), name: el('f_passive_name').value.trim(), desc: el('f_passive_desc').value };
+      out.moveIds = [...new Set(st.selectedMoveIds.map(resolveMoveId).filter(Boolean))];
+      out.partIds = {
+        head: String(parts.head.id),
+        torso: String(parts.torso.id),
+        wings: String(parts.wings.id),
+        legs: String(parts.legs.id),
+      };
+      delete out.assembledParts;
+      delete out.moves;
+      st.dex[st.idx] = out;
+      setDirty(true);
+      renderList();
+      renderSel();
+      setStatus('Honkedex entry applied. Save HONKEDex to persist.', 'warn');
+    }
+    function addHonker() {
+      const fresh = {
+        dexNum: st.dex.length + 1,
+        id:`honker_${Date.now()}`, name:'New Honker', emoji:'*', type:'Normal', lore:'',
+        hp:1, atk:1, def:1, spd:1, luck:1, passive:{ id:'', name:'', desc:'' }, moveIds:[], isBoss:false
+      };
+      st.dex.push(fresh); st.idx = st.dex.length - 1; setDirty(true); renderList(); renderSel();
+    }
+    function dupHonker() {
+      const h = cur(); if (!h) return;
+      const c = clone(h); c.id = `${h.id || 'honker'}_copy_${Date.now()}`;
+      st.dex.push(c); st.idx = st.dex.length - 1; setDirty(true); renderList(); renderSel();
+    }
+    function delHonker() {
+      const h = cur(); if (!h) return;
+      if (!confirm(`Delete ${h.id}?`)) return;
+      st.dex.splice(st.idx, 1); if (st.idx >= st.dex.length) st.idx = st.dex.length - 1;
+      setDirty(true); renderList(); renderSel();
+    }
+    async function saveAll() {
+      const sorted = [...st.dex].sort((a, b) => asInt(a.dexNum, 0) - asInt(b.dexNum, 0));
+      const r = await fetch('/api/honkedex', { method:'POST', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify({ items: sorted }) });
+      if (!r.ok) { const t = await r.text().catch(() => ''); throw new Error(`Save failed (${r.status}) ${t}`); }
+      st.dex = sorted;
+      setDirty(false); setStatus('Saved HONKER_DEX to js/data.js', 'ok');
+    }
+    function downloadJson() {
+      const b = new Blob([JSON.stringify(st.dex, null, 2)], { type:'application/json' });
+      const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'honkedex.json'; a.click(); URL.revokeObjectURL(a.href);
+    }
+    async function loadAll() {
+      setStatus('Loading...');
+      const [rp, pp, mp] = await Promise.all([
+        fetch('/api/honkedex', { cache:'no-store' }),
+        fetch('/api/parts-data', { cache:'no-store' }),
+        fetch('/api/move-pool', { cache:'no-store' }),
+      ]);
+      if (!rp.ok) throw new Error(`HONKER_DEX load failed (${rp.status})`);
+      if (!pp.ok) throw new Error(`Parts load failed (${pp.status})`);
+      if (!mp.ok) throw new Error(`Move pool load failed (${mp.status})`);
+      const rd = await rp.json(); const pd = await pp.json(); const md = await mp.json();
+      let ov = {};
+      try {
+        const ovr = await fetch('/api/dex-part-overrides', { cache:'no-store' });
+        if (ovr.ok) {
+          const od = await ovr.json();
+          ov = od?.items && typeof od.items === 'object' ? od.items : {};
+        }
+      } catch (_) {}
+      st.dex = Array.isArray(rd.items) ? rd.items : [];
+      st.partsData = pd && Array.isArray(pd.parts) ? pd : { parts: [], families: [] };
+      st.movePool = Array.isArray(md.items) ? md.items : [];
+      rebuildMoveLookup();
+      st.dexOverrides = ov;
+      st.idx = st.dex.length ? 0 : -1;
+      setDirty(false); renderList(); renderSel();
+      setStatus(`Loaded ${st.dex.length} honkedex entries, ${st.partsData.parts.length} parts, ${st.movePool.length} moves.`, 'ok');
+    }
+    function wire() {
+      el('search').addEventListener('input', renderList);
+      el('typeFilter').addEventListener('change', renderList);
+      el('addBtn').onclick = addHonker; el('dupBtn').onclick = dupHonker; el('delBtn').onclick = delHonker;
+      el('reloadBtn').onclick = () => loadAll().catch(e => setStatus(e.message, 'warn'));
+      el('saveBtn').onclick = () => saveAll().catch(e => { setStatus(e.message, 'warn'); alert(e.message); });
+      el('downloadBtn').onclick = downloadJson;
+      el('autoMovesBtn').onclick = autoPickMoves;
+      el('applyBtn').onclick = applyForm;
+      window.addEventListener('keydown', e => {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+          e.preventDefault();
+          saveAll().catch(err => { setStatus(err.message, 'warn'); alert(err.message); });
+        }
+      });
+      window.addEventListener('beforeunload', e => { if (!st.dirty) return; e.preventDefault(); e.returnValue = ''; });
+    }
+    wire();
+    loadAll().catch(e => setStatus(e.message, 'warn'));
+  </script>
+</body>
+</html>
+

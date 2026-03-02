@@ -3,14 +3,113 @@
 // ============================================================================
 
 // PARTS DATA
-const PARTS_DATA_EMBEDDED = {"version":"1.2.1","generatedAt":"2026-02-27T13:33:55.927Z","source":"Visual remap + targeted Normal typing overrides for requested sprites","statsGuide":{"hp":"Max HP contribution","atk":"Attack contribution","def":"Defense contribution","spd":"Speed contribution","luck":"Luck contribution"},"summary":{"totalParts":95,"perSlot":{"head":16,"torso":16,"wings":15,"legs":48},"rarityBreakdown":{"common":76,"rare":19},"archetypeBreakdown":{"balanced":79,"raider":2,"bulwark":10,"trickster":4}},"parts":[{"id":"head-sprite_007","slot":"head","file":"Heads/sprite_007.png","family":{"id":6,"name":"Duskveil","theme":"shadow"},"variant":1,"rarity":"common","archetype":"balanced","stats":{"hp":8,"atk":29,"def":9,"spd":13,"luck":12},"powerScore":76.60000000000001,"tags":["shadow","balanced","prime","fen","sprite_007"],"description":"Duskveil headpiece with a balanced profile. Visual theme aligned to sprite style."},{"id":"head-sprite_011","slot":"head","file":"Heads/sprite_011.png","family":{"id":6,"name":"Duskveil","theme":"shadow"},"variant":2,"rarity":"common","archetype":"balanced","stats":{"hp":11,"atk":31,"def":6,"spd":15,"luck":16},"powerScore":79.65,"tags":["shadow","balanced","rugged","marsh","sprite_011"],"description":"Duskveil headpiece with a balanced profile. Visual theme aligned to sprite style."},{"id":"head-sprite_023","slot":"head","file":"Heads/sprite_023.png","family":{"id":9,"name":"Voidgild","theme":"arcane"},"variant":3,"rarity":"common","archetype":"balanced","stats":{"hp":14,"atk":34,"def":9,"spd":10,"luck":19},"powerScore":86.60000000000001,"tags":["arcane","balanced","swift","reed","sprite_023"],"description":"Voidgild headpiece with a balanced profile. Visual theme aligned to sprite style."},{"id":"head-sprite_024","slot":"head","file":"Heads/sprite_024.png","family":{"id":9,"name":"Voidgild","theme":"arcane"},"variant":4,"rarity":"common","archetype":"balanced","stats":{"hp":8,"atk":31,"def":11,"spd":10,"luck":12},"powerScore":80.2,"tags":["arcane","balanced","prime","ash","sprite_024"],"description":"Voidgild headpiece with a balanced profile. Visual theme aligned to sprite style."},{"id":"head-sprite_034","slot":"head","file":"Heads/sprite_034.png","family":{"id":5,"name":"Ironbarb","theme":"stone"},"variant":5,"rarity":"common","archetype":"balanced","stats":{"hp":11,"atk":34,"def":9,"spd":13,"luck":16},"powerScore":87.05000000000001,"tags":["stone","balanced","rugged","ember","sprite_034"],"description":"Ironbarb headpiece with a balanced profile. Visual theme aligned to sprite style."},{"id":"head-sprite_036","slot":"head","file":"Heads/sprite_036.png","family":{"id":5,"name":"Ironbarb","theme":"stone"},"variant":6,"rarity":"common","archetype":"balanced","stats":{"hp":14,"atk":37,"def":11,"spd":8,"luck":19},"powerScore":92.60000000000001,"tags":["stone","balanced","swift","cinder","sprite_036"],"description":"Ironbarb headpiece with a balanced profile. Visual theme aligned to sprite style."},{"id":"head-sprite_046","slot":"head","file":"Heads/sprite_046.png","family":{"id":2,"name":"Embercrest","theme":"fire"},"variant":7,"rarity":"common","archetype":"balanced","stats":{"hp":8,"atk":34,"def":6,"spd":18,"luck":12},"powerScore":84.4,"tags":["fire","balanced","prime","frost","sprite_046"],"description":"Embercrest headpiece with a balanced profile. Visual theme aligned to sprite style."},{"id":"head-sprite_047","slot":"head","file":"Heads/sprite_047.png","family":{"id":2,"name":"Embercrest","theme":"fire"},"variant":8,"rarity":"common","archetype":"balanced","stats":{"hp":11,"atk":37,"def":3,"spd":21,"luck":16},"powerScore":89.85,"tags":["fire","balanced","rugged","rime","sprite_047"],"description":"Embercrest headpiece with a balanced profile. Visual theme aligned to sprite style."},{"id":"head-sprite_064","slot":"head","file":"Heads/sprite_064.png","family":{"id":1,"name":"Marshborn","theme":"bog"},"variant":9,"rarity":"common","archetype":"balanced","stats":{"hp":14,"atk":40,"def":6,"spd":15,"luck":19},"powerScore":96,"tags":["bog","balanced","swift","glacier","sprite_064"],"description":"Marshborn headpiece with a balanced profile. Visual theme aligned to sprite style."},{"id":"head-sprite_067","slot":"head","file":"Heads/sprite_067.png","family":{"id":7,"name":"Sunflare","theme":"solar"},"variant":10,"rarity":"common","archetype":"balanced","stats":{"hp":8,"atk":37,"def":9,"spd":15,"luck":12},"powerScore":91,"tags":["solar","balanced","prime","arc","sprite_067"],"description":"Sunflare headpiece with a balanced profile. Visual theme aligned to sprite style."},{"id":"head-sprite_087","slot":"head","file":"Heads/sprite_087.png","family":{"id":3,"name":"Frostplume","theme":"ice"},"variant":11,"rarity":"common","archetype":"balanced","stats":{"hp":11,"atk":40,"def":6,"spd":18,"luck":16},"powerScore":96.45000000000002,"tags":["ice","balanced","rugged","volt","sprite_087"],"description":"Frostplume headpiece with a balanced profile. Visual theme aligned to sprite style."},{"id":"head-sprite_092","slot":"head","file":"Heads/sprite_092.png","family":{"id":9,"name":"Voidgild","theme":"arcane"},"variant":12,"rarity":"rare","archetype":"balanced","stats":{"hp":14,"atk":43,"def":9,"spd":13,"luck":19},"powerScore":103.39999999999999,"tags":["arcane","balanced","swift","thunder","sprite_092"],"description":"Voidgild headpiece with a balanced profile. Visual theme aligned to sprite style."},{"id":"head-sprite_107","slot":"head","file":"Heads/sprite_107.png","family":{"id":3,"name":"Frostplume","theme":"ice"},"variant":13,"rarity":"common","archetype":"balanced","stats":{"hp":8,"atk":40,"def":11,"spd":13,"luck":12},"powerScore":97,"tags":["ice","balanced","prime","granite","sprite_107"],"description":"Frostplume headpiece with a balanced profile. Visual theme aligned to sprite style."},{"id":"head-sprite_112","slot":"head","file":"Heads/sprite_112.png","family":{"id":7,"name":"Sunflare","theme":"solar"},"variant":14,"rarity":"rare","archetype":"raider","stats":{"hp":11,"atk":43,"def":9,"spd":15,"luck":16},"powerScore":103.05,"tags":["solar","raider","rugged","anvil","sprite_112"],"description":"Sunflare headpiece with a raider profile. Visual theme aligned to sprite style."},{"id":"head-sprite_129","slot":"head","file":"Heads/sprite_129.png","family":{"id":7,"name":"Sunflare","theme":"solar"},"variant":15,"rarity":"rare","archetype":"raider","stats":{"hp":14,"atk":46,"def":11,"spd":10,"luck":19},"powerScore":108.6,"tags":["solar","raider","swift","iron","sprite_129"],"description":"Sunflare headpiece with a raider profile. Visual theme aligned to sprite style."},{"id":"head-sprite_132","slot":"head","file":"Heads/sprite_132.png","family":{"id":8,"name":"Bloomcrest","theme":"wild"},"variant":16,"rarity":"common","archetype":"balanced","stats":{"hp":8,"atk":43,"def":6,"spd":10,"luck":12},"powerScore":92.4,"tags":["wild","balanced","prime","night","sprite_132"],"description":"Bloomcrest headpiece with a balanced profile. Visual theme aligned to sprite style."},{"id":"torso-sprite_001","slot":"torso","file":"Torsos/sprite_001.png","family":{"id":6,"name":"Duskveil","theme":"shadow"},"variant":1,"rarity":"common","archetype":"balanced","stats":{"hp":49,"atk":9,"def":26,"spd":3,"luck":8},"powerScore":64.55,"tags":["shadow","balanced","brutal","sprite_001"],"description":"Duskveil torso core with a balanced profile. Visual theme aligned to sprite style."},{"id":"torso-sprite_009","slot":"torso","file":"Torsos/sprite_009.png","family":{"id":6,"name":"Duskveil","theme":"shadow"},"variant":2,"rarity":"common","archetype":"balanced","stats":{"hp":52,"atk":11,"def":29,"spd":5,"luck":8},"powerScore":74,"tags":["shadow","balanced","evasive","fen","sprite_009"],"description":"Duskveil torso core with a balanced profile. Visual theme aligned to sprite style."},{"id":"torso-sprite_016","slot":"torso","file":"Torsos/sprite_016.png","family":{"id":9,"name":"Voidgild","theme":"arcane"},"variant":3,"rarity":"common","archetype":"balanced","stats":{"hp":54,"atk":6,"def":32,"spd":1,"luck":8},"powerScore":67.3,"tags":["arcane","balanced","ancient","marsh","sprite_016"],"description":"Voidgild torso core with a balanced profile. Visual theme aligned to sprite style."},{"id":"torso-sprite_017","slot":"torso","file":"Torsos/sprite_017.png","family":{"id":5,"name":"Ironbarb","theme":"stone"},"variant":4,"rarity":"common","archetype":"balanced","stats":{"hp":20,"atk":3,"def":10,"spd":1,"luck":1},"powerScore":23.4,"tags":["stone","balanced","brutal","flare","sprite_017"],"description":"Ironbarb torso core with a balanced profile. Visual theme aligned to sprite style."},{"id":"torso-sprite_030","slot":"torso","file":"Torsos/sprite_030.png","family":{"id":5,"name":"Ironbarb","theme":"stone"},"variant":5,"rarity":"common","archetype":"balanced","stats":{"hp":21,"atk":4,"def":11,"spd":2,"luck":1},"powerScore":27,"tags":["stone","balanced","evasive","ash","sprite_030"],"description":"Ironbarb torso core with a balanced profile. Visual theme aligned to sprite style."},{"id":"torso-sprite_035","slot":"torso","file":"Torsos/sprite_035.png","family":{"id":2,"name":"Embercrest","theme":"fire"},"variant":6,"rarity":"common","archetype":"bulwark","stats":{"hp":22,"atk":2,"def":12,"spd":0,"luck":1},"powerScore":24,"tags":["fire","bulwark","ancient","ember","sprite_035"],"description":"Embercrest torso core with a bulwark profile. Visual theme aligned to sprite style."},{"id":"torso-sprite_041","slot":"torso","file":"Torsos/sprite_041.png","family":{"id":2,"name":"Embercrest","theme":"fire"},"variant":7,"rarity":"common","archetype":"balanced","stats":{"hp":22,"atk":3,"def":11,"spd":1,"luck":2},"powerScore":26,"tags":["fire","balanced","brutal","hail","sprite_041"],"description":"Embercrest torso core with a balanced profile. Visual theme aligned to sprite style."},{"id":"torso-sprite_048","slot":"torso","file":"Torsos/sprite_048.png","family":{"id":2,"name":"Embercrest","theme":"fire"},"variant":8,"rarity":"common","archetype":"bulwark","stats":{"hp":23,"atk":4,"def":12,"spd":2,"luck":2},"powerScore":29.6,"tags":["fire","bulwark","evasive","frost","sprite_048"],"description":"Embercrest torso core with a bulwark profile. Visual theme aligned to sprite style."},{"id":"torso-sprite_060","slot":"torso","file":"Torsos/sprite_060.png","family":{"id":2,"name":"Embercrest","theme":"fire"},"variant":9,"rarity":"common","archetype":"bulwark","stats":{"hp":24,"atk":2,"def":13,"spd":0,"luck":2},"powerScore":26.6,"tags":["fire","bulwark","ancient","rime","sprite_060"],"description":"Embercrest torso core with a bulwark profile. Visual theme aligned to sprite style."},{"id":"torso-sprite_066","slot":"torso","file":"Torsos/sprite_066.png","family":{"id":2,"name":"Embercrest","theme":"fire"},"variant":10,"rarity":"common","archetype":"bulwark","stats":{"hp":24,"atk":3,"def":12,"spd":1,"luck":1},"powerScore":27,"tags":["fire","bulwark","brutal","storm","sprite_066"],"description":"Embercrest torso core with a bulwark profile. Visual theme aligned to sprite style."},{"id":"torso-sprite_084","slot":"torso","file":"Torsos/sprite_084.png","family":{"id":3,"name":"Frostplume","theme":"ice"},"variant":11,"rarity":"common","archetype":"bulwark","stats":{"hp":25,"atk":4,"def":13,"spd":2,"luck":1},"powerScore":30.6,"tags":["ice","bulwark","evasive","arc","sprite_084"],"description":"Frostplume torso core with a bulwark profile. Visual theme aligned to sprite style."},{"id":"torso-sprite_088","slot":"torso","file":"Torsos/sprite_088.png","family":{"id":3,"name":"Frostplume","theme":"ice"},"variant":12,"rarity":"common","archetype":"bulwark","stats":{"hp":26,"atk":2,"def":14,"spd":0,"luck":1},"powerScore":27.6,"tags":["ice","bulwark","ancient","volt","sprite_088"],"description":"Frostplume torso core with a bulwark profile. Visual theme aligned to sprite style."},{"id":"torso-sprite_108","slot":"torso","file":"Torsos/sprite_108.png","family":{"id":4,"name":"Stormcall","theme":"lightning"},"variant":13,"rarity":"common","archetype":"bulwark","stats":{"hp":26,"atk":3,"def":13,"spd":1,"luck":2},"powerScore":29.6,"tags":["lightning","bulwark","brutal","slate","sprite_108"],"description":"Stormcall torso core with a bulwark profile. Visual theme aligned to sprite style."},{"id":"torso-sprite_110","slot":"torso","file":"Torsos/sprite_110.png","family":{"id":8,"name":"Bloomcrest","theme":"wild"},"variant":14,"rarity":"rare","archetype":"bulwark","stats":{"hp":27,"atk":4,"def":14,"spd":2,"luck":2},"powerScore":33.2,"tags":["wild","bulwark","evasive","granite","sprite_110"],"description":"Bloomcrest torso core with a bulwark profile. Visual theme aligned to sprite style."},{"id":"torso-sprite_131","slot":"torso","file":"Torsos/sprite_131.png","family":{"id":8,"name":"Bloomcrest","theme":"wild"},"variant":15,"rarity":"common","archetype":"bulwark","stats":{"hp":28,"atk":2,"def":15,"spd":0,"luck":2},"powerScore":30.2,"tags":["wild","bulwark","ancient","anvil","sprite_131"],"description":"Bloomcrest torso profile aligned for Normal typing."},{"id":"torso-sprite_133","slot":"torso","file":"Torsos/sprite_133.png","family":{"id":8,"name":"Bloomcrest","theme":"wild"},"variant":16,"rarity":"common","archetype":"bulwark","stats":{"hp":28,"atk":3,"def":14,"spd":1,"luck":1},"powerScore":30.6,"tags":["wild","bulwark","brutal","gloom","sprite_133"],"description":"Bloomcrest torso profile aligned for Normal typing."},{"id":"wings-sprite_003","slot":"wings","file":"Wings/sprite_003.png","family":{"id":6,"name":"Duskveil","theme":"shadow"},"variant":1,"rarity":"common","archetype":"balanced","stats":{"hp":2,"atk":4,"def":2,"spd":13,"luck":5},"powerScore":24.6,"tags":["shadow","balanced","mythic","marsh","sprite_003"],"description":"Duskveil wing rig with a balanced profile. Visual theme aligned to sprite style."},{"id":"wings-sprite_012","slot":"wings","file":"Wings/sprite_012.png","family":{"id":6,"name":"Duskveil","theme":"shadow"},"variant":2,"rarity":"common","archetype":"trickster","stats":{"hp":2,"atk":5,"def":2,"spd":14,"luck":6},"powerScore":27.6,"tags":["shadow","trickster","arc","reed","sprite_012"],"description":"Duskveil wing rig with a trickster profile. Visual theme aligned to sprite style."},{"id":"wings-sprite_021","slot":"wings","file":"Wings/sprite_021.png","family":{"id":9,"name":"Voidgild","theme":"arcane"},"variant":3,"rarity":"common","archetype":"balanced","stats":{"hp":3,"atk":4,"def":2,"spd":11,"luck":3},"powerScore":21.4,"tags":["arcane","balanced","gale","sprite_021"],"description":"Voidgild wing rig with a balanced profile. Visual theme aligned to sprite style."},{"id":"wings-sprite_022","slot":"wings","file":"Wings/sprite_022.png","family":{"id":9,"name":"Voidgild","theme":"arcane"},"variant":4,"rarity":"common","archetype":"balanced","stats":{"hp":1,"atk":5,"def":2,"spd":12,"luck":4},"powerScore":23.6,"tags":["arcane","balanced","royal","fen","sprite_022"],"description":"Voidgild wing rig with a balanced profile. Visual theme aligned to sprite style."},{"id":"wings-sprite_032","slot":"wings","file":"Wings/sprite_032.png","family":{"id":7,"name":"Sunflare","theme":"solar"},"variant":5,"rarity":"common","archetype":"balanced","stats":{"hp":2,"atk":5,"def":3,"spd":14,"luck":5},"powerScore":27.8,"tags":["solar","balanced","mythic","ember","sprite_032"],"description":"Sunflare wing rig with a balanced profile. Visual theme aligned to sprite style."},{"id":"wings-sprite_033","slot":"wings","file":"Wings/sprite_033.png","family":{"id":7,"name":"Sunflare","theme":"solar"},"variant":6,"rarity":"common","archetype":"trickster","stats":{"hp":2,"atk":6,"def":3,"spd":15,"luck":6},"powerScore":30.8,"tags":["solar","trickster","arc","cinder","sprite_033"],"description":"Sunflare wing rig with a trickster profile. Visual theme aligned to sprite style."},{"id":"wings-sprite_039","slot":"wings","file":"Wings/sprite_039.png","family":{"id":2,"name":"Embercrest","theme":"fire"},"variant":7,"rarity":"common","archetype":"balanced","stats":{"hp":3,"atk":5,"def":3,"spd":12,"luck":3},"powerScore":24.6,"tags":["fire","balanced","gale","flare","sprite_039"],"description":"Embercrest wing rig with a balanced profile. Visual theme aligned to sprite style."},{"id":"wings-sprite_044","slot":"wings","file":"Wings/sprite_044.png","family":{"id":2,"name":"Embercrest","theme":"fire"},"variant":8,"rarity":"common","archetype":"balanced","stats":{"hp":1,"atk":6,"def":3,"spd":13,"luck":4},"powerScore":26.8,"tags":["fire","balanced","royal","ash","sprite_044"],"description":"Embercrest wing rig with a balanced profile. Visual theme aligned to sprite style."},{"id":"wings-sprite_065","slot":"wings","file":"Wings/sprite_065.png","family":{"id":2,"name":"Embercrest","theme":"fire"},"variant":9,"rarity":"common","archetype":"balanced","stats":{"hp":2,"atk":6,"def":1,"spd":15,"luck":5},"powerScore":28,"tags":["fire","balanced","mythic","rime","sprite_065"],"description":"Embercrest wing rig with a balanced profile. Visual theme aligned to sprite style."},{"id":"wings-sprite_085","slot":"wings","file":"Wings/sprite_085.png","family":{"id":3,"name":"Frostplume","theme":"ice"},"variant":10,"rarity":"rare","archetype":"trickster","stats":{"hp":2,"atk":7,"def":1,"spd":16,"luck":6},"powerScore":31,"tags":["ice","trickster","arc","glacier","sprite_085"],"description":"Frostplume wing rig with a trickster profile. Visual theme aligned to sprite style."},{"id":"wings-sprite_089","slot":"wings","file":"Wings/sprite_089.png","family":{"id":3,"name":"Frostplume","theme":"ice"},"variant":11,"rarity":"common","archetype":"balanced","stats":{"hp":3,"atk":6,"def":1,"spd":13,"luck":3},"powerScore":24.8,"tags":["ice","balanced","gale","hail","sprite_089"],"description":"Frostplume wing rig with a balanced profile. Visual theme aligned to sprite style."},{"id":"wings-sprite_109","slot":"wings","file":"Wings/sprite_109.png","family":{"id":3,"name":"Frostplume","theme":"ice"},"variant":12,"rarity":"common","archetype":"balanced","stats":{"hp":1,"atk":7,"def":1,"spd":14,"luck":4},"powerScore":27,"tags":["ice","balanced","royal","frost","sprite_109"],"description":"Frostplume wing rig with a balanced profile. Visual theme aligned to sprite style."},{"id":"wings-sprite_111","slot":"wings","file":"Wings/sprite_111.png","family":{"id":8,"name":"Bloomcrest","theme":"wild"},"variant":13,"rarity":"common","archetype":"balanced","stats":{"hp":2,"atk":3,"def":2,"spd":16,"luck":5},"powerScore":26.4,"tags":["wild","balanced","mythic","volt","sprite_111"],"description":"Bloomcrest wing rig with a balanced profile. Visual theme aligned to sprite style."},{"id":"wings-sprite_124","slot":"wings","file":"Wings/sprite_124.png","family":{"id":8,"name":"Bloomcrest","theme":"wild"},"variant":14,"rarity":"common","archetype":"trickster","stats":{"hp":2,"atk":4,"def":2,"spd":17,"luck":6},"powerScore":29.4,"tags":["wild","trickster","arc","thunder","sprite_124"],"description":"Bloomcrest wing rig with a trickster profile. Visual theme aligned to sprite style."},{"id":"wings-sprite_130","slot":"wings","file":"Wings/sprite_130.png","family":{"id":4,"name":"Stormcall","theme":"lightning"},"variant":15,"rarity":"common","archetype":"balanced","stats":{"hp":3,"atk":3,"def":2,"spd":14,"luck":3},"powerScore":23.2,"tags":["lightning","balanced","gale","storm","sprite_130"],"description":"Stormcall wing rig with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_002","slot":"legs","file":"Legs/sprite_002.png","family":{"id":9,"name":"Voidgild","theme":"arcane"},"variant":1,"rarity":"common","archetype":"balanced","stats":{"hp":8,"atk":6,"def":7,"spd":8,"luck":4},"powerScore":28.6,"tags":["arcane","balanced","reinforced","reed","sprite_002"],"description":"Voidgild leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_004","slot":"legs","file":"Legs/sprite_004.png","family":{"id":9,"name":"Voidgild","theme":"arcane"},"variant":2,"rarity":"common","archetype":"balanced","stats":{"hp":9,"atk":4,"def":5,"spd":9,"luck":1},"powerScore":23.2,"tags":["arcane","balanced","razor","sprite_004"],"description":"Voidgild leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_005","slot":"legs","file":"Legs/sprite_005.png","family":{"id":4,"name":"Stormcall","theme":"lightning"},"variant":3,"rarity":"common","archetype":"balanced","stats":{"hp":10,"atk":5,"def":6,"spd":10,"luck":2},"powerScore":27.6,"tags":["lightning","balanced","velvet","fen","sprite_005"],"description":"Stormcall leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_006","slot":"legs","file":"Legs/sprite_006.png","family":{"id":6,"name":"Duskveil","theme":"shadow"},"variant":4,"rarity":"rare","archetype":"balanced","stats":{"hp":11,"atk":6,"def":7,"spd":11,"luck":3},"powerScore":32,"tags":["shadow","balanced","hollow","marsh","sprite_006"],"description":"Duskveil leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_008","slot":"legs","file":"Legs/sprite_008.png","family":{"id":5,"name":"Ironbarb","theme":"stone"},"variant":5,"rarity":"common","archetype":"balanced","stats":{"hp":7,"atk":4,"def":5,"spd":7,"luck":4},"powerScore":22.8,"tags":["stone","balanced","titan","reed","sprite_008"],"description":"Ironbarb leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_010","slot":"legs","file":"Legs/sprite_010.png","family":{"id":5,"name":"Ironbarb","theme":"stone"},"variant":6,"rarity":"rare","archetype":"balanced","stats":{"hp":9,"atk":6,"def":8,"spd":9,"luck":4},"powerScore":31,"tags":["stone","balanced","reinforced","cinder","sprite_010"],"description":"Ironbarb leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_013","slot":"legs","file":"Legs/sprite_013.png","family":{"id":6,"name":"Duskveil","theme":"shadow"},"variant":7,"rarity":"common","archetype":"balanced","stats":{"hp":10,"atk":4,"def":6,"spd":10,"luck":1},"powerScore":25.6,"tags":["shadow","balanced","razor","flare","sprite_013"],"description":"Duskveil leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_014","slot":"legs","file":"Legs/sprite_014.png","family":{"id":9,"name":"Voidgild","theme":"arcane"},"variant":8,"rarity":"common","archetype":"balanced","stats":{"hp":11,"atk":5,"def":7,"spd":11,"luck":2},"powerScore":30,"tags":["arcane","balanced","velvet","ash","sprite_014"],"description":"Voidgild leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_015","slot":"legs","file":"Legs/sprite_015.png","family":{"id":6,"name":"Duskveil","theme":"shadow"},"variant":9,"rarity":"rare","archetype":"balanced","stats":{"hp":12,"atk":6,"def":8,"spd":12,"luck":3},"powerScore":34.4,"tags":["shadow","balanced","hollow","ember","sprite_015"],"description":"Duskveil leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_018","slot":"legs","file":"Legs/sprite_018.png","family":{"id":6,"name":"Duskveil","theme":"shadow"},"variant":10,"rarity":"common","archetype":"balanced","stats":{"hp":8,"atk":4,"def":6,"spd":8,"luck":4},"powerScore":25.2,"tags":["shadow","balanced","titan","cinder","sprite_018"],"description":"Duskveil leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_019","slot":"legs","file":"Legs/sprite_019.png","family":{"id":9,"name":"Voidgild","theme":"arcane"},"variant":11,"rarity":"common","archetype":"balanced","stats":{"hp":10,"atk":6,"def":9,"spd":7,"luck":4},"powerScore":30.4,"tags":["arcane","balanced","reinforced","glacier","sprite_019"],"description":"Voidgild leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_020","slot":"legs","file":"Legs/sprite_020.png","family":{"id":9,"name":"Voidgild","theme":"arcane"},"variant":12,"rarity":"common","archetype":"balanced","stats":{"hp":11,"atk":4,"def":7,"spd":8,"luck":1},"powerScore":25,"tags":["arcane","balanced","razor","hail","sprite_020"],"description":"Voidgild leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_025","slot":"legs","file":"Legs/sprite_025.png","family":{"id":5,"name":"Ironbarb","theme":"stone"},"variant":13,"rarity":"common","archetype":"balanced","stats":{"hp":12,"atk":5,"def":8,"spd":9,"luck":2},"powerScore":29.4,"tags":["stone","balanced","velvet","frost","sprite_025"],"description":"Ironbarb leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_026","slot":"legs","file":"Legs/sprite_026.png","family":{"id":1,"name":"Marshborn","theme":"bog"},"variant":14,"rarity":"rare","archetype":"balanced","stats":{"hp":13,"atk":6,"def":9,"spd":10,"luck":3},"powerScore":33.8,"tags":["bog","balanced","hollow","rime","sprite_026"],"description":"Marshborn leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_027","slot":"legs","file":"Legs/sprite_027.png","family":{"id":4,"name":"Stormcall","theme":"lightning"},"variant":15,"rarity":"common","archetype":"balanced","stats":{"hp":9,"atk":4,"def":7,"spd":6,"luck":4},"powerScore":24.6,"tags":["lightning","balanced","titan","glacier","sprite_027"],"description":"Stormcall leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_028","slot":"legs","file":"Legs/sprite_028.png","family":{"id":4,"name":"Stormcall","theme":"lightning"},"variant":16,"rarity":"common","archetype":"balanced","stats":{"hp":11,"atk":6,"def":6,"spd":8,"luck":4},"powerScore":28.8,"tags":["lightning","balanced","reinforced","thunder","sprite_028"],"description":"Stormcall leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_029","slot":"legs","file":"Legs/sprite_029.png","family":{"id":4,"name":"Stormcall","theme":"lightning"},"variant":17,"rarity":"common","archetype":"balanced","stats":{"hp":12,"atk":4,"def":4,"spd":9,"luck":1},"powerScore":23.4,"tags":["lightning","balanced","razor","storm","sprite_029"],"description":"Stormcall leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_031","slot":"legs","file":"Legs/sprite_031.png","family":{"id":4,"name":"Stormcall","theme":"lightning"},"variant":18,"rarity":"common","archetype":"balanced","stats":{"hp":13,"atk":5,"def":5,"spd":10,"luck":2},"powerScore":27.8,"tags":["lightning","balanced","velvet","arc","sprite_031"],"description":"Stormcall leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_037","slot":"legs","file":"Legs/sprite_037.png","family":{"id":7,"name":"Sunflare","theme":"solar"},"variant":19,"rarity":"rare","archetype":"balanced","stats":{"hp":14,"atk":6,"def":6,"spd":11,"luck":3},"powerScore":32.2,"tags":["solar","balanced","hollow","volt","sprite_037"],"description":"Sunflare leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_038","slot":"legs","file":"Legs/sprite_038.png","family":{"id":2,"name":"Embercrest","theme":"fire"},"variant":20,"rarity":"common","archetype":"balanced","stats":{"hp":10,"atk":4,"def":4,"spd":7,"luck":4},"powerScore":23,"tags":["fire","balanced","titan","thunder","sprite_038"],"description":"Embercrest leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_040","slot":"legs","file":"Legs/sprite_040.png","family":{"id":7,"name":"Sunflare","theme":"solar"},"variant":21,"rarity":"rare","archetype":"balanced","stats":{"hp":12,"atk":6,"def":7,"spd":9,"luck":4},"powerScore":31.2,"tags":["solar","balanced","reinforced","iron","sprite_040"],"description":"Sunflare leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_042","slot":"legs","file":"Legs/sprite_042.png","family":{"id":2,"name":"Embercrest","theme":"fire"},"variant":22,"rarity":"common","archetype":"balanced","stats":{"hp":13,"atk":4,"def":5,"spd":10,"luck":1},"powerScore":25.8,"tags":["fire","balanced","razor","slate","sprite_042"],"description":"Embercrest leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_043","slot":"legs","file":"Legs/sprite_043.png","family":{"id":2,"name":"Embercrest","theme":"fire"},"variant":23,"rarity":"common","archetype":"balanced","stats":{"hp":14,"atk":5,"def":6,"spd":11,"luck":2},"powerScore":30.2,"tags":["fire","balanced","velvet","granite","sprite_043"],"description":"Embercrest leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_045","slot":"legs","file":"Legs/sprite_045.png","family":{"id":2,"name":"Embercrest","theme":"fire"},"variant":24,"rarity":"rare","archetype":"balanced","stats":{"hp":15,"atk":6,"def":7,"spd":12,"luck":3},"powerScore":34.6,"tags":["fire","balanced","hollow","anvil","sprite_045"],"description":"Embercrest leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_056","slot":"legs","file":"Legs/sprite_056.png","family":{"id":7,"name":"Sunflare","theme":"solar"},"variant":25,"rarity":"common","archetype":"balanced","stats":{"hp":11,"atk":4,"def":5,"spd":8,"luck":4},"powerScore":25.4,"tags":["solar","balanced","titan","iron","sprite_056"],"description":"Sunflare leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_057","slot":"legs","file":"Legs/sprite_057.png","family":{"id":1,"name":"Marshborn","theme":"bog"},"variant":26,"rarity":"common","archetype":"balanced","stats":{"hp":13,"atk":6,"def":8,"spd":7,"luck":4},"powerScore":30.6,"tags":["bog","balanced","reinforced","veil","sprite_057"],"description":"Marshborn leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_058","slot":"legs","file":"Legs/sprite_058.png","family":{"id":7,"name":"Sunflare","theme":"solar"},"variant":27,"rarity":"common","archetype":"balanced","stats":{"hp":14,"atk":4,"def":6,"spd":8,"luck":1},"powerScore":25.2,"tags":["solar","balanced","razor","gloom","sprite_058"],"description":"Sunflare leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_059","slot":"legs","file":"Legs/sprite_059.png","family":{"id":2,"name":"Embercrest","theme":"fire"},"variant":28,"rarity":"common","archetype":"balanced","stats":{"hp":15,"atk":5,"def":7,"spd":9,"luck":2},"powerScore":29.6,"tags":["fire","balanced","velvet","night","sprite_059"],"description":"Embercrest leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_061","slot":"legs","file":"Legs/sprite_061.png","family":{"id":3,"name":"Frostplume","theme":"ice"},"variant":29,"rarity":"rare","archetype":"balanced","stats":{"hp":16,"atk":6,"def":8,"spd":10,"luck":3},"powerScore":34,"tags":["ice","balanced","hollow","shade","sprite_061"],"description":"Frostplume leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_062","slot":"legs","file":"Legs/sprite_062.png","family":{"id":2,"name":"Embercrest","theme":"fire"},"variant":30,"rarity":"common","archetype":"balanced","stats":{"hp":12,"atk":4,"def":6,"spd":6,"luck":4},"powerScore":24.8,"tags":["fire","balanced","titan","veil","sprite_062"],"description":"Embercrest leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_079","slot":"legs","file":"Legs/sprite_079.png","family":{"id":3,"name":"Frostplume","theme":"ice"},"variant":31,"rarity":"rare","archetype":"balanced","stats":{"hp":14,"atk":6,"def":9,"spd":8,"luck":4},"powerScore":33,"tags":["ice","balanced","reinforced","flare","sprite_079"],"description":"Frostplume leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_080","slot":"legs","file":"Legs/sprite_080.png","family":{"id":3,"name":"Frostplume","theme":"ice"},"variant":32,"rarity":"common","archetype":"balanced","stats":{"hp":15,"atk":4,"def":7,"spd":9,"luck":1},"powerScore":27.6,"tags":["ice","balanced","razor","halo","sprite_080"],"description":"Frostplume leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_081","slot":"legs","file":"Legs/sprite_081.png","family":{"id":3,"name":"Frostplume","theme":"ice"},"variant":33,"rarity":"rare","archetype":"balanced","stats":{"hp":16,"atk":5,"def":8,"spd":10,"luck":2},"powerScore":32,"tags":["ice","balanced","velvet","sun","sprite_081"],"description":"Frostplume leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_082","slot":"legs","file":"Legs/sprite_082.png","family":{"id":3,"name":"Frostplume","theme":"ice"},"variant":34,"rarity":"rare","archetype":"balanced","stats":{"hp":17,"atk":6,"def":9,"spd":11,"luck":3},"powerScore":36.4,"tags":["ice","balanced","hollow","dawn","sprite_082"],"description":"Frostplume leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_083","slot":"legs","file":"Legs/sprite_083.png","family":{"id":8,"name":"Bloomcrest","theme":"wild"},"variant":35,"rarity":"common","archetype":"balanced","stats":{"hp":13,"atk":4,"def":7,"spd":7,"luck":4},"powerScore":27.2,"tags":["wild","balanced","titan","flare","sprite_083"],"description":"Bloomcrest leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_086","slot":"legs","file":"Legs/sprite_086.png","family":{"id":3,"name":"Frostplume","theme":"ice"},"variant":36,"rarity":"rare","archetype":"balanced","stats":{"hp":15,"atk":6,"def":6,"spd":9,"luck":4},"powerScore":31.4,"tags":["ice","balanced","reinforced","grove","sprite_086"],"description":"Frostplume leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_102","slot":"legs","file":"Legs/sprite_102.png","family":{"id":8,"name":"Bloomcrest","theme":"wild"},"variant":37,"rarity":"common","archetype":"balanced","stats":{"hp":16,"atk":4,"def":4,"spd":10,"luck":1},"powerScore":26,"tags":["wild","balanced","razor","thorn","sprite_102"],"description":"Bloomcrest leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_103","slot":"legs","file":"Legs/sprite_103.png","family":{"id":5,"name":"Ironbarb","theme":"stone"},"variant":38,"rarity":"common","archetype":"balanced","stats":{"hp":17,"atk":5,"def":5,"spd":11,"luck":2},"powerScore":30.4,"tags":["stone","balanced","velvet","bloom","sprite_103"],"description":"Ironbarb leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_104","slot":"legs","file":"Legs/sprite_104.png","family":{"id":5,"name":"Ironbarb","theme":"stone"},"variant":39,"rarity":"rare","archetype":"balanced","stats":{"hp":18,"atk":6,"def":6,"spd":12,"luck":3},"powerScore":34.8,"tags":["stone","balanced","hollow","vine","sprite_104"],"description":"Ironbarb leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_105","slot":"legs","file":"Legs/sprite_105.png","family":{"id":5,"name":"Ironbarb","theme":"stone"},"variant":40,"rarity":"common","archetype":"balanced","stats":{"hp":14,"atk":4,"def":4,"spd":8,"luck":4},"powerScore":25.6,"tags":["stone","balanced","titan","grove","sprite_105"],"description":"Ironbarb leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_106","slot":"legs","file":"Legs/sprite_106.png","family":{"id":5,"name":"Ironbarb","theme":"stone"},"variant":41,"rarity":"common","archetype":"balanced","stats":{"hp":16,"atk":6,"def":7,"spd":7,"luck":4},"powerScore":30.8,"tags":["stone","balanced","reinforced","void","sprite_106"],"description":"Ironbarb leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_113","slot":"legs","file":"Legs/sprite_113.png","family":{"id":3,"name":"Frostplume","theme":"ice"},"variant":42,"rarity":"common","archetype":"balanced","stats":{"hp":17,"atk":4,"def":5,"spd":8,"luck":1},"powerScore":25.4,"tags":["ice","balanced","razor","rune","sprite_113"],"description":"Frostplume leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_122","slot":"legs","file":"Legs/sprite_122.png","family":{"id":8,"name":"Bloomcrest","theme":"wild"},"variant":43,"rarity":"common","archetype":"balanced","stats":{"hp":18,"atk":5,"def":6,"spd":9,"luck":2},"powerScore":29.8,"tags":["wild","balanced","velvet","sigil","sprite_122"],"description":"Bloomcrest legs profile aligned for Normal typing."},{"id":"legs-sprite_123","slot":"legs","file":"Legs/sprite_123.png","family":{"id":5,"name":"Ironbarb","theme":"stone"},"variant":44,"rarity":"rare","archetype":"balanced","stats":{"hp":19,"atk":6,"def":7,"spd":10,"luck":3},"powerScore":34.2,"tags":["stone","balanced","hollow","echo","sprite_123"],"description":"Ironbarb leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_125","slot":"legs","file":"Legs/sprite_125.png","family":{"id":4,"name":"Stormcall","theme":"lightning"},"variant":45,"rarity":"common","archetype":"balanced","stats":{"hp":15,"atk":4,"def":5,"spd":6,"luck":4},"powerScore":25,"tags":["lightning","balanced","titan","void","sprite_125"],"description":"Stormcall leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_126","slot":"legs","file":"Legs/sprite_126.png","family":{"id":1,"name":"Marshborn","theme":"bog"},"variant":46,"rarity":"common","archetype":"balanced","stats":{"hp":8,"atk":6,"def":7,"spd":8,"luck":4},"powerScore":28.6,"tags":["bog","balanced","reinforced","reed","sprite_126"],"description":"Marshborn leg frame with a balanced profile. Visual theme aligned to sprite style."},{"id":"legs-sprite_127","slot":"legs","file":"Legs/sprite_127.png","family":{"id":8,"name":"Bloomcrest","theme":"wild"},"variant":47,"rarity":"common","archetype":"balanced","stats":{"hp":9,"atk":4,"def":5,"spd":9,"luck":1},"powerScore":23.2,"tags":["wild","balanced","razor","sprite_127"],"description":"Bloomcrest legs profile aligned for Normal typing."},{"id":"legs-sprite_128","slot":"legs","file":"Legs/sprite_128.png","family":{"id":8,"name":"Bloomcrest","theme":"wild"},"variant":48,"rarity":"common","archetype":"balanced","stats":{"hp":10,"atk":5,"def":6,"spd":10,"luck":2},"powerScore":27.6,"tags":["wild","balanced","velvet","fen","sprite_128"],"description":"Bloomcrest legs profile aligned for Normal typing."}]}
-let PARTS_DATA = PARTS_DATA_EMBEDDED;
+// PARTS DATA (loaded from server at runtime; fallback to bundled file when not served)
+let PARTS_DATA = { version:'0.0.0', generatedAt:null, source:'runtime', statsGuide:{}, summary:{ totalParts:0, perSlot:{ head:0, torso:0, wings:0, legs:0 }, rarityBreakdown:{}, archetypeBreakdown:{} }, families:[], parts:[] };
+const FAMILY_NAME_TYPE_HINT = {
+  Marshborn:'Normal', Embercrest:'Fire', Frostplume:'Ice', Stormcall:'Lightning',
+  Ironbarb:'Normal', Duskveil:'Shadow', Sunflare:'Fire', Bloomcrest:'Normal', Voidgild:'Shadow',
+};
+const FAMILY_THEME_TYPE_HINT = {
+  fire:'Fire', solar:'Fire', ice:'Ice', lightning:'Lightning',
+  shadow:'Shadow', arcane:'Shadow', bog:'Normal', stone:'Normal', wild:'Normal', normal:'Normal',
+};
+function inferFamilyType(typeRaw, nameRaw, themeRaw) {
+  const explicit = String(typeRaw || '').trim();
+  if (explicit) return explicit;
+  const byName = FAMILY_NAME_TYPE_HINT[String(nameRaw || '').trim()];
+  if (byName) return byName;
+  const byTheme = FAMILY_THEME_TYPE_HINT[String(themeRaw || '').trim().toLowerCase()];
+  if (byTheme) return byTheme;
+  return 'Normal';
+}
+function ensureFamiliesRegistry(data) {
+  if (!data) return;
+  if (!Array.isArray(data.families)) data.families = [];
+  if (!Array.isArray(data.parts)) data.parts = [];
+  const byId = new Map();
+  const byName = new Map();
+  for (const fam of data.families) {
+    if (!fam || !fam.name) continue;
+    const id = Number(fam.id) || 0;
+    const rec = {
+      id,
+      name: String(fam.name),
+      theme: String(fam.theme || ''),
+      type: inferFamilyType(fam.type, fam.name, fam.theme),
+      description: String(fam.description || ''),
+      baseMoveIds: Array.isArray(fam.baseMoveIds) ? [...new Set(fam.baseMoveIds.filter(Boolean))] : [],
+    };
+    if (id) byId.set(id, rec);
+    byName.set(rec.name.toLowerCase(), rec);
+  }
+  for (const part of data.parts) {
+    const pFam = part?.family || {};
+    const pName = String(pFam.name || '').trim();
+    const pTheme = String(pFam.theme || '').trim();
+    const pType = String(pFam.type || '').trim();
+    const pId = Number(part?.familyId || pFam.id) || 0;
+    let fam = null;
+    if (pId && byId.has(pId)) fam = byId.get(pId);
+    if (!fam && pName && byName.has(pName.toLowerCase())) fam = byName.get(pName.toLowerCase());
+    if (!fam) {
+      const nextId = pId || Math.max(0, ...byId.keys()) + 1;
+      const nextName = pName || `Family${nextId}`;
+      const nextTheme = pTheme || 'normal';
+      fam = { id: nextId, name: nextName, theme: nextTheme, type: inferFamilyType(pType, nextName, nextTheme), description: '', baseMoveIds: [] };
+      byId.set(fam.id, fam);
+      byName.set(fam.name.toLowerCase(), fam);
+    } else {
+      if (!fam.theme && pTheme) fam.theme = pTheme;
+      if (!fam.id && pId) fam.id = pId;
+      if (!fam.type || fam.type === 'Normal') fam.type = inferFamilyType(pType, fam.name, fam.theme);
+    }
+    part.familyId = fam.id;
+    part.family = { id: fam.id, name: fam.name, theme: fam.theme, type: fam.type };
+  }
+  data.families = [...byId.values()].sort((a, b) => (a.id || 0) - (b.id || 0) || a.name.localeCompare(b.name));
+}
+function getPartFamily(part, data = PARTS_DATA) {
+  if (!part) return null;
+  const fams = data?.families || [];
+  const byId = Number(part.familyId || part.family?.id) || 0;
+  if (byId) {
+    const f = fams.find(x => Number(x.id) === byId);
+    if (f) return f;
+  }
+  const byName = String(part.family?.name || '').toLowerCase();
+  if (byName) {
+    const f = fams.find(x => String(x.name || '').toLowerCase() === byName);
+    if (f) return f;
+  }
+  return part.family || null;
+}
+async function loadPartsData() {
+  const urls = ['/api/parts-data', 'data/parts_data.json'];
+  for (const url of urls) {
+    try {
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) continue;
+      const data = await res.json();
+      if (data && Array.isArray(data.parts)) {
+        PARTS_DATA = data;
+        ensureFamiliesRegistry(PARTS_DATA);
+        // Keep JSON-authored rarity unless explicitly requested.
+        if (PARTS_DATA.autoNormalizeRarity === true) normalizePartRarityByFamily(PARTS_DATA);
+        // Keep JSON-authored part stats unless explicitly requested.
+        if (PARTS_DATA.autoApplyProgressionCurve === true) applyPartProgressionCurve(PARTS_DATA);
+        return PARTS_DATA;
+      }
+    } catch (_) {}
+  }
+  return PARTS_DATA;
+}
 
 function normalizePartRarityByFamily(data) {
   if (!data || !Array.isArray(data.parts)) return;
   const groups = new Map();
   for (const part of data.parts) {
-    const key = `${part.slot}::${part.family?.name || 'Unknown'}`;
+    const fam = getPartFamily(part, data);
+    const key = `${part.slot}::${fam?.name || 'Unknown'}`;
     if (!groups.has(key)) groups.set(key, []);
     groups.get(key).push(part);
   }
@@ -48,7 +147,8 @@ function applyPartProgressionCurve(data) {
     if (!part || !part.stats) continue;
     const slot = part.slot || 'head';
     const caps = statCaps[slot] || statCaps.head;
-    const familyId = Math.max(1, Math.min(9, Number(part.family?.id) || 1));
+    const fam = getPartFamily(part, data);
+    const familyId = Math.max(1, Math.min(9, Number(fam?.id) || 1));
     const familyRank = ((familyId - 1) / 8) * 3;
     const baseRank = (rarityRank[part.rarity] ?? 0) + familyRank;
     const rankMult = 0.82 + baseRank * 0.16;
@@ -62,17 +162,12 @@ function applyPartProgressionCurve(data) {
     }
 
     part.stats = next;
-    part.powerScore =
-      next.hp * 0.22 +
-      next.atk * 1.45 +
-      next.def * 1.25 +
-      next.spd * 1.1 +
-      next.luck * 0.6;
+    part.powerScore = next.hp + next.atk + next.def + next.spd + next.luck;
   }
 }
 
-normalizePartRarityByFamily(PARTS_DATA);
-applyPartProgressionCurve(PARTS_DATA);
+if (PARTS_DATA.autoNormalizeRarity === true) normalizePartRarityByFamily(PARTS_DATA);
+if (PARTS_DATA.autoApplyProgressionCurve === true) applyPartProgressionCurve(PARTS_DATA);
 
 // TYPE EFFECTIVENESS CHART
 const TYPE_EFF = {
@@ -94,10 +189,10 @@ const TCC = { Fire:'tc-fire',Ice:'tc-ice',Lightning:'tc-lightning',Shadow:'tc-sh
 
 // ROSTER (4 starter honkers)
 const ROSTER = [
-  { id:'bengt', name:'Bengt', emoji:'*', type:'Fire', lore:'A goose of volcanic temperament.', hp:210, luck:72, atk:95, def:75, spd:65, passive:{ id:'heat_proof', emoji:'*', name:'Heat Proof', desc:'Immune to Burn.' }, moves:[{ name:'Flame Honk',  type:'Fire',     power:50,  acc:95,  pp:20,maxPP:20,emoji:'*',desc:'Reliable fiery bread-and-butter.' }, { name:'Eruption',    type:'Fire',     power:100, acc:68,  pp:5, maxPP:5, emoji:'*',desc:'Devastating. Questionable aim.' }, { name:'Wing Slap',   type:'Normal',   power:45,  acc:100, pp:25,maxPP:25,emoji:'*',desc:'Always connects. No bonus.' }, { name:'Scorchblast', type:'Fire',     power:75,  acc:85,  pp:10,maxPP:10,emoji:'*',desc:'Balanced fire damage.' }]},
-  { id:'robin', name:'Robin Hood', emoji:'*', type:'Ice', lore:'Stole warmth, gave frostbite.', hp:175, luck:65, atk:75, def:90, spd:95, passive:{ id:'frost_armor', emoji:'*', name:'Frost Armor', desc:'Takes 25% less Ice damage.' }, moves:[{ name:'Frost Arrow', type:'Ice',      power:55,  acc:96,  pp:20,maxPP:20,emoji:'*',desc:'Icy precision shot.' }, { name:'Blizzard',    type:'Ice',      power:95,  acc:65,  pp:5, maxPP:5, emoji:'*',desc:'Total chaos. Very unreliable.' }, { name:'Peck',        type:'Normal',   power:40,  acc:100, pp:30,maxPP:30,emoji:'*',desc:'Simple. Always lands.' }, { name:'Ice Lance',   type:'Ice',      power:70,  acc:84,  pp:10,maxPP:10,emoji:'*',desc:'Sharp and piercing.' }]},
-  { id:'zephyr', name:'Zephyr', emoji:'*', type:'Lightning', lore:'Calls lightning from clear skies.', hp:155, luck:52, atk:82, def:55, spd:120, passive:{ id:'static_skin', emoji:'*', name:'Static Skin', desc:'30% chance to Paralyze any attacker.' }, moves:[{ name:'Shock Honk',  type:'Lightning',power:55,  acc:96,  pp:20,maxPP:20,emoji:'*',desc:'Quick electric jab.' }, { name:'Thunderclap', type:'Lightning',power:100, acc:67,  pp:5, maxPP:5, emoji:'*',desc:'Overwhelming voltage.' }, { name:'Talon Strike',type:'Normal',   power:45,  acc:100, pp:25,maxPP:25,emoji:'*',desc:'A basic reliable talon.' }, { name:'Chain Bolt',  type:'Lightning',power:72,  acc:82,  pp:10,maxPP:10,emoji:'*',desc:'Chained lightning.' }]},
-  { id:'mortem', name:'Mortem', emoji:'*', type:'Shadow', lore:'A wraith from the void. Unfathomably cursed.', hp:165, luck:78, atk:88, def:70, spd:80, passive:{ id:'cursed_aura', emoji:'*', name:'Cursed Aura', desc:'Enemies begin battle Cursed for 2 rounds.' }, moves:[{ name:'Soul Drain',    type:'Shadow', power:55,  acc:95,  pp:20,maxPP:20,emoji:'*',desc:'Saps life from the enemy.',drain:0.30 }, { name:'Void Collapse', type:'Shadow', power:98,  acc:65,  pp:5, maxPP:5, emoji:'*',desc:'Opens an abyss beneath them.' }, { name:'Scratch',       type:'Normal', power:40,  acc:100, pp:30,maxPP:30,emoji:'*',desc:'Basic cursed scratch.' }, { name:'Dark Pulse',    type:'Shadow', power:70,  acc:83,  pp:10,maxPP:10,emoji:'*',desc:'A wave of pure darkness.' }]},
+  { id:'bengt', name:'Bengt', emoji:'*', type:'Fire', lore:'A goose of volcanic temperament.', hp:210, luck:72, atk:95, def:75, spd:65, passive:{ id:'heat_proof', emoji:'*', name:'Heat Proof', desc:'Immune to Burn.' }, moveIds:['fire_flame_honk','fire_eruption','normal_wing_slap','fire_scorchblast']},
+  { id:'robin', name:'Robin Hood', emoji:'*', type:'Ice', lore:'Stole warmth, gave frostbite.', hp:175, luck:65, atk:75, def:90, spd:95, passive:{ id:'frost_armor', emoji:'*', name:'Frost Armor', desc:'Takes 25% less Ice damage.' }, moveIds:['ice_frost_arrow','ice_blizzard','normal_peck','ice_ice_lance']},
+  { id:'zephyr', name:'Zephyr', emoji:'*', type:'Lightning', lore:'Calls lightning from clear skies.', hp:155, luck:52, atk:82, def:55, spd:120, passive:{ id:'static_skin', emoji:'*', name:'Static Skin', desc:'30% chance to Paralyze any attacker.' }, moveIds:['lightning_shock_honk','lightning_thunderclap','normal_talon_strike','lightning_chain_bolt']},
+  { id:'mortem', name:'Mortem', emoji:'*', type:'Shadow', lore:'A wraith from the void. Unfathomably cursed.', hp:165, luck:78, atk:88, def:70, spd:80, passive:{ id:'cursed_aura', emoji:'*', name:'Cursed Aura', desc:'Enemies begin battle Cursed for 2 rounds.' }, moveIds:['shadow_soul_drain','shadow_void_collapse','normal_scratch','shadow_dark_pulse']},
 ];
 
 // CAMPAIGN INITIAL STATE
@@ -118,6 +213,7 @@ const CAMPAIGN = {
   inventory: [],
   dexSeen: [],
   dexCaught: [],
+  honkerMastery: {},
   deepest: 0,
   coins: 0,
   fallen: [],
@@ -279,63 +375,824 @@ const HONKER_DEX = [
     passive:{id:'cursed_aura',  emoji:'*', name:'Cursed Aura',   desc:'Enemy starts battle Cursed.'}, isBoss:true },
 ];
 
-// MOVE POOLS BY TYPE - Define all available moves organized by type
-const MOVE_POOLS = {
-  Fire:[
-    {name:'Flame Burst',  emoji:'*',desc:'A quick flame',                          pMult:.80, acc:95, pp:20},
-    {name:'Scorchblast',  emoji:'*',desc:'Ignites the target',                     pMult:1.0, acc:85, pp:12},
-    {name:'Magma Crash',  emoji:'*',desc:'Molten impact',                          pMult:1.45,acc:75, pp:8 },
-    {name:'Emit Spark',   emoji:'*',desc:'Ignites the foe, increasing burn.',       pMult:.48, acc:95, pp:16, effect:'burn', effectTarget:'enemy', effectChance:95, effectDur:3},
-    {name:'Inferno Wave', emoji:'*',desc:'Massive heat wave.',                      pMult:1.55,acc:68, pp:6 },
-    {name:'Eruption',     emoji:'*',desc:'Volcano emerges from below.',             pMult:1.25,acc:80, pp:8 },
-    {name:'Lava Spit',    emoji:'*',desc:'Steady, scorching.',                      pMult:.85, acc:98, pp:18},
-    {name:'Flamewing',    emoji:'*',desc:'Wings ablaze with power.',                pMult:.78, acc:96, pp:22},
-  ],
-  Ice:[
-    {name:'Icy Gust',     emoji:'*',desc:'A freezing wind.',                        pMult:.80, acc:95, pp:20},
-    {name:'Frozen Spire', emoji:'*',desc:'Icicles from above.',                     pMult:1.1, acc:85, pp:10},
-    {name:'Ice Shell',    emoji:'*',desc:'Wraps self in a frigid barrier. Stacks shield.',     pMult:0,   acc:100,pp:12, effect:'shielded',  effectTarget:'self',  effectChance:100,effectDur:3},
-    {name:'Permafrost',   emoji:'*',desc:'Guarantees freeze. Low damage.',      pMult:.45, acc:88, pp:12, effect:'frozen', effectTarget:'enemy', effectChance:100, effectDur:1},
-    {name:'Glacial Slam', emoji:'*',desc:'Slow but crushingly powerful.',       pMult:1.75,acc:70, pp:4 },
-  ],
-  Lightning:[
-    {name:'Shock Honk',   emoji:'*',desc:'Quick electric jab.',                 pMult:.88, acc:95, pp:20},
-    {name:'Chain Bolt',   emoji:'*',desc:'Arcs between targets.',               pMult:1.1, acc:83, pp:10},
-    {name:'Thunderclap',  emoji:'*',desc:'Overwhelming voltage.',              pMult:1.65,acc:65, pp:5 },
-    {name:'Arc Pulse',    emoji:'*',desc:'Ricochets unpredictably.',            pMult:1.2, acc:80, pp:8 },
-    {name:'Static Honk',  emoji:'*',desc:'Consistent voltage.',                pMult:.92, acc:93, pp:15},
-    {name:'Ball Lightning',emoji:'*',desc:'Slow but catastrophically explosive.',pMult:1.3,acc:76, pp:8 },
-    {name:'Zap Field',    emoji:'*',desc:'Bathes the foe in static charge.',    pMult:.45, acc:93, pp:15, effect:'paralyzed',effectTarget:'enemy', effectChance:90, effectDur:3},
-    {name:'Overclock',    emoji:'*',desc:'Overloads own nervous system.',       pMult:0,   acc:100,pp:10, effect:'pumped',    effectTarget:'self',  effectChance:100,effectDur:2},
-    {name:'Volt Dive',    emoji:'*',desc:'Priority strike. Always moves first.',pMult:.70, acc:100,pp:18, priority:true},
-    {name:'Discharge',    emoji:'*',desc:'Massive AoE  -  hurts user for 18%.',  pMult:1.55,acc:78, pp:6, recoil:0.18},
-  ],
-  Shadow:[
-    {name:'Soul Drain',   emoji:'*',desc:'Saps the enemy\'s life force.',       pMult:.88, acc:94, pp:20, drain:0.30},
-    {name:'Dark Pulse',   emoji:'*',desc:'A wave of pure darkness.',            pMult:1.1, acc:84, pp:10},
-    {name:'Void Collapse',emoji:'*',desc:'Opens an abyss beneath them.',        pMult:1.65,acc:63, pp:5 },
-    {name:'Shadow Slam',  emoji:'*',desc:'Pure dark force.',                    pMult:1.2, acc:80, pp:8 },
-    {name:'Void Touch',   emoji:'*',desc:'Dark and draining.',                 pMult:.92, acc:93, pp:15, drain:0.20},
-    {name:'Eclipse Strike',emoji:'*',desc:'Blots out hope itself.',             pMult:1.3, acc:79, pp:8 },
-    {name:'Hex',          emoji:'*',desc:'A dark curse saps their strength.',   pMult:.4,  acc:92, pp:15, effect:'cursed',  effectTarget:'enemy', effectChance:90, effectDur:3},
-    {name:'Umbral Veil',  emoji:'*',desc:'Cloaks self in protective darkness. Stacks shield.',pMult:0,   acc:100,pp:12, effect:'shielded',  effectTarget:'self',  effectChance:100,effectDur:3},
-    {name:'Oblivion',     emoji:'*',desc:'Terrifying. Unreliable. Legendary.',  pMult:2.1, acc:52, pp:3 },
-    {name:'Leech Feather',emoji:'*',desc:'Drains 40% of damage as healing.',    pMult:.80, acc:90, pp:14, drain:0.40},
-  ],
-  Normal:[
-    {name:'Wing Slap',    emoji:'*',desc:'Always connects. No type bonus.',     pMult:.78, acc:100,pp:25},
-    {name:'Peck',         emoji:'*',desc:'Classic peck.',                       pMult:.68, acc:100,pp:30},
-    {name:'Dive Bomb',    emoji:'*',desc:'Straight down.',                      pMult:.9,  acc:92, pp:15},
-    {name:'Honk Slam',    emoji:'*',desc:'Raw honk energy.',                    pMult:.95, acc:88, pp:12},
-    {name:'Talon Strike', emoji:'*',desc:'Reliable talon.',                     pMult:.82, acc:100,pp:20},
-    {name:'Wild Flap',    emoji:'*',desc:'Chaotic but earnest.',               pMult:1.1, acc:78, pp:10},
-    {name:'Battle Cry',   emoji:'*',desc:'A rousing shout empowers attacks.',   pMult:0,   acc:100,pp:12, effect:'pumped',   effectTarget:'self',  effectChance:100,effectDur:2},
-    {name:'Feather Guard',emoji:'*',desc:'Raises a defensive wing shield. Stacks shield.',     pMult:0,   acc:100,pp:12, effect:'shielded', effectTarget:'self',  effectChance:100,effectDur:3},
-    {name:'Quick Strike', emoji:'*',desc:'Always moves first. Low damage.',     pMult:.55, acc:100,pp:20, priority:true},
-    {name:'Bulldoze',     emoji:'*',desc:'Brute force. Never misses.',          pMult:1.15,acc:100,pp:8 },
-    {name:'Berserker Charge',emoji:'*',desc:'Massive. 25% recoil damage.',     pMult:1.9, acc:82, pp:5, recoil:0.25},
-  ],
-};
+// MOVE POOL (single source of truth)
+// Add/edit moves here; all type indexes and learnable loot are derived automatically.
+const MOVE_POOL = [
+  {
+    "name": "Flame Honk",
+    "types": [
+      "Fire"
+    ],
+    "emoji": "🔥",
+    "desc": "Reliable fiery bread-and-butter.",
+    "basePower": 50,
+    "acc": 95,
+    "pp": 20,
+    "id": "",
+    "tier": "common",
+    "type": "Fire"
+  },
+  {
+    "name": "Flame Burst",
+    "types": [
+      "Fire"
+    ],
+    "emoji": "*",
+    "desc": "A quick flame",
+    "basePower": 44,
+    "acc": 95,
+    "pp": 20
+  },
+  {
+    "name": "Scorchblast",
+    "types": [
+      "Fire"
+    ],
+    "emoji": "*",
+    "desc": "Ignites the target",
+    "basePower": 55,
+    "acc": 85,
+    "pp": 12
+  },
+  {
+    "name": "Ember",
+    "types": [
+      "Fire"
+    ],
+    "emoji": "*",
+    "desc": "Leaves a lingering burn.",
+    "basePower": 35,
+    "acc": 100,
+    "pp": 18,
+    "effect": "burn",
+    "effectTarget": "enemy",
+    "effectChance": 100,
+    "effectDur": 3,
+    "isLootLearnable": true,
+    "lootId": "move_ember",
+    "lootRarity": "common",
+    "lootColor": "#ff4e00",
+    "lootDesc": "Adds <b>Ember</b> (Fire) to your moveset. <i>Guarantees Burn for 3 rounds.</i>"
+  },
+  {
+    "name": "Magma Crash",
+    "types": [
+      "Fire"
+    ],
+    "emoji": "*",
+    "desc": "Molten impact",
+    "basePower": 80,
+    "acc": 75,
+    "pp": 8
+  },
+  {
+    "name": "Emit Spark",
+    "types": [
+      "Fire"
+    ],
+    "emoji": "🔥",
+    "desc": "Ignites the foe, increasing burn.",
+    "basePower": 30,
+    "acc": 95,
+    "pp": 16,
+    "effect": "burn",
+    "effectTarget": "enemy",
+    "effectChance": 95,
+    "effectDur": 3,
+    "id": "",
+    "tier": "common",
+    "type": "Fire"
+  },
+  {
+    "name": "Inferno Wave",
+    "types": [
+      "Fire"
+    ],
+    "emoji": "*",
+    "desc": "Massive heat wave.",
+    "basePower": 85,
+    "acc": 68,
+    "pp": 6
+  },
+  {
+    "name": "Eruption",
+    "types": [
+      "Fire"
+    ],
+    "emoji": "*",
+    "desc": "Volcano emerges from below.",
+    "basePower": 69,
+    "acc": 80,
+    "pp": 8
+  },
+  {
+    "name": "Lava Spit",
+    "types": [
+      "Fire"
+    ],
+    "emoji": "*",
+    "desc": "Steady, scorching.",
+    "basePower": 47,
+    "acc": 98,
+    "pp": 18
+  },
+  {
+    "name": "Solar Flare",
+    "types": [
+      "Fire"
+    ],
+    "emoji": "*",
+    "desc": "The sun itself, weaponised. User takes recoil.",
+    "basePower": 120,
+    "acc": 82,
+    "pp": 4,
+    "recoil": 0.25,
+    "isLootLearnable": true,
+    "lootId": "sig_solarflare",
+    "lootName": "Solar Flare",
+    "lootRarity": "legendary",
+    "lootColor": "#ff6a00",
+    "lootExclusiveTo": [
+      "bengt",
+      "embertail",
+      "scorchwick",
+      "pyrocluck",
+      "cinderquill",
+      "blazefowl",
+      "magnaroo"
+    ],
+    "lootDesc": "<b>Solar Flare</b>  -  Fire, PWR 155, 25% recoil. <i>Signature of fire glass cannons.</i>"
+  },
+  {
+    "name": "Flamewing",
+    "types": [
+      "Fire"
+    ],
+    "emoji": "*",
+    "desc": "Wings ablaze with power.",
+    "basePower": 43,
+    "acc": 96,
+    "pp": 22
+  },
+  {
+    "name": "Frost Arrow",
+    "types": [
+      "Ice"
+    ],
+    "emoji": "*",
+    "desc": "Icy precision shot.",
+    "basePower": 55,
+    "acc": 96,
+    "pp": 20
+  },
+  {
+    "name": "Ice Lance",
+    "types": [
+      "Ice"
+    ],
+    "emoji": "*",
+    "desc": "Sharp and piercing.",
+    "basePower": 70,
+    "acc": 84,
+    "pp": 10
+  },
+  {
+    "name": "Blizzard",
+    "types": [
+      "Ice"
+    ],
+    "emoji": "*",
+    "desc": "Total chaos. Very unreliable.",
+    "basePower": 95,
+    "acc": 65,
+    "pp": 5
+  },
+  {
+    "name": "Icy Gust",
+    "types": [
+      "Ice"
+    ],
+    "emoji": "*",
+    "desc": "A freezing wind.",
+    "basePower": 44,
+    "acc": 95,
+    "pp": 20
+  },
+  {
+    "name": "Frozen Spire",
+    "types": [
+      "Ice"
+    ],
+    "emoji": "*",
+    "desc": "Icicles from above.",
+    "basePower": 61,
+    "acc": 85,
+    "pp": 10
+  },
+  {
+    "name": "Flash Freeze",
+    "types": [
+      "Ice"
+    ],
+    "emoji": "*",
+    "desc": "May freeze the target solid.",
+    "basePower": 35,
+    "acc": 90,
+    "pp": 15,
+    "effect": "frozen",
+    "effectTarget": "enemy",
+    "effectChance": 65,
+    "effectDur": 1,
+    "isLootLearnable": true,
+    "lootId": "move_freeze",
+    "lootRarity": "rare",
+    "lootColor": "#00c8ff",
+    "lootDesc": "Adds <b>Flash Freeze</b> (Ice) to your moveset. <i>Chance to skip the enemy's next turn.</i>"
+  },
+  {
+    "name": "Ice Shell",
+    "types": [
+      "Ice"
+    ],
+    "emoji": "*",
+    "desc": "Wraps self in a frigid barrier. Stacks shield.",
+    "basePower": 30,
+    "acc": 100,
+    "pp": 12,
+    "effect": "shielded",
+    "effectTarget": "self",
+    "effectChance": 100,
+    "effectDur": 3
+  },
+  {
+    "name": "Permafrost",
+    "types": [
+      "Ice"
+    ],
+    "emoji": "*",
+    "desc": "Guarantees freeze. Low damage.",
+    "basePower": 30,
+    "acc": 88,
+    "pp": 12,
+    "effect": "frozen",
+    "effectTarget": "enemy",
+    "effectChance": 100,
+    "effectDur": 1
+  },
+  {
+    "name": "Permafrost Slam",
+    "types": [
+      "Ice"
+    ],
+    "emoji": "*",
+    "desc": "Seals the opponent in ice. Guaranteed freeze.",
+    "basePower": 60,
+    "acc": 90,
+    "pp": 10,
+    "effect": "frozen",
+    "effectTarget": "enemy",
+    "effectChance": 100,
+    "effectDur": 1,
+    "isLootLearnable": true,
+    "lootId": "sig_permafrost",
+    "lootName": "Permafrost Slam",
+    "lootRarity": "legendary",
+    "lootColor": "#00c8ff",
+    "lootExclusiveTo": [
+      "robin",
+      "frosting",
+      "brrrbeak",
+      "glaciergus",
+      "arcticclyde",
+      "snowquack",
+      "crystalwing"
+    ],
+    "lootDesc": "<b>Permafrost Slam</b>  -  Ice, PWR 60, <i>Guaranteed freeze</i>. Signature of icy tanks."
+  },
+  {
+    "name": "Glacial Slam",
+    "types": [
+      "Ice"
+    ],
+    "emoji": "*",
+    "desc": "Slow but crushingly powerful.",
+    "basePower": 96,
+    "acc": 70,
+    "pp": 4
+  },
+  {
+    "name": "Shock Honk",
+    "types": [
+      "Lightning"
+    ],
+    "emoji": "*",
+    "desc": "Quick electric jab.",
+    "basePower": 48,
+    "acc": 95,
+    "pp": 20
+  },
+  {
+    "name": "Chain Bolt",
+    "types": [
+      "Lightning"
+    ],
+    "emoji": "*",
+    "desc": "Arcs between targets.",
+    "basePower": 61,
+    "acc": 83,
+    "pp": 10
+  },
+  {
+    "name": "Thunderclap",
+    "types": [
+      "Lightning"
+    ],
+    "emoji": "*",
+    "desc": "Overwhelming voltage.",
+    "basePower": 91,
+    "acc": 65,
+    "pp": 5
+  },
+  {
+    "name": "Arc Pulse",
+    "types": [
+      "Lightning"
+    ],
+    "emoji": "*",
+    "desc": "Ricochets unpredictably.",
+    "basePower": 66,
+    "acc": 80,
+    "pp": 8
+  },
+  {
+    "name": "Static Honk",
+    "types": [
+      "Lightning"
+    ],
+    "emoji": "*",
+    "desc": "Consistent voltage.",
+    "basePower": 51,
+    "acc": 93,
+    "pp": 15
+  },
+  {
+    "name": "Ball Lightning",
+    "types": [
+      "Lightning"
+    ],
+    "emoji": "*",
+    "desc": "Slow but catastrophically explosive.",
+    "basePower": 72,
+    "acc": 76,
+    "pp": 8
+  },
+  {
+    "name": "Zap Field",
+    "types": [
+      "Lightning"
+    ],
+    "emoji": "*",
+    "desc": "Bathes the foe in static charge.",
+    "basePower": 30,
+    "acc": 93,
+    "pp": 15,
+    "effect": "paralyzed",
+    "effectTarget": "enemy",
+    "effectChance": 90,
+    "effectDur": 3,
+    "isLootLearnable": true,
+    "lootId": "move_zap",
+    "lootRarity": "rare",
+    "lootColor": "#ffe600",
+    "lootDesc": "Adds <b>Zap Field</b> (Lightning). <i>Paralyzes the enemy, reducing their accuracy.</i>"
+  },
+  {
+    "name": "Overclock",
+    "types": [
+      "Lightning"
+    ],
+    "emoji": "*",
+    "desc": "Overloads own nervous system.",
+    "basePower": 30,
+    "acc": 100,
+    "pp": 10,
+    "effect": "pumped",
+    "effectTarget": "self",
+    "effectChance": 100,
+    "effectDur": 2
+  },
+  {
+    "name": "Volt Dive",
+    "types": [
+      "Lightning"
+    ],
+    "emoji": "*",
+    "desc": "Priority strike. Always moves first.",
+    "basePower": 38,
+    "acc": 100,
+    "pp": 18,
+    "priority": true,
+    "isLootLearnable": true,
+    "lootId": "sig_voltdive",
+    "lootName": "Volt Dive",
+    "lootRarity": "rare",
+    "lootColor": "#ffe600",
+    "lootExclusiveTo": [
+      "zephyr",
+      "zappington",
+      "voltmare",
+      "staticlina",
+      "sparksworth",
+      "boltclaw",
+      "thunderbeak"
+    ],
+    "lootDesc": "<b>Volt Dive</b>  -  Lightning, always goes first (priority). Signature of fast electric types."
+  },
+  {
+    "name": "Discharge",
+    "types": [
+      "Lightning"
+    ],
+    "emoji": "*",
+    "desc": "Massive AoE  -  hurts user for 18%.",
+    "basePower": 85,
+    "acc": 78,
+    "pp": 6,
+    "recoil": 0.18
+  },
+  {
+    "name": "Soul Drain",
+    "types": [
+      "Shadow"
+    ],
+    "emoji": "*",
+    "desc": "Saps the enemy's life force.",
+    "basePower": 48,
+    "acc": 94,
+    "pp": 20,
+    "drain": 0.3
+  },
+  {
+    "name": "Dark Pulse",
+    "types": [
+      "Shadow"
+    ],
+    "emoji": "*",
+    "desc": "A wave of pure darkness.",
+    "basePower": 61,
+    "acc": 84,
+    "pp": 10
+  },
+  {
+    "name": "Void Collapse",
+    "types": [
+      "Shadow"
+    ],
+    "emoji": "*",
+    "desc": "Opens an abyss beneath them.",
+    "basePower": 91,
+    "acc": 63,
+    "pp": 5
+  },
+  {
+    "name": "Void Rend",
+    "types": [
+      "Shadow"
+    ],
+    "emoji": "*",
+    "desc": "Tears a void through the enemy. Heals attacker.",
+    "basePower": 120,
+    "acc": 80,
+    "pp": 6,
+    "drain": 0.35,
+    "isLootLearnable": true,
+    "lootId": "sig_voidrend",
+    "lootName": "Void Rend",
+    "lootRarity": "legendary",
+    "lootColor": "#a020f0",
+    "lootExclusiveTo": [
+      "mortem",
+      "thewraith",
+      "voidwing",
+      "gloomfeather",
+      "hexdown",
+      "eclipsar"
+    ],
+    "lootDesc": "<b>Void Rend</b>  -  Shadow, PWR 125, drains 35% as HP. <i>Signature of Mortem & The Wraith.</i>"
+  },
+  {
+    "name": "Shadow Slam",
+    "types": [
+      "Shadow"
+    ],
+    "emoji": "*",
+    "desc": "Pure dark force.",
+    "basePower": 66,
+    "acc": 80,
+    "pp": 8
+  },
+  {
+    "name": "Void Touch",
+    "types": [
+      "Shadow"
+    ],
+    "emoji": "*",
+    "desc": "Dark and draining.",
+    "basePower": 51,
+    "acc": 93,
+    "pp": 15,
+    "drain": 0.2
+  },
+  {
+    "name": "Eclipse Strike",
+    "types": [
+      "Shadow"
+    ],
+    "emoji": "*",
+    "desc": "Blots out hope itself.",
+    "basePower": 72,
+    "acc": 79,
+    "pp": 8
+  },
+  {
+    "name": "Hex",
+    "types": [
+      "Shadow"
+    ],
+    "emoji": "*",
+    "desc": "A dark curse saps their strength.",
+    "basePower": 30,
+    "acc": 92,
+    "pp": 15,
+    "effect": "cursed",
+    "effectTarget": "enemy",
+    "effectChance": 90,
+    "effectDur": 3,
+    "isLootLearnable": true,
+    "lootId": "move_hex",
+    "lootRarity": "common",
+    "lootColor": "#a020f0",
+    "lootDesc": "Adds <b>Hex</b> (Shadow) to your moveset. <i>Curses the enemy, reducing their attack.</i>"
+  },
+  {
+    "name": "Umbral Veil",
+    "types": [
+      "Shadow"
+    ],
+    "emoji": "*",
+    "desc": "Cloaks self in protective darkness. Stacks shield.",
+    "basePower": 30,
+    "acc": 100,
+    "pp": 12,
+    "effect": "shielded",
+    "effectTarget": "self",
+    "effectChance": 100,
+    "effectDur": 3
+  },
+  {
+    "name": "Oblivion",
+    "types": [
+      "Shadow"
+    ],
+    "emoji": "*",
+    "desc": "Terrifying. Unreliable. Legendary.",
+    "basePower": 116,
+    "acc": 52,
+    "pp": 3
+  },
+  {
+    "name": "Leech Feather",
+    "types": [
+      "Shadow"
+    ],
+    "emoji": "*",
+    "desc": "Drains 40% of damage as healing.",
+    "basePower": 44,
+    "acc": 90,
+    "pp": 14,
+    "drain": 0.4
+  },
+  {
+    "name": "Wing Slap",
+    "types": [
+      "Normal"
+    ],
+    "emoji": "*",
+    "desc": "Always connects. No type bonus.",
+    "basePower": 43,
+    "acc": 100,
+    "pp": 25
+  },
+  {
+    "name": "Peck",
+    "types": [
+      "Normal"
+    ],
+    "emoji": "*",
+    "desc": "Classic peck.",
+    "basePower": 37,
+    "acc": 100,
+    "pp": 30
+  },
+  {
+    "name": "Scratch",
+    "types": [
+      "Normal"
+    ],
+    "emoji": "*",
+    "desc": "Basic cursed scratch.",
+    "basePower": 40,
+    "acc": 100,
+    "pp": 30
+  },
+  {
+    "name": "Dive Bomb",
+    "types": [
+      "Normal"
+    ],
+    "emoji": "*",
+    "desc": "Straight down.",
+    "basePower": 50,
+    "acc": 92,
+    "pp": 15
+  },
+  {
+    "name": "Honk Slam",
+    "types": [
+      "Normal"
+    ],
+    "emoji": "*",
+    "desc": "Raw honk energy.",
+    "basePower": 52,
+    "acc": 88,
+    "pp": 12
+  },
+  {
+    "name": "Talon Strike",
+    "types": [
+      "Normal"
+    ],
+    "emoji": "*",
+    "desc": "Reliable talon.",
+    "basePower": 45,
+    "acc": 100,
+    "pp": 20
+  },
+  {
+    "name": "Wild Flap",
+    "types": [
+      "Normal"
+    ],
+    "emoji": "*",
+    "desc": "Chaotic but earnest.",
+    "basePower": 61,
+    "acc": 78,
+    "pp": 10
+  },
+  {
+    "name": "Iron Guard",
+    "types": [
+      "Normal"
+    ],
+    "emoji": "*",
+    "desc": "Raises an iron defensive shield. Stacks shield.",
+    "basePower": 30,
+    "acc": 100,
+    "pp": 12,
+    "effect": "shielded",
+    "effectTarget": "self",
+    "effectChance": 100,
+    "effectDur": 3,
+    "isLootLearnable": true,
+    "lootId": "move_shield",
+    "lootRarity": "rare",
+    "lootColor": "#00ff88",
+    "lootDesc": "Adds <b>Iron Guard</b> (Normal). <i>Applies stackable Shield (max 4), persistent until swap/boss clear.</i>"
+  },
+  {
+    "name": "War Honk",
+    "types": [
+      "Normal"
+    ],
+    "emoji": "*",
+    "desc": "Unleash a terrifying battle cry.",
+    "basePower": 30,
+    "acc": 100,
+    "pp": 12,
+    "effect": "pumped",
+    "effectTarget": "self",
+    "effectChance": 100,
+    "effectDur": 2,
+    "isLootLearnable": true,
+    "lootId": "move_pump",
+    "lootRarity": "common",
+    "lootColor": "#ff9800",
+    "lootDesc": "Adds <b>War Honk</b> (Normal). <i>Pumps yourself up  -  boosts your attack for 2 rounds.</i>"
+  },
+  {
+    "name": "Rampage",
+    "types": [
+      "Normal"
+    ],
+    "emoji": "*",
+    "desc": "Unstoppable. Unreliable. Legendary.",
+    "basePower": 110,
+    "acc": 60,
+    "pp": 5,
+    "isLootLearnable": true,
+    "lootId": "move_rampage",
+    "lootRarity": "legendary",
+    "lootColor": "#ffd700",
+    "lootDesc": "Adds <b>Rampage</b> (Normal, PWR 110) to your moveset. <i>Extremely powerful, low accuracy.</i>"
+  },
+  {
+    "name": "Kevin's Fury",
+    "types": [
+      "Normal"
+    ],
+    "emoji": "*",
+    "desc": "Only activates when cornered. Enormous.",
+    "basePower": 120,
+    "acc": 85,
+    "pp": 6,
+    "lowHPOnly": true,
+    "isLootLearnable": true,
+    "lootId": "sig_kevinfury",
+    "lootName": "Kevin's Fury",
+    "lootRarity": "legendary",
+    "lootColor": "#ffd700",
+    "lootExclusiveTo": [
+      "kevin",
+      "regularbarry"
+    ],
+    "lootDesc": "<b>Kevin's Fury</b>  -  Normal, PWR 145. <i>Only usable below 50% HP. Signature of Kevin & Barry.</i>"
+  },
+  {
+    "name": "Battle Cry",
+    "types": [
+      "Normal"
+    ],
+    "emoji": "*",
+    "desc": "A rousing shout empowers attacks.",
+    "basePower": 30,
+    "acc": 100,
+    "pp": 12,
+    "effect": "pumped",
+    "effectTarget": "self",
+    "effectChance": 100,
+    "effectDur": 2
+  },
+  {
+    "name": "Feather Guard",
+    "types": [
+      "Normal"
+    ],
+    "emoji": "*",
+    "desc": "Raises a defensive wing shield. Stacks shield.",
+    "basePower": 30,
+    "acc": 100,
+    "pp": 12,
+    "effect": "shielded",
+    "effectTarget": "self",
+    "effectChance": 100,
+    "effectDur": 3
+  },
+  {
+    "name": "Quick Strike",
+    "types": [
+      "Normal"
+    ],
+    "emoji": "*",
+    "desc": "Always moves first. Low damage.",
+    "basePower": 30,
+    "acc": 100,
+    "pp": 20,
+    "priority": true
+  },
+  {
+    "name": "Bulldoze",
+    "types": [
+      "Normal"
+    ],
+    "emoji": "*",
+    "desc": "Brute force. Never misses.",
+    "basePower": 63,
+    "acc": 100,
+    "pp": 8
+  },
+  {
+    "name": "Berserker Charge",
+    "types": [
+      "Normal"
+    ],
+    "emoji": "*",
+    "desc": "Massive. 25% recoil damage.",
+    "basePower": 104,
+    "acc": 82,
+    "pp": 5,
+    "recoil": 0.25
+  }
+];
 
 function hash32(str) {
   let h = 2166136261 >>> 0;
@@ -354,24 +1211,107 @@ function slugMoveName(s) {
 }
 function moveTier(m) {
   const desc = String(m?.desc || '').toLowerCase();
-  if (desc.includes('legendary') || (m.pMult || 0) >= 1.75 || (m.acc || 100) <= 60 || (m.pp || 99) <= 4) return 'legendary';
-  if ((m.pMult || 0) >= 1.25 || (m.acc || 100) <= 80 || (m.pp || 99) <= 8 || m.effect || m.drain || m.recoil || m.priority) return 'rare';
+  const bp = Number(m?.basePower || 0);
+  if (desc.includes('legendary') || bp >= 96 || (m.acc || 100) <= 60 || (m.pp || 99) <= 4) return 'legendary';
+  if (bp >= 69 || (m.acc || 100) <= 80 || (m.pp || 99) <= 8 || m.effect || m.drain || m.recoil || m.priority) return 'rare';
   return 'common';
+}
+
+function normalizeMoveDef(m) {
+  const types = Array.isArray(m.types) && m.types.length ? [...new Set(m.types)] : [m.type || 'Normal'];
+  const primaryType = types[0] || 'Normal';
+  const id = m.id || `${primaryType.toLowerCase()}_${slugMoveName(m.name)}`;
+  const category = m.category || ((m.effect || (m.basePower || 0) <= 0) ? 'status' : 'attack');
+  return { ...m, id, types, type: primaryType, category };
 }
 
 const MOVE_DB = {};
 const MOVES_BY_TYPE = {};
+const MOVES_BY_CATEGORY = {};
 (() => {
-  for (const [type, list] of Object.entries(MOVE_POOLS)) {
-    MOVES_BY_TYPE[type] = [];
-    for (const m of list) {
-      const id = `${type.toLowerCase()}_${slugMoveName(m.name)}`;
-      const rec = { id, type, tier: moveTier(m), ...m };
-      MOVE_DB[id] = rec;
-      MOVES_BY_TYPE[type].push(rec);
+  for (const raw of MOVE_POOL) {
+    const rec = { ...normalizeMoveDef(raw) };
+    rec.tier = moveTier(rec);
+    MOVE_DB[rec.id] = rec;
+    for (const t of rec.types) {
+      if (!MOVES_BY_TYPE[t]) MOVES_BY_TYPE[t] = [];
+      MOVES_BY_TYPE[t].push(rec);
     }
+    if (!MOVES_BY_CATEGORY[rec.category]) MOVES_BY_CATEGORY[rec.category] = [];
+    MOVES_BY_CATEGORY[rec.category].push(rec);
   }
 })();
+
+function materializeMoveFromId(moveId, opts = {}) {
+  const rec = MOVE_DB[moveId];
+  if (!rec) return null;
+  const basePow = Number.isFinite(opts.basePow) ? opts.basePow : 55;
+  const powerScale = Number.isFinite(opts.powerScale) ? opts.powerScale : 1;
+  const fixedPower = Number.isFinite(opts.fixedPower) ? opts.fixedPower : null;
+  const out = {
+    id: rec.id,
+    name: rec.name,
+    type: opts.type || rec.type,
+    emoji: rec.emoji,
+    desc: rec.desc,
+    power: rec.effect ? 0 : (fixedPower ?? Math.max(0, Math.round((rec.basePower || basePow) * powerScale))),
+    acc: rec.acc,
+    pp: rec.pp,
+    maxPP: rec.pp,
+    ...(rec.effect ? {
+      effect: rec.effect,
+      effectTarget: rec.effectTarget,
+      effectChance: rec.effectChance,
+      effectDur: rec.effectDur,
+    } : {}),
+    ...(rec.drain ? { drain: rec.drain } : {}),
+    ...(rec.recoil ? { recoil: rec.recoil } : {}),
+    ...(rec.priority ? { priority: true } : {}),
+    ...(rec.lowHPOnly ? { lowHPOnly: true } : {}),
+  };
+  return out;
+}
+function materializeMovesFromIds(moveIds, opts = {}) {
+  return (moveIds || []).map(id => materializeMoveFromId(id, opts)).filter(Boolean);
+}
+function resolveMoveId(move) {
+  if (!move) return null;
+  if (move.id && MOVE_DB[move.id]) return move.id;
+  const byName = Object.values(MOVE_DB).find(rec => rec.name === move.name);
+  return byName ? byName.id : null;
+}
+function ensureHonkerMoveIds(honker) {
+  if (!honker) return;
+  if (!Array.isArray(honker.moveIds)) honker.moveIds = [];
+  if (!Array.isArray(honker.moves)) honker.moves = [];
+  const ids = honker.moves.map(resolveMoveId).filter(Boolean);
+  if (ids.length) honker.moveIds = [...new Set(ids)];
+}
+function moveSetHasId(moves, moveId) {
+  return !!(moves || []).find(m => m.id === moveId || (MOVE_DB[moveId] && m.name === MOVE_DB[moveId].name));
+}
+function addMoveById(honker, moveId, opts = {}) {
+  if (!honker) return false;
+  if (!Array.isArray(honker.moves)) honker.moves = [];
+  if (!Array.isArray(honker.moveIds)) honker.moveIds = [];
+  if (moveSetHasId(honker.moves, moveId)) return false;
+  const mv = materializeMoveFromId(moveId, opts);
+  if (!mv) return false;
+  honker.moves.push(mv);
+  if (!honker.moveIds.includes(moveId)) honker.moveIds.push(moveId);
+  return true;
+}
+function normalizeRosterMoveSets() {
+  (ROSTER || []).forEach(h => {
+    if (Array.isArray(h.moveIds) && h.moveIds.length) {
+      h.moves = materializeMovesFromIds(h.moveIds, { type: h.type, basePow: 55 });
+    } else {
+      ensureHonkerMoveIds(h);
+      h.moves = materializeMovesFromIds(h.moveIds, { type: h.type, basePow: 55 });
+    }
+  });
+}
+normalizeRosterMoveSets();
 
 const SLOT_MOVE_PREF = {
   head:  { status: 1.25, priority: 0.8, utility: 0.55, heavy: 0.55 },
@@ -408,18 +1348,28 @@ function tierDistance(a, b) {
 }
 function partTypeFromData(part) {
   if (!part) return 'Normal';
-  const famType = PART_FAMILY_TYPE[part.family?.name];
-  const themeType = PART_THEME_TYPE[part.family?.theme];
+  const fam = getPartFamily(part, PARTS_DATA) || part.family || {};
+  const explicitType = String(fam?.type || '').trim();
+  if (explicitType) return explicitType;
+  const famType = PART_FAMILY_TYPE[fam?.name];
+  const themeType = PART_THEME_TYPE[fam?.theme];
   return famType || themeType || 'Normal';
+}
+function inheritedFamilyMoveIds(part, data = PARTS_DATA) {
+  const fam = getPartFamily(part, data);
+  const ids = fam?.baseMoveIds;
+  if (!Array.isArray(ids) || !ids.length) return null;
+  return [...new Set(ids.filter(id => !!MOVE_DB[id]))];
 }
 function scoreMoveForPart(move, part, idx) {
   const slot = part.slot || 'head';
   const pref = SLOT_MOVE_PREF[slot] || SLOT_MOVE_PREF.head;
   const pType = partTypeFromData(part);
   const targetTier = rarityTargetTier(part.rarity);
-  const isStatus = !!move.effect || (move.pMult || 0) <= 0;
+  const moveBasePower = Number(move.basePower || 0);
+  const isStatus = !!move.effect || moveBasePower <= 0;
   const isUtility = !!move.effect || !!move.drain || !!move.priority;
-  const isHeavy = (move.pMult || 0) >= 1.25 || !!move.recoil;
+  const isHeavy = moveBasePower >= 69 || !!move.recoil;
   let s = 0;
   s += (move.type === pType ? 2.1 : (move.type === 'Normal' ? 0.65 : -0.35));
   s += 2.2 - (tierDistance(move.tier, targetTier) * 1.0);
@@ -427,7 +1377,7 @@ function scoreMoveForPart(move, part, idx) {
   if (!!move.priority) s += pref.priority;
   if (isUtility) s += pref.utility;
   if (isHeavy) s += pref.heavy;
-  s += ((move.pMult || 0) * 0.55);
+  s += ((moveBasePower / 120) * 0.55);
   s += ((move.acc || 100) / 100) * 0.35;
   s += seeded01(`${part.id}|${idx}|${move.id}`) * 0.1; // deterministic tie-breaker
   return s;
@@ -452,7 +1402,11 @@ function pickPartMoves(part) {
 function attachPartMoveLinks(data) {
   if (!data || !Array.isArray(data.parts)) return;
   for (const part of data.parts) {
-    const ids = pickPartMoves(part);
+    const explicit = Array.isArray(part.moveIds) && part.moveIds.length
+      ? [...new Set(part.moveIds.filter(id => !!MOVE_DB[id]))]
+      : null;
+    const inherited = inheritedFamilyMoveIds(part, data);
+    const ids = explicit || inherited || pickPartMoves(part);
     part.moveIds = ids;
   }
 }
@@ -692,17 +1646,50 @@ function computeDexAssembledParts(dex) {
   };
   return (out.head && out.torso && out.wings && out.legs) ? out : null;
 }
-const DEX_PARTS_PRESETS = {};
-function initDexPartPresets() {
+function getPartById(partId) {
+  if (!partId) return null;
+  return (PARTS_DATA?.parts || []).find(p => p.id === partId) || null;
+}
+function partIdsFromAssembledParts(parts) {
+  if (!parts) return null;
+  const out = {
+    head: parts.head?.id || null,
+    torso: parts.torso?.id || null,
+    wings: parts.wings?.id || null,
+    legs: parts.legs?.id || null,
+  };
+  return (out.head && out.torso && out.wings && out.legs) ? out : null;
+}
+function computeDexPartIds(dex) {
+  const parts = computeDexAssembledParts(dex);
+  return partIdsFromAssembledParts(parts);
+}
+function getDexPartIds(dex) {
+  if (!dex) return null;
+  const explicit = dex.partIds;
+  if (explicit && explicit.head && explicit.torso && explicit.wings && explicit.legs) return { ...explicit };
+  const legacy = partIdsFromAssembledParts(dex.assembledParts);
+  if (legacy) return legacy;
+  return computeDexPartIds(dex);
+}
+function initDexPartIds() {
   for (const dex of (HONKER_DEX || [])) {
-    const parts = computeDexAssembledParts(dex);
-    if (parts) DEX_PARTS_PRESETS[dex.id] = parts;
+    if (!dex?.partIds) {
+      const ids = getDexPartIds(dex);
+      if (ids) dex.partIds = ids;
+    }
   }
 }
 function getDexAssembledParts(dex) {
-  if (!dex) return null;
-  const preset = DEX_PARTS_PRESETS[dex.id];
-  return preset ? cloneJson(preset) : null;
+  const ids = getDexPartIds(dex);
+  if (!ids) return null;
+  const out = {
+    head: cloneJson(getPartById(ids.head)),
+    torso: cloneJson(getPartById(ids.torso)),
+    wings: cloneJson(getPartById(ids.wings)),
+    legs: cloneJson(getPartById(ids.legs)),
+  };
+  return (out.head && out.torso && out.wings && out.legs) ? out : null;
 }
 function buildDexPartBlueprint(dex) {
   const assembledParts = getDexAssembledParts(dex);
@@ -710,7 +1697,7 @@ function buildDexPartBlueprint(dex) {
   const derived = deriveHonkerFromParts(assembledParts);
   return { assembledParts, derived };
 }
-initDexPartPresets();
+initDexPartIds();
 
 const BIOMES = [
   { id: 'meadow', name: 'Gosling Meadow', types: ['Normal', 'Fire'], families: ['Marshborn', 'Bloomcrest', 'Sunflare'],
@@ -763,6 +1750,14 @@ function chooseDexForStage(n, isBoss, rng, biome) {
     return w;
   });
   return pool[pickWeightedIndex(weights, rng)] || pool[0];
+}
+function xpRewardForEnemyLevel(level, isBoss) {
+  const lv = Math.max(1, Number(level) || 1);
+  const base = 45;
+  const growth = 1.18;
+  let xp = Math.round(base * Math.pow(growth, lv - 1));
+  if (isBoss) xp = Math.round(xp * 1.6);
+  return Math.max(25, xp);
 }
 
 // STAGE NAME GENERATION DATA
@@ -836,8 +1831,8 @@ function generateStage(n) {
   if (dexBlueprint?.derived?.moves?.length) {
     moves = dexBlueprint.derived.moves.map(m => ({ ...cloneJson(m), pp: m.maxPP || m.pp, maxPP: m.maxPP || m.pp }));
   } else {
-    const pool    = MOVE_POOLS[type] || MOVE_POOLS.Normal;
-    const nrmPool = MOVE_POOLS['Normal'];
+    const pool    = MOVES_BY_TYPE[type] || MOVES_BY_TYPE.Normal;
+    const nrmPool = MOVES_BY_TYPE.Normal;
     const usedIdx = new Set();
     const picked  = [];
     const pickFrom = (p, t) => {
@@ -852,11 +1847,16 @@ function generateStage(n) {
     picked.push(pickFrom(pool, type));
     picked.push(isBoss ? pickFrom(pool, type) : pickFrom(nrmPool, 'Normal'));
     moves = picked.map(m => ({
+      id: m.id,
       name: m.name, type: m.type, emoji: m.emoji, desc: m.desc,
-      power: Math.max(20, Math.round(basePow * (m.pMult||1) * earlyPowScale)),
+      power: Math.max(20, Math.round((m.basePower || 55) * (basePow / 55) * earlyPowScale)),
       acc: m.acc, pp: m.pp, maxPP: m.pp,
       ...(m.effect ? { effect: m.effect, effectTarget: m.effectTarget,
         effectChance: m.effectChance, effectDur: m.effectDur } : {}),
+      ...(m.drain ? { drain: m.drain } : {}),
+      ...(m.recoil ? { recoil: m.recoil } : {}),
+      ...(m.priority ? { priority: true } : {}),
+      ...(m.lowHPOnly ? { lowHPOnly: true } : {}),
     }));
   }
 
@@ -872,16 +1872,29 @@ function generateStage(n) {
   const passive    = dex ? (dex.passive || dexBlueprint?.derived?.passive || null) : null;
   const enemyLevel = Math.max(1, Math.round(n * 0.18) + (isBoss ? 1 : 0) - (n <= 15 ? 1 : 0));
   const difficulty = isBoss ? 5 : Math.min(4, Math.ceil(n / 4));
-  const xpReward   = Math.round(55 + n * 24 + (isBoss ? n * 12 : 0));
+  const xpReward   = xpRewardForEnemyLevel(enemyLevel, isBoss);
 
   // Procedural sprite fallback when not using a premade dex honker.
   let assembledParts = dexBlueprint?.assembledParts || null;
   if (!dex && PARTS_DATA && PARTS_DATA.parts) {
+    const pickByRarityWeights = (pool) => {
+      if (!pool.length) return null;
+      const common = pool.filter(p => (p.rarity || 'common') === 'common');
+      const rare = pool.filter(p => p.rarity === 'rare');
+      const legendary = pool.filter(p => p.rarity === 'legendary');
+      const r = rng();
+      let bucket = null;
+      if (r < 0.75) bucket = common.length ? common : (rare.length ? rare : legendary);
+      else if (r < 0.95) bucket = rare.length ? rare : (common.length ? common : legendary);
+      else bucket = legendary.length ? legendary : (rare.length ? rare : common);
+      if (!bucket || !bucket.length) bucket = pool;
+      return bucket[Math.floor(rng() * bucket.length)] || pool[0] || null;
+    };
     const pickPart = slot => {
       const famSet = new Set(biome?.families || []);
       let pool = PARTS_DATA.parts.filter(p => p.slot === slot && famSet.has(p.family?.name));
       if (!pool.length) pool = PARTS_DATA.parts.filter(p => p.slot === slot);
-      return pool[Math.floor(rng() * pool.length)] || null;
+      return pickByRarityWeights(pool);
     };
     assembledParts = {
       head:  pickPart('head'),
@@ -912,7 +1925,7 @@ function playerPower(pb) {
 // "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
 //  LOOT POOL
 // "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
-const LOOT_POOL = [
+const CORE_LOOT_POOL = [
   { id:'hp_tonic',    name:'HP Tonic',       emoji:'*', rarity:'common',    color:'#aaaacc',
     desc:'Permanently increase <b>Max HP by +25</b>.',
     apply:(p)=>{ const prevMax=getHonkerMaxHP(p); const cur=(p.currentHP ?? prevMax); p.maxHPBonus=(p.maxHPBonus||0)+25; const mx=getHonkerMaxHP(p); p.currentHP=Math.min(mx, cur+25); }},
@@ -949,50 +1962,33 @@ const LOOT_POOL = [
   { id:'heal_flask',  name:'Heal Flask',     emoji:'*', rarity:'rare',      color:'#00c8ff',
     desc:'Immediately restore <b>60 HP</b> right now.',
     apply:(p)=>{ const mx=getHonkerMaxHP(p); const cur=(p.currentHP ?? mx); p.currentHP=Math.min(mx, cur+60); }},
-  // "?"? MOVE UNLOCKS "?"?
-  { id:'move_ember',   name:'Learn: Ember',      emoji:'*', rarity:'common', color:'#ff4e00',
-    desc:'Adds <b>Ember</b> (Fire) to your moveset. <i>Guarantees Burn for 3 rounds.</i>',
-    apply:(p)=>{ if(!p.moves.find(m=>m.name==='Ember')) p.moves.push({name:'Ember',type:'Fire',emoji:'*',desc:'Leaves a lingering burn.',power:35,acc:100,pp:18,maxPP:18,effect:'burn',effectTarget:'enemy',effectChance:100,effectDur:3}); }},
-  { id:'move_hex',     name:'Learn: Hex',        emoji:'*', rarity:'common', color:'#a020f0',
-    desc:'Adds <b>Hex</b> (Shadow) to your moveset. <i>Curses the enemy, reducing their attack.</i>',
-    apply:(p)=>{ if(!p.moves.find(m=>m.name==='Hex')) p.moves.push({name:'Hex',type:'Shadow',emoji:'*',desc:'Curses the foe, sapping their power.',power:0,acc:92,pp:15,maxPP:15,effect:'cursed',effectTarget:'enemy',effectChance:90,effectDur:3}); }},
-  { id:'move_freeze',  name:'Learn: Flash Freeze',emoji:'*', rarity:'rare',  color:'#00c8ff',
-    desc:'Adds <b>Flash Freeze</b> (Ice) to your moveset. <i>Chance to skip the enemy\'s next turn.</i>',
-    apply:(p)=>{ if(!p.moves.find(m=>m.name==='Flash Freeze')) p.moves.push({name:'Flash Freeze',type:'Ice',emoji:'*',desc:'May freeze the target solid.',power:35,acc:90,pp:15,maxPP:15,effect:'frozen',effectTarget:'enemy',effectChance:65,effectDur:1}); }},
-  { id:'move_zap',     name:'Learn: Zap Field',  emoji:'*', rarity:'rare',   color:'#ffe600',
-    desc:'Adds <b>Zap Field</b> (Lightning). <i>Paralyzes the enemy, reducing their accuracy.</i>',
-    apply:(p)=>{ if(!p.moves.find(m=>m.name==='Zap Field')) p.moves.push({name:'Zap Field',type:'Lightning',emoji:'*',desc:'Paralyzes the foe with static.',power:0,acc:93,pp:15,maxPP:15,effect:'paralyzed',effectTarget:'enemy',effectChance:90,effectDur:3}); }},
-  { id:'move_shield',  name:'Learn: Iron Guard',  emoji:'*', rarity:'rare',  color:'#00ff88',
-    desc:'Adds <b>Iron Guard</b> (Normal). <i>Applies stackable Shield (max 4), persistent until swap/boss clear.</i>',
-    apply:(p)=>{ if(!p.moves.find(m=>m.name==='Iron Guard')) p.moves.push({name:'Iron Guard',type:'Normal',emoji:'*',desc:'Raises an iron defensive shield. Stacks shield.',power:0,acc:100,pp:12,maxPP:12,effect:'shielded',effectTarget:'self',effectChance:100,effectDur:3}); }},
-  { id:'move_rampage', name:'Learn: Rampage',     emoji:'*', rarity:'legendary', color:'#ffd700',
-    desc:'Adds <b>Rampage</b> (Normal, PWR 110) to your moveset. <i>Extremely powerful, low accuracy.</i>',
-    apply:(p)=>{ if(!p.moves.find(m=>m.name==='Rampage')) p.moves.push({name:'Rampage',type:'Normal',emoji:'*',desc:'Unstoppable. Unreliable. Legendary.',power:110,acc:60,pp:5,maxPP:5}); }},
-  { id:'move_pump',    name:'Learn: War Honk',    emoji:'*', rarity:'common', color:'#ff9800',
-    desc:'Adds <b>War Honk</b> (Normal). <i>Pumps yourself up  -  boosts your attack for 2 rounds.</i>',
-    apply:(p)=>{ if(!p.moves.find(m=>m.name==='War Honk')) p.moves.push({name:'War Honk',type:'Normal',emoji:'*',desc:'Unleash a terrifying battle cry.',power:0,acc:100,pp:12,maxPP:12,effect:'pumped',effectTarget:'self',effectChance:100,effectDur:2}); }},
-  // "?"? SIGNATURE MOVES (exclusiveTo: [honker IDs]) "?"?
-  { id:'sig_kevinfury', name:"Kevin's Fury",   emoji:'*', rarity:'legendary', color:'#ffd700',
-    desc:"<b>Kevin's Fury</b>  -  Normal, PWR 145. <i>Only usable below 50% HP. Signature of Kevin & Barry.</i>",
-    exclusiveTo:['kevin','regularbarry'],
-    apply:(p)=>{ if(!p.moves.find(m=>m.name==="Kevin's Fury")) p.moves.push({name:"Kevin's Fury",type:'Normal',emoji:'*',desc:'Only activates when cornered. Enormous.',power:145,acc:85,pp:6,maxPP:6,lowHPOnly:true}); }},
-  { id:'sig_voidrend',  name:'Void Rend',      emoji:'*', rarity:'legendary', color:'#a020f0',
-    desc:"<b>Void Rend</b>  -  Shadow, PWR 125, drains 35% as HP. <i>Signature of Mortem & The Wraith.</i>",
-    exclusiveTo:['mortem','thewraith','voidwing','gloomfeather','hexdown','eclipsar'],
-    apply:(p)=>{ if(!p.moves.find(m=>m.name==='Void Rend')) p.moves.push({name:'Void Rend',type:'Shadow',emoji:'*',desc:'Tears a void through the enemy. Heals attacker.',power:125,acc:80,pp:6,maxPP:6,drain:0.35}); }},
-  { id:'sig_permafrost',name:'Permafrost Slam',emoji:'*', rarity:'legendary', color:'#00c8ff',
-    desc:"<b>Permafrost Slam</b>  -  Ice, PWR 60, <i>Guaranteed freeze</i>. Signature of icy tanks.",
-    exclusiveTo:['robin','frosting','brrrbeak','glaciergus','arcticclyde','snowquack','crystalwing'],
-    apply:(p)=>{ if(!p.moves.find(m=>m.name==='Permafrost Slam')) p.moves.push({name:'Permafrost Slam',type:'Ice',emoji:'*',desc:'Seals the opponent in ice. Guaranteed freeze.',power:60,acc:90,pp:10,maxPP:10,effect:'frozen',effectTarget:'enemy',effectChance:100,effectDur:1}); }},
-  { id:'sig_voltdive',  name:'Volt Dive',      emoji:'*', rarity:'rare', color:'#ffe600',
-    desc:"<b>Volt Dive</b>  -  Lightning, always goes first (priority). Signature of fast electric types.",
-    exclusiveTo:['zephyr','zappington','voltmare','staticlina','sparksworth','boltclaw','thunderbeak'],
-    apply:(p)=>{ if(!p.moves.find(m=>m.name==='Volt Dive')) p.moves.push({name:'Volt Dive',type:'Lightning',emoji:'*',desc:'Priority strike. Always moves first.',power:55,acc:100,pp:16,maxPP:16,priority:true}); }},
-  { id:'sig_solarflare',name:'Solar Flare',    emoji:'*', rarity:'legendary', color:'#ff6a00',
-    desc:"<b>Solar Flare</b>  -  Fire, PWR 155, 25% recoil. <i>Signature of fire glass cannons.</i>",
-    exclusiveTo:['bengt','embertail','scorchwick','pyrocluck','cinderquill','blazefowl','magnaroo'],
-    apply:(p)=>{ if(!p.moves.find(m=>m.name==='Solar Flare')) p.moves.push({name:'Solar Flare',type:'Fire',emoji:'*',desc:'The sun itself, weaponised. User takes recoil.',power:155,acc:82,pp:4,maxPP:4,recoil:0.25}); }},
 ];
+
+const MOVE_TYPE_LOOT_COLOR = {
+  Fire: '#ff4e00',
+  Ice: '#00c8ff',
+  Lightning: '#ffe600',
+  Shadow: '#a020f0',
+  Normal: '#ff9800',
+};
+function buildMoveLootItem(move) {
+  if (!move?.isLootLearnable) return null;
+  const moveType = move.type || (Array.isArray(move.types) && move.types[0]) || 'Normal';
+  const rarity = move.lootRarity || (move.tier || 'common');
+  return {
+    id: move.lootId || `move_${move.id}`,
+    name: move.lootName || `Learn: ${move.name}`,
+    emoji: move.emoji || '*',
+    rarity,
+    color: move.lootColor || MOVE_TYPE_LOOT_COLOR[moveType] || '#aaaacc',
+    desc: move.lootDesc || `Adds <b>${move.name}</b> (${moveType}) to your moveset.`,
+    ...(Array.isArray(move.lootExclusiveTo) && move.lootExclusiveTo.length ? { exclusiveTo: move.lootExclusiveTo.slice() } : {}),
+    moveId: move.id,
+    apply:(p)=>{ addMoveById(p, move.id, { type: moveType, basePow: 55 }); },
+  };
+}
+const MOVE_LEARN_LOOT_POOL = MOVE_POOL.map(buildMoveLootItem).filter(Boolean);
+const LOOT_POOL = [...CORE_LOOT_POOL, ...MOVE_LEARN_LOOT_POOL];
 
 // "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
 //  RANDOM EVENTS
@@ -1064,10 +2060,24 @@ function deriveHonkerFromParts(parts) {
 }
 
 function getHonkerMaxHP(h) {
-  // Stub - needed by LOOT_POOL functions and playerPower, will be implemented in game.js  
-  return 100;
+  if (!h) return 0;
+  const lv = Math.max(1, h.level || 1);
+  const parts = h.assembledParts || null;
+  const partHpBase = parts
+    ? ['head', 'torso', 'wings', 'legs']
+      .map(slot => Number(parts?.[slot]?.stats?.hp || 0))
+      .reduce((a, b) => a + b, 0)
+    : 0;
+  const hpBase = Math.max(1, partHpBase || Number(h.hp || 0));
+  const hpWithBonus = hpBase + Number(h.maxHPBonus || 0);
+  const masteryMult = (typeof masteryStatMultiplier === 'function')
+    ? masteryStatMultiplier(h.masteryLevel || 0)
+    : 1;
+  return Math.max(1, Math.floor((((2 * hpWithBonus * lv) / 100) + lv + 10) * masteryMult));
 }
 
 console.log('[DATA] Module loaded: PARTS_DATA, ROSTER, CAMPAIGN');
+
+
 
 

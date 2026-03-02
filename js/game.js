@@ -20,13 +20,23 @@ class Honker {
     this.level      = campBoosts.level ?? this.level ?? 1;
     this.movePP     = campBoosts.movePP||null;
     this.persistentEffects = campBoosts.persistentEffects || null;
+    this.masteryLevel = Math.max(0, Number(this.masteryLevel) || 0);
     this.statusEffects = {};
     this.moves.forEach(m=>{
       m.maxPP += this.ppBonus;
-      const saved = this.movePP ? this.movePP[m.name] : null;
+      const saved = this.movePP ? (this.movePP[m.id] ?? this.movePP[m.name]) : null;
       m.pp = saved == null ? m.maxPP : Math.max(0, Math.min(m.maxPP, saved));
     });
-    this.maxHP = Math.max(1, Math.round(((this.hp || 0) + this.maxHPBonus) * levelStatScale(this.level, 'hp')));
+    const masteryMult = masteryStatMultiplier(this.masteryLevel);
+    const partHpBase = (this.assembledParts && typeof this.assembledParts === 'object')
+      ? ['head', 'torso', 'wings', 'legs']
+          .map(slot => Number(this.assembledParts?.[slot]?.stats?.hp || 0))
+          .reduce((a, b) => a + b, 0)
+      : 0;
+    const hpBase = Math.max(1, partHpBase || Number(this.hp || 0));
+    const hpWithBonus = hpBase + Number(this.maxHPBonus || 0);
+    // Gen I/II style HP formula adapted with hpBase from parts, then mastery multiplier.
+    this.maxHP = Math.max(1, Math.floor((((2 * hpWithBonus * this.level) / 100) + this.level + 10) * masteryMult));
     this.currentHP = Math.max(0, Math.min(this.maxHP, campBoosts.currentHP ?? this.maxHP));
     if (this.persistentEffects) {
       STACKABLE_EFFECTS.forEach(k => {
@@ -34,23 +44,26 @@ class Honker {
         if (v > 0) this.statusEffects[k] = Math.max(1, Math.min(4, v));
       });
     }
-    this.atk = Math.max(1, Math.round((this.atk || 80) * levelStatScale(this.level, 'atk')));
-    this.def = Math.max(1, Math.round((this.def || 80) * levelStatScale(this.level, 'def')));
-    this.spd = Math.max(1, Math.round((this.spd || 80) * levelStatScale(this.level, 'spd')));
+    this.atk = Math.max(1, Math.round((this.atk || 80) * levelStatScale(this.level, 'atk') * masteryMult));
+    this.def = Math.max(1, Math.round((this.def || 80) * levelStatScale(this.level, 'def') * masteryMult));
+    this.spd = Math.max(1, Math.round((this.spd || 80) * levelStatScale(this.level, 'spd') * masteryMult));
   }
   get hpPct() { return Math.max(0, this.currentHP/this.maxHP); }
   isDead() { return this.currentHP<=0; }
-  get effectiveLuck() { return Math.min(95, (this.luck||50)+(this.luckBonus||0)); }
+  get effectiveLuck() {
+    const baseLuck = (this.luck||50)+(this.luckBonus||0);
+    return Math.min(95, Math.round(baseLuck * masteryStatMultiplier(this.masteryLevel)));
+  }
   get atkModifier() {
     let m = 1;
     if (this.statusEffects.cursed)  m *= Math.max(0.25, 1 - (0.15 * this.statusEffects.cursed));
-    if (this.statusEffects.pumped)  m *= (1 + (0.12 * this.statusEffects.pumped));
+    if (this.statusEffects.pumped)  m *= (1 + (0.25 * this.statusEffects.pumped));
     if (this.passive?.id === 'underdog' && this.hpPct < 0.5) m *= 1.3;
     return m;
   }
   get defModifier() {
     let m = 1;
-    if (this.statusEffects.shielded) m *= Math.max(0.4, 1 - (0.12 * this.statusEffects.shielded));
+    if (this.statusEffects.shielded) m *= (1 / (1 + (0.25 * this.statusEffects.shielded)));
     if (this.passive?.id === 'thick_skin') m *= 0.8;
     return m;
   }
@@ -111,6 +124,16 @@ function buildDexPartBlueprint(dex) {
 
   return null;
 }
+
+function masteryStatMultiplier(level) {
+  const lv = Math.max(0, Number(level) || 0);
+  // +5% additive per mastery level to all stats.
+  return 1 + (lv * 0.05);
+}
+function masteryAttackMultiplier(level) {
+  // Backward-compatible alias for older callers.
+  return masteryStatMultiplier(level);
+}
 function pickWeightedIndex2(weights, rng) {
   const total = (weights || []).reduce((a, b) => a + Math.max(0, b || 0), 0);
   if (!total) return 0;
@@ -143,6 +166,14 @@ function chooseDexForStage(n, isBoss, rng, biome) {
     return w;
   });
   return pool[pickWeightedIndex2(weights, rng)] || pool[0];
+}
+function xpRewardForEnemyLevel(level, isBoss) {
+  const lv = Math.max(1, Number(level) || 1);
+  const base = 45;
+  const growth = 1.18;
+  let xp = Math.round(base * Math.pow(growth, lv - 1));
+  if (isBoss) xp = Math.round(xp * 1.6);
+  return Math.max(25, xp);
 }
 
 function generateStage(n) {
@@ -200,8 +231,8 @@ function generateStage(n) {
   if (dexBlueprint?.derived?.moves?.length) {
     moves = dexBlueprint.derived.moves.map(m => ({ ...cloneJson(m), pp: m.maxPP || m.pp, maxPP: m.maxPP || m.pp }));
   } else {
-    const pool    = MOVE_POOLS[type] || MOVE_POOLS.Normal;
-    const nrmPool = MOVE_POOLS['Normal'];
+    const pool    = MOVES_BY_TYPE[type] || MOVES_BY_TYPE.Normal;
+    const nrmPool = MOVES_BY_TYPE.Normal;
     const usedIdx = new Set();
     const picked  = [];
     const pickFrom = (p, t) => {
@@ -216,11 +247,16 @@ function generateStage(n) {
     picked.push(pickFrom(pool, type));
     picked.push(isBoss ? pickFrom(pool, type) : pickFrom(nrmPool, 'Normal'));
     moves = picked.map(m => ({
+      id: m.id,
       name: m.name, type: m.type, emoji: m.emoji, desc: m.desc,
-      power: Math.max(20, Math.round(basePow * (m.pMult||1) * earlyPowScale)),
+      power: Math.max(20, Math.round((m.basePower || 55) * (basePow / 55) * earlyPowScale)),
       acc: m.acc, pp: m.pp, maxPP: m.pp,
       ...(m.effect ? { effect: m.effect, effectTarget: m.effectTarget,
         effectChance: m.effectChance, effectDur: m.effectDur } : {}),
+      ...(m.drain ? { drain: m.drain } : {}),
+      ...(m.recoil ? { recoil: m.recoil } : {}),
+      ...(m.priority ? { priority: true } : {}),
+      ...(m.lowHPOnly ? { lowHPOnly: true } : {}),
     }));
   }
 
@@ -235,15 +271,28 @@ function generateStage(n) {
   const passive    = dex ? (dex.passive || dexBlueprint?.derived?.passive || null) : null;
   const enemyLevel = Math.max(1, Math.round(n * 0.18) + (isBoss ? 1 : 0) - (n <= 15 ? 1 : 0));
   const difficulty = isBoss ? 5 : Math.min(4, Math.ceil(n / 4));
-  const xpReward   = Math.round(55 + n * 24 + (isBoss ? n * 12 : 0));
+  const xpReward   = xpRewardForEnemyLevel(enemyLevel, isBoss);
 
   let assembledParts = dexBlueprint?.assembledParts || null;
   if (!dex && PARTS_DATA && PARTS_DATA.parts) {
+    const pickByRarityWeights = (pool) => {
+      if (!pool.length) return null;
+      const common = pool.filter(p => (p.rarity || 'common') === 'common');
+      const rare = pool.filter(p => p.rarity === 'rare');
+      const legendary = pool.filter(p => p.rarity === 'legendary');
+      const r = rng();
+      let bucket = null;
+      if (r < 0.75) bucket = common.length ? common : (rare.length ? rare : legendary);
+      else if (r < 0.95) bucket = rare.length ? rare : (common.length ? common : legendary);
+      else bucket = legendary.length ? legendary : (rare.length ? rare : common);
+      if (!bucket || !bucket.length) bucket = pool;
+      return bucket[Math.floor(rng() * bucket.length)] || pool[0] || null;
+    };
     const pickPart = slot => {
       const famSet = new Set(biome?.families || []);
       let pool = PARTS_DATA.parts.filter(p => p.slot === slot && famSet.has(p.family?.name));
       if (!pool.length) pool = PARTS_DATA.parts.filter(p => p.slot === slot);
-      return pool[Math.floor(rng() * pool.length)] || null;
+      return pickByRarityWeights(pool);
     };
     assembledParts = {
       head:  pickPart('head'),
@@ -296,10 +345,8 @@ function getAllPartIds() {
 
 function isPartUnlocked(partId) {
   if (!partId) return false;
-  const deps = DEP_PARTS && DEP_PARTS[partId];
-  if (!deps) return true;
-  const caught = CAMPAIGN.dexCaught || [];
-  return (deps.dexIds || []).some(id => caught.includes(id));
+  ensurePartTrackingState();
+  return CAMPAIGN.caughtParts.includes(partId);
 }
 
 function isPartSeen(partId) {

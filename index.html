@@ -748,8 +748,11 @@ body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;}
     <div class="title-btns">
       <button class="btn btn-gold" onclick="showScreen('screen-charselect')">&#x2694; NEW CAMPAIGN</button>
       <button class="btn btn-blue" id="cont-btn" onclick="continueCampaign()" style="display:none">&#x25B6; CONTINUE</button>
-      <button class="btn btn-blue" id="dex-btn-title" onclick="showDex()" style="display:none">&#x1F4D6; HONK&#xC9;DEX</button>
+      <button class="btn btn-blue" id="dex-btn-title" onclick="showDex()">&#x1F4D6; HONK&#xC9;DEX</button>
       <button class="btn btn-blue" onclick="showPartsDex('screen-title')">&#x1F9E9; PARTSDEX</button>
+      <button class="btn btn-blue" onclick="location.href='parts_editor.html'">&#x2699;&#xFE0F; PARTS EDITOR</button>
+      <button class="btn btn-blue" onclick="location.href='moves_editor.html'">&#x2694;&#xFE0F; MOVES EDITOR</button>
+      <button class="btn btn-blue" onclick="location.href='honker_editor.html'">&#x1F986; HONKER EDITOR</button>
       <button class="btn btn-catch" onclick="showAssemblyScreen()">&#x1F527; ASSEMBLE HONKER</button>
     </div>
     <div class="highscore-strip" id="highscore-strip"></div>
@@ -1117,6 +1120,10 @@ body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;}
 async function initTitle() {
   try {
     console.log('[INIT] initTitle starting');
+    if (typeof loadPartsData === 'function') {
+      await loadPartsData();
+      console.log('[INIT] Parts data loaded:', PARTS_DATA?.parts?.length || 0);
+    }
     await loadGlobalDex();
     console.log('[INIT] Global dex loaded');
     buildCharSelect();
@@ -1130,11 +1137,8 @@ async function initTitle() {
       document.getElementById('highscore-strip').innerHTML =
         `Y? DEEPEST STAGE REACHED: <span style="color:var(--gold)">${CAMPAIGN.deepest}</span>`;
     }
-    // Show dex button if we've seen anything
-    if (CAMPAIGN.dexSeen.length > 0) {
-      const dexBtn = document.getElementById('dex-btn-title');
-      if (dexBtn) dexBtn.style.display = '';
-    }
+    const dexBtn = document.getElementById('dex-btn-title');
+    if (dexBtn) dexBtn.style.display = '';
     console.log('[INIT] About to show title screen');
     showScreen('screen-title');
     console.log('[INIT] Title screen shown successfully');
@@ -1150,23 +1154,25 @@ async function initTitle() {
 let csSelected = null;
 function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 function starterMovesForType(type, atkStat) {
-  const pool = MOVE_POOLS[type] || MOVE_POOLS.Normal || [];
-  const normal = MOVE_POOLS.Normal || [];
+  const pool = MOVES_BY_TYPE[type] || MOVES_BY_TYPE.Normal || [];
+  const normal = MOVES_BY_TYPE.Normal || [];
   const picks = [pool[0], pool[1], pool[2], type === 'Normal' ? normal[3] : normal[0]].filter(Boolean);
   const seen = new Set();
   const uniq = [];
   for (const m of picks) {
-    if (seen.has(m.name)) continue;
-    seen.add(m.name);
+    if (seen.has(m.id)) continue;
+    seen.add(m.id);
     uniq.push(m);
   }
   const basePow = clamp(Math.round(42 + ((atkStat || 80) - 70) * 0.35), 38, 78);
+  const scale = basePow / 55;
   return uniq.slice(0, 4).map(m => ({
+    id: m.id,
     name: m.name,
     type: m.type || type,
     emoji: m.emoji,
     desc: m.desc,
-    power: m.effect ? 0 : Math.max(22, Math.round(basePow * (m.pMult || 1))),
+    power: m.effect ? 0 : Math.max(22, Math.round((m.basePower || 55) * scale)),
     acc: m.acc,
     pp: m.pp,
     maxPP: m.pp,
@@ -1183,6 +1189,10 @@ function starterFromDex(dex) {
   const atk = dex.atk || 80;
   const def = dex.def || 80;
   const spd = dex.spd || 80;
+  const starterMoves = (derived?.moves && derived.moves.length)
+    ? derived.moves.map(m => ({ ...cloneJson(m), pp: m.maxPP || m.pp, maxPP: m.maxPP || m.pp }))
+    : starterMovesForType(dexType, atk);
+  const starterMoveIds = starterMoves.map(m => m.id).filter(Boolean);
   return {
     id: dex.id,
     name: dex.name,
@@ -1194,15 +1204,23 @@ function starterFromDex(dex) {
     luck: 50,
     atk, def, spd,
     passive: dex.passive ? JSON.parse(JSON.stringify(dex.passive)) : (derived?.passive ? cloneJson(derived.passive) : null),
-    moves: (derived?.moves && derived.moves.length)
-      ? derived.moves.map(m => ({ ...cloneJson(m), pp: m.maxPP || m.pp, maxPP: m.maxPP || m.pp }))
-      : starterMovesForType(dexType, atk),
+    moveIds: starterMoveIds,
+    moves: starterMoves,
     moveCandidates: derived?.moveCandidates ? cloneJson(derived.moveCandidates) : [],
     assembledParts: dexBlueprint?.assembledParts ? cloneJson(dexBlueprint.assembledParts) : null,
   };
 }
 function getStarterRoster() {
-  const base = (ROSTER || []).map(h => JSON.parse(JSON.stringify(h)));
+  const base = (ROSTER || []).map(h => {
+    const out = JSON.parse(JSON.stringify(h));
+    if (Array.isArray(out.moveIds) && out.moveIds.length) {
+      out.moves = materializeMovesFromIds(out.moveIds, { type: out.type, basePow: 55 });
+    } else if (typeof ensureHonkerMoveIds === 'function') {
+      ensureHonkerMoveIds(out);
+      out.moves = materializeMovesFromIds(out.moveIds, { type: out.type, basePow: 55 });
+    }
+    return out;
+  });
   const ids = new Set(base.map(h => h.id));
   const caughtDex = (CAMPAIGN.dexCaught || [])
     .map(id => HONKER_DEX.find(d => d.id === id))
@@ -1268,7 +1286,8 @@ function confirmCharSelect() {
   // Reset player boosts
   csSelected.maxHPBonus=0; csSelected.atkFlat=0; csSelected.atkMult=1;
   csSelected.luckBonus=0; csSelected.stabBonus=1.25; csSelected.chaosMod=1; csSelected.ppBonus=0;
-  csSelected.level=1; csSelected.xp=0; csSelected.xpNeeded=100;
+  csSelected.level=1; csSelected.xp=0; csSelected.xpNeeded=100; csSelected.totalXp=0;
+  csSelected.masteryLevel=0; csSelected.masteryXP=0; csSelected.masteryXPNeeded=masteryXpNeededForLevel(0); csSelected.masteryTotalXp=0;
   initHonkerRunState(csSelected);
   console.log('Initialized honker run state, starting stage battle');
   console.log('CAMPAIGN.party:', CAMPAIGN.party.length, 'active idx:', CAMPAIGN.activeIdx);
@@ -1283,7 +1302,7 @@ let selectedStarterMoveIds = [];
 let starterSelectionInitialized = false;
 
 function showAssemblyScreen() {
-  unlockAllParts();
+  ensurePartTrackingState();
   assembledParts = { head: null, torso: null, wings: null, legs: null };
   selectedStarterMoveIds = [];
   starterSelectionInitialized = false;
@@ -1341,7 +1360,7 @@ function buildPartSelectors() {
       const archColors = {bulwark:'#00c8ff',raider:'#ff4e00',trickster:'#a020f0',balanced:'#aaa'};
       const linkedMoves = (part.moveIds || []).map(id => MOVE_DB[id]).filter(Boolean);
       const moveRows = linkedMoves.map(m => {
-        const pwr = Math.max(15, Math.round(55 * (m.pMult||1)));
+        const pwr = Math.max(15, Math.round(m.basePower || 55));
         return `<div class="part-move-chip">
           <span class="part-move-name">${m.name}</span>
           <span class="part-move-meta">${m.type} · P${pwr}</span>
@@ -1425,11 +1444,24 @@ function selectPart(slot, part) {
 
 function getHonkerMaxHP(h) {
   if (!h) return 0;
-  return Math.max(1, Math.round(((h.hp || 0) + (h.maxHPBonus || 0)) * levelStatScale(h.level || 1, 'hp')));
+  const lv = Math.max(1, h.level || 1);
+  const parts = h.assembledParts || null;
+  const partHpBase = parts
+    ? ['head', 'torso', 'wings', 'legs']
+      .map(slot => Number(parts?.[slot]?.stats?.hp || 0))
+      .reduce((a, b) => a + b, 0)
+    : 0;
+  const hpBase = Math.max(1, partHpBase || Number(h.hp || 0));
+  const hpWithBonus = hpBase + Number(h.maxHPBonus || 0);
+  const masteryMult = (typeof masteryStatMultiplier === 'function')
+    ? masteryStatMultiplier(h.masteryLevel || 0)
+    : 1;
+  // Gen I/II style HP formula adapted with hpBase from parts (+ level + 10 term).
+  return Math.max(1, Math.floor((((2 * hpWithBonus * lv) / 100) + lv + 10) * masteryMult));
 }
 function extractMovePPMap(h) {
   const out = {};
-  (h.moves || []).forEach(m => { out[m.name] = m.pp; });
+  (h.moves || []).forEach(m => { out[m.id || m.name] = m.pp; });
   return out;
 }
 function extractPersistentEffects(h) {
@@ -1457,7 +1489,7 @@ function fullRestoreHonker(h) {
   if (!h) return;
   h.currentHP = getHonkerMaxHP(h);
   h.movePP = {};
-  (h.moves || []).forEach(m => { h.movePP[m.name] = m.maxPP; });
+  (h.moves || []).forEach(m => { h.movePP[m.id || m.name] = m.maxPP; });
 }
 function fullRestorePartyAfterBoss() {
   CAMPAIGN.party.forEach(h => fullRestoreHonker(h));
@@ -1469,10 +1501,11 @@ function syncActiveFighterToCampaign() {
 }
 function initHonkerRunState(h) {
   if (!h) return;
+  ensureMasteryState(h);
   h.currentHP = getHonkerMaxHP(h);
   h.movePP = {};
   h.persistentEffects = {};
-  (h.moves || []).forEach(m => { h.movePP[m.name] = m.maxPP; });
+  (h.moves || []).forEach(m => { h.movePP[m.id || m.name] = m.maxPP; });
 }
 
 function renderStarterMoveSelection(derived, allSelected) {
@@ -1514,7 +1547,7 @@ function renderStarterMoveSelection(derived, allSelected) {
 
   grid.innerHTML = unique.map(m => {
     const selected = selectedStarterMoveIds.includes(m.id);
-    const pwr = m.power || Math.max(15, Math.round(55 * (m.pMult||1)));
+    const pwr = m.power || Math.max(15, Math.round(m.basePower || 55));
     const note = m.effect ? `Effect: ${m.effect}` : (m.priority ? 'Priority move' : (m.drain ? `Drain ${Math.round(m.drain*100)}%` : (m.recoil ? `Recoil ${Math.round(m.recoil*100)}%` : '')));
     return `<div class="starter-card ${selected ? 'selected' : ''}" data-mid="${m.id}">
       <div class="starter-top">
@@ -1687,8 +1720,8 @@ function deriveHonkerFromParts(parts) {
 
   // Primary/secondary typing from torso/head family (or fallback to theme)
   const dominant = Object.entries(themeCounts).sort((a,b)=>b[1]-a[1])[0]?.[0] || 'bog';
-  const torsoType = FAMILY_TYPE[parts.torso?.family?.name] || THEME_TYPE[parts.torso?.family?.theme || ''] || null;
-  const headType  = FAMILY_TYPE[parts.head?.family?.name]  || THEME_TYPE[parts.head?.family?.theme || ''] || null;
+  const torsoType = parts.torso?.family?.type || FAMILY_TYPE[parts.torso?.family?.name] || THEME_TYPE[parts.torso?.family?.theme || ''] || null;
+  const headType  = parts.head?.family?.type  || FAMILY_TYPE[parts.head?.family?.name]  || THEME_TYPE[parts.head?.family?.theme || ''] || null;
   const type = torsoType || headType || THEME_TYPE[dominant] || 'Normal';
   const type2 = headType && headType !== type ? headType : null;
 
@@ -1707,7 +1740,7 @@ function deriveHonkerFromParts(parts) {
   const toMove = (m) => ({
     id: m.id,
     name: m.name, type: m.type, emoji: m.emoji||'*', desc: m.desc||'',
-    power: Math.max(15, Math.round(55 * (m.pMult||1))),
+    power: Math.max(15, Math.round(m.basePower || 55)),
     acc: m.acc, pp: m.pp, maxPP: m.pp,
     ...(m.drain  ? { drain:  m.drain  } : {}),
     ...(m.recoil ? { recoil: m.recoil } : {}),
@@ -1753,15 +1786,13 @@ function deriveHonkerFromParts(parts) {
   // Emoji based on type
   const typeEmoji = TYPE_ICON[type] || '\u{1F986}';
 
-  // Convert summed part stats into combat stats.
-  // Low-end sets stay around early-game Gerald tier, while advanced rarity/tier
-  // combinations can reach much higher ceilings.
+  // BST should always come directly from raw part stats.
   const combatStats = {
-    hp:   Math.max(120, Math.min(360, Math.round(85 + stats.hp  * 1.95))),
-    atk:  Math.max(48,  Math.min(175, Math.round(18 + stats.atk * 0.98))),
-    def:  Math.max(50,  Math.min(185, Math.round(20 + stats.def * 1.15))),
-    spd:  Math.max(50,  Math.min(185, Math.round(22 + stats.spd * 1.15))),
-    luck: Math.max(22,  Math.min(95,  Math.round(10 + stats.luck * 1.08))),
+    hp: Math.max(1, Math.round(stats.hp)),
+    atk: Math.max(1, Math.round(stats.atk)),
+    def: Math.max(1, Math.round(stats.def)),
+    spd: Math.max(1, Math.round(stats.spd)),
+    luck: Math.max(1, Math.round(stats.luck)),
   };
 
   return { name, type, type2, passive, stats: combatStats, moves: starterMoves, moveCandidates, emoji: typeEmoji };
@@ -1788,6 +1819,7 @@ function confirmAssembly() {
     def: stats.def,
     spd: stats.spd,
     luck: stats.luck,
+    moveIds: selectedMoves.map(m => m.id).filter(Boolean),
     moves: selectedMoves,
     moveCandidates: derived.moveCandidates || [],
     lore: `Built from ${[...new Set(Object.values(assembledParts).map(p=>p.family.name))].join(', ')} parts. Custom-forged in the workshop.`,
@@ -1826,6 +1858,11 @@ function confirmAssembly() {
   newHonker.level = 1;
   newHonker.xp = 0;
   newHonker.xpNeeded = 100;
+  newHonker.totalXp = 0;
+  newHonker.masteryLevel = 0;
+  newHonker.masteryXP = 0;
+  newHonker.masteryXPNeeded = masteryXpNeededForLevel(0);
+  newHonker.masteryTotalXp = 0;
   initHonkerRunState(newHonker);
   
   startNextStageFromLoop();
@@ -2782,28 +2819,34 @@ function doMove(atk, def, move, cb) {
     return;
   }
 
-  // "?"? DAMAGE CALC "?"?
-  const eff   = getEff(move.type, def.type, def.type2);
+  // Gen-1 style core damage formula with game-specific modifiers layered on top.
   let   mType = move.type;
   if (atk.chaosMod && atk.chaosMod > 1) {
     const types = ['Fire','Ice','Lightning','Shadow','Normal'];
     mType = types[Math.floor(Math.random() * types.length)];
   }
+  const eff   = getEff(mType, def.type, def.type2);
   const stab   = (mType === atk.type || mType === atk.type2) ? (atk.stabBonus || 1.25) : 1.0;
   const rage   = (eventState.rageTarget === atk.side && eventState.rageMod) ? eventState.rageMod : 1;
-  // Luck-based crits: attacker's luck/500 = 0-19% crit chance, crits deal 1.6x
+  // Luck-based crits: attacker's luck/500 = 0-19% crit chance.
   const critChance = (atk.effectiveLuck || 50) / 500;
   const isCrit = Math.random() < critChance;
-  const roll   = (isCrit ? 1.6 : 1.0) * (0.85 + Math.random() * 0.15);
-  const flat   = atk.atkFlat || 0;
-  const atkStat = (atk.atk || 80) / 80; // >1 = strong attacker, <1 = weak
-  const defStat = (def.def || 80) / 80; // divides into damage as (1/defStat)
-  const mult   = (atk.atkMult || 1) * atk.atkModifier * atkStat;
+  const level = Math.max(1, atk.level || 1);
+  const critLevelMult = isCrit ? 2 : 1;
+  const randomMult = 0.85 + Math.random() * 0.15;
+  const atkStat = Math.max(1, Math.round(((atk.atk || 80) + (atk.atkFlat || 0)) * (atk.atkMult || 1) * atk.atkModifier));
+  const defStat = Math.max(1, Math.round(def.def || 80));
   const chaos  = atk.chaosMod || 1;
   const shield = def.defModifier; // < 1 if shielded
   // Passive: frost_armor  -  25% less Ice damage
   const frostArmor = (def.passive?.id === 'frost_armor' && (mType||move.type) === 'Ice') ? 0.75 : 1;
-  let   dmg    = Math.round((move.power + flat) * eff * stab * rage * roll * mult * chaos * shield * frostArmor * (1/defStat));
+  const pwr = Math.max(1, Math.round(move.power || 0));
+  const core1 = Math.floor((2 * level * critLevelMult) / 5) + 2;
+  const core2 = Math.floor((core1 * pwr * atkStat) / defStat);
+  const core3 = Math.floor(core2 / 50) + 2;
+  let dmg = Math.floor(core3 * stab * eff * randomMult * rage * chaos * shield * frostArmor);
+  if (eff <= 0) dmg = 0;
+  else dmg = Math.max(1, dmg);
   if (isCrit) log('g', `🎯 <b>CRITICAL HIT!</b> (${atk.name}'s luck comes through!)`); 
 
   if (eventState.nextHitMult) {
@@ -2976,6 +3019,8 @@ function onCatchSuccess(enemy) {
     luckBonus: 0, stabBonus: 1.25, chaosMod: 1, ppBonus: 0,
     passive: (CAMPAIGN._currentStage?.isBoss && CAMPAIGN._currentStage?.enemy?.passive) ? CAMPAIGN._currentStage.enemy.passive : null,
     level: Math.max(1, enemyBase.level || 1), xp: 0, xpNeeded: xpNeededForLevel(enemyBase.level || 1),
+    totalXp: totalXpRequiredForLevel(Math.max(1, enemyBase.level || 1)),
+    masteryLevel: 0, masteryXP: 0, masteryXPNeeded: masteryXpNeededForLevel(0), masteryTotalXp: 0,
     isCaught: true,
   };
   // Don't push yet if full  -  handled after replace choice
@@ -3379,25 +3424,125 @@ function addXP(amount, callback, honker) {
   // honker = specific party member to give XP to (defaults to active fighter)
   const h = honker || CAMPAIGN.playerBase;
   if (!h) { if (callback) callback(); return; }
-  if (!h.level)    h.level    = 1;
-  if (!h.xp)       h.xp       = 0;
-  if (!h.xpNeeded) h.xpNeeded = 100;
+  const xpAmount = Math.max(0, Math.round(Number(amount) || 0));
+  ensureLevelState(h);
+  ensureMasteryState(h);
+  const prevLevel = h.level;
+  const prevMasteryLevel = h.masteryLevel;
 
-  let remaining = amount;
-  function tick() {
-    if (remaining <= 0) { if (callback) callback(); return; }
-    const canGain = Math.min(remaining, h.xpNeeded - h.xp);
-    h.xp += canGain;
-    remaining -= canGain;
-    if (h.xp >= h.xpNeeded) {
-      h.xp = 0;
-      h.level++;
-      h.xpNeeded = Math.round(h.xpNeeded * 1.28);
-      onLevelUp(h);
+  h.totalXp = Math.max(0, Number(h.totalXp) || 0) + xpAmount;
+  h.masteryTotalXp = Math.max(0, Number(h.masteryTotalXp) || 0) + xpAmount;
+  applyLevelProgressFromTotal(h);
+  applyMasteryProgressFromTotal(h);
+
+  if (h.level > prevLevel) {
+    for (let lv = prevLevel + 1; lv <= h.level; lv++) {
+      onLevelUp({ ...h, level: lv });
     }
-    if (remaining > 0) tick(); else { if (callback) callback(); }
   }
-  tick();
+  if (h.masteryLevel > prevMasteryLevel) {
+    for (let mlv = prevMasteryLevel + 1; mlv <= h.masteryLevel; mlv++) {
+      onMasteryLevelUp({ ...h, masteryLevel: mlv });
+    }
+  }
+  if (callback) callback();
+}
+function totalXpRequiredForLevel(level) {
+  const lv = Math.max(1, Number(level) || 1);
+  let total = 0;
+  for (let i = 1; i < lv; i++) total += xpNeededForLevel(i);
+  return total;
+}
+function levelProgressFromTotalXp(totalXp) {
+  let total = Math.max(0, Math.round(Number(totalXp) || 0));
+  let level = 1;
+  let need = xpNeededForLevel(level);
+  while (total >= need) {
+    total -= need;
+    level += 1;
+    need = xpNeededForLevel(level);
+  }
+  return { level, xp: total, xpNeeded: need };
+}
+function ensureLevelState(h) {
+  if (!h) return;
+  h.level = Math.max(1, Number(h.level) || 1);
+  h.xp = Math.max(0, Number(h.xp) || 0);
+  h.xpNeeded = Math.max(1, Number(h.xpNeeded) || xpNeededForLevel(h.level));
+  if (!Number.isFinite(Number(h.totalXp))) {
+    h.totalXp = totalXpRequiredForLevel(h.level) + Math.min(h.xp, h.xpNeeded - 1);
+  } else {
+    h.totalXp = Math.max(0, Math.round(Number(h.totalXp)));
+  }
+  applyLevelProgressFromTotal(h);
+}
+function applyLevelProgressFromTotal(h) {
+  if (!h) return;
+  const prog = levelProgressFromTotalXp(h.totalXp);
+  h.level = prog.level;
+  h.xp = prog.xp;
+  h.xpNeeded = prog.xpNeeded;
+}
+
+function masteryXpNeededForLevel(level) {
+  const lv = Math.max(0, Number(level) || 0);
+  return Math.max(120, Math.round(12 * xpNeededForLevel(lv + 1)));
+}
+function totalMasteryXpRequiredForLevel(level) {
+  const lv = Math.max(0, Number(level) || 0);
+  let total = 0;
+  for (let i = 0; i < lv; i++) total += masteryXpNeededForLevel(i);
+  return total;
+}
+function masteryProgressFromTotalXp(totalXp) {
+  let total = Math.max(0, Math.round(Number(totalXp) || 0));
+  let level = 0;
+  let need = masteryXpNeededForLevel(level);
+  while (total >= need) {
+    total -= need;
+    level += 1;
+    need = masteryXpNeededForLevel(level);
+  }
+  return { masteryLevel: level, masteryXP: total, masteryXPNeeded: need };
+}
+function getPersistentMasteryTotalXp(honkerId) {
+  if (!honkerId) return 0;
+  const map = CAMPAIGN.honkerMastery || {};
+  return Math.max(0, Math.round(Number(map[honkerId]) || 0));
+}
+function setPersistentMasteryTotalXp(honkerId, totalXp) {
+  if (!honkerId) return;
+  if (!CAMPAIGN.honkerMastery) CAMPAIGN.honkerMastery = {};
+  const cur = getPersistentMasteryTotalXp(honkerId);
+  const next = Math.max(cur, Math.max(0, Math.round(Number(totalXp) || 0)));
+  CAMPAIGN.honkerMastery[honkerId] = next;
+}
+function ensureMasteryState(h) {
+  if (!h) return;
+  const persisted = getPersistentMasteryTotalXp(h.id);
+  h.masteryLevel = Math.max(0, Number(h.masteryLevel) || 0);
+  h.masteryXP = Math.max(0, Number(h.masteryXP) || 0);
+  h.masteryXPNeeded = Math.max(1, Number(h.masteryXPNeeded) || masteryXpNeededForLevel(h.masteryLevel));
+  if (!Number.isFinite(Number(h.masteryTotalXp))) {
+    h.masteryTotalXp = totalMasteryXpRequiredForLevel(h.masteryLevel) + Math.min(h.masteryXP, h.masteryXPNeeded - 1);
+  } else {
+    h.masteryTotalXp = Math.max(0, Math.round(Number(h.masteryTotalXp)));
+  }
+  if (persisted > h.masteryTotalXp) h.masteryTotalXp = persisted;
+  applyMasteryProgressFromTotal(h);
+  setPersistentMasteryTotalXp(h.id, h.masteryTotalXp);
+}
+function applyMasteryProgressFromTotal(h) {
+  if (!h) return;
+  const prog = masteryProgressFromTotalXp(h.masteryTotalXp);
+  h.masteryLevel = prog.masteryLevel;
+  h.masteryXP = prog.masteryXP;
+  h.masteryXPNeeded = prog.masteryXPNeeded;
+}
+function onMasteryLevelUp(h) {
+  const mlv = h ? Math.max(0, h.masteryLevel || 0) : 0;
+  const bonusPct = Math.round((masteryStatMultiplier(mlv) - 1) * 100);
+  log('g', `✨ <b>${h.name}</b> reached <b>Mastery ${mlv}</b>! All stats bonus is now <b>+${bonusPct}%</b>.`);
 }
 
 function onLevelUp(h) {
@@ -3503,8 +3648,8 @@ function buyLootPP() {
   if (!pb || !spendCoins(SHOP_COSTS.pp)) return;
   const map = pb.movePP || {};
   (pb.moves || []).forEach(m => {
-    const cur = map[m.name] ?? m.maxPP;
-    map[m.name] = Math.min(m.maxPP, cur + 4);
+    const cur = map[m.id] ?? map[m.name] ?? m.maxPP;
+    map[m.id || m.name] = Math.min(m.maxPP, cur + 4);
   });
   pb.movePP = map;
   log('g', `🌱 ${pb.name}'s PP was restored.`);
@@ -3519,7 +3664,7 @@ function buyLootRevive() {
   revived.currentHP = Math.max(1, Math.round(getHonkerMaxHP(revived) * 0.6));
   if (!revived.movePP) {
     revived.movePP = {};
-    (revived.moves || []).forEach(m => { revived.movePP[m.name] = Math.max(1, Math.ceil(m.maxPP * 0.5)); });
+    (revived.moves || []).forEach(m => { revived.movePP[m.id || m.name] = Math.max(1, Math.ceil(m.maxPP * 0.5)); });
   }
   CAMPAIGN.party.push(revived);
   log('g', `🪽 ${revived.name} was revived and rejoined the party.`);
@@ -3561,7 +3706,7 @@ function chooseLoot(item) {
 
 function applyLootItem(item, targetHonker) {
   const target = targetHonker || CAMPAIGN.playerBase;
-  const isMove = item?.id && item.id.startsWith('move_');
+  const isMove = !!item?.moveId;
   if (isMove && target && Array.isArray(target.moves) && target.moves.length >= 4) {
     const partyIdx = Math.max(0, CAMPAIGN.party.indexOf(target));
     showReplaceMove(target, partyIdx, item);
@@ -3586,7 +3731,7 @@ function showTeachOverlay(item) {
   const preview = document.getElementById('teach-move-preview');
   // Build a move object from the item to show stats
   // For move items, show move stats. For stat items, show the description.
-  const isMoveLoot = item.id && item.id.startsWith('move_');
+  const isMoveLoot = !!item?.moveId;
   if (isMoveLoot) {
     const tmpHonker = { moves: [], maxHPBonus:0, atkFlat:0 };
     item.apply(tmpHonker);
@@ -3632,7 +3777,7 @@ function showTeachOverlay(item) {
   });
 
   // Update overlay title based on item type
-  const isMove = item.id && item.id.startsWith('move_');
+  const isMove = !!item?.moveId;
   document.querySelector('#teach-overlay .teach-title').textContent = isMove ? '📚 WHO LEARNS THIS MOVE?' : '🎁 WHO GETS THIS ITEM?';
   document.getElementById('teach-overlay').classList.add('show');
 }
@@ -3645,7 +3790,7 @@ function teachMoveTo(partyIdx) {
   const target = CAMPAIGN.party[partyIdx];
   if (!target) return;
 
-  const isMove = item.id && item.id.startsWith('move_');
+  const isMove = !!item?.moveId;
   if (isMove && target.moves.length >= 4) {
     showReplaceMove(target, partyIdx, item);
     return;
@@ -3675,6 +3820,7 @@ function showReplaceMove(honker, partyIdx, item) {
     card.onclick = () => {
       document.getElementById('teach-overlay').classList.remove('show');
       honker.moves.splice(mi, 1);
+      if (Array.isArray(honker.moveIds)) honker.moveIds.splice(mi, 1);
       applyLootItem(item, honker);
     };
     grid.appendChild(card);
@@ -3815,8 +3961,14 @@ function log(t,html){
 
 async function clearCampaignSave() {
   try {
+    try {
+      await fetch('/api/save/campaign', { method: 'DELETE' });
+      await fetch('/api/save/dex', { method: 'DELETE' });
+    } catch (_) {}
     if (window.storage) await window.storage.set('honker_save', '');
     localStorage.removeItem('honker_save');
+    if (window.storage) await window.storage.set('honker_dex', '');
+    localStorage.removeItem('honker_dex');
   } catch(e) {}
 }
 async function continueCampaign(){
@@ -3835,14 +3987,19 @@ async function continueCampaign(){
 //  PERSISTENT SAVE / LOAD
 // "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
 function serializeHonkerForSave(h) {
+  if (typeof ensureHonkerMoveIds === 'function') ensureHonkerMoveIds(h);
   return {
     id: h.id, name: h.name, emoji: h.emoji, type: h.type, type2: h.type2 || null,
     hp: h.hp, luck: h.luck, lore: h.lore, isCaught: h.isCaught || false,
     passive: h.passive || null,
-    level: h.level||1, xp: h.xp||0, xpNeeded: h.xpNeeded||100,
+    level: h.level||1, xp: h.xp||0, xpNeeded: h.xpNeeded||100, totalXp: h.totalXp||0,
+    masteryLevel: h.masteryLevel||0, masteryXP: h.masteryXP||0,
+    masteryXPNeeded: h.masteryXPNeeded||masteryXpNeededForLevel(h.masteryLevel||0),
+    masteryTotalXp: h.masteryTotalXp||0,
     inventory: h.inventory||[],
     atk: h.atk||80, def: h.def||80, spd: h.spd||80,
     assembledParts: h.assembledParts || null,
+    moveIds: (h.moveIds || []).slice(),
     moves: (h.moves || []).map(m => ({ ...m })),
     moveCandidates: (h.moveCandidates || []).map(m => ({ ...m })),
     maxHPBonus: h.maxHPBonus||0, atkFlat: h.atkFlat||0, atkMult: h.atkMult||1,
@@ -3863,12 +4020,39 @@ function hydrateSavedHonker(saved) {
   h.stabBonus  = saved.stabBonus  || 1.25;
   h.chaosMod   = saved.chaosMod   || 1;
   h.ppBonus    = saved.ppBonus    || 0;
-  h.moves      = saved.moves || [];
+  h.moveIds    = (saved.moveIds || []).slice();
+  if (!h.moveIds.length && typeof ensureHonkerMoveIds === 'function') {
+    h.moves = saved.moves || [];
+    ensureHonkerMoveIds(h);
+  }
+  if (h.moveIds.length) {
+    h.moves = materializeMovesFromIds(h.moveIds, { type: h.type, basePow: 55 });
+    const savedMoves = Array.isArray(saved.moves) ? saved.moves : [];
+    const savedById = new Map(savedMoves.map(m => [m.id, m]));
+    const savedByName = new Map(savedMoves.map(m => [m.name, m]));
+    h.moves.forEach(m => {
+      const src = savedById.get(m.id) || savedByName.get(m.name);
+      if (!src) return;
+      const maxPP = Number.isFinite(src.maxPP) ? src.maxPP : m.maxPP;
+      m.maxPP = maxPP;
+      m.pp = Number.isFinite(src.pp) ? Math.max(0, Math.min(maxPP, src.pp)) : m.pp;
+      if (Number.isFinite(src.power)) m.power = src.power;
+    });
+  } else {
+    h.moves = saved.moves || [];
+  }
   h.moveCandidates = saved.moveCandidates || [];
   h.isCaught   = saved.isCaught || false;
   h.level      = saved.level    || 1;
   h.xp         = saved.xp       || 0;
   h.xpNeeded   = saved.xpNeeded || 100;
+  h.totalXp    = Number.isFinite(saved.totalXp) ? saved.totalXp : undefined;
+  ensureLevelState(h);
+  h.masteryLevel = saved.masteryLevel || 0;
+  h.masteryXP = saved.masteryXP || 0;
+  h.masteryXPNeeded = saved.masteryXPNeeded || masteryXpNeededForLevel(h.masteryLevel);
+  h.masteryTotalXp = Number.isFinite(saved.masteryTotalXp) ? saved.masteryTotalXp : undefined;
+  ensureMasteryState(h);
   h.inventory  = saved.inventory || [];
   h.atk        = saved.atk        || 80;
   h.def        = saved.def        || 80;
@@ -3877,6 +4061,14 @@ function hydrateSavedHonker(saved) {
   h.assembledParts = saved.assembledParts || null;
   h.currentHP  = saved.currentHP ?? getHonkerMaxHP(h);
   h.movePP     = saved.movePP || null;
+  if (h.movePP && Array.isArray(h.moves)) {
+    const normalizedPP = {};
+    h.moves.forEach(m => {
+      const v = h.movePP[m.id] ?? h.movePP[m.name];
+      if (Number.isFinite(v)) normalizedPP[m.id || m.name] = Math.max(0, Math.min(m.maxPP || m.pp || 0, v));
+    });
+    h.movePP = normalizedPP;
+  }
   h.persistentEffects = saved.persistentEffects || {};
   if (saved.passive) h.passive = saved.passive;
   return h;
@@ -3907,18 +4099,37 @@ function campaignToSave() {
 async function saveCampaign() {
   try {
     const data = JSON.stringify(campaignToSave());
+    let serverSavedCampaign = false;
+    let serverSavedDex = false;
+    try {
+      const r = await fetch('/api/save/campaign', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: data });
+      serverSavedCampaign = r.ok;
+    } catch (_) {}
     if (window.storage) {
       await window.storage.set('honker_save', data);
     } else {
       localStorage.setItem('honker_save', data);
     }
     // Also save global dex permanently
-    const dexData = JSON.stringify({ seen: CAMPAIGN.dexSeen, caught: CAMPAIGN.dexCaught });
+    const dexData = JSON.stringify({
+      seen: CAMPAIGN.dexSeen,
+      caught: CAMPAIGN.dexCaught,
+      mastery: CAMPAIGN.honkerMastery || {},
+    });
+    try {
+      const r = await fetch('/api/save/dex', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: dexData });
+      serverSavedDex = r.ok;
+    } catch (_) {}
     if (window.storage) {
       await window.storage.set('honker_dex', dexData);
     } else {
       localStorage.setItem('honker_dex', dexData);
     }
+    if (!serverSavedCampaign || !serverSavedDex) {
+      console.warn('[SAVE] Server save unavailable; local storage fallback remains active');
+    }
+    const contBtn = document.getElementById('cont-btn');
+    if (contBtn && CAMPAIGN.party && CAMPAIGN.party.length > 0) contBtn.style.display = '';
     flashSaveIndicator();
   } catch(e) { console.warn('Save failed', e); }
 }
@@ -3926,9 +4137,15 @@ async function saveCampaign() {
 async function loadCampaign() {
   try {
     let raw = null;
-    if (window.storage) {
+    try {
+      const r = await fetch('/api/save/campaign', { cache: 'no-store' });
+      if (r.ok && r.status !== 204) {
+        raw = await r.text();
+      }
+    } catch (_) {}
+    if (!raw && window.storage) {
       const res = await window.storage.get('honker_save').catch(()=>null);
-      raw = res ? res.value : null;
+      if (!raw) raw = res ? res.value : null;
     }
     if (!raw) raw = localStorage.getItem('honker_save');
     if (!raw) return false;
@@ -3962,15 +4179,22 @@ async function loadCampaign() {
 async function loadGlobalDex() {
   try {
     let raw = null;
-    if (window.storage) {
+    try {
+      const r = await fetch('/api/save/dex', { cache: 'no-store' });
+      if (r.ok && r.status !== 204) {
+        raw = await r.text();
+      }
+    } catch (_) {}
+    if (!raw && window.storage) {
       const res = await window.storage.get('honker_dex').catch(()=>null);
-      raw = res ? res.value : null;
+      if (!raw) raw = res ? res.value : null;
     }
     if (!raw) raw = localStorage.getItem('honker_dex');
     if (!raw) return;
     const d = JSON.parse(raw);
     CAMPAIGN.dexSeen   = d.seen   || [];
     CAMPAIGN.dexCaught = d.caught || [];
+    CAMPAIGN.honkerMastery = d.mastery || {};
   } catch(e) {}
 }
 
@@ -4043,9 +4267,6 @@ function buildDexGrid() {
 let _partsDexFromScreen = 'screen-title';
 function showPartsDex(fromScreen) {
   ensurePartTrackingState();
-  if (CAMPAIGN.caughtParts.length === 0) {
-    resetStarterCaughtParts();
-  }
   _partsDexFromScreen = fromScreen || document.querySelector('.screen.active')?.id || 'screen-title';
   initPartsDexControls();
   buildPartsDexGrid();
@@ -4152,10 +4373,8 @@ function buildPartsDexGrid() {
   });
 }
 function xpNeededForLevel(level) {
-  let need = 100;
   const lv = Math.max(1, Number(level) || 1);
-  for (let i = 1; i < lv; i++) need = Math.round(need * 1.28);
-  return need;
+  return Math.max(100, Math.round(100 * Math.pow(1.34, lv - 1)));
 }
 
 // "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?

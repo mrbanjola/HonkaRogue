@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HonkaRogue Moves Editor</title>
+  <style>
+    :root{--bg:#0b0f1a;--panel:#151b2a;--panel2:#101623;--text:#e6ebff;--muted:#8f9ab8;--border:#2a3550;--ok:#00d084;--warn:#ffb020}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    .wrap{display:grid;grid-template-columns:360px 1fr;min-height:100vh}
+    .left,.right{padding:14px}
+    .left{background:var(--panel2);border-right:1px solid var(--border)}
+    .card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:12px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+    .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}
+    input,select,textarea,button{width:100%;border-radius:8px;border:1px solid var(--border);background:#0d1422;color:var(--text);padding:8px;font-size:13px}
+    textarea{min-height:100px;resize:vertical}
+    .list{max-height:calc(100vh - 220px);overflow:auto;border:1px solid var(--border);border-radius:8px}
+    .item{padding:8px;border-bottom:1px solid #1c2538;cursor:pointer}
+    .item:last-child{border-bottom:0}
+    .item.active{background:#12233a}
+    .meta{font-size:11px;color:var(--muted)}
+    .toolbar{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .status{font-size:12px;min-height:16px;color:var(--muted)}
+    .status.ok{color:var(--ok)} .status.warn{color:var(--warn)}
+    @media (max-width:1100px){.wrap{grid-template-columns:1fr}.left{border-right:0;border-bottom:1px solid var(--border)}.list{max-height:240px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <aside class="left">
+      <div class="card">
+        <h2 style="margin:0 0 8px">Moves Editor</h2>
+        <div class="row">
+          <input id="search" placeholder="search id/name/type">
+          <select id="typeFilter"><option value="">all types</option><option>Fire</option><option>Ice</option><option>Lightning</option><option>Shadow</option><option>Normal</option></select>
+        </div>
+        <div class="toolbar">
+          <button id="addBtn">Add</button>
+          <button id="dupBtn">Duplicate</button>
+          <button id="delBtn">Delete</button>
+        </div>
+        <div id="countLbl" class="status"></div>
+      </div>
+      <div id="list" class="list"></div>
+    </aside>
+    <main class="right">
+      <div class="card">
+        <div class="toolbar">
+          <button id="reloadBtn">Reload</button>
+          <button id="saveBtn">Save MOVE_POOL</button>
+          <button id="downloadBtn">Download JSON</button>
+        </div>
+        <div id="dirty" class="status"></div>
+        <div id="status" class="status"></div>
+      </div>
+      <div class="card">
+        <div class="row3">
+          <div><label>id</label><input id="f_id"></div>
+          <div><label>name</label><input id="f_name"></div>
+          <div><label>emoji</label><input id="f_emoji"></div>
+        </div>
+        <div class="row3">
+          <div><label>basePower</label><input id="f_basePower" type="number"></div>
+          <div><label>acc</label><input id="f_acc" type="number"></div>
+          <div><label>pp</label><input id="f_pp" type="number"></div>
+        </div>
+        <div class="row3">
+          <div><label>tier</label><select id="f_tier"><option>common</option><option>rare</option><option>legendary</option></select></div>
+          <div><label>types (multi-select)</label><select id="f_types" multiple size="4"><option>Fire</option><option>Ice</option><option>Lightning</option><option>Shadow</option><option>Normal</option></select></div>
+          <div><label>desc</label><textarea id="f_desc" style="min-height:74px"></textarea></div>
+        </div>
+        <div class="row">
+          <button id="applyBtn">Apply Form</button>
+          <button id="revertBtn">Revert</button>
+        </div>
+      </div>
+      <div class="card">
+        <label>Raw JSON for selected move</label>
+        <textarea id="raw" style="min-height:260px"></textarea>
+        <div class="row">
+          <button id="applyRawBtn">Apply Raw JSON</button>
+          <button id="refreshRawBtn">Refresh Raw</button>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script>
+    const st={items:[],filtered:[],idx:-1,dirty:false};
+    const KNOWN=new Set(['id','name','types','type','emoji','desc','basePower','acc','pp','tier']);
+    const el=id=>document.getElementById(id);
+    const clone=v=>JSON.parse(JSON.stringify(v));
+    const int=(v,d=0)=>{const n=Number(v);return Number.isFinite(n)?Math.round(n):d;};
+    function setStatus(msg,cls=''){const s=el('status');s.className=`status ${cls}`.trim();s.textContent=msg;}
+    function setDirty(v){st.dirty=!!v;const d=el('dirty');d.className=`status ${st.dirty?'warn':'ok'}`;d.textContent=st.dirty?'Unsaved changes':'All changes saved';}
+
+    async function loadAll(){
+      const r=await fetch('/api/move-pool',{cache:'no-store'});
+      if(!r.ok) throw new Error(`Failed to load move pool (${r.status})`);
+      const d=await r.json();
+      st.items=Array.isArray(d.items)?d.items:[];
+      st.idx=st.items.length?0:-1;
+      setDirty(false); renderList(); renderSel(); setStatus(`Loaded ${st.items.length} moves`,'ok');
+    }
+    function applyFilters(){
+      const q=(el('search').value||'').trim().toLowerCase(); const t=el('typeFilter').value;
+      st.filtered=[];
+      st.items.forEach((m,i)=>{ const types=Array.isArray(m.types)?m.types:[m.type].filter(Boolean);
+        if(t && !types.includes(t)) return;
+        if(q){const hay=[m.id,m.name,m.desc,...types].join(' ').toLowerCase(); if(!hay.includes(q)) return;}
+        st.filtered.push(i);
+      });
+    }
+    function renderList(){
+      applyFilters(); const list=el('list'); list.innerHTML='';
+      st.filtered.forEach(i=>{const m=st.items[i]; const it=document.createElement('div'); it.className=`item ${i===st.idx?'active':''}`;
+        it.onclick=()=>{st.idx=i; renderList(); renderSel();};
+        const types=(Array.isArray(m.types)?m.types:[m.type].filter(Boolean)).join('/');
+        it.innerHTML=`<div><b>${m.id||'(no id)'}</b> - ${m.name||''}</div><div class="meta">${types} | P${m.basePower||0} | ACC ${m.acc||0} | PP ${m.pp||0}</div>`;
+        list.appendChild(it);
+      });
+      el('countLbl').textContent=`Showing ${st.filtered.length}/${st.items.length}`;
+    }
+    function cur(){ return st.idx>=0?st.items[st.idx]:null; }
+    function fillForm(m){
+      el('f_id').value=m.id||''; el('f_name').value=m.name||''; el('f_emoji').value=m.emoji||''; el('f_desc').value=m.desc||'';
+      el('f_basePower').value=m.basePower??0; el('f_acc').value=m.acc??100; el('f_pp').value=m.pp??10; el('f_tier').value=m.tier||'common';
+      const types=Array.isArray(m.types)?m.types:[m.type].filter(Boolean);
+      [...el('f_types').options].forEach(o=>o.selected=types.includes(o.value));
+    }
+    function renderSel(){ const m=cur(); if(!m){el('raw').value=''; return;} fillForm(m); el('raw').value=JSON.stringify(m,null,2); }
+    function applyForm(){
+      const m=cur(); if(!m) return;
+      const out=clone(m);
+      out.id=el('f_id').value.trim(); out.name=el('f_name').value.trim(); out.emoji=el('f_emoji').value; out.desc=el('f_desc').value;
+      out.basePower=int(el('f_basePower').value,0); out.acc=int(el('f_acc').value,100); out.pp=int(el('f_pp').value,10); out.tier=el('f_tier').value;
+      const types=[...el('f_types').selectedOptions].map(o=>o.value);
+      out.types=types.length?types:['Normal']; out.type=out.types[0];
+      st.items[st.idx]=out; setDirty(true); renderList(); renderSel(); setStatus('Form applied. Save to persist.','warn');
+    }
+    function applyRaw(){ const m=cur(); if(!m) return; let p; try{p=JSON.parse(el('raw').value);}catch(e){setStatus(`Invalid JSON: ${e.message}`,'warn');return;}
+      st.items[st.idx]=p; setDirty(true); renderList(); renderSel(); setStatus('Raw JSON applied. Save to persist.','warn');
+    }
+    function addMove(){ st.items.push({id:`move_${Date.now()}`,name:'New Move',types:['Normal'],type:'Normal',emoji:'*',desc:'',basePower:50,acc:100,pp:10,tier:'common'}); st.idx=st.items.length-1; setDirty(true); renderList(); renderSel(); }
+    function dupMove(){ const m=cur(); if(!m) return; const c=clone(m); c.id=`${m.id||'move'}_copy_${Date.now()}`; st.items.push(c); st.idx=st.items.length-1; setDirty(true); renderList(); renderSel(); }
+    function delMove(){ const m=cur(); if(!m) return; if(!confirm(`Delete ${m.id}?`)) return; st.items.splice(st.idx,1); if(st.idx>=st.items.length) st.idx=st.items.length-1; setDirty(true); renderList(); renderSel(); }
+    async function saveAll(){
+      const r=await fetch('/api/move-pool',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:st.items})});
+      if(!r.ok){const t=await r.text().catch(()=> ''); throw new Error(`Save failed (${r.status}) ${t}`);}
+      setDirty(false); setStatus('Saved MOVE_POOL to js/data.js','ok');
+    }
+    function dl(){ const b=new Blob([JSON.stringify(st.items,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='move_pool.json'; a.click(); URL.revokeObjectURL(a.href); }
+    function wire(){
+      el('search').addEventListener('input',renderList); el('typeFilter').addEventListener('change',renderList);
+      el('addBtn').onclick=addMove; el('dupBtn').onclick=dupMove; el('delBtn').onclick=delMove;
+      el('applyBtn').onclick=applyForm; el('revertBtn').onclick=renderSel; el('applyRawBtn').onclick=applyRaw; el('refreshRawBtn').onclick=renderSel;
+      el('reloadBtn').onclick=()=>loadAll().catch(e=>setStatus(e.message,'warn'));
+      el('saveBtn').onclick=()=>saveAll().catch(e=>{setStatus(e.message,'warn'); alert(e.message);});
+      el('downloadBtn').onclick=dl;
+      window.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'){e.preventDefault(); saveAll().catch(err=>{setStatus(err.message,'warn'); alert(err.message);});}});
+      window.addEventListener('beforeunload',e=>{if(!st.dirty)return; e.preventDefault(); e.returnValue='';});
+    }
+    wire(); loadAll().catch(e=>setStatus(e.message,'warn'));
+  </script>
+</body>
+</html>
