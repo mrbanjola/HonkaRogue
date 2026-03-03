@@ -343,6 +343,7 @@ function generateStage(n) {
     moves = picked.slice(0, 4).map(m => ({
       id: m.id,
       name: m.name, type: m.type, emoji: m.emoji, desc: m.desc,
+      ...(m.animationType ? { animationType: m.animationType } : {}),
       power: Math.max(20, Math.round((m.basePower || 55) * (basePow / 55) * earlyPowScale)),
       acc: m.acc, pp: m.pp, maxPP: m.pp,
       ...(m.effect ? { effect: m.effect, effectTarget: m.effectTarget,

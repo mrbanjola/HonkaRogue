@@ -1,4 +1,4 @@
-// ============================================================================
+﻿// ============================================================================
 // HonkaRogue Battle Engine Module (battle/engine.js)
 // Turn execution, status logic, and damage resolution
 // ============================================================================
@@ -8,6 +8,27 @@ const OPENERS=['With blazing resolve,','Eyes locked in fury,','Without warning,'
   'In a burst of energy,','Calculating coldly,','With a battle cry,','Seizing the moment,'];
 const MISSES=['But the attack whiffs!','But it sails past!','But the target sidesteps!',
   'But fate denies the strike!','But the blow goes wide!','But the honk misses entirely!'];
+
+function shouldUseNovaFx(move) {
+  const sig = `${String(move?.id || '')} ${String(move?.name || '')}`.toLowerCase();
+  if (/(pulse|blast|wave|collapse|eruption|clap|nova|burst|field|crash|inferno|blizzard|thunder)/.test(sig)) return true;
+  const p = Number(move?.power || 0);
+  return Number.isFinite(p) && p >= 95;
+}
+function getNovaFxMode(move) {
+  const sig = `${String(move?.id || '')} ${String(move?.name || '')}`.toLowerCase();
+  if (/(void|oblivion|collapse|singularity|black hole|vortex)/.test(sig)) return 'reverse';
+  return 'normal';
+}
+function resolveMoveFxType(move) {
+  const raw = String(move?.animationType || '').trim().toLowerCase();
+  if (raw === 'nova') return 'nova';
+  if (raw === 'reverse nova') return 'reverse_nova';
+  if (raw === 'projectile') return 'projectile';
+  if (raw === 'beam') return 'beam';
+  if (shouldUseNovaFx(move)) return getNovaFxMode(move) === 'reverse' ? 'reverse_nova' : 'nova';
+  return 'hit';
+}
 
 function p1UsesMove(idx) {
   if(BS.bDead||BS.bPhase!=='p1') return;
@@ -355,6 +376,26 @@ function doMove(atk, def, move, cb) {
   setTimeout(() => {
     showClash(move.emoji);
     spawnPtcl(def.side, TC[mType || atk.type], move.emoji);
+    if (window.BattleThreeFx) {
+      const fxType = resolveMoveFxType(move);
+      const payload = {
+        atkSide: atk.side,
+        defSide: def.side,
+        type: mType || atk.type,
+        crit: isCrit,
+        novaMode: fxType === 'reverse_nova' ? 'reverse' : 'normal',
+      };
+      if ((fxType === 'nova' || fxType === 'reverse_nova') && typeof window.BattleThreeFx.spawnNova === 'function') {
+        window.BattleThreeFx.spawnNova(payload);
+      } else if (fxType === 'beam' && typeof window.BattleThreeFx.spawnBeam === 'function') {
+        window.BattleThreeFx.spawnBeam(payload);
+        if (typeof window.BattleThreeFx.spawnHit === 'function') window.BattleThreeFx.spawnHit(payload);
+      } else if (fxType === 'projectile' && typeof window.BattleThreeFx.spawnProjectile === 'function') {
+        window.BattleThreeFx.spawnProjectile(payload);
+      } else if (typeof window.BattleThreeFx.spawnHit === 'function') {
+        window.BattleThreeFx.spawnHit(payload);
+      }
+    }
     if (eff >= 2)    showToast('super', '⚡ SUPER EFFECTIVE!');
     else if (eff <= .5) showToast('not', '🛡 Not very effective...');
 
@@ -409,3 +450,5 @@ function doMove(atk, def, move, cb) {
     }, 330);
   }, 230);
 }
+
+

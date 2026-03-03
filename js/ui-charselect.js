@@ -520,6 +520,7 @@ function deriveHonkerFromParts(parts) {
   const toMove = (m) => ({
     id: m.id,
     name: m.name, type: m.type, emoji: m.emoji||'*', desc: m.desc||'',
+    ...(m.animationType ? { animationType: m.animationType } : {}),
     power: Math.max(15, Math.round(m.basePower || 55)),
     acc: m.acc, pp: m.pp, maxPP: m.pp,
     ...(m.drain  ? { drain:  m.drain  } : {}),

@@ -71,6 +71,20 @@
           <div><label>types (multi-select)</label><select id="f_types" multiple size="4"><option>Fire</option><option>Ice</option><option>Lightning</option><option>Shadow</option><option>Normal</option></select></div>
           <div><label>desc</label><textarea id="f_desc" style="min-height:74px"></textarea></div>
         </div>
+        <div class="row3">
+          <div>
+            <label>animationType</label>
+            <select id="f_animationType">
+              <option value="">(default / auto)</option>
+              <option>Nova</option>
+              <option>Reverse Nova</option>
+              <option>Projectile</option>
+              <option>Beam</option>
+            </select>
+          </div>
+          <div></div>
+          <div></div>
+        </div>
         <div class="row">
           <button id="applyBtn">Apply Form</button>
           <button id="revertBtn">Revert</button>
@@ -88,7 +102,7 @@
   </div>
   <script>
     const st={items:[],filtered:[],idx:-1,dirty:false};
-    const KNOWN=new Set(['id','name','types','type','emoji','desc','basePower','acc','pp','tier']);
+    const KNOWN=new Set(['id','name','types','type','emoji','desc','basePower','acc','pp','tier','animationType']);
     const el=id=>document.getElementById(id);
     const clone=v=>JSON.parse(JSON.stringify(v));
     const int=(v,d=0)=>{const n=Number(v);return Number.isFinite(n)?Math.round(n):d;};
@@ -117,7 +131,8 @@
       st.filtered.forEach(i=>{const m=st.items[i]; const it=document.createElement('div'); it.className=`item ${i===st.idx?'active':''}`;
         it.onclick=()=>{st.idx=i; renderList(); renderSel();};
         const types=(Array.isArray(m.types)?m.types:[m.type].filter(Boolean)).join('/');
-        it.innerHTML=`<div><b>${m.id||'(no id)'}</b> - ${m.name||''}</div><div class="meta">${types} | P${m.basePower||0} | ACC ${m.acc||0} | PP ${m.pp||0}</div>`;
+        const fx=m.animationType?` | FX ${m.animationType}`:'';
+        it.innerHTML=`<div><b>${m.id||'(no id)'}</b> - ${m.name||''}</div><div class="meta">${types} | P${m.basePower||0} | ACC ${m.acc||0} | PP ${m.pp||0}${fx}</div>`;
         list.appendChild(it);
       });
       el('countLbl').textContent=`Showing ${st.filtered.length}/${st.items.length}`;
@@ -126,6 +141,7 @@
     function fillForm(m){
       el('f_id').value=m.id||''; el('f_name').value=m.name||''; el('f_emoji').value=m.emoji||''; el('f_desc').value=m.desc||'';
       el('f_basePower').value=m.basePower??0; el('f_acc').value=m.acc??100; el('f_pp').value=m.pp??10; el('f_tier').value=m.tier||'common';
+      el('f_animationType').value=m.animationType||'';
       const types=Array.isArray(m.types)?m.types:[m.type].filter(Boolean);
       [...el('f_types').options].forEach(o=>o.selected=types.includes(o.value));
     }
@@ -135,6 +151,8 @@
       const out=clone(m);
       out.id=el('f_id').value.trim(); out.name=el('f_name').value.trim(); out.emoji=el('f_emoji').value; out.desc=el('f_desc').value;
       out.basePower=int(el('f_basePower').value,0); out.acc=int(el('f_acc').value,100); out.pp=int(el('f_pp').value,10); out.tier=el('f_tier').value;
+      const anim=(el('f_animationType').value||'').trim();
+      if(anim) out.animationType=anim; else delete out.animationType;
       const types=[...el('f_types').selectedOptions].map(o=>o.value);
       out.types=types.length?types:['Normal']; out.type=out.types[0];
       st.items[st.idx]=out; setDirty(true); renderList(); renderSel(); setStatus('Form applied. Save to persist.','warn');

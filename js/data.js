@@ -483,6 +483,7 @@ function materializeMoveFromId(moveId) {
     id: rec.id,
     name: rec.name,
     type: rec.type,
+    ...(rec.animationType ? { animationType: rec.animationType } : {}),
     emoji: rec.emoji,
     desc: rec.desc,
     power: rec.effect ? 0 : (rec.basePower || 0),

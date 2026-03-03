@@ -51,6 +51,11 @@ function applyBiomeArenaTheme(stage) {
   if (stage?.biomeId) arena.classList.add(`biome-${stage.biomeId}`);
 
   arenaBg.classList.toggle('event-active', !!stage?.isBoss);
+  if (window.BattleThreeBg && typeof window.BattleThreeBg.applyStage === 'function') {
+    window.BattleThreeBg.applyStage(stage).catch(err => {
+      console.warn('[3D BG] applyStage failed:', err?.message || err);
+    });
+  }
 }
 
 function startStageBattle(stageIdx, isRetry=false) {

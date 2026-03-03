@@ -1449,6 +1449,20 @@ body {
   isolation: isolate;
 }
 
+.arena-3d-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.arena-3d-fx-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
 .arena-bg>div {
   position: absolute;
   inset: 0;

@@ -1,872 +1,877 @@
-[
-  {
-    "name": "Flame Honk",
-    "types": [
-      "Fire"
-    ],
-    "emoji": "🔥",
-    "desc": "Reliable fiery bread-and-butter.",
-    "basePower": 50,
-    "acc": 95,
-    "pp": 20,
-    "id": "fire_flame_honk",
-    "tier": "common",
-    "type": "Fire"
-  },
-  {
-    "name": "Flame Burst",
-    "types": [
-      "Fire"
-    ],
-    "emoji": "*",
-    "desc": "A quick flame",
-    "basePower": 44,
-    "acc": 95,
-    "pp": 20,
-    "id": "fire_flame_burst"
-  },
-  {
-    "name": "Scorchblast",
-    "types": [
-      "Fire"
-    ],
-    "emoji": "*",
-    "desc": "Ignites the target",
-    "basePower": 55,
-    "acc": 85,
-    "pp": 12,
-    "id": "fire_scorchblast"
-  },
-  {
-    "name": "Ember",
-    "types": [
-      "Fire"
-    ],
-    "emoji": "*",
-    "desc": "Leaves a lingering burn.",
-    "basePower": 35,
-    "acc": 100,
-    "pp": 18,
-    "effect": "burn",
-    "effectTarget": "enemy",
-    "effectChance": 100,
-    "effectDur": 3,
-    "isLootLearnable": true,
-    "lootId": "move_ember",
-    "lootRarity": "common",
-    "lootColor": "#ff4e00",
-    "lootDesc": "Adds <b>Ember</b> (Fire) to your moveset. <i>Guarantees Burn for 3 rounds.</i>",
-    "id": "fire_ember"
-  },
-  {
-    "name": "Magma Crash",
-    "types": [
-      "Fire"
-    ],
-    "emoji": "*",
-    "desc": "Molten impact",
-    "basePower": 80,
-    "acc": 75,
-    "pp": 8,
-    "id": "fire_magma_crash"
-  },
-  {
-    "name": "Emit Spark",
-    "types": [
-      "Fire"
-    ],
-    "emoji": "🔥",
-    "desc": "Ignites the foe, increasing burn.",
-    "basePower": 30,
-    "acc": 95,
-    "pp": 16,
-    "effect": "burn",
-    "effectTarget": "enemy",
-    "effectChance": 95,
-    "effectDur": 3,
-    "id": "fire_emit_spark",
-    "tier": "common",
-    "type": "Fire"
-  },
-  {
-    "name": "Inferno Wave",
-    "types": [
-      "Fire"
-    ],
-    "emoji": "*",
-    "desc": "Massive heat wave.",
-    "basePower": 85,
-    "acc": 68,
-    "pp": 6,
-    "id": "fire_inferno_wave"
-  },
-  {
-    "name": "Eruption",
-    "types": [
-      "Fire"
-    ],
-    "emoji": "*",
-    "desc": "Volcano emerges from below.",
-    "basePower": 69,
-    "acc": 80,
-    "pp": 8,
-    "id": "fire_eruption"
-  },
-  {
-    "name": "Lava Spit",
-    "types": [
-      "Fire"
-    ],
-    "emoji": "*",
-    "desc": "Steady, scorching.",
-    "basePower": 47,
-    "acc": 98,
-    "pp": 18,
-    "id": "fire_lava_spit"
-  },
-  {
-    "name": "Solar Flare",
-    "types": [
-      "Fire"
-    ],
-    "emoji": "*",
-    "desc": "The sun itself, weaponised. User takes recoil.",
-    "basePower": 120,
-    "acc": 82,
-    "pp": 4,
-    "recoil": 0.25,
-    "isLootLearnable": true,
-    "lootId": "sig_solarflare",
-    "lootName": "Solar Flare",
-    "lootRarity": "legendary",
-    "lootColor": "#ff6a00",
-    "lootExclusiveTo": [
-      "bengt",
-      "embertail",
-      "scorchwick",
-      "pyrocluck",
-      "cinderquill",
-      "blazefowl",
-      "magnaroo"
-    ],
-    "lootDesc": "<b>Solar Flare</b>  -  Fire, PWR 155, 25% recoil. <i>Signature of fire glass cannons.</i>",
-    "id": "fire_solar_flare"
-  },
-  {
-    "name": "Flamewing",
-    "types": [
-      "Fire"
-    ],
-    "emoji": "*",
-    "desc": "Wings ablaze with power.",
-    "basePower": 43,
-    "acc": 96,
-    "pp": 22,
-    "id": "fire_flamewing"
-  },
-  {
-    "name": "Frost Arrow",
-    "types": [
-      "Ice"
-    ],
-    "emoji": "*",
-    "desc": "Icy precision shot.",
-    "basePower": 55,
-    "acc": 96,
-    "pp": 20,
-    "id": "ice_frost_arrow"
-  },
-  {
-    "name": "Ice Lance",
-    "types": [
-      "Ice"
-    ],
-    "emoji": "*",
-    "desc": "Sharp and piercing.",
-    "basePower": 70,
-    "acc": 84,
-    "pp": 10,
-    "id": "ice_ice_lance"
-  },
-  {
-    "name": "Blizzard",
-    "types": [
-      "Ice"
-    ],
-    "emoji": "*",
-    "desc": "Total chaos. Very unreliable.",
-    "basePower": 95,
-    "acc": 65,
-    "pp": 5,
-    "id": "ice_blizzard"
-  },
-  {
-    "name": "Icy Gust",
-    "types": [
-      "Ice"
-    ],
-    "emoji": "*",
-    "desc": "A freezing wind.",
-    "basePower": 44,
-    "acc": 95,
-    "pp": 20,
-    "id": "ice_icy_gust"
-  },
-  {
-    "name": "Frozen Spire",
-    "types": [
-      "Ice"
-    ],
-    "emoji": "*",
-    "desc": "Icicles from above.",
-    "basePower": 61,
-    "acc": 85,
-    "pp": 10,
-    "id": "ice_frozen_spire"
-  },
-  {
-    "name": "Flash Freeze",
-    "types": [
-      "Ice"
-    ],
-    "emoji": "*",
-    "desc": "May freeze the target solid.",
-    "basePower": 35,
-    "acc": 90,
-    "pp": 15,
-    "effect": "frozen",
-    "effectTarget": "enemy",
-    "effectChance": 65,
-    "effectDur": 1,
-    "isLootLearnable": true,
-    "lootId": "move_freeze",
-    "lootRarity": "rare",
-    "lootColor": "#00c8ff",
-    "lootDesc": "Adds <b>Flash Freeze</b> (Ice) to your moveset. <i>Chance to skip the enemy's next turn.</i>",
-    "id": "ice_flash_freeze"
-  },
-  {
-    "name": "Ice Shell",
-    "types": [
-      "Ice"
-    ],
-    "emoji": "*",
-    "desc": "Wraps self in a frigid barrier. Stacks shield.",
-    "basePower": 30,
-    "acc": 100,
-    "pp": 12,
-    "effect": "shielded",
-    "effectTarget": "self",
-    "effectChance": 100,
-    "effectDur": 3,
-    "id": "ice_ice_shell"
-  },
-  {
-    "name": "Permafrost",
-    "types": [
-      "Ice"
-    ],
-    "emoji": "*",
-    "desc": "Guarantees freeze. Low damage.",
-    "basePower": 30,
-    "acc": 88,
-    "pp": 12,
-    "effect": "frozen",
-    "effectTarget": "enemy",
-    "effectChance": 100,
-    "effectDur": 1,
-    "id": "ice_permafrost"
-  },
-  {
-    "name": "Permafrost Slam",
-    "types": [
-      "Ice"
-    ],
-    "emoji": "*",
-    "desc": "Seals the opponent in ice. Guaranteed freeze.",
-    "basePower": 60,
-    "acc": 90,
-    "pp": 10,
-    "effect": "frozen",
-    "effectTarget": "enemy",
-    "effectChance": 100,
-    "effectDur": 1,
-    "isLootLearnable": true,
-    "lootId": "sig_permafrost",
-    "lootName": "Permafrost Slam",
-    "lootRarity": "legendary",
-    "lootColor": "#00c8ff",
-    "lootExclusiveTo": [
-      "robin",
-      "frosting",
-      "brrrbeak",
-      "glaciergus",
-      "arcticclyde",
-      "snowquack",
-      "crystalwing"
-    ],
-    "lootDesc": "<b>Permafrost Slam</b>  -  Ice, PWR 60, <i>Guaranteed freeze</i>. Signature of icy tanks.",
-    "id": "ice_permafrost_slam"
-  },
-  {
-    "name": "Glacial Slam",
-    "types": [
-      "Ice"
-    ],
-    "emoji": "*",
-    "desc": "Slow but crushingly powerful.",
-    "basePower": 96,
-    "acc": 70,
-    "pp": 4,
-    "id": "ice_glacial_slam"
-  },
-  {
-    "name": "Shock Honk",
-    "types": [
-      "Lightning"
-    ],
-    "emoji": "*",
-    "desc": "Quick electric jab.",
-    "basePower": 48,
-    "acc": 95,
-    "pp": 20,
-    "id": "lightning_shock_honk"
-  },
-  {
-    "name": "Chain Bolt",
-    "types": [
-      "Lightning"
-    ],
-    "emoji": "*",
-    "desc": "Arcs between targets.",
-    "basePower": 61,
-    "acc": 83,
-    "pp": 10,
-    "id": "lightning_chain_bolt"
-  },
-  {
-    "name": "Thunderclap",
-    "types": [
-      "Lightning"
-    ],
-    "emoji": "*",
-    "desc": "Overwhelming voltage.",
-    "basePower": 91,
-    "acc": 65,
-    "pp": 5,
-    "id": "lightning_thunderclap"
-  },
-  {
-    "name": "Arc Pulse",
-    "types": [
-      "Lightning"
-    ],
-    "emoji": "*",
-    "desc": "Ricochets unpredictably.",
-    "basePower": 66,
-    "acc": 80,
-    "pp": 8,
-    "id": "lightning_arc_pulse"
-  },
-  {
-    "name": "Static Honk",
-    "types": [
-      "Lightning"
-    ],
-    "emoji": "*",
-    "desc": "Consistent voltage.",
-    "basePower": 51,
-    "acc": 93,
-    "pp": 15,
-    "id": "lightning_static_honk"
-  },
-  {
-    "name": "Ball Lightning",
-    "types": [
-      "Lightning"
-    ],
-    "emoji": "*",
-    "desc": "Slow but catastrophically explosive.",
-    "basePower": 72,
-    "acc": 76,
-    "pp": 8,
-    "id": "lightning_ball_lightning"
-  },
-  {
-    "name": "Zap Field",
-    "types": [
-      "Lightning"
-    ],
-    "emoji": "*",
-    "desc": "Bathes the foe in static charge.",
-    "basePower": 30,
-    "acc": 93,
-    "pp": 15,
-    "effect": "paralyzed",
-    "effectTarget": "enemy",
-    "effectChance": 90,
-    "effectDur": 3,
-    "isLootLearnable": true,
-    "lootId": "move_zap",
-    "lootRarity": "rare",
-    "lootColor": "#ffe600",
-    "lootDesc": "Adds <b>Zap Field</b> (Lightning). <i>Paralyzes the enemy, reducing their accuracy.</i>",
-    "id": "lightning_zap_field"
-  },
-  {
-    "name": "Overclock",
-    "types": [
-      "Lightning"
-    ],
-    "emoji": "*",
-    "desc": "Overloads own nervous system.",
-    "basePower": 30,
-    "acc": 100,
-    "pp": 10,
-    "effect": "pumped",
-    "effectTarget": "self",
-    "effectChance": 100,
-    "effectDur": 2,
-    "id": "lightning_overclock"
-  },
-  {
-    "name": "Volt Dive",
-    "types": [
-      "Lightning"
-    ],
-    "emoji": "*",
-    "desc": "Priority strike. Always moves first.",
-    "basePower": 38,
-    "acc": 100,
-    "pp": 18,
-    "priority": true,
-    "isLootLearnable": true,
-    "lootId": "sig_voltdive",
-    "lootName": "Volt Dive",
-    "lootRarity": "rare",
-    "lootColor": "#ffe600",
-    "lootExclusiveTo": [
-      "zephyr",
-      "zappington",
-      "voltmare",
-      "staticlina",
-      "sparksworth",
-      "boltclaw",
-      "thunderbeak"
-    ],
-    "lootDesc": "<b>Volt Dive</b>  -  Lightning, always goes first (priority). Signature of fast electric types.",
-    "id": "lightning_volt_dive"
-  },
-  {
-    "name": "Discharge",
-    "types": [
-      "Lightning"
-    ],
-    "emoji": "*",
-    "desc": "Massive AoE  -  hurts user for 18%.",
-    "basePower": 85,
-    "acc": 78,
-    "pp": 6,
-    "recoil": 0.18,
-    "id": "lightning_discharge"
-  },
-  {
-    "name": "Soul Drain",
-    "types": [
-      "Shadow"
-    ],
-    "emoji": "*",
-    "desc": "Saps the enemy's life force.",
-    "basePower": 48,
-    "acc": 94,
-    "pp": 20,
-    "drain": 0.3,
-    "id": "shadow_soul_drain"
-  },
-  {
-    "name": "Dark Pulse",
-    "types": [
-      "Shadow"
-    ],
-    "emoji": "*",
-    "desc": "A wave of pure darkness.",
-    "basePower": 61,
-    "acc": 84,
-    "pp": 10,
-    "id": "shadow_dark_pulse"
-  },
-  {
-    "name": "Void Collapse",
-    "types": [
-      "Shadow"
-    ],
-    "emoji": "*",
-    "desc": "Opens an abyss beneath them.",
-    "basePower": 91,
-    "acc": 63,
-    "pp": 5,
-    "id": "shadow_void_collapse"
-  },
-  {
-    "name": "Void Rend",
-    "types": [
-      "Shadow"
-    ],
-    "emoji": "*",
-    "desc": "Tears a void through the enemy. Heals attacker.",
-    "basePower": 120,
-    "acc": 80,
-    "pp": 6,
-    "drain": 0.35,
-    "isLootLearnable": true,
-    "lootId": "sig_voidrend",
-    "lootName": "Void Rend",
-    "lootRarity": "legendary",
-    "lootColor": "#a020f0",
-    "lootExclusiveTo": [
-      "mortem",
-      "thewraith",
-      "voidwing",
-      "gloomfeather",
-      "hexdown",
-      "eclipsar"
-    ],
-    "lootDesc": "<b>Void Rend</b>  -  Shadow, PWR 125, drains 35% as HP. <i>Signature of Mortem & The Wraith.</i>",
-    "id": "shadow_void_rend"
-  },
-  {
-    "name": "Shadow Slam",
-    "types": [
-      "Shadow"
-    ],
-    "emoji": "*",
-    "desc": "Pure dark force.",
-    "basePower": 66,
-    "acc": 80,
-    "pp": 8,
-    "id": "shadow_shadow_slam"
-  },
-  {
-    "name": "Void Touch",
-    "types": [
-      "Shadow"
-    ],
-    "emoji": "*",
-    "desc": "Dark and draining.",
-    "basePower": 51,
-    "acc": 93,
-    "pp": 15,
-    "drain": 0.2,
-    "id": "shadow_void_touch"
-  },
-  {
-    "name": "Eclipse Strike",
-    "types": [
-      "Shadow"
-    ],
-    "emoji": "*",
-    "desc": "Blots out hope itself.",
-    "basePower": 72,
-    "acc": 79,
-    "pp": 8,
-    "id": "shadow_eclipse_strike"
-  },
-  {
-    "name": "Hex",
-    "types": [
-      "Shadow"
-    ],
-    "emoji": "*",
-    "desc": "A dark curse saps their strength.",
-    "basePower": 30,
-    "acc": 92,
-    "pp": 15,
-    "effect": "cursed",
-    "effectTarget": "enemy",
-    "effectChance": 90,
-    "effectDur": 3,
-    "isLootLearnable": true,
-    "lootId": "move_hex",
-    "lootRarity": "common",
-    "lootColor": "#a020f0",
-    "lootDesc": "Adds <b>Hex</b> (Shadow) to your moveset. <i>Curses the enemy, reducing their attack.</i>",
-    "id": "shadow_hex"
-  },
-  {
-    "name": "Umbral Veil",
-    "types": [
-      "Shadow"
-    ],
-    "emoji": "*",
-    "desc": "Cloaks self in protective darkness. Stacks shield.",
-    "basePower": 30,
-    "acc": 100,
-    "pp": 12,
-    "effect": "shielded",
-    "effectTarget": "self",
-    "effectChance": 100,
-    "effectDur": 3,
-    "id": "shadow_umbral_veil"
-  },
-  {
-    "name": "Oblivion",
-    "types": [
-      "Shadow"
-    ],
-    "emoji": "*",
-    "desc": "Terrifying. Unreliable. Legendary.",
-    "basePower": 116,
-    "acc": 52,
-    "pp": 3,
-    "id": "shadow_oblivion"
-  },
-  {
-    "name": "Leech Feather",
-    "types": [
-      "Shadow"
-    ],
-    "emoji": "*",
-    "desc": "Drains 40% of damage as healing.",
-    "basePower": 44,
-    "acc": 90,
-    "pp": 14,
-    "drain": 0.4,
-    "id": "shadow_leech_feather"
-  },
-  {
-    "name": "Wing Slap",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Always connects. No type bonus.",
-    "basePower": 43,
-    "acc": 100,
-    "pp": 25,
-    "id": "normal_wing_slap"
-  },
-  {
-    "name": "Peck",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Classic peck.",
-    "basePower": 37,
-    "acc": 100,
-    "pp": 30,
-    "id": "normal_peck"
-  },
-  {
-    "name": "Scratch",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Basic cursed scratch.",
-    "basePower": 40,
-    "acc": 100,
-    "pp": 30,
-    "id": "normal_scratch"
-  },
-  {
-    "name": "Dive Bomb",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Straight down.",
-    "basePower": 50,
-    "acc": 92,
-    "pp": 15,
-    "id": "normal_dive_bomb"
-  },
-  {
-    "name": "Honk Slam",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Raw honk energy.",
-    "basePower": 52,
-    "acc": 88,
-    "pp": 12,
-    "id": "normal_honk_slam"
-  },
-  {
-    "name": "Talon Strike",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Reliable talon.",
-    "basePower": 45,
-    "acc": 100,
-    "pp": 20,
-    "id": "normal_talon_strike"
-  },
-  {
-    "name": "Wild Flap",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Chaotic but earnest.",
-    "basePower": 61,
-    "acc": 78,
-    "pp": 10,
-    "id": "normal_wild_flap"
-  },
-  {
-    "name": "Iron Guard",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Raises an iron defensive shield. Stacks shield.",
-    "basePower": 30,
-    "acc": 100,
-    "pp": 12,
-    "effect": "shielded",
-    "effectTarget": "self",
-    "effectChance": 100,
-    "effectDur": 3,
-    "isLootLearnable": true,
-    "lootId": "move_shield",
-    "lootRarity": "rare",
-    "lootColor": "#00ff88",
-    "lootDesc": "Adds <b>Iron Guard</b> (Normal). <i>Applies stackable Shield (max 4), persistent until swap/boss clear.</i>",
-    "id": "normal_iron_guard"
-  },
-  {
-    "name": "War Honk",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Unleash a terrifying battle cry.",
-    "basePower": 30,
-    "acc": 100,
-    "pp": 12,
-    "effect": "pumped",
-    "effectTarget": "self",
-    "effectChance": 100,
-    "effectDur": 2,
-    "isLootLearnable": true,
-    "lootId": "move_pump",
-    "lootRarity": "common",
-    "lootColor": "#ff9800",
-    "lootDesc": "Adds <b>War Honk</b> (Normal). <i>Pumps yourself up  -  boosts your attack for 2 rounds.</i>",
-    "id": "normal_war_honk"
-  },
-  {
-    "name": "Rampage",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Unstoppable. Unreliable. Legendary.",
-    "basePower": 110,
-    "acc": 60,
-    "pp": 5,
-    "isLootLearnable": true,
-    "lootId": "move_rampage",
-    "lootRarity": "legendary",
-    "lootColor": "#ffd700",
-    "lootDesc": "Adds <b>Rampage</b> (Normal, PWR 110) to your moveset. <i>Extremely powerful, low accuracy.</i>",
-    "id": "normal_rampage"
-  },
-  {
-    "name": "Kevin's Fury",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Only activates when cornered. Enormous.",
-    "basePower": 120,
-    "acc": 85,
-    "pp": 6,
-    "lowHPOnly": true,
-    "isLootLearnable": true,
-    "lootId": "sig_kevinfury",
-    "lootName": "Kevin's Fury",
-    "lootRarity": "legendary",
-    "lootColor": "#ffd700",
-    "lootExclusiveTo": [
-      "kevin",
-      "regularbarry"
-    ],
-    "lootDesc": "<b>Kevin's Fury</b>  -  Normal, PWR 145. <i>Only usable below 50% HP. Signature of Kevin & Barry.</i>",
-    "id": "normal_kevin_s_fury"
-  },
-  {
-    "name": "Battle Cry",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "A rousing shout empowers attacks.",
-    "basePower": 30,
-    "acc": 100,
-    "pp": 12,
-    "effect": "pumped",
-    "effectTarget": "self",
-    "effectChance": 100,
-    "effectDur": 2,
-    "id": "normal_battle_cry"
-  },
-  {
-    "name": "Feather Guard",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Raises a defensive wing shield. Stacks shield.",
-    "basePower": 30,
-    "acc": 100,
-    "pp": 12,
-    "effect": "shielded",
-    "effectTarget": "self",
-    "effectChance": 100,
-    "effectDur": 3,
-    "id": "normal_feather_guard"
-  },
-  {
-    "name": "Quick Strike",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Always moves first. Low damage.",
-    "basePower": 30,
-    "acc": 100,
-    "pp": 20,
-    "priority": true,
-    "id": "normal_quick_strike"
-  },
-  {
-    "name": "Bulldoze",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Brute force. Never misses.",
-    "basePower": 63,
-    "acc": 100,
-    "pp": 8,
-    "id": "normal_bulldoze"
-  },
-  {
-    "name": "Berserker Charge",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Massive. 25% recoil damage.",
-    "basePower": 104,
-    "acc": 82,
-    "pp": 5,
-    "recoil": 0.25,
-    "id": "normal_berserker_charge"
-  }
-]
+{
+  "items": [
+    {
+      "name": "Flame Honk",
+      "types": [
+        "Fire"
+      ],
+      "emoji": "🔥",
+      "desc": "Reliable fiery bread-and-butter.",
+      "basePower": 50,
+      "acc": 95,
+      "pp": 20,
+      "id": "fire_flame_honk",
+      "tier": "common",
+      "type": "Fire"
+    },
+    {
+      "name": "Flame Burst",
+      "types": [
+        "Fire"
+      ],
+      "emoji": "*",
+      "desc": "A quick flame",
+      "basePower": 44,
+      "acc": 95,
+      "pp": 20,
+      "id": "fire_flame_burst"
+    },
+    {
+      "name": "Scorchblast",
+      "types": [
+        "Fire"
+      ],
+      "emoji": "*",
+      "desc": "Ignites the target",
+      "basePower": 55,
+      "acc": 85,
+      "pp": 12,
+      "id": "fire_scorchblast"
+    },
+    {
+      "name": "Ember",
+      "types": [
+        "Fire"
+      ],
+      "emoji": "*",
+      "desc": "Leaves a lingering burn.",
+      "basePower": 35,
+      "acc": 100,
+      "pp": 18,
+      "effect": "burn",
+      "effectTarget": "enemy",
+      "effectChance": 100,
+      "effectDur": 3,
+      "isLootLearnable": true,
+      "lootId": "move_ember",
+      "lootRarity": "common",
+      "lootColor": "#ff4e00",
+      "lootDesc": "Adds <b>Ember</b> (Fire) to your moveset. <i>Guarantees Burn for 3 rounds.</i>",
+      "id": "fire_ember"
+    },
+    {
+      "name": "Magma Crash",
+      "types": [
+        "Fire"
+      ],
+      "emoji": "*",
+      "desc": "Molten impact",
+      "basePower": 80,
+      "acc": 75,
+      "pp": 8,
+      "id": "fire_magma_crash"
+    },
+    {
+      "name": "Emit Spark",
+      "types": [
+        "Fire"
+      ],
+      "emoji": "🔥",
+      "desc": "Ignites the foe, increasing burn.",
+      "basePower": 30,
+      "acc": 95,
+      "pp": 16,
+      "effect": "burn",
+      "effectTarget": "enemy",
+      "effectChance": 95,
+      "effectDur": 3,
+      "id": "fire_emit_spark",
+      "tier": "common",
+      "type": "Fire"
+    },
+    {
+      "name": "Inferno Wave",
+      "types": [
+        "Fire"
+      ],
+      "emoji": "*",
+      "desc": "Massive heat wave.",
+      "basePower": 85,
+      "acc": 68,
+      "pp": 6,
+      "id": "fire_inferno_wave"
+    },
+    {
+      "name": "Eruption",
+      "types": [
+        "Fire"
+      ],
+      "emoji": "*",
+      "desc": "Volcano emerges from below.",
+      "basePower": 69,
+      "acc": 80,
+      "pp": 8,
+      "id": "fire_eruption"
+    },
+    {
+      "name": "Lava Spit",
+      "types": [
+        "Fire"
+      ],
+      "emoji": "*",
+      "desc": "Steady, scorching.",
+      "basePower": 47,
+      "acc": 98,
+      "pp": 18,
+      "id": "fire_lava_spit"
+    },
+    {
+      "name": "Solar Flare",
+      "types": [
+        "Fire"
+      ],
+      "emoji": "*",
+      "desc": "The sun itself, weaponised. User takes recoil.",
+      "basePower": 120,
+      "acc": 82,
+      "pp": 4,
+      "recoil": 0.25,
+      "isLootLearnable": true,
+      "lootId": "sig_solarflare",
+      "lootName": "Solar Flare",
+      "lootRarity": "legendary",
+      "lootColor": "#ff6a00",
+      "lootExclusiveTo": [
+        "bengt",
+        "embertail",
+        "scorchwick",
+        "pyrocluck",
+        "cinderquill",
+        "blazefowl",
+        "magnaroo"
+      ],
+      "lootDesc": "<b>Solar Flare</b>  -  Fire, PWR 155, 25% recoil. <i>Signature of fire glass cannons.</i>",
+      "id": "fire_solar_flare"
+    },
+    {
+      "name": "Flamewing",
+      "types": [
+        "Fire"
+      ],
+      "emoji": "*",
+      "desc": "Wings ablaze with power.",
+      "basePower": 43,
+      "acc": 96,
+      "pp": 22,
+      "id": "fire_flamewing"
+    },
+    {
+      "name": "Frost Arrow",
+      "types": [
+        "Ice"
+      ],
+      "emoji": "*",
+      "desc": "Icy precision shot.",
+      "basePower": 55,
+      "acc": 96,
+      "pp": 20,
+      "id": "ice_frost_arrow"
+    },
+    {
+      "name": "Ice Lance",
+      "types": [
+        "Ice"
+      ],
+      "emoji": "*",
+      "desc": "Sharp and piercing.",
+      "basePower": 70,
+      "acc": 84,
+      "pp": 10,
+      "id": "ice_ice_lance"
+    },
+    {
+      "name": "Blizzard",
+      "types": [
+        "Ice"
+      ],
+      "emoji": "*",
+      "desc": "Total chaos. Very unreliable.",
+      "basePower": 95,
+      "acc": 65,
+      "pp": 5,
+      "id": "ice_blizzard"
+    },
+    {
+      "name": "Icy Gust",
+      "types": [
+        "Ice"
+      ],
+      "emoji": "*",
+      "desc": "A freezing wind.",
+      "basePower": 44,
+      "acc": 95,
+      "pp": 20,
+      "id": "ice_icy_gust"
+    },
+    {
+      "name": "Frozen Spire",
+      "types": [
+        "Ice"
+      ],
+      "emoji": "*",
+      "desc": "Icicles from above.",
+      "basePower": 61,
+      "acc": 85,
+      "pp": 10,
+      "id": "ice_frozen_spire"
+    },
+    {
+      "name": "Flash Freeze",
+      "types": [
+        "Ice"
+      ],
+      "emoji": "*",
+      "desc": "May freeze the target solid.",
+      "basePower": 35,
+      "acc": 90,
+      "pp": 15,
+      "effect": "frozen",
+      "effectTarget": "enemy",
+      "effectChance": 65,
+      "effectDur": 1,
+      "isLootLearnable": true,
+      "lootId": "move_freeze",
+      "lootRarity": "rare",
+      "lootColor": "#00c8ff",
+      "lootDesc": "Adds <b>Flash Freeze</b> (Ice) to your moveset. <i>Chance to skip the enemy's next turn.</i>",
+      "id": "ice_flash_freeze"
+    },
+    {
+      "name": "Ice Shell",
+      "types": [
+        "Ice"
+      ],
+      "emoji": "*",
+      "desc": "Wraps self in a frigid barrier. Stacks shield.",
+      "basePower": 30,
+      "acc": 100,
+      "pp": 12,
+      "effect": "shielded",
+      "effectTarget": "self",
+      "effectChance": 100,
+      "effectDur": 3,
+      "id": "ice_ice_shell"
+    },
+    {
+      "name": "Permafrost",
+      "types": [
+        "Ice"
+      ],
+      "emoji": "*",
+      "desc": "Guarantees freeze. Low damage.",
+      "basePower": 30,
+      "acc": 88,
+      "pp": 12,
+      "effect": "frozen",
+      "effectTarget": "enemy",
+      "effectChance": 100,
+      "effectDur": 1,
+      "id": "ice_permafrost"
+    },
+    {
+      "name": "Permafrost Slam",
+      "types": [
+        "Ice"
+      ],
+      "emoji": "*",
+      "desc": "Seals the opponent in ice. Guaranteed freeze.",
+      "basePower": 60,
+      "acc": 90,
+      "pp": 10,
+      "effect": "frozen",
+      "effectTarget": "enemy",
+      "effectChance": 100,
+      "effectDur": 1,
+      "isLootLearnable": true,
+      "lootId": "sig_permafrost",
+      "lootName": "Permafrost Slam",
+      "lootRarity": "legendary",
+      "lootColor": "#00c8ff",
+      "lootExclusiveTo": [
+        "robin",
+        "frosting",
+        "brrrbeak",
+        "glaciergus",
+        "arcticclyde",
+        "snowquack",
+        "crystalwing"
+      ],
+      "lootDesc": "<b>Permafrost Slam</b>  -  Ice, PWR 60, <i>Guaranteed freeze</i>. Signature of icy tanks.",
+      "id": "ice_permafrost_slam"
+    },
+    {
+      "name": "Glacial Slam",
+      "types": [
+        "Ice"
+      ],
+      "emoji": "*",
+      "desc": "Slow but crushingly powerful.",
+      "basePower": 96,
+      "acc": 70,
+      "pp": 4,
+      "id": "ice_glacial_slam"
+    },
+    {
+      "name": "Shock Honk",
+      "types": [
+        "Lightning"
+      ],
+      "emoji": "*",
+      "desc": "Quick electric jab.",
+      "basePower": 48,
+      "acc": 95,
+      "pp": 20,
+      "id": "lightning_shock_honk"
+    },
+    {
+      "name": "Chain Bolt",
+      "types": [
+        "Lightning"
+      ],
+      "emoji": "*",
+      "desc": "Arcs between targets.",
+      "basePower": 61,
+      "acc": 83,
+      "pp": 10,
+      "id": "lightning_chain_bolt"
+    },
+    {
+      "name": "Thunderclap",
+      "types": [
+        "Lightning"
+      ],
+      "emoji": "*",
+      "desc": "Overwhelming voltage.",
+      "basePower": 91,
+      "acc": 65,
+      "pp": 5,
+      "id": "lightning_thunderclap"
+    },
+    {
+      "name": "Arc Pulse",
+      "types": [
+        "Lightning"
+      ],
+      "emoji": "*",
+      "desc": "Ricochets unpredictably.",
+      "basePower": 66,
+      "acc": 80,
+      "pp": 8,
+      "id": "lightning_arc_pulse"
+    },
+    {
+      "name": "Static Honk",
+      "types": [
+        "Lightning"
+      ],
+      "emoji": "*",
+      "desc": "Consistent voltage.",
+      "basePower": 51,
+      "acc": 93,
+      "pp": 15,
+      "id": "lightning_static_honk"
+    },
+    {
+      "name": "Ball Lightning",
+      "types": [
+        "Lightning"
+      ],
+      "emoji": "*",
+      "desc": "Slow but catastrophically explosive.",
+      "basePower": 72,
+      "acc": 76,
+      "pp": 8,
+      "id": "lightning_ball_lightning"
+    },
+    {
+      "name": "Zap Field",
+      "types": [
+        "Lightning"
+      ],
+      "emoji": "*",
+      "desc": "Bathes the foe in static charge.",
+      "basePower": 30,
+      "acc": 93,
+      "pp": 15,
+      "effect": "paralyzed",
+      "effectTarget": "enemy",
+      "effectChance": 90,
+      "effectDur": 3,
+      "isLootLearnable": true,
+      "lootId": "move_zap",
+      "lootRarity": "rare",
+      "lootColor": "#ffe600",
+      "lootDesc": "Adds <b>Zap Field</b> (Lightning). <i>Paralyzes the enemy, reducing their accuracy.</i>",
+      "id": "lightning_zap_field"
+    },
+    {
+      "name": "Overclock",
+      "types": [
+        "Lightning"
+      ],
+      "emoji": "*",
+      "desc": "Overloads own nervous system.",
+      "basePower": 30,
+      "acc": 100,
+      "pp": 10,
+      "effect": "pumped",
+      "effectTarget": "self",
+      "effectChance": 100,
+      "effectDur": 2,
+      "id": "lightning_overclock"
+    },
+    {
+      "name": "Volt Dive",
+      "types": [
+        "Lightning"
+      ],
+      "emoji": "*",
+      "desc": "Priority strike. Always moves first.",
+      "basePower": 38,
+      "acc": 100,
+      "pp": 18,
+      "priority": true,
+      "isLootLearnable": true,
+      "lootId": "sig_voltdive",
+      "lootName": "Volt Dive",
+      "lootRarity": "rare",
+      "lootColor": "#ffe600",
+      "lootExclusiveTo": [
+        "zephyr",
+        "zappington",
+        "voltmare",
+        "staticlina",
+        "sparksworth",
+        "boltclaw",
+        "thunderbeak"
+      ],
+      "lootDesc": "<b>Volt Dive</b>  -  Lightning, always goes first (priority). Signature of fast electric types.",
+      "id": "lightning_volt_dive"
+    },
+    {
+      "name": "Discharge",
+      "types": [
+        "Lightning"
+      ],
+      "emoji": "*",
+      "desc": "Massive AoE  -  hurts user for 18%.",
+      "basePower": 85,
+      "acc": 78,
+      "pp": 6,
+      "recoil": 0.18,
+      "id": "lightning_discharge"
+    },
+    {
+      "name": "Soul Drain",
+      "types": [
+        "Shadow"
+      ],
+      "emoji": "*",
+      "desc": "Saps the enemy's life force.",
+      "basePower": 48,
+      "acc": 94,
+      "pp": 20,
+      "drain": 0.3,
+      "id": "shadow_soul_drain",
+      "tier": "common",
+      "animationType": "Beam",
+      "type": "Shadow"
+    },
+    {
+      "name": "Dark Pulse",
+      "types": [
+        "Shadow"
+      ],
+      "emoji": "*",
+      "desc": "A wave of pure darkness.",
+      "basePower": 61,
+      "acc": 84,
+      "pp": 10,
+      "id": "shadow_dark_pulse"
+    },
+    {
+      "name": "Void Collapse",
+      "types": [
+        "Shadow"
+      ],
+      "emoji": "*",
+      "desc": "Opens an abyss beneath them.",
+      "basePower": 91,
+      "acc": 63,
+      "pp": 5,
+      "id": "shadow_void_collapse"
+    },
+    {
+      "name": "Void Rend",
+      "types": [
+        "Shadow"
+      ],
+      "emoji": "*",
+      "desc": "Tears a void through the enemy. Heals attacker.",
+      "basePower": 120,
+      "acc": 80,
+      "pp": 6,
+      "drain": 0.35,
+      "isLootLearnable": true,
+      "lootId": "sig_voidrend",
+      "lootName": "Void Rend",
+      "lootRarity": "legendary",
+      "lootColor": "#a020f0",
+      "lootExclusiveTo": [
+        "mortem",
+        "thewraith",
+        "voidwing",
+        "gloomfeather",
+        "hexdown",
+        "eclipsar"
+      ],
+      "lootDesc": "<b>Void Rend</b>  -  Shadow, PWR 125, drains 35% as HP. <i>Signature of Mortem & The Wraith.</i>",
+      "id": "shadow_void_rend"
+    },
+    {
+      "name": "Shadow Slam",
+      "types": [
+        "Shadow"
+      ],
+      "emoji": "*",
+      "desc": "Pure dark force.",
+      "basePower": 66,
+      "acc": 80,
+      "pp": 8,
+      "id": "shadow_shadow_slam"
+    },
+    {
+      "name": "Void Touch",
+      "types": [
+        "Shadow"
+      ],
+      "emoji": "*",
+      "desc": "Dark and draining.",
+      "basePower": 51,
+      "acc": 93,
+      "pp": 15,
+      "drain": 0.2,
+      "id": "shadow_void_touch"
+    },
+    {
+      "name": "Eclipse Strike",
+      "types": [
+        "Shadow"
+      ],
+      "emoji": "*",
+      "desc": "Blots out hope itself.",
+      "basePower": 72,
+      "acc": 79,
+      "pp": 8,
+      "id": "shadow_eclipse_strike"
+    },
+    {
+      "name": "Hex",
+      "types": [
+        "Shadow"
+      ],
+      "emoji": "*",
+      "desc": "A dark curse saps their strength.",
+      "basePower": 30,
+      "acc": 92,
+      "pp": 15,
+      "effect": "cursed",
+      "effectTarget": "enemy",
+      "effectChance": 90,
+      "effectDur": 3,
+      "isLootLearnable": true,
+      "lootId": "move_hex",
+      "lootRarity": "common",
+      "lootColor": "#a020f0",
+      "lootDesc": "Adds <b>Hex</b> (Shadow) to your moveset. <i>Curses the enemy, reducing their attack.</i>",
+      "id": "shadow_hex"
+    },
+    {
+      "name": "Umbral Veil",
+      "types": [
+        "Shadow"
+      ],
+      "emoji": "*",
+      "desc": "Cloaks self in protective darkness. Stacks shield.",
+      "basePower": 30,
+      "acc": 100,
+      "pp": 12,
+      "effect": "shielded",
+      "effectTarget": "self",
+      "effectChance": 100,
+      "effectDur": 3,
+      "id": "shadow_umbral_veil"
+    },
+    {
+      "name": "Oblivion",
+      "types": [
+        "Shadow"
+      ],
+      "emoji": "*",
+      "desc": "Terrifying. Unreliable. Legendary.",
+      "basePower": 116,
+      "acc": 52,
+      "pp": 3,
+      "id": "shadow_oblivion"
+    },
+    {
+      "name": "Leech Feather",
+      "types": [
+        "Shadow"
+      ],
+      "emoji": "*",
+      "desc": "Drains 40% of damage as healing.",
+      "basePower": 44,
+      "acc": 90,
+      "pp": 14,
+      "drain": 0.4,
+      "id": "shadow_leech_feather"
+    },
+    {
+      "name": "Wing Slap",
+      "types": [
+        "Normal"
+      ],
+      "emoji": "*",
+      "desc": "Always connects. No type bonus.",
+      "basePower": 43,
+      "acc": 100,
+      "pp": 25,
+      "id": "normal_wing_slap"
+    },
+    {
+      "name": "Peck",
+      "types": [
+        "Normal"
+      ],
+      "emoji": "*",
+      "desc": "Classic peck.",
+      "basePower": 37,
+      "acc": 100,
+      "pp": 30,
+      "id": "normal_peck"
+    },
+    {
+      "name": "Scratch",
+      "types": [
+        "Normal"
+      ],
+      "emoji": "*",
+      "desc": "Basic cursed scratch.",
+      "basePower": 40,
+      "acc": 100,
+      "pp": 30,
+      "id": "normal_scratch"
+    },
+    {
+      "name": "Dive Bomb",
+      "types": [
+        "Normal"
+      ],
+      "emoji": "*",
+      "desc": "Straight down.",
+      "basePower": 50,
+      "acc": 92,
+      "pp": 15,
+      "id": "normal_dive_bomb"
+    },
+    {
+      "name": "Honk Slam",
+      "types": [
+        "Normal"
+      ],
+      "emoji": "*",
+      "desc": "Raw honk energy.",
+      "basePower": 52,
+      "acc": 88,
+      "pp": 12,
+      "id": "normal_honk_slam"
+    },
+    {
+      "name": "Talon Strike",
+      "types": [
+        "Normal"
+      ],
+      "emoji": "*",
+      "desc": "Reliable talon.",
+      "basePower": 45,
+      "acc": 100,
+      "pp": 20,
+      "id": "normal_talon_strike"
+    },
+    {
+      "name": "Wild Flap",
+      "types": [
+        "Normal"
+      ],
+      "emoji": "*",
+      "desc": "Chaotic but earnest.",
+      "basePower": 61,
+      "acc": 78,
+      "pp": 10,
+      "id": "normal_wild_flap"
+    },
+    {
+      "name": "Iron Guard",
+      "types": [
+        "Normal"
+      ],
+      "emoji": "*",
+      "desc": "Raises an iron defensive shield. Stacks shield.",
+      "basePower": 30,
+      "acc": 100,
+      "pp": 12,
+      "effect": "shielded",
+      "effectTarget": "self",
+      "effectChance": 100,
+      "effectDur": 3,
+      "isLootLearnable": true,
+      "lootId": "move_shield",
+      "lootRarity": "rare",
+      "lootColor": "#00ff88",
+      "lootDesc": "Adds <b>Iron Guard</b> (Normal). <i>Applies stackable Shield (max 4), persistent until swap/boss clear.</i>",
+      "id": "normal_iron_guard"
+    },
+    {
+      "name": "War Honk",
+      "types": [
+        "Normal"
+      ],
+      "emoji": "*",
+      "desc": "Unleash a terrifying battle cry.",
+      "basePower": 30,
+      "acc": 100,
+      "pp": 12,
+      "effect": "pumped",
+      "effectTarget": "self",
+      "effectChance": 100,
+      "effectDur": 2,
+      "isLootLearnable": true,
+      "lootId": "move_pump",
+      "lootRarity": "common",
+      "lootColor": "#ff9800",
+      "lootDesc": "Adds <b>War Honk</b> (Normal). <i>Pumps yourself up  -  boosts your attack for 2 rounds.</i>",
+      "id": "normal_war_honk"
+    },
+    {
+      "name": "Rampage",
+      "types": [
+        "Normal"
+      ],
+      "emoji": "*",
+      "desc": "Unstoppable. Unreliable. Legendary.",
+      "basePower": 110,
+      "acc": 60,
+      "pp": 5,
+      "isLootLearnable": true,
+      "lootId": "move_rampage",
+      "lootRarity": "legendary",
+      "lootColor": "#ffd700",
+      "lootDesc": "Adds <b>Rampage</b> (Normal, PWR 110) to your moveset. <i>Extremely powerful, low accuracy.</i>",
+      "id": "normal_rampage"
+    },
+    {
+      "name": "Kevin's Fury",
+      "types": [
+        "Normal"
+      ],
+      "emoji": "*",
+      "desc": "Only activates when cornered. Enormous.",
+      "basePower": 120,
+      "acc": 85,
+      "pp": 6,
+      "lowHPOnly": true,
+      "isLootLearnable": true,
+      "lootId": "sig_kevinfury",
+      "lootName": "Kevin's Fury",
+      "lootRarity": "legendary",
+      "lootColor": "#ffd700",
+      "lootExclusiveTo": [
+        "kevin",
+        "regularbarry"
+      ],
+      "lootDesc": "<b>Kevin's Fury</b>  -  Normal, PWR 145. <i>Only usable below 50% HP. Signature of Kevin & Barry.</i>",
+      "id": "normal_kevin_s_fury"
+    },
+    {
+      "name": "Battle Cry",
+      "types": [
+        "Normal"
+      ],
+      "emoji": "*",
+      "desc": "A rousing shout empowers attacks.",
+      "basePower": 30,
+      "acc": 100,
+      "pp": 12,
+      "effect": "pumped",
+      "effectTarget": "self",
+      "effectChance": 100,
+      "effectDur": 2,
+      "id": "normal_battle_cry"
+    },
+    {
+      "name": "Feather Guard",
+      "types": [
+        "Normal"
+      ],
+      "emoji": "*",
+      "desc": "Raises a defensive wing shield. Stacks shield.",
+      "basePower": 30,
+      "acc": 100,
+      "pp": 12,
+      "effect": "shielded",
+      "effectTarget": "self",
+      "effectChance": 100,
+      "effectDur": 3,
+      "id": "normal_feather_guard"
+    },
+    {
+      "name": "Quick Strike",
+      "types": [
+        "Normal"
+      ],
+      "emoji": "*",
+      "desc": "Always moves first. Low damage.",
+      "basePower": 30,
+      "acc": 100,
+      "pp": 20,
+      "priority": true,
+      "id": "normal_quick_strike"
+    },
+    {
+      "name": "Bulldoze",
+      "types": [
+        "Normal"
+      ],
+      "emoji": "*",
+      "desc": "Brute force. Never misses.",
+      "basePower": 63,
+      "acc": 100,
+      "pp": 8,
+      "id": "normal_bulldoze"
+    },
+    {
+      "name": "Berserker Charge",
+      "types": [
+        "Normal"
+      ],
+      "emoji": "*",
+      "desc": "Massive. 25% recoil damage.",
+      "basePower": 104,
+      "acc": 82,
+      "pp": 5,
+      "recoil": 0.25,
+      "id": "normal_berserker_charge"
+    }
+  ]
+}
