@@ -160,7 +160,7 @@ function showAssemblyScreen() {
 function randomAssembly() {
   if (!PARTS_DATA || !PARTS_DATA.parts) return;
   const pickRandom = slot => {
-    const pool = PARTS_DATA.parts.filter(p => p.slot === slot && isPartUnlocked(p.id));
+    const pool = PARTS_DATA.parts.filter(p => p.slot === slot && isPartUnlocked(p.id) && !isPartUnique(p));
     return pool[Math.floor(Math.random() * pool.length)] || null;
   };
   ['head','torso','wings','legs'].forEach(slot => {
@@ -214,14 +214,14 @@ function buildPartSelectors() {
       }).join('');
       item.innerHTML = `
         <div class="part-img">
-          <img src="${part.file}" alt="${part.id}">
+          <img src="${part.file}" alt="${part.name || part.id}">
         </div>
         <div class="part-info">
           <div class="part-family-row">
-            <div class="part-family">${part.family.name}</div>
+            <div class="part-family">${part.name || part.id}</div>
             <span class="part-tag" style="color:${getRarityColor(part.rarity)};border-color:${getRarityColor(part.rarity)}">${part.rarity.toUpperCase()}</span>
           </div>
-          <div style="font-size:.52rem;color:${archColors[part.archetype]||'#aaa'};margin:.08rem 0;">${part.archetype} \u00B7 ${part.slot}</div>
+          <div style="font-size:.52rem;color:${archColors[part.archetype]||'#aaa'};margin:.08rem 0;">${part.family.name} \u00B7 ${part.archetype} \u00B7 ${part.slot}</div>
           <div class="part-stats">
             <span class="part-stat">\u2764\uFE0F${part.stats.hp}</span>
             <span class="part-stat">\u2694\uFE0F${part.stats.atk}</span>

@@ -118,7 +118,7 @@ function buildPartsDexGrid() {
     if (family !== 'all' && p.family?.name !== family) return false;
     if (q) {
       const hay = [
-        p.id, p.slot, p.rarity, p.archetype, p.family?.name, p.family?.theme,
+        p.name, p.id, p.slot, p.rarity, p.archetype, p.family?.name, p.family?.theme,
         ...(p.tags || []), p.description || ''
       ].join(' ').toLowerCase();
       if (!hay.includes(q)) return false;
@@ -127,7 +127,7 @@ function buildPartsDexGrid() {
   });
 
   const cmpByPower = (a,b) => (b.powerScore||0) - (a.powerScore||0);
-  const cmpByName = (a,b) => a.id.localeCompare(b.id);
+  const cmpByName = (a,b) => String(a.name || a.id || '').localeCompare(String(b.name || b.id || ''));
   if (sort === 'power_desc') parts.sort(cmpByPower);
   if (sort === 'power_asc') parts.sort((a,b) => -cmpByPower(a,b));
   if (sort === 'rarity_desc') parts.sort((a,b) => (rarityRank[b.rarity]-rarityRank[a.rarity]) || cmpByPower(a,b));
@@ -142,11 +142,13 @@ function buildPartsDexGrid() {
     const caught = isPartCaught(p.id);
     const seen = isPartSeen(p.id);
     const visible = seen || caught;
+    const partName = p.name || p.id || 'Unknown Part';
+    const rarityTone = visible ? (rarityColor[p.rarity] || '#aaa') : '#555';
     const c = document.createElement('div');
     c.className = `pdx-card ${caught ? 'pc-caught' : seen ? 'pc-seen' : 'pc-unseen'}`;
     const caughtBadge = caught ? '<div class="pdx-caught-badge" style="color:#ffd700;font-size:.7rem;font-weight:bold;position:absolute;top:.1rem;right:.1rem">o.</div>' : '';
     const artHtml = visible
-      ? `<img src="${p.file}" alt="${p.id}">`
+      ? `<img src="${p.file}" alt="${partName}">`
       : `<span class="pdx-unk">?</span>`;
     const slotText = visible ? `${slotEmoji[p.slot] || '?'} ${String(p.slot || '').toUpperCase()}` : '?????';
     const rarityText = visible ? String(p.rarity || '').toUpperCase() : '?????';
@@ -155,10 +157,10 @@ function buildPartsDexGrid() {
       ${caughtBadge}
       <div class="pdx-art">${artHtml}</div>
       <div class="pdx-meta">
-        <div class="pdx-name">${visible ? p.id : '???'}</div>
+        <div class="pdx-name" style="color:${rarityTone}">${visible ? partName : '???'}</div>
         <div class="pdx-sub">
           <span class="pdx-pill">${slotText}</span>
-          <span class="pdx-pill" style="color:${visible ? rarityColor[p.rarity] : '#555'}">${rarityText}</span>
+          <span class="pdx-pill" style="color:${rarityTone}">${rarityText}</span>
           <span class="pdx-pill" style="color:${visible ? '#aaa' : '#555'}">${familyText}</span>
           ${caught ? '<span class="pdx-pill" style="color:#ffd700;border-color:#ffd700">CAUGHT</span>' : ''}
         </div>

@@ -211,6 +211,10 @@
             <label>id</label><input id="f_id">
           </div>
         </div>
+        <div class="row">
+          <div><label>name (display)</label><input id="f_name"></div>
+          <div></div>
+        </div>
         <div class="row3">
           <div><label>slot</label><select id="f_slot"><option>head</option><option>torso</option><option>wings</option><option>legs</option></select></div>
           <div><label>file</label><input id="f_file"></div>
@@ -219,6 +223,16 @@
         <div class="row">
           <div><label>rarity</label><select id="f_rarity"><option>common</option><option>rare</option><option>legendary</option></select></div>
           <div><label>archetype</label><select id="f_archetype"><option>balanced</option><option>bulwark</option><option>raider</option><option>trickster</option></select></div>
+        </div>
+        <div class="row">
+          <div>
+            <label>isUnique</label>
+            <label style="display:flex;align-items:center;gap:8px;">
+              <input id="f_isUnique" type="checkbox">
+              Exclude from random rolls
+            </label>
+          </div>
+          <div></div>
         </div>
         <div class="row">
           <div><label>family.id</label><input id="f_family_id" type="number"></div>
@@ -239,6 +253,10 @@
           <button id="baseSelBtn" class="btn-primary">Rarity Base -> Selected</button>
           <button id="baseAllBtn" class="btn-primary">Rarity Base -> All</button>
           <button id="recalcPowerBtn">Recalc PowerScore</button>
+        </div>
+        <div class="toolbar" style="margin-bottom:8px">
+          <button id="archSelBtn" class="btn-primary">Rarity + Archetype -> Selected</button>
+          <button id="archAllBtn" class="btn-primary">Rarity + Archetype -> All</button>
         </div>
         <div class="row">
           <div><label>powerScore</label><input id="f_powerScore" type="number" step="0.01"></div>
@@ -316,8 +334,15 @@
       familyPresets: [], unassignedImages: [], selectedFamilyId: null,
       movePool: [], selectedFamilyMoveIds: [], selectedPartMoveIds: []
     };
-    const KNOWN = new Set(['id','slot','file','family','variant','rarity','archetype','stats','powerScore','tags','description']);
+    const KNOWN = new Set(['id','name','slot','file','family','variant','rarity','archetype','isUnique','stats','powerScore','tags','description']);
     const RARITY_BASE = { common: 20, rare: 30, legendary: 40 };
+    // Archetype deltas to apply on top of rarity base via quick-balance actions.
+    const ARCHETYPE_DELTA = {
+      balanced:  { hp: 0,  atk: 0,  def: 0,  spd: 0 },
+      bulwark:   { hp: 2,  atk: -2, def: 2,  spd: -2 },
+      raider:    { hp: -2, atk: 3,  def: -4, spd: 3 },
+      trickster: { hp: -1, atk: 2,  def: -4, spd: 3 },
+    };
     const FAMILY_NAME_TYPE_HINT = {
       Marshborn:'Normal', Embercrest:'Fire', Frostplume:'Ice', Stormcall:'Lightning',
       Ironbarb:'Normal', Duskveil:'Shadow', Sunflare:'Fire', Bloomcrest:'Normal', Voidgild:'Shadow',
@@ -448,7 +473,24 @@
       part.stats.spd = base;
       if (!Number.isFinite(Number(part.stats.luck))) part.stats.luck = 1;
       recalcPowerScore(part);
-    }    function ensureFamiliesArray() {
+    }
+    function applyArchetypeDeltaToPart(part) {
+      if (!part) return;
+      if (!part.stats || typeof part.stats !== 'object') part.stats = {};
+      const arch = String(part.archetype || 'balanced');
+      const delta = ARCHETYPE_DELTA[arch] || ARCHETYPE_DELTA.balanced;
+      part.stats.hp = Math.max(1, asInt(part.stats.hp, 1) + delta.hp);
+      part.stats.atk = Math.max(1, asInt(part.stats.atk, 1) + delta.atk);
+      part.stats.def = Math.max(1, asInt(part.stats.def, 1) + delta.def);
+      part.stats.spd = Math.max(1, asInt(part.stats.spd, 1) + delta.spd);
+      if (!Number.isFinite(Number(part.stats.luck))) part.stats.luck = 1;
+      recalcPowerScore(part);
+    }
+    function applyRarityAndArchetypeToPart(part) {
+      applyRarityBaseToPart(part);
+      applyArchetypeDeltaToPart(part);
+    }
+    function ensureFamiliesArray() {
       if (!state.data) return;
       if (!Array.isArray(state.data.families)) state.data.families = [];
       const byId = new Map();
@@ -539,6 +581,11 @@
       const d = await r.json();
       if (!d || !Array.isArray(d.parts)) throw new Error('Invalid parts_data.json payload');
       state.data = d;
+      state.data.parts.forEach(p => {
+        if (!p) return;
+        if (!p.name) p.name = String(p.id || 'Unnamed Part');
+        p.isUnique = !!p.isUnique;
+      });
       state.selectedIdx = d.parts.length ? 0 : -1;
       state.dirty = false;
       bindMeta();
@@ -584,7 +631,7 @@
         if (rarity && p.rarity !== rarity) return;
         if (q) {
           const hay = [
-            p.id, p.slot, p.file, p.rarity, p.archetype, p.family && p.family.name,
+            p.name, p.id, p.slot, p.file, p.rarity, p.archetype, p.family && p.family.name,
             p.family && p.family.theme, (p.tags || []).join(' ')
           ].join(' ').toLowerCase();
           if (!hay.includes(q)) return;
@@ -605,8 +652,8 @@
         item.innerHTML = `
           <img class="thumb" src="${p.file || ''}" alt="">
           <div>
-            <div class="meta-a">${p.id || '(no id)'}</div>
-            <div class="meta-b">${p.slot || '?'} | ${p.rarity || '?'} | ${p.family?.name || 'Unknown'}</div>
+            <div class="meta-a">${p.name || p.id || '(no name)'}</div>
+            <div class="meta-b">${p.id || '(no id)'} | ${p.slot || '?'} | ${p.rarity || '?'} | ${p.family?.name || 'Unknown'}</div>
           </div>
         `;
         list.appendChild(item);
@@ -634,7 +681,7 @@
         const row = document.createElement('div');
         row.className = 'ps-row';
         row.innerHTML = `
-          <div class="ps-id" title="${p.id}">${p.id}</div>
+          <div class="ps-id" title="${p.id}">${p.name || p.id}</div>
           <div class="ps-track"><div class="ps-fill ${rarityClass}" style="width:${pct}%"></div></div>
           <div class="ps-val">${Math.round(score)}</div>
         `;
@@ -706,6 +753,7 @@
       }
       const part = {
         id,
+        name: stem,
         slot,
         file: normalized,
         familyId: unassignedFam.id,
@@ -713,6 +761,7 @@
         variant: nextVariantForSlot(slot),
         rarity: 'common',
         archetype: 'balanced',
+        isUnique: false,
         stats: { hp: 20, atk: 20, def: 20, spd: 20, luck: 1 },
         powerScore: 81,
         tags: [slot, stem.toLowerCase()],
@@ -729,7 +778,7 @@
       renderUnassignedList();
       const lbl = el('unassignedCount');
       if (lbl) lbl.textContent = `Unassigned: ${state.unassignedImages.length}`;
-      setStatus(`Assigned ${normalized} as ${id}. Save to persist.`, 'warn');
+      setStatus(`Assigned ${normalized} as ${part.name} (${id}). Save to persist.`, 'warn');
     }
 
     function getSelectedPart() {
@@ -739,11 +788,13 @@
 
     function fillFormFromPart(p) {
       el('f_id').value = p.id || '';
+      el('f_name').value = p.name || p.id || '';
       el('f_slot').value = p.slot || 'head';
       el('f_file').value = p.file || '';
       el('f_variant').value = p.variant ?? 1;
       el('f_rarity').value = p.rarity || 'common';
       el('f_archetype').value = p.archetype || 'balanced';
+      el('f_isUnique').checked = !!p.isUnique;
       el('f_family_id').value = p.family?.id ?? 0;
       el('f_family_name').value = p.family?.name || '';
       el('f_family_theme').value = p.family?.theme || '';
@@ -777,7 +828,7 @@
         el('preview').src = '';
         return;
       }
-      el('selTitle').textContent = p.id || '(no id)';
+      el('selTitle').textContent = p.name || p.id || '(no name)';
       el('selSub').textContent = `${p.slot || '?'} | ${p.rarity || '?'} | ${p.family?.name || 'Unknown'}`;
       el('preview').src = p.file || '';
       fillFormFromPart(p);
@@ -801,11 +852,13 @@
       const merged = clone(p);
       Object.keys(extra).forEach(k => { if (!KNOWN.has(k)) merged[k] = extra[k]; });
       merged.id = el('f_id').value.trim();
+      merged.name = el('f_name').value.trim() || merged.id;
       merged.slot = el('f_slot').value;
       merged.file = el('f_file').value.trim();
       merged.variant = asInt(el('f_variant').value, 1);
       merged.rarity = el('f_rarity').value;
       merged.archetype = el('f_archetype').value;
+      merged.isUnique = !!el('f_isUnique').checked;
       merged.family = {
         id: asInt(el('f_family_id').value, 0),
         name: el('f_family_name').value.trim(),
@@ -848,6 +901,9 @@
         setStatus('Raw JSON must be a part object.', 'warn');
         return;
       }
+      parsed.id = String(parsed.id || '').trim();
+      parsed.name = String(parsed.name || parsed.id || 'Unnamed Part').trim() || parsed.id || 'Unnamed Part';
+      parsed.isUnique = !!parsed.isUnique;
       state.data.parts[state.selectedIdx] = parsed;
       state.dirty = true;
       buildFamilyPresets();
@@ -872,6 +928,23 @@
       renderSelected();
       setStatus(`Applied rarity base to all ${state.data.parts.length} parts.`, 'warn');
     }
+    function applyArchetypeSelected() {
+      const p = getSelectedPart();
+      if (!p) return;
+      applyRarityAndArchetypeToPart(p);
+      state.dirty = true;
+      renderList();
+      renderSelected();
+      setStatus(`Applied rarity+archetype stats to ${p.id}.`, 'warn');
+    }
+    function applyArchetypeAll() {
+      if (!state.data?.parts?.length) return;
+      state.data.parts.forEach(applyRarityAndArchetypeToPart);
+      state.dirty = true;
+      renderList();
+      renderSelected();
+      setStatus(`Applied rarity+archetype stats to all ${state.data.parts.length} parts.`, 'warn');
+    }
     function recalcPowerAll() {
       if (!state.data?.parts?.length) return;
       state.data.parts.forEach(recalcPowerScore);
@@ -886,6 +959,7 @@
       const fallbackFam = state.data.families?.[0] || { id: 1, name: 'Marshborn', theme: 'bog', type: 'Normal' };
       const part = {
         id: `new-part-${Date.now()}`,
+        name: 'New Part',
         slot: 'head',
         file: 'Heads/sprite_001.png',
         familyId: Number(fallbackFam.id) || 1,
@@ -898,6 +972,7 @@
         variant: 1,
         rarity: 'common',
         archetype: 'balanced',
+        isUnique: false,
         stats: { hp: 1, atk: 1, def: 1, spd: 1, luck: 1 },
         powerScore: 1,
         tags: [],
@@ -917,6 +992,7 @@
       if (!p) return;
       const copy = clone(p);
       copy.id = `${p.id || 'part'}-copy-${Date.now()}`;
+      copy.name = `${p.name || p.id || 'Part'} Copy`;
       state.data.parts.push(copy);
       state.selectedIdx = state.data.parts.length - 1;
       state.dirty = true;
@@ -929,7 +1005,7 @@
     function deletePart() {
       const p = getSelectedPart();
       if (!p) return;
-      if (!confirm(`Delete part "${p.id}"?`)) return;
+      if (!confirm(`Delete part "${p.name || p.id}"?`)) return;
       state.data.parts.splice(state.selectedIdx, 1);
       if (state.selectedIdx >= state.data.parts.length) state.selectedIdx = state.data.parts.length - 1;
       state.dirty = true;
@@ -1060,6 +1136,14 @@
         description: String(f.description || '').trim(),
         baseMoveIds: [...new Set((f.baseMoveIds || []).map(x => String(x || '').trim()).filter(Boolean))],
       })).filter(f => f.id && f.name);
+      state.data.parts = (state.data.parts || []).map(p => {
+        const normalized = clone(p || {});
+        const id = String(normalized.id || '').trim();
+        normalized.id = id;
+        normalized.name = String(normalized.name || id || 'Unnamed Part').trim() || id || 'Unnamed Part';
+        normalized.isUnique = !!normalized.isUnique;
+        return normalized;
+      });
       state.data.summary = recomputeSummary(state.data.parts || []);
       const r = await fetch('/api/parts-data', {
         method: 'POST',
@@ -1096,6 +1180,8 @@
       el('refreshUnassignedBtn').onclick = () => loadUnassignedImages();
       el('baseSelBtn').onclick = applyRarityBaseSelected;
       el('baseAllBtn').onclick = applyRarityBaseAll;
+      el('archSelBtn').onclick = applyArchetypeSelected;
+      el('archAllBtn').onclick = applyArchetypeAll;
       el('recalcPowerBtn').onclick = recalcPowerAll;
       el('f_family_preset').addEventListener('change', () => {
         const id = Number(el('f_family_preset').value) || 0;
@@ -1148,4 +1234,6 @@
   </script>
 </body>
 </html>
+
+
 

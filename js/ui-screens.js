@@ -27,6 +27,10 @@ async function initTitle() {
       }
       console.log('[INIT] Moves data loaded:', MOVE_POOL?.length || 0);
     }
+    if (typeof loadLootData === 'function') {
+      await loadLootData();
+      console.log('[INIT] Loot data loaded:', CORE_LOOT_POOL?.length || 0);
+    }
     await loadGlobalDex();
     console.log('[INIT] Global dex loaded');
     buildCharSelect();

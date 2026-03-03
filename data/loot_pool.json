@@ -1,0 +1,110 @@
+{
+  "items": [
+    {
+      "id": "hp_tonic",
+      "name": "HP Tonic",
+      "emoji": "*",
+      "rarity": "common",
+      "color": "#aaaacc",
+      "desc": "Permanently increase <b>Max HP by +25</b>."
+    },
+    {
+      "id": "lucky_clover",
+      "name": "Lucky Clover",
+      "emoji": "*",
+      "rarity": "common",
+      "color": "#aaaacc",
+      "desc": "Permanently increase <b>Luck by +8%</b>."
+    },
+    {
+      "id": "sharp_beak",
+      "name": "Sharp Beak",
+      "emoji": "*",
+      "rarity": "common",
+      "color": "#aaaacc",
+      "desc": "All move power permanently <b>+8</b>."
+    },
+    {
+      "id": "pp_seed",
+      "name": "PP Seed",
+      "emoji": "*",
+      "rarity": "common",
+      "color": "#aaaacc",
+      "desc": "Permanently increase all moves <b>max PP by +3</b>."
+    },
+    {
+      "id": "power_crystal",
+      "name": "Power Crystal",
+      "emoji": "*",
+      "rarity": "rare",
+      "color": "#00c8ff",
+      "desc": "All move power permanently <b>+18</b>."
+    },
+    {
+      "id": "iron_feathers",
+      "name": "Iron Feathers",
+      "emoji": "*",
+      "rarity": "rare",
+      "color": "#00c8ff",
+      "desc": "Permanently increase <b>Max HP by +50</b>."
+    },
+    {
+      "id": "lucky_star",
+      "name": "Lucky Star",
+      "emoji": "*",
+      "rarity": "rare",
+      "color": "#00c8ff",
+      "desc": "Permanently increase <b>Luck by +20%</b>."
+    },
+    {
+      "id": "stab_orb",
+      "name": "STAB Orb",
+      "emoji": "*",
+      "rarity": "rare",
+      "color": "#00c8ff",
+      "desc": "Same-type attack bonus increases to <b>1.5</b> (from 1.25)."
+    },
+    {
+      "id": "extra_life",
+      "name": "Phoenix Feather",
+      "emoji": "*",
+      "rarity": "legendary",
+      "color": "#ffd700",
+      "global": true,
+      "desc": "Gain <b>+1 extra retry</b> for this and all future battles."
+    },
+    {
+      "id": "chaos_core",
+      "name": "Chaos Core",
+      "emoji": "*",
+      "rarity": "legendary",
+      "color": "#ffd700",
+      "desc": "All moves deal <b>1.4x damage</b> but become random type."
+    },
+    {
+      "id": "ancient_honk",
+      "name": "Ancient Honk",
+      "emoji": "*",
+      "rarity": "legendary",
+      "color": "#ffd700",
+      "desc": "All moves permanently <b>+25% damage</b>."
+    },
+    {
+      "id": "heal_flask",
+      "name": "Heal Flask",
+      "emoji": "*",
+      "rarity": "rare",
+      "color": "#00c8ff",
+      "desc": "Immediately restore <b>60 HP</b> right now."
+    },
+    {
+      "id": "mentor_whistle",
+      "name": "Mentor Whistle",
+      "emoji": "*",
+      "rarity": "rare",
+      "color": "#00c8ff",
+      "global": true,
+      "desc": "Party XP share bonus <b>+5%</b> for non-active honkers (stackable)."
+    }
+  ]
+}

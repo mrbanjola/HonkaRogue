@@ -1,6 +1,6 @@
 {
   "version": "1.2.1",
-  "generatedAt": "2026-03-02T16:07:28.632Z",
+  "generatedAt": "2026-03-03T13:04:54.441Z",
   "source": "Family registry migration (families[] + part.familyId)",
   "statsGuide": {
     "hp": "Max HP contribution",
@@ -10,23 +10,23 @@
     "luck": "Luck contribution"
   },
   "summary": {
-    "totalParts": 97,
+    "totalParts": 103,
     "perSlot": {
-      "head": 17,
-      "torso": 17,
-      "wings": 15,
+      "head": 19,
+      "torso": 19,
+      "wings": 17,
       "legs": 48
     },
     "rarityBreakdown": {
-      "common": 76,
-      "rare": 20,
-      "legendary": 1
+      "legendary": 26,
+      "rare": 32,
+      "common": 45
     },
     "archetypeBreakdown": {
-      "balanced": 81,
-      "raider": 2,
-      "bulwark": 10,
-      "trickster": 4
+      "trickster": 25,
+      "raider": 25,
+      "bulwark": 23,
+      "balanced": 30
     }
   },
   "parts": [
@@ -41,16 +41,16 @@
         "type": "Shadow"
       },
       "variant": 1,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "legendary",
+      "archetype": "trickster",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 39,
+        "atk": 42,
+        "def": 36,
+        "spd": 43,
         "luck": 12
       },
-      "powerScore": 92,
+      "powerScore": 172,
       "tags": [
         "shadow",
         "balanced",
@@ -72,7 +72,8 @@
         "shadow_umbral_veil",
         "shadow_oblivion",
         "shadow_leech_feather"
-      ]
+      ],
+      "name": "Dome of Stewart"
     },
     {
       "id": "head-sprite_011",
@@ -85,16 +86,16 @@
         "type": "Shadow"
       },
       "variant": 2,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "rare",
+      "archetype": "trickster",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 29,
+        "atk": 32,
+        "def": 26,
+        "spd": 33,
         "luck": 16
       },
-      "powerScore": 96,
+      "powerScore": 136,
       "tags": [
         "shadow",
         "balanced",
@@ -116,7 +117,8 @@
         "shadow_umbral_veil",
         "shadow_oblivion",
         "shadow_leech_feather"
-      ]
+      ],
+      "name": "Handsome Darkness"
     },
     {
       "id": "head-sprite_023",
@@ -129,16 +131,16 @@
         "type": "Shadow"
       },
       "variant": 3,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "legendary",
+      "archetype": "raider",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 38,
+        "atk": 43,
+        "def": 36,
+        "spd": 43,
         "luck": 19
       },
-      "powerScore": 99,
+      "powerScore": 179,
       "tags": [
         "arcane",
         "balanced",
@@ -160,7 +162,8 @@
         "shadow_umbral_veil",
         "shadow_oblivion",
         "shadow_leech_feather"
-      ]
+      ],
+      "name": "Head of Attention"
     },
     {
       "id": "head-sprite_024",
@@ -173,16 +176,16 @@
         "type": "Shadow"
       },
       "variant": 4,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "rare",
+      "archetype": "raider",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 28,
+        "atk": 33,
+        "def": 26,
+        "spd": 33,
         "luck": 12
       },
-      "powerScore": 92,
+      "powerScore": 132,
       "tags": [
         "arcane",
         "balanced",
@@ -204,7 +207,8 @@
         "shadow_umbral_veil",
         "shadow_oblivion",
         "shadow_leech_feather"
-      ]
+      ],
+      "name": "Sour Honk"
     },
     {
       "id": "head-sprite_034",
@@ -217,16 +221,16 @@
         "type": "Normal"
       },
       "variant": 5,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "legendary",
+      "archetype": "bulwark",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 42,
+        "atk": 38,
+        "def": 42,
+        "spd": 38,
         "luck": 16
       },
-      "powerScore": 96,
+      "powerScore": 176,
       "tags": [
         "stone",
         "balanced",
@@ -253,7 +257,8 @@
         "normal_quick_strike",
         "normal_bulldoze",
         "normal_berserker_charge"
-      ]
+      ],
+      "name": "Masked Honkman"
     },
     {
       "id": "head-sprite_036",
@@ -267,12 +272,12 @@
       },
       "variant": 6,
       "rarity": "common",
-      "archetype": "balanced",
+      "archetype": "bulwark",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 22,
+        "atk": 18,
+        "def": 22,
+        "spd": 18,
         "luck": 19
       },
       "powerScore": 99,
@@ -302,7 +307,8 @@
         "normal_quick_strike",
         "normal_bulldoze",
         "normal_berserker_charge"
-      ]
+      ],
+      "name": "Unseeing Eyes"
     },
     {
       "id": "head-sprite_046",
@@ -316,12 +322,12 @@
       },
       "variant": 7,
       "rarity": "common",
-      "archetype": "balanced",
+      "archetype": "raider",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 18,
+        "atk": 23,
+        "def": 16,
+        "spd": 23,
         "luck": 12
       },
       "powerScore": 92,
@@ -346,7 +352,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "Honking Hothead"
     },
     {
       "id": "head-sprite_047",
@@ -359,16 +366,16 @@
         "type": "Fire"
       },
       "variant": 8,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "rare",
+      "archetype": "raider",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 28,
+        "atk": 33,
+        "def": 26,
+        "spd": 33,
         "luck": 16
       },
-      "powerScore": 96,
+      "powerScore": 136,
       "tags": [
         "fire",
         "balanced",
@@ -390,7 +397,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "Scorchface Killah"
     },
     {
       "id": "head-sprite_064",
@@ -439,7 +447,8 @@
         "normal_quick_strike",
         "normal_bulldoze",
         "normal_berserker_charge"
-      ]
+      ],
+      "name": "Rugged Rufus"
     },
     {
       "id": "head-sprite_067",
@@ -452,16 +461,16 @@
         "type": "Fire"
       },
       "variant": 10,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "rare",
+      "archetype": "trickster",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 29,
+        "atk": 32,
+        "def": 26,
+        "spd": 33,
         "luck": 12
       },
-      "powerScore": 92,
+      "powerScore": 132,
       "tags": [
         "solar",
         "balanced",
@@ -499,7 +508,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "Blinded Chickster"
     },
     {
       "id": "head-sprite_087",
@@ -513,12 +523,12 @@
       },
       "variant": 11,
       "rarity": "common",
-      "archetype": "balanced",
+      "archetype": "bulwark",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 22,
+        "atk": 18,
+        "def": 22,
+        "spd": 18,
         "luck": 16
       },
       "powerScore": 96,
@@ -542,7 +552,8 @@
         "ice_permafrost",
         "ice_permafrost_slam",
         "ice_glacial_slam"
-      ]
+      ],
+      "name": "Icy Joe"
     },
     {
       "id": "head-sprite_092",
@@ -555,16 +566,16 @@
         "type": "Shadow"
       },
       "variant": 12,
-      "rarity": "rare",
-      "archetype": "balanced",
+      "rarity": "legendary",
+      "archetype": "trickster",
       "stats": {
-        "hp": 30,
-        "atk": 30,
-        "def": 30,
-        "spd": 30,
+        "hp": 39,
+        "atk": 42,
+        "def": 36,
+        "spd": 43,
         "luck": 19
       },
-      "powerScore": 139,
+      "powerScore": 179,
       "tags": [
         "arcane",
         "balanced",
@@ -586,7 +597,8 @@
         "shadow_umbral_veil",
         "shadow_oblivion",
         "shadow_leech_feather"
-      ]
+      ],
+      "name": "Sir Swank"
     },
     {
       "id": "head-sprite_107",
@@ -599,16 +611,16 @@
         "type": "Ice"
       },
       "variant": 13,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "legendary",
+      "archetype": "bulwark",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 42,
+        "atk": 38,
+        "def": 42,
+        "spd": 38,
         "luck": 12
       },
-      "powerScore": 92,
+      "powerScore": 172,
       "tags": [
         "ice",
         "balanced",
@@ -629,7 +641,8 @@
         "ice_permafrost",
         "ice_permafrost_slam",
         "ice_glacial_slam"
-      ]
+      ],
+      "name": "Frosty Frank"
     },
     {
       "id": "head-sprite_112",
@@ -642,16 +655,16 @@
         "type": "Fire"
       },
       "variant": 14,
-      "rarity": "rare",
-      "archetype": "raider",
+      "rarity": "common",
+      "archetype": "balanced",
       "stats": {
-        "hp": 30,
-        "atk": 30,
-        "def": 30,
-        "spd": 30,
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
         "luck": 16
       },
-      "powerScore": 136,
+      "powerScore": 96,
       "tags": [
         "solar",
         "raider",
@@ -689,7 +702,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "Little Louis"
     },
     {
       "id": "head-sprite_129",
@@ -703,7 +717,7 @@
       },
       "variant": 15,
       "rarity": "rare",
-      "archetype": "raider",
+      "archetype": "balanced",
       "stats": {
         "hp": 30,
         "atk": 30,
@@ -749,7 +763,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "Curious Pete"
     },
     {
       "id": "head-sprite_132",
@@ -763,12 +778,12 @@
       },
       "variant": 16,
       "rarity": "common",
-      "archetype": "balanced",
+      "archetype": "raider",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 18,
+        "atk": 23,
+        "def": 16,
+        "spd": 23,
         "luck": 12
       },
       "powerScore": 92,
@@ -798,7 +813,8 @@
         "normal_scratch",
         "normal_wing_slap",
         "normal_peck"
-      ]
+      ],
+      "name": "Just Jerry"
     },
     {
       "id": "torso-sprite_001",
@@ -811,16 +827,16 @@
         "type": "Shadow"
       },
       "variant": 1,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "legendary",
+      "archetype": "trickster",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 39,
+        "atk": 42,
+        "def": 36,
+        "spd": 43,
         "luck": 8
       },
-      "powerScore": 88,
+      "powerScore": 168,
       "tags": [
         "shadow",
         "balanced",
@@ -841,7 +857,8 @@
         "shadow_umbral_veil",
         "shadow_oblivion",
         "shadow_leech_feather"
-      ]
+      ],
+      "name": "Belly of Doom"
     },
     {
       "id": "torso-sprite_009",
@@ -854,16 +871,16 @@
         "type": "Shadow"
       },
       "variant": 2,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "rare",
+      "archetype": "trickster",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 29,
+        "atk": 32,
+        "def": 26,
+        "spd": 33,
         "luck": 8
       },
-      "powerScore": 88,
+      "powerScore": 128,
       "tags": [
         "shadow",
         "balanced",
@@ -885,7 +902,8 @@
         "shadow_umbral_veil",
         "shadow_oblivion",
         "shadow_leech_feather"
-      ]
+      ],
+      "name": "Evil Shirt"
     },
     {
       "id": "torso-sprite_016",
@@ -929,7 +947,8 @@
         "shadow_umbral_veil",
         "shadow_oblivion",
         "shadow_leech_feather"
-      ]
+      ],
+      "name": "torso-sprite_016"
     },
     {
       "id": "torso-sprite_017",
@@ -978,7 +997,8 @@
         "normal_quick_strike",
         "normal_bulldoze",
         "normal_berserker_charge"
-      ]
+      ],
+      "name": "torso-sprite_017"
     },
     {
       "id": "torso-sprite_030",
@@ -1027,7 +1047,8 @@
         "normal_quick_strike",
         "normal_bulldoze",
         "normal_berserker_charge"
-      ]
+      ],
+      "name": "torso-sprite_030"
     },
     {
       "id": "torso-sprite_035",
@@ -1041,12 +1062,12 @@
       },
       "variant": 6,
       "rarity": "common",
-      "archetype": "bulwark",
+      "archetype": "raider",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 18,
+        "atk": 23,
+        "def": 16,
+        "spd": 23,
         "luck": 1
       },
       "powerScore": 81,
@@ -1071,7 +1092,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "Ashen Bathrobe"
     },
     {
       "id": "torso-sprite_041",
@@ -1084,16 +1106,16 @@
         "type": "Fire"
       },
       "variant": 7,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "rare",
+      "archetype": "raider",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 28,
+        "atk": 33,
+        "def": 26,
+        "spd": 33,
         "luck": 2
       },
-      "powerScore": 82,
+      "powerScore": 122,
       "tags": [
         "fire",
         "balanced",
@@ -1115,7 +1137,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "Lordlike Ember"
     },
     {
       "id": "torso-sprite_048",
@@ -1128,16 +1151,16 @@
         "type": "Fire"
       },
       "variant": 8,
-      "rarity": "common",
+      "rarity": "legendary",
       "archetype": "bulwark",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 42,
+        "atk": 38,
+        "def": 42,
+        "spd": 38,
         "luck": 2
       },
-      "powerScore": 82,
+      "powerScore": 162,
       "tags": [
         "fire",
         "bulwark",
@@ -1159,7 +1182,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "Here to Herald"
     },
     {
       "id": "torso-sprite_060",
@@ -1172,16 +1196,16 @@
         "type": "Fire"
       },
       "variant": 9,
-      "rarity": "common",
-      "archetype": "bulwark",
+      "rarity": "rare",
+      "archetype": "raider",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 28,
+        "atk": 33,
+        "def": 26,
+        "spd": 33,
         "luck": 2
       },
-      "powerScore": 82,
+      "powerScore": 122,
       "tags": [
         "fire",
         "bulwark",
@@ -1203,7 +1227,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "Ember Emperor"
     },
     {
       "id": "torso-sprite_066",
@@ -1216,16 +1241,16 @@
         "type": "Fire"
       },
       "variant": 10,
-      "rarity": "common",
+      "rarity": "legendary",
       "archetype": "bulwark",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 42,
+        "atk": 38,
+        "def": 42,
+        "spd": 38,
         "luck": 1
       },
-      "powerScore": 81,
+      "powerScore": 161,
       "tags": [
         "fire",
         "bulwark",
@@ -1247,7 +1272,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "King Crusader"
     },
     {
       "id": "torso-sprite_084",
@@ -1263,10 +1289,10 @@
       "rarity": "common",
       "archetype": "bulwark",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 22,
+        "atk": 18,
+        "def": 22,
+        "spd": 18,
         "luck": 1
       },
       "powerScore": 81,
@@ -1290,7 +1316,8 @@
         "ice_permafrost",
         "ice_permafrost_slam",
         "ice_glacial_slam"
-      ]
+      ],
+      "name": "Cold Crevasses"
     },
     {
       "id": "torso-sprite_088",
@@ -1303,16 +1330,16 @@
         "type": "Ice"
       },
       "variant": 12,
-      "rarity": "common",
+      "rarity": "legendary",
       "archetype": "bulwark",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 42,
+        "atk": 38,
+        "def": 42,
+        "spd": 38,
         "luck": 1
       },
-      "powerScore": 81,
+      "powerScore": 161,
       "tags": [
         "ice",
         "bulwark",
@@ -1333,7 +1360,8 @@
         "ice_permafrost",
         "ice_permafrost_slam",
         "ice_glacial_slam"
-      ]
+      ],
+      "name": "Frozen Fortress"
     },
     {
       "id": "torso-sprite_108",
@@ -1347,12 +1375,12 @@
       },
       "variant": 13,
       "rarity": "common",
-      "archetype": "bulwark",
+      "archetype": "raider",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 18,
+        "atk": 23,
+        "def": 16,
+        "spd": 23,
         "luck": 2
       },
       "powerScore": 82,
@@ -1376,7 +1404,8 @@
         "lightning_overclock",
         "lightning_volt_dive",
         "lightning_discharge"
-      ]
+      ],
+      "name": "Easy Electrician"
     },
     {
       "id": "torso-sprite_110",
@@ -1392,10 +1421,10 @@
       "rarity": "rare",
       "archetype": "bulwark",
       "stats": {
-        "hp": 30,
-        "atk": 30,
-        "def": 30,
-        "spd": 30,
+        "hp": 32,
+        "atk": 28,
+        "def": 32,
+        "spd": 28,
         "luck": 2
       },
       "powerScore": 122,
@@ -1425,7 +1454,8 @@
         "normal_scratch",
         "normal_wing_slap",
         "normal_peck"
-      ]
+      ],
+      "name": "Doctored Down"
     },
     {
       "id": "torso-sprite_131",
@@ -1439,7 +1469,7 @@
       },
       "variant": 15,
       "rarity": "common",
-      "archetype": "bulwark",
+      "archetype": "balanced",
       "stats": {
         "hp": 20,
         "atk": 20,
@@ -1474,7 +1504,8 @@
         "normal_scratch",
         "normal_wing_slap",
         "normal_peck"
-      ]
+      ],
+      "name": "Laundry Day"
     },
     {
       "id": "torso-sprite_133",
@@ -1487,16 +1518,16 @@
         "type": "Normal"
       },
       "variant": 16,
-      "rarity": "common",
+      "rarity": "rare",
       "archetype": "bulwark",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 32,
+        "atk": 28,
+        "def": 32,
+        "spd": 28,
         "luck": 1
       },
-      "powerScore": 81,
+      "powerScore": 121,
       "tags": [
         "wild",
         "bulwark",
@@ -1523,7 +1554,8 @@
         "normal_scratch",
         "normal_wing_slap",
         "normal_peck"
-      ]
+      ],
+      "name": "Friendly Face(s)"
     },
     {
       "id": "wings-sprite_003",
@@ -1536,16 +1568,16 @@
         "type": "Shadow"
       },
       "variant": 1,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "legendary",
+      "archetype": "trickster",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 39,
+        "atk": 42,
+        "def": 36,
+        "spd": 43,
         "luck": 5
       },
-      "powerScore": 85,
+      "powerScore": 165,
       "tags": [
         "shadow",
         "balanced",
@@ -1567,7 +1599,8 @@
         "shadow_umbral_veil",
         "shadow_oblivion",
         "shadow_leech_feather"
-      ]
+      ],
+      "name": "Shadow Flappers"
     },
     {
       "id": "wings-sprite_012",
@@ -1580,16 +1613,16 @@
         "type": "Shadow"
       },
       "variant": 2,
-      "rarity": "common",
+      "rarity": "rare",
       "archetype": "trickster",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 29,
+        "atk": 32,
+        "def": 26,
+        "spd": 33,
         "luck": 6
       },
-      "powerScore": 86,
+      "powerScore": 126,
       "tags": [
         "shadow",
         "trickster",
@@ -1611,7 +1644,8 @@
         "shadow_umbral_veil",
         "shadow_oblivion",
         "shadow_leech_feather"
-      ]
+      ],
+      "name": "Dark Duckwings"
     },
     {
       "id": "wings-sprite_021",
@@ -1654,7 +1688,8 @@
         "shadow_umbral_veil",
         "shadow_oblivion",
         "shadow_leech_feather"
-      ]
+      ],
+      "name": "wings-sprite_021"
     },
     {
       "id": "wings-sprite_022",
@@ -1698,7 +1733,8 @@
         "shadow_umbral_veil",
         "shadow_oblivion",
         "shadow_leech_feather"
-      ]
+      ],
+      "name": "wings-sprite_022"
     },
     {
       "id": "wings-sprite_032",
@@ -1712,12 +1748,12 @@
       },
       "variant": 5,
       "rarity": "common",
-      "archetype": "balanced",
+      "archetype": "bulwark",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 22,
+        "atk": 19,
+        "def": 22,
+        "spd": 17,
         "luck": 5
       },
       "powerScore": 85,
@@ -1758,7 +1794,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "Flew Too Close"
     },
     {
       "id": "wings-sprite_033",
@@ -1771,16 +1808,16 @@
         "type": "Fire"
       },
       "variant": 6,
-      "rarity": "common",
+      "rarity": "legendary",
       "archetype": "trickster",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 39,
+        "atk": 42,
+        "def": 36,
+        "spd": 43,
         "luck": 6
       },
-      "powerScore": 86,
+      "powerScore": 166,
       "tags": [
         "solar",
         "trickster",
@@ -1818,7 +1855,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "Flared Up"
     },
     {
       "id": "wings-sprite_039",
@@ -1862,7 +1900,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "Icaros Mistake"
     },
     {
       "id": "wings-sprite_044",
@@ -1875,16 +1914,16 @@
         "type": "Fire"
       },
       "variant": 8,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "rare",
+      "archetype": "raider",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 28,
+        "atk": 33,
+        "def": 26,
+        "spd": 33,
         "luck": 4
       },
-      "powerScore": 84,
+      "powerScore": 124,
       "tags": [
         "fire",
         "balanced",
@@ -1906,7 +1945,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "Torched Tips"
     },
     {
       "id": "wings-sprite_065",
@@ -1919,16 +1959,16 @@
         "type": "Fire"
       },
       "variant": 9,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "legendary",
+      "archetype": "trickster",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 39,
+        "atk": 42,
+        "def": 36,
+        "spd": 43,
         "luck": 5
       },
-      "powerScore": 85,
+      "powerScore": 165,
       "tags": [
         "fire",
         "balanced",
@@ -1950,7 +1990,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "Blazing Glory"
     },
     {
       "id": "wings-sprite_085",
@@ -1963,16 +2004,16 @@
         "type": "Ice"
       },
       "variant": 10,
-      "rarity": "rare",
-      "archetype": "trickster",
+      "rarity": "legendary",
+      "archetype": "bulwark",
       "stats": {
-        "hp": 30,
-        "atk": 30,
-        "def": 30,
-        "spd": 30,
+        "hp": 42,
+        "atk": 38,
+        "def": 42,
+        "spd": 38,
         "luck": 6
       },
-      "powerScore": 126,
+      "powerScore": 166,
       "tags": [
         "ice",
         "trickster",
@@ -1993,7 +2034,8 @@
         "ice_permafrost",
         "ice_permafrost_slam",
         "ice_glacial_slam"
-      ]
+      ],
+      "name": "Snow Plumes"
     },
     {
       "id": "wings-sprite_089",
@@ -2006,16 +2048,16 @@
         "type": "Ice"
       },
       "variant": 11,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "rare",
+      "archetype": "raider",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 28,
+        "atk": 33,
+        "def": 26,
+        "spd": 33,
         "luck": 3
       },
-      "powerScore": 83,
+      "powerScore": 123,
       "tags": [
         "ice",
         "balanced",
@@ -2036,7 +2078,8 @@
         "ice_permafrost",
         "ice_permafrost_slam",
         "ice_glacial_slam"
-      ]
+      ],
+      "name": "Frosty Flakes"
     },
     {
       "id": "wings-sprite_109",
@@ -2079,7 +2122,8 @@
         "ice_permafrost",
         "ice_permafrost_slam",
         "ice_glacial_slam"
-      ]
+      ],
+      "name": "Fairly Flapping"
     },
     {
       "id": "wings-sprite_111",
@@ -2092,16 +2136,16 @@
         "type": "Normal"
       },
       "variant": 13,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "legendary",
+      "archetype": "raider",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 38,
+        "atk": 43,
+        "def": 36,
+        "spd": 43,
         "luck": 5
       },
-      "powerScore": 85,
+      "powerScore": 165,
       "tags": [
         "wild",
         "balanced",
@@ -2128,7 +2172,8 @@
         "normal_scratch",
         "normal_wing_slap",
         "normal_peck"
-      ]
+      ],
+      "name": "Date Night Flappers"
     },
     {
       "id": "wings-sprite_124",
@@ -2142,12 +2187,12 @@
       },
       "variant": 14,
       "rarity": "common",
-      "archetype": "trickster",
+      "archetype": "bulwark",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 22,
+        "atk": 18,
+        "def": 22,
+        "spd": 18,
         "luck": 6
       },
       "powerScore": 86,
@@ -2177,7 +2222,8 @@
         "normal_scratch",
         "normal_wing_slap",
         "normal_peck"
-      ]
+      ],
+      "name": "Everyday Wingin'"
     },
     {
       "id": "wings-sprite_130",
@@ -2191,12 +2237,12 @@
       },
       "variant": 15,
       "rarity": "common",
-      "archetype": "balanced",
+      "archetype": "bulwark",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 22,
+        "atk": 18,
+        "def": 22,
+        "spd": 18,
         "luck": 3
       },
       "powerScore": 83,
@@ -2220,7 +2266,8 @@
         "lightning_overclock",
         "lightning_volt_dive",
         "lightning_discharge"
-      ]
+      ],
+      "name": "Shockproof(ish) Feathers"
     },
     {
       "id": "legs-sprite_002",
@@ -2264,7 +2311,8 @@
         "shadow_umbral_veil",
         "shadow_oblivion",
         "shadow_leech_feather"
-      ]
+      ],
+      "name": "legs-sprite_002"
     },
     {
       "id": "legs-sprite_004",
@@ -2307,7 +2355,8 @@
         "shadow_umbral_veil",
         "shadow_oblivion",
         "shadow_leech_feather"
-      ]
+      ],
+      "name": "legs-sprite_004"
     },
     {
       "id": "legs-sprite_005",
@@ -2320,16 +2369,16 @@
         "type": "Lightning"
       },
       "variant": 3,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "legendary",
+      "archetype": "raider",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 38,
+        "atk": 43,
+        "def": 36,
+        "spd": 43,
         "luck": 2
       },
-      "powerScore": 82,
+      "powerScore": 162,
       "tags": [
         "lightning",
         "balanced",
@@ -2350,7 +2399,8 @@
         "lightning_overclock",
         "lightning_volt_dive",
         "lightning_discharge"
-      ]
+      ],
+      "name": "Arc to Toes"
     },
     {
       "id": "legs-sprite_006",
@@ -2363,16 +2413,16 @@
         "type": "Shadow"
       },
       "variant": 4,
-      "rarity": "rare",
-      "archetype": "balanced",
+      "rarity": "legendary",
+      "archetype": "trickster",
       "stats": {
-        "hp": 30,
-        "atk": 30,
-        "def": 30,
-        "spd": 30,
+        "hp": 39,
+        "atk": 42,
+        "def": 36,
+        "spd": 43,
         "luck": 3
       },
-      "powerScore": 123,
+      "powerScore": 163,
       "tags": [
         "shadow",
         "balanced",
@@ -2394,7 +2444,8 @@
         "shadow_umbral_veil",
         "shadow_oblivion",
         "shadow_leech_feather"
-      ]
+      ],
+      "name": "Sneaky Talons"
     },
     {
       "id": "legs-sprite_008",
@@ -2443,7 +2494,8 @@
         "normal_quick_strike",
         "normal_bulldoze",
         "normal_berserker_charge"
-      ]
+      ],
+      "name": "legs-sprite_008"
     },
     {
       "id": "legs-sprite_010",
@@ -2492,7 +2544,8 @@
         "normal_quick_strike",
         "normal_bulldoze",
         "normal_berserker_charge"
-      ]
+      ],
+      "name": "legs-sprite_010"
     },
     {
       "id": "legs-sprite_013",
@@ -2506,12 +2559,12 @@
       },
       "variant": 7,
       "rarity": "common",
-      "archetype": "balanced",
+      "archetype": "trickster",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 19,
+        "atk": 22,
+        "def": 16,
+        "spd": 23,
         "luck": 1
       },
       "powerScore": 81,
@@ -2536,7 +2589,8 @@
         "shadow_umbral_veil",
         "shadow_oblivion",
         "shadow_leech_feather"
-      ]
+      ],
+      "name": "Small Sneakers"
     },
     {
       "id": "legs-sprite_014",
@@ -2580,7 +2634,8 @@
         "shadow_umbral_veil",
         "shadow_oblivion",
         "shadow_leech_feather"
-      ]
+      ],
+      "name": "legs-sprite_014"
     },
     {
       "id": "legs-sprite_015",
@@ -2594,12 +2649,12 @@
       },
       "variant": 9,
       "rarity": "rare",
-      "archetype": "balanced",
+      "archetype": "trickster",
       "stats": {
-        "hp": 30,
-        "atk": 30,
-        "def": 30,
-        "spd": 30,
+        "hp": 29,
+        "atk": 32,
+        "def": 26,
+        "spd": 33,
         "luck": 3
       },
       "powerScore": 123,
@@ -2624,7 +2679,8 @@
         "shadow_umbral_veil",
         "shadow_oblivion",
         "shadow_leech_feather"
-      ]
+      ],
+      "name": "Bedazzled Sneakers"
     },
     {
       "id": "legs-sprite_018",
@@ -2638,12 +2694,12 @@
       },
       "variant": 10,
       "rarity": "common",
-      "archetype": "balanced",
+      "archetype": "trickster",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 19,
+        "atk": 22,
+        "def": 16,
+        "spd": 23,
         "luck": 4
       },
       "powerScore": 84,
@@ -2668,7 +2724,8 @@
         "shadow_umbral_veil",
         "shadow_oblivion",
         "shadow_leech_feather"
-      ]
+      ],
+      "name": "Medium Sneakers"
     },
     {
       "id": "legs-sprite_019",
@@ -2712,7 +2769,8 @@
         "shadow_umbral_veil",
         "shadow_oblivion",
         "shadow_leech_feather"
-      ]
+      ],
+      "name": "legs-sprite_019"
     },
     {
       "id": "legs-sprite_020",
@@ -2756,7 +2814,8 @@
         "shadow_umbral_veil",
         "shadow_oblivion",
         "shadow_leech_feather"
-      ]
+      ],
+      "name": "legs-sprite_020"
     },
     {
       "id": "legs-sprite_025",
@@ -2805,7 +2864,8 @@
         "normal_quick_strike",
         "normal_bulldoze",
         "normal_berserker_charge"
-      ]
+      ],
+      "name": "legs-sprite_025"
     },
     {
       "id": "legs-sprite_026",
@@ -2854,7 +2914,8 @@
         "normal_quick_strike",
         "normal_bulldoze",
         "normal_berserker_charge"
-      ]
+      ],
+      "name": "Just Good Shoes"
     },
     {
       "id": "legs-sprite_027",
@@ -2867,16 +2928,16 @@
         "type": "Lightning"
       },
       "variant": 15,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "rare",
+      "archetype": "bulwark",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 32,
+        "atk": 28,
+        "def": 32,
+        "spd": 28,
         "luck": 4
       },
-      "powerScore": 84,
+      "powerScore": 124,
       "tags": [
         "lightning",
         "balanced",
@@ -2897,7 +2958,8 @@
         "lightning_overclock",
         "lightning_volt_dive",
         "lightning_discharge"
-      ]
+      ],
+      "name": "Fine Sparkers"
     },
     {
       "id": "legs-sprite_028",
@@ -2910,16 +2972,16 @@
         "type": "Lightning"
       },
       "variant": 16,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "rare",
+      "archetype": "trickster",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 29,
+        "atk": 32,
+        "def": 26,
+        "spd": 33,
         "luck": 4
       },
-      "powerScore": 84,
+      "powerScore": 124,
       "tags": [
         "lightning",
         "balanced",
@@ -2940,7 +3002,8 @@
         "lightning_overclock",
         "lightning_volt_dive",
         "lightning_discharge"
-      ]
+      ],
+      "name": "Runaway Sparks"
     },
     {
       "id": "legs-sprite_029",
@@ -2954,12 +3017,12 @@
       },
       "variant": 17,
       "rarity": "common",
-      "archetype": "balanced",
+      "archetype": "raider",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 18,
+        "atk": 23,
+        "def": 16,
+        "spd": 23,
         "luck": 1
       },
       "powerScore": 81,
@@ -2983,7 +3046,8 @@
         "lightning_overclock",
         "lightning_volt_dive",
         "lightning_discharge"
-      ]
+      ],
+      "name": "Not Grounded"
     },
     {
       "id": "legs-sprite_031",
@@ -2997,12 +3061,12 @@
       },
       "variant": 18,
       "rarity": "common",
-      "archetype": "balanced",
+      "archetype": "bulwark",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 22,
+        "atk": 18,
+        "def": 22,
+        "spd": 18,
         "luck": 2
       },
       "powerScore": 82,
@@ -3026,7 +3090,8 @@
         "lightning_overclock",
         "lightning_volt_dive",
         "lightning_discharge"
-      ]
+      ],
+      "name": "Rubber Boots"
     },
     {
       "id": "legs-sprite_037",
@@ -3040,12 +3105,12 @@
       },
       "variant": 19,
       "rarity": "rare",
-      "archetype": "balanced",
+      "archetype": "raider",
       "stats": {
-        "hp": 30,
-        "atk": 30,
-        "def": 30,
-        "spd": 30,
+        "hp": 28,
+        "atk": 33,
+        "def": 26,
+        "spd": 33,
         "luck": 3
       },
       "powerScore": 123,
@@ -3086,7 +3151,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "Solar Steps"
     },
     {
       "id": "legs-sprite_038",
@@ -3099,16 +3165,16 @@
         "type": "Fire"
       },
       "variant": 20,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "legendary",
+      "archetype": "bulwark",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 42,
+        "atk": 38,
+        "def": 42,
+        "spd": 38,
         "luck": 4
       },
-      "powerScore": 84,
+      "powerScore": 164,
       "tags": [
         "fire",
         "balanced",
@@ -3130,7 +3196,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "Hot n' Heavy"
     },
     {
       "id": "legs-sprite_040",
@@ -3190,7 +3257,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "Sun-kissed Sandals"
     },
     {
       "id": "legs-sprite_042",
@@ -3204,12 +3272,12 @@
       },
       "variant": 22,
       "rarity": "common",
-      "archetype": "balanced",
+      "archetype": "trickster",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 19,
+        "atk": 22,
+        "def": 16,
+        "spd": 23,
         "luck": 1
       },
       "powerScore": 81,
@@ -3234,7 +3302,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "Feet on Fire"
     },
     {
       "id": "legs-sprite_043",
@@ -3248,12 +3317,12 @@
       },
       "variant": 23,
       "rarity": "common",
-      "archetype": "balanced",
+      "archetype": "bulwark",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 22,
+        "atk": 18,
+        "def": 22,
+        "spd": 18,
         "luck": 2
       },
       "powerScore": 82,
@@ -3278,7 +3347,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "Small Smolder"
     },
     {
       "id": "legs-sprite_045",
@@ -3292,12 +3362,12 @@
       },
       "variant": 24,
       "rarity": "rare",
-      "archetype": "balanced",
+      "archetype": "raider",
       "stats": {
-        "hp": 30,
-        "atk": 30,
-        "def": 30,
-        "spd": 30,
+        "hp": 28,
+        "atk": 33,
+        "def": 26,
+        "spd": 33,
         "luck": 3
       },
       "powerScore": 123,
@@ -3322,7 +3392,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "Toasty Toes"
     },
     {
       "id": "legs-sprite_056",
@@ -3382,7 +3453,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "Beach Feet"
     },
     {
       "id": "legs-sprite_057",
@@ -3395,16 +3467,16 @@
         "type": "Normal"
       },
       "variant": 26,
-      "rarity": "common",
+      "rarity": "rare",
       "archetype": "balanced",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 30,
+        "atk": 30,
+        "def": 30,
+        "spd": 30,
         "luck": 4
       },
-      "powerScore": 84,
+      "powerScore": 124,
       "tags": [
         "bog",
         "balanced",
@@ -3431,7 +3503,8 @@
         "normal_quick_strike",
         "normal_bulldoze",
         "normal_berserker_charge"
-      ]
+      ],
+      "name": "Muddy Walkers"
     },
     {
       "id": "legs-sprite_058",
@@ -3444,16 +3517,16 @@
         "type": "Fire"
       },
       "variant": 27,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "legendary",
+      "archetype": "raider",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 38,
+        "atk": 43,
+        "def": 36,
+        "spd": 43,
         "luck": 1
       },
-      "powerScore": 81,
+      "powerScore": 161,
       "tags": [
         "solar",
         "balanced",
@@ -3491,7 +3564,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "Sole Stepper"
     },
     {
       "id": "legs-sprite_059",
@@ -3504,16 +3578,16 @@
         "type": "Fire"
       },
       "variant": 28,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "rare",
+      "archetype": "bulwark",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 32,
+        "atk": 28,
+        "def": 32,
+        "spd": 28,
         "luck": 2
       },
-      "powerScore": 82,
+      "powerScore": 122,
       "tags": [
         "fire",
         "balanced",
@@ -3535,7 +3609,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "Smoking Suede"
     },
     {
       "id": "legs-sprite_061",
@@ -3548,16 +3623,16 @@
         "type": "Ice"
       },
       "variant": 29,
-      "rarity": "rare",
-      "archetype": "balanced",
+      "rarity": "common",
+      "archetype": "trickster",
       "stats": {
-        "hp": 30,
-        "atk": 30,
-        "def": 30,
-        "spd": 30,
+        "hp": 19,
+        "atk": 22,
+        "def": 16,
+        "spd": 23,
         "luck": 3
       },
-      "powerScore": 123,
+      "powerScore": 83,
       "tags": [
         "ice",
         "balanced",
@@ -3578,7 +3653,8 @@
         "ice_permafrost",
         "ice_permafrost_slam",
         "ice_glacial_slam"
-      ]
+      ],
+      "name": "Cold Comfort"
     },
     {
       "id": "legs-sprite_062",
@@ -3591,16 +3667,16 @@
         "type": "Fire"
       },
       "variant": 30,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "legendary",
+      "archetype": "trickster",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 39,
+        "atk": 42,
+        "def": 36,
+        "spd": 43,
         "luck": 4
       },
-      "powerScore": 84,
+      "powerScore": 164,
       "tags": [
         "fire",
         "balanced",
@@ -3622,7 +3698,8 @@
         "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ]
+      ],
+      "name": "Combusting Gaze"
     },
     {
       "id": "legs-sprite_079",
@@ -3635,16 +3712,16 @@
         "type": "Ice"
       },
       "variant": 31,
-      "rarity": "rare",
+      "rarity": "common",
       "archetype": "balanced",
       "stats": {
-        "hp": 30,
-        "atk": 30,
-        "def": 30,
-        "spd": 30,
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
         "luck": 4
       },
-      "powerScore": 124,
+      "powerScore": 84,
       "tags": [
         "ice",
         "balanced",
@@ -3665,7 +3742,8 @@
         "ice_permafrost",
         "ice_permafrost_slam",
         "ice_glacial_slam"
-      ]
+      ],
+      "name": "Fragile Shards"
     },
     {
       "id": "legs-sprite_080",
@@ -3678,16 +3756,16 @@
         "type": "Ice"
       },
       "variant": 32,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "rare",
+      "archetype": "raider",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 28,
+        "atk": 33,
+        "def": 26,
+        "spd": 33,
         "luck": 1
       },
-      "powerScore": 81,
+      "powerScore": 121,
       "tags": [
         "ice",
         "balanced",
@@ -3708,7 +3786,8 @@
         "ice_permafrost",
         "ice_permafrost_slam",
         "ice_glacial_slam"
-      ]
+      ],
+      "name": "Fancy ´n Prepared"
     },
     {
       "id": "legs-sprite_081",
@@ -3722,12 +3801,12 @@
       },
       "variant": 33,
       "rarity": "rare",
-      "archetype": "balanced",
+      "archetype": "bulwark",
       "stats": {
-        "hp": 30,
-        "atk": 30,
-        "def": 30,
-        "spd": 30,
+        "hp": 32,
+        "atk": 28,
+        "def": 32,
+        "spd": 28,
         "luck": 2
       },
       "powerScore": 122,
@@ -3751,7 +3830,8 @@
         "ice_permafrost",
         "ice_permafrost_slam",
         "ice_glacial_slam"
-      ]
+      ],
+      "name": "Shielded Boots"
     },
     {
       "id": "legs-sprite_082",
@@ -3764,16 +3844,16 @@
         "type": "Ice"
       },
       "variant": 34,
-      "rarity": "rare",
-      "archetype": "balanced",
+      "rarity": "common",
+      "archetype": "raider",
       "stats": {
-        "hp": 30,
-        "atk": 30,
-        "def": 30,
-        "spd": 30,
+        "hp": 18,
+        "atk": 23,
+        "def": 16,
+        "spd": 23,
         "luck": 3
       },
-      "powerScore": 123,
+      "powerScore": 83,
       "tags": [
         "ice",
         "balanced",
@@ -3794,7 +3874,8 @@
         "ice_permafrost",
         "ice_permafrost_slam",
         "ice_glacial_slam"
-      ]
+      ],
+      "name": "Winter Walkers"
     },
     {
       "id": "legs-sprite_083",
@@ -3807,16 +3888,16 @@
         "type": "Normal"
       },
       "variant": 35,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "legendary",
+      "archetype": "bulwark",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 42,
+        "atk": 38,
+        "def": 42,
+        "spd": 38,
         "luck": 4
       },
-      "powerScore": 84,
+      "powerScore": 164,
       "tags": [
         "wild",
         "balanced",
@@ -3843,7 +3924,8 @@
         "normal_scratch",
         "normal_wing_slap",
         "normal_peck"
-      ]
+      ],
+      "name": "Booted Up"
     },
     {
       "id": "legs-sprite_086",
@@ -3856,16 +3938,16 @@
         "type": "Ice"
       },
       "variant": 36,
-      "rarity": "rare",
-      "archetype": "balanced",
+      "rarity": "legendary",
+      "archetype": "bulwark",
       "stats": {
-        "hp": 30,
-        "atk": 30,
-        "def": 30,
-        "spd": 30,
+        "hp": 42,
+        "atk": 38,
+        "def": 42,
+        "spd": 38,
         "luck": 4
       },
-      "powerScore": 124,
+      "powerScore": 164,
       "tags": [
         "ice",
         "balanced",
@@ -3886,7 +3968,8 @@
         "ice_permafrost",
         "ice_permafrost_slam",
         "ice_glacial_slam"
-      ]
+      ],
+      "name": "Padded Snowshoes"
     },
     {
       "id": "legs-sprite_102",
@@ -3899,16 +3982,16 @@
         "type": "Normal"
       },
       "variant": 37,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "legendary",
+      "archetype": "trickster",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 39,
+        "atk": 42,
+        "def": 36,
+        "spd": 43,
         "luck": 1
       },
-      "powerScore": 81,
+      "powerScore": 161,
       "tags": [
         "wild",
         "balanced",
@@ -3935,7 +4018,8 @@
         "normal_scratch",
         "normal_wing_slap",
         "normal_peck"
-      ]
+      ],
+      "name": "Socks 'n Sandals"
     },
     {
       "id": "legs-sprite_103",
@@ -3984,7 +4068,8 @@
         "normal_quick_strike",
         "normal_bulldoze",
         "normal_berserker_charge"
-      ]
+      ],
+      "name": "legs-sprite_103"
     },
     {
       "id": "legs-sprite_104",
@@ -4033,7 +4118,8 @@
         "normal_quick_strike",
         "normal_bulldoze",
         "normal_berserker_charge"
-      ]
+      ],
+      "name": "legs-sprite_104"
     },
     {
       "id": "legs-sprite_105",
@@ -4082,7 +4168,8 @@
         "normal_quick_strike",
         "normal_bulldoze",
         "normal_berserker_charge"
-      ]
+      ],
+      "name": "legs-sprite_105"
     },
     {
       "id": "legs-sprite_106",
@@ -4131,7 +4218,8 @@
         "normal_quick_strike",
         "normal_bulldoze",
         "normal_berserker_charge"
-      ]
+      ],
+      "name": "legs-sprite_106"
     },
     {
       "id": "legs-sprite_113",
@@ -4144,16 +4232,16 @@
         "type": "Ice"
       },
       "variant": 42,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "rare",
+      "archetype": "trickster",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 29,
+        "atk": 32,
+        "def": 26,
+        "spd": 33,
         "luck": 1
       },
-      "powerScore": 81,
+      "powerScore": 121,
       "tags": [
         "ice",
         "balanced",
@@ -4174,7 +4262,8 @@
         "ice_permafrost",
         "ice_permafrost_slam",
         "ice_glacial_slam"
-      ]
+      ],
+      "name": "Slippery Slippers"
     },
     {
       "id": "legs-sprite_122",
@@ -4187,16 +4276,16 @@
         "type": "Normal"
       },
       "variant": 43,
-      "rarity": "common",
-      "archetype": "balanced",
+      "rarity": "rare",
+      "archetype": "raider",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 28,
+        "atk": 33,
+        "def": 26,
+        "spd": 33,
         "luck": 2
       },
-      "powerScore": 82,
+      "powerScore": 122,
       "tags": [
         "wild",
         "balanced",
@@ -4223,7 +4312,8 @@
         "normal_scratch",
         "normal_wing_slap",
         "normal_peck"
-      ]
+      ],
+      "name": "Ornaments On"
     },
     {
       "id": "legs-sprite_123",
@@ -4272,7 +4362,8 @@
         "normal_quick_strike",
         "normal_bulldoze",
         "normal_berserker_charge"
-      ]
+      ],
+      "name": "legs-sprite_123"
     },
     {
       "id": "legs-sprite_125",
@@ -4315,7 +4406,8 @@
         "lightning_overclock",
         "lightning_volt_dive",
         "lightning_discharge"
-      ]
+      ],
+      "name": "Connected Loafers"
     },
     {
       "id": "legs-sprite_126",
@@ -4329,7 +4421,7 @@
       },
       "variant": 46,
       "rarity": "common",
-      "archetype": "balanced",
+      "archetype": "raider",
       "stats": {
         "hp": 20,
         "atk": 20,
@@ -4364,7 +4456,8 @@
         "normal_quick_strike",
         "normal_bulldoze",
         "normal_berserker_charge"
-      ]
+      ],
+      "name": "Not For Bogging"
     },
     {
       "id": "legs-sprite_127",
@@ -4378,12 +4471,12 @@
       },
       "variant": 47,
       "rarity": "common",
-      "archetype": "balanced",
+      "archetype": "trickster",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 19,
+        "atk": 22,
+        "def": 16,
+        "spd": 23,
         "luck": 1
       },
       "powerScore": 81,
@@ -4412,7 +4505,8 @@
         "normal_scratch",
         "normal_wing_slap",
         "normal_peck"
-      ]
+      ],
+      "name": "Free the Feet"
     },
     {
       "id": "legs-sprite_128",
@@ -4426,12 +4520,12 @@
       },
       "variant": 48,
       "rarity": "common",
-      "archetype": "balanced",
+      "archetype": "raider",
       "stats": {
-        "hp": 20,
-        "atk": 20,
-        "def": 20,
-        "spd": 20,
+        "hp": 18,
+        "atk": 23,
+        "def": 16,
+        "spd": 23,
         "luck": 2
       },
       "powerScore": 82,
@@ -4461,7 +4555,8 @@
         "normal_scratch",
         "normal_wing_slap",
         "normal_peck"
-      ]
+      ],
+      "name": "Socks but Barely"
     },
     {
       "id": "head-sprite_009",
@@ -4475,12 +4570,12 @@
       },
       "variant": 17,
       "rarity": "legendary",
-      "archetype": "balanced",
+      "archetype": "trickster",
       "stats": {
-        "hp": 40,
-        "atk": 40,
-        "def": 40,
-        "spd": 40,
+        "hp": 39,
+        "atk": 42,
+        "def": 36,
+        "spd": 43,
         "luck": 1
       },
       "powerScore": 161,
@@ -4507,7 +4602,8 @@
         "normal_scratch",
         "normal_wing_slap",
         "normal_peck"
-      ]
+      ],
+      "name": "Clever Colin"
     },
     {
       "id": "torso-sprite_0431",
@@ -4521,16 +4617,16 @@
         "type": "Normal"
       },
       "variant": 17,
-      "rarity": "rare",
-      "archetype": "balanced",
+      "rarity": "legendary",
+      "archetype": "raider",
       "stats": {
-        "hp": 28,
-        "atk": 25,
-        "def": 33,
-        "spd": 20,
+        "hp": 38,
+        "atk": 43,
+        "def": 36,
+        "spd": 43,
         "luck": 43
       },
-      "powerScore": 149,
+      "powerScore": 203,
       "tags": [
         "torso",
         "sprite_0431"
@@ -4553,6 +4649,253 @@
         "normal_scratch",
         "normal_wing_slap",
         "normal_peck"
+      ],
+      "name": "Casual Attire"
+    },
+    {
+      "id": "head-sprite_102",
+      "name": "Shocking Sam",
+      "slot": "head",
+      "file": "Heads/sprite_102.png",
+      "familyId": 4,
+      "family": {
+        "id": 4,
+        "name": "Stormcall",
+        "theme": "lightning",
+        "type": "Lightning"
+      },
+      "variant": 18,
+      "rarity": "rare",
+      "archetype": "trickster",
+      "stats": {
+        "hp": 29,
+        "atk": 32,
+        "def": 26,
+        "spd": 33,
+        "luck": 1
+      },
+      "powerScore": 121,
+      "tags": [
+        "head",
+        "sprite_102"
+      ],
+      "description": "Newly assigned from unreferenced image.",
+      "moveIds": [
+        "lightning_shock_honk",
+        "lightning_chain_bolt",
+        "lightning_thunderclap",
+        "lightning_arc_pulse",
+        "lightning_static_honk",
+        "lightning_ball_lightning",
+        "lightning_zap_field",
+        "lightning_overclock",
+        "lightning_volt_dive",
+        "lightning_discharge"
+      ]
+    },
+    {
+      "id": "head-sprite_127",
+      "name": "Zap-Eye",
+      "slot": "head",
+      "file": "Heads/sprite_127.png",
+      "familyId": 4,
+      "family": {
+        "id": 4,
+        "name": "Stormcall",
+        "theme": "lightning",
+        "type": "Lightning"
+      },
+      "variant": 19,
+      "rarity": "common",
+      "archetype": "trickster",
+      "stats": {
+        "hp": 19,
+        "atk": 22,
+        "def": 16,
+        "spd": 23,
+        "luck": 1
+      },
+      "powerScore": 81,
+      "tags": [
+        "head",
+        "sprite_127"
+      ],
+      "description": "Newly assigned from unreferenced image.",
+      "moveIds": [
+        "lightning_shock_honk",
+        "lightning_chain_bolt",
+        "lightning_thunderclap",
+        "lightning_arc_pulse",
+        "lightning_static_honk",
+        "lightning_ball_lightning",
+        "lightning_zap_field",
+        "lightning_overclock",
+        "lightning_volt_dive",
+        "lightning_discharge"
+      ]
+    },
+    {
+      "id": "torso-sprite_096",
+      "name": "Shockingly Stylish",
+      "slot": "torso",
+      "file": "Torsos/sprite_096.png",
+      "familyId": 4,
+      "family": {
+        "id": 4,
+        "name": "Stormcall",
+        "theme": "lightning",
+        "type": "Lightning"
+      },
+      "variant": 18,
+      "rarity": "legendary",
+      "archetype": "bulwark",
+      "stats": {
+        "hp": 42,
+        "atk": 38,
+        "def": 42,
+        "spd": 38,
+        "luck": 1
+      },
+      "powerScore": 161,
+      "tags": [
+        "torso",
+        "sprite_096"
+      ],
+      "description": "Newly assigned from unreferenced image.",
+      "moveIds": [
+        "lightning_shock_honk",
+        "lightning_chain_bolt",
+        "lightning_thunderclap",
+        "lightning_arc_pulse",
+        "lightning_static_honk",
+        "lightning_ball_lightning",
+        "lightning_zap_field",
+        "lightning_overclock",
+        "lightning_volt_dive",
+        "lightning_discharge"
+      ]
+    },
+    {
+      "id": "torso-sprite_113",
+      "name": "Sparky Shirt",
+      "slot": "torso",
+      "file": "Torsos/sprite_113.png",
+      "familyId": 4,
+      "family": {
+        "id": 4,
+        "name": "Stormcall",
+        "theme": "lightning",
+        "type": "Lightning"
+      },
+      "variant": 19,
+      "rarity": "rare",
+      "archetype": "raider",
+      "stats": {
+        "hp": 28,
+        "atk": 33,
+        "def": 26,
+        "spd": 33,
+        "luck": 1
+      },
+      "powerScore": 121,
+      "tags": [
+        "torso",
+        "sprite_113"
+      ],
+      "description": "Newly assigned from unreferenced image.",
+      "moveIds": [
+        "lightning_shock_honk",
+        "lightning_chain_bolt",
+        "lightning_thunderclap",
+        "lightning_arc_pulse",
+        "lightning_static_honk",
+        "lightning_ball_lightning",
+        "lightning_zap_field",
+        "lightning_overclock",
+        "lightning_volt_dive",
+        "lightning_discharge"
+      ]
+    },
+    {
+      "id": "wings-sprite_100",
+      "name": "Flap o' Faraday",
+      "slot": "wings",
+      "file": "Wings/sprite_100.png",
+      "familyId": 4,
+      "family": {
+        "id": 4,
+        "name": "Stormcall",
+        "theme": "lightning",
+        "type": "Lightning"
+      },
+      "variant": 16,
+      "rarity": "legendary",
+      "archetype": "trickster",
+      "stats": {
+        "hp": 39,
+        "atk": 42,
+        "def": 36,
+        "spd": 43,
+        "luck": 1
+      },
+      "powerScore": 161,
+      "tags": [
+        "wings",
+        "sprite_100"
+      ],
+      "description": "Newly assigned from unreferenced image.",
+      "moveIds": [
+        "lightning_shock_honk",
+        "lightning_chain_bolt",
+        "lightning_thunderclap",
+        "lightning_arc_pulse",
+        "lightning_static_honk",
+        "lightning_ball_lightning",
+        "lightning_zap_field",
+        "lightning_overclock",
+        "lightning_volt_dive",
+        "lightning_discharge"
+      ]
+    },
+    {
+      "id": "wings-sprite_129",
+      "name": "F-lightning",
+      "slot": "wings",
+      "file": "Wings/sprite_129.png",
+      "familyId": 4,
+      "family": {
+        "id": 4,
+        "name": "Stormcall",
+        "theme": "lightning",
+        "type": "Lightning"
+      },
+      "variant": 17,
+      "rarity": "rare",
+      "archetype": "raider",
+      "stats": {
+        "hp": 28,
+        "atk": 33,
+        "def": 26,
+        "spd": 33,
+        "luck": 1
+      },
+      "powerScore": 121,
+      "tags": [
+        "wings",
+        "sprite_129"
+      ],
+      "description": "Newly assigned from unreferenced image.",
+      "moveIds": [
+        "lightning_shock_honk",
+        "lightning_chain_bolt",
+        "lightning_thunderclap",
+        "lightning_arc_pulse",
+        "lightning_static_honk",
+        "lightning_ball_lightning",
+        "lightning_zap_field",
+        "lightning_overclock",
+        "lightning_volt_dive",
+        "lightning_discharge"
       ]
     }
   ],
@@ -4628,16 +4971,16 @@
       "type": "Lightning",
       "description": "",
       "baseMoveIds": [
-        "move_22",
-        "move_23",
-        "move_24",
-        "move_25",
-        "move_26",
-        "move_27",
-        "move_28",
-        "move_29",
-        "move_30",
-        "move_31"
+        "lightning_shock_honk",
+        "lightning_chain_bolt",
+        "lightning_thunderclap",
+        "lightning_arc_pulse",
+        "lightning_static_honk",
+        "lightning_ball_lightning",
+        "lightning_zap_field",
+        "lightning_overclock",
+        "lightning_volt_dive",
+        "lightning_discharge"
       ]
     },
     {

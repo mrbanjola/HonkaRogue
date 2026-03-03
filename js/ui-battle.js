@@ -423,11 +423,12 @@ function showEnemyPartsOverlay(enemy) {
     card.className = 'ep-card';
     const rarity = String(part.rarity || '').toUpperCase() || 'COMMON';
     const family = part.family?.name || 'Unknown';
+    const partName = part.name || part.id || 'Unknown Part';
     card.innerHTML = `
-      <div class="ep-art">${part.file ? `<img src="${part.file}" alt="${part.id || slot}">` : ''}</div>
+      <div class="ep-art">${part.file ? `<img src="${part.file}" alt="${partName}">` : ''}</div>
       <div class="ep-meta">
         <div class="ep-slot">${slot}</div>
-        <div class="ep-name">${part.id || 'Unknown Part'}</div>
+        <div class="ep-name">${partName}</div>
       <div class="ep-family">${family} \u2022 ${rarity}</div>
         <div class="ep-row">
           <span class="ep-badge ${caught ? 'caught' : 'new'}">${caught ? 'CAUGHT' : 'NEW'}</span>

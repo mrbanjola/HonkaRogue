@@ -296,8 +296,8 @@ function generateStage(n) {
     };
     const pickPart = slot => {
       const famSet = new Set(biome?.families || []);
-      let pool = PARTS_DATA.parts.filter(p => p.slot === slot && famSet.has(p.family?.name));
-      if (!pool.length) pool = PARTS_DATA.parts.filter(p => p.slot === slot);
+      let pool = PARTS_DATA.parts.filter(p => p.slot === slot && famSet.has(p.family?.name) && !isPartUnique(p));
+      if (!pool.length) pool = PARTS_DATA.parts.filter(p => p.slot === slot && !isPartUnique(p));
       return pickByRarityWeights(pool);
     };
     assembledParts = {

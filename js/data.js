@@ -83,6 +83,10 @@ function getPartFamily(part, data = PARTS_DATA) {
   }
   return part.family || null;
 }
+function isPartUnique(part) {
+  const v = part?.isUnique;
+  return v === true || v === 'true' || v === 1;
+}
 async function loadPartsData() {
   const urls = ['/api/parts-data', 'data/parts_data.json'];
   for (const url of urls) {
@@ -93,6 +97,11 @@ async function loadPartsData() {
       if (data && Array.isArray(data.parts)) {
         PARTS_DATA = data;
         ensureFamiliesRegistry(PARTS_DATA);
+        PARTS_DATA.parts.forEach(p => {
+          if (!p) return;
+          if (!p.name) p.name = String(p.id || 'Unnamed Part');
+          p.isUnique = isPartUnique(p);
+        });
         // Keep JSON-authored rarity unless explicitly requested.
         if (PARTS_DATA.autoNormalizeRarity === true) normalizePartRarityByFamily(PARTS_DATA);
         // Keep JSON-authored part stats unless explicitly requested.
@@ -121,6 +130,25 @@ async function loadMovesData() {
     } catch (_) {}
   }
   console.warn('[DATA] loadMovesData: failed to load from all sources');
+  return false;
+}
+
+async function loadLootData() {
+  const urls = ['/api/loot-pool', 'data/loot_pool.json'];
+  for (const url of urls) {
+    try {
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) continue;
+      const data = await res.json();
+      const defs = Array.isArray(data) ? data : (data.items || []);
+      if (!Array.isArray(defs) || !defs.length) continue;
+      CORE_LOOT_POOL = enrichCoreLootItems(defs);
+      LOOT_POOL = [...CORE_LOOT_POOL, ...MOVE_LEARN_LOOT_POOL];
+      console.log('[DATA] Loot loaded:', CORE_LOOT_POOL.length);
+      return true;
+    } catch (_) {}
+  }
+  console.warn('[DATA] loadLootData: failed to load from all sources; using defaults');
   return false;
 }
 
@@ -740,7 +768,7 @@ function grantCatchPartUnlocks(caught, enemyRef) {
     });
   } else {
     // Procedural enemy: give random uncaught parts of matching type
-    const pool = unlockedPartsByFamilyType(caught?.type).filter(p => !isPartCaught(p.id));
+    const pool = unlockedPartsByFamilyType(caught?.type).filter(p => !isPartUnique(p) && !isPartCaught(p.id));
     for (let i = pool.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       const t = pool[i]; pool[i] = pool[j]; pool[j] = t;
@@ -754,7 +782,7 @@ function grantCatchPartUnlocks(caught, enemyRef) {
     catchIds.push(...bySlot.values());
   }
   // Always see the enemy's type-matching parts
-  seeIds.push(...(sourceParts ? catchIds : unlockedPartsByFamilyType(caught?.type).slice(0, 3).map(p => p.id)));
+  seeIds.push(...(sourceParts ? catchIds : unlockedPartsByFamilyType(caught?.type).filter(p => !isPartUnique(p)).slice(0, 3).map(p => p.id)));
   const newCaught = catchPartIds(catchIds);
   seePartIds(seeIds);
   return newCaught;
@@ -770,7 +798,7 @@ function enemyHasUncaughtParts(enemyData) {
     });
   } else {
     // Procedural enemy: check if type has uncaught parts
-    const pool = unlockedPartsByFamilyType(enemyData.type);
+    const pool = unlockedPartsByFamilyType(enemyData.type).filter(p => !isPartUnique(p));
     return pool.some(p => !isPartCaught(p.id));
   }
 }
@@ -815,7 +843,7 @@ function rarityWeight(rarity) {
   return 0;
 }
 function pickDexPartForSlot(dex, slot) {
-  const all = (PARTS_DATA?.parts || []).filter(p => p.slot === slot);
+  const all = (PARTS_DATA?.parts || []).filter(p => p.slot === slot && !isPartUnique(p));
   if (!all.length) return null;
   const fams = TYPE_TO_PART_FAMILIES[dex.type] || [];
   let pool = all.filter(p => fams.includes(p.family?.name));
@@ -949,47 +977,43 @@ const STAGE_LORE = ['A place of old memory. Danger waits.', 'Few emerge unchange
 // "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
 //  LOOT POOL
 // "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
-const CORE_LOOT_POOL = [
-  { id:'hp_tonic',    name:'HP Tonic',       emoji:'*', rarity:'common',    color:'#aaaacc',
-    desc:'Permanently increase <b>Max HP by +25</b>.',
-    apply:(p)=>{ const prevMax=getHonkerMaxHP(p); const cur=(p.currentHP ?? prevMax); p.maxHPBonus=(p.maxHPBonus||0)+25; const mx=getHonkerMaxHP(p); p.currentHP=Math.min(mx, cur+25); }},
-  { id:'lucky_clover',name:'Lucky Clover',   emoji:'*', rarity:'common',    color:'#aaaacc',
-    desc:'Permanently increase <b>Luck by +8%</b>.',
-    apply:(p)=>{ p.luckBonus=(p.luckBonus||0)+8; }},
-  { id:'sharp_beak',  name:'Sharp Beak',     emoji:'*', rarity:'common',    color:'#aaaacc',
-    desc:'All move power permanently <b>+8</b>.',
-    apply:(p)=>{ p.atkFlat=(p.atkFlat||0)+8; }},
-  { id:'pp_seed',     name:'PP Seed',        emoji:'*', rarity:'common',    color:'#aaaacc',
-    desc:'Permanently increase all moves <b>max PP by +3</b>.',
-    apply:(p)=>{ p.ppBonus=(p.ppBonus||0)+3; p.moves.forEach(m=>{ m.maxPP+=3; m.pp=m.maxPP; }); }},
-  { id:'power_crystal',name:'Power Crystal', emoji:'*', rarity:'rare',      color:'#00c8ff',
-    desc:'All move power permanently <b>+18</b>.',
-    apply:(p)=>{ p.atkFlat=(p.atkFlat||0)+18; }},
-  { id:'iron_feathers',name:'Iron Feathers', emoji:'*', rarity:'rare',      color:'#00c8ff',
-    desc:'Permanently increase <b>Max HP by +50</b>.',
-    apply:(p)=>{ const prevMax=getHonkerMaxHP(p); const cur=(p.currentHP ?? prevMax); p.maxHPBonus=(p.maxHPBonus||0)+50; const mx=getHonkerMaxHP(p); p.currentHP=Math.min(mx, cur+50); }},
-  { id:'lucky_star',  name:'Lucky Star',     emoji:'*', rarity:'rare',      color:'#00c8ff',
-    desc:'Permanently increase <b>Luck by +20%</b>.',
-    apply:(p)=>{ p.luckBonus=(p.luckBonus||0)+20; }},
-  { id:'stab_orb',    name:'STAB Orb',       emoji:'*', rarity:'rare',      color:'#00c8ff',
-    desc:'Same-type attack bonus increases to <b>-1.5</b> (from -1.25).',
-    apply:(p)=>{ p.stabBonus=1.5; }},
-  { id:'extra_life',  name:'Phoenix Feather',emoji:'*', rarity:'legendary', color:'#ffd700', global:true,
-    desc:'Gain <b>+1 extra retry</b> for this and all future battles.',
-    apply:(p)=>{ CAMPAIGN.maxRetries=Math.min(CAMPAIGN.maxRetries+1,5); CAMPAIGN.retries=Math.min(CAMPAIGN.retries+1,CAMPAIGN.maxRetries); }},
-  { id:'chaos_core',  name:'Chaos Core',     emoji:'*', rarity:'legendary', color:'#ffd700',
-    desc:'All moves deal <b>-1.4 damage</b> but become random type.',
-    apply:(p)=>{ p.chaosMod=1.4; }},
-  { id:'ancient_honk',name:'Ancient Honk',   emoji:'*', rarity:'legendary', color:'#ffd700',
-    desc:'All moves permanently <b>+25% damage</b>.',
-    apply:(p)=>{ p.atkMult=(p.atkMult||1)*1.25; }},
-  { id:'heal_flask',  name:'Heal Flask',     emoji:'*', rarity:'rare',      color:'#00c8ff',
-    desc:'Immediately restore <b>60 HP</b> right now.',
-    apply:(p)=>{ const mx=getHonkerMaxHP(p); const cur=(p.currentHP ?? mx); p.currentHP=Math.min(mx, cur+60); }},
-  { id:'mentor_whistle', name:'Mentor Whistle', emoji:'*', rarity:'rare',    color:'#00c8ff', global:true,
-    desc:'Party XP share bonus <b>+5%</b> for non-active honkers (stackable).',
-    apply:()=>{} },
+const CORE_LOOT_DEFAULT_DEFS = [
+  { id:'hp_tonic',       name:'HP Tonic',        emoji:'*', rarity:'common',    color:'#aaaacc', desc:'Permanently increase <b>Max HP by +25</b>.' },
+  { id:'lucky_clover',   name:'Lucky Clover',    emoji:'*', rarity:'common',    color:'#aaaacc', desc:'Permanently increase <b>Luck by +8%</b>.' },
+  { id:'sharp_beak',     name:'Sharp Beak',      emoji:'*', rarity:'common',    color:'#aaaacc', desc:'All move power permanently <b>+8</b>.' },
+  { id:'pp_seed',        name:'PP Seed',         emoji:'*', rarity:'common',    color:'#aaaacc', desc:'Permanently increase all moves <b>max PP by +3</b>.' },
+  { id:'power_crystal',  name:'Power Crystal',   emoji:'*', rarity:'rare',      color:'#00c8ff', desc:'All move power permanently <b>+18</b>.' },
+  { id:'iron_feathers',  name:'Iron Feathers',   emoji:'*', rarity:'rare',      color:'#00c8ff', desc:'Permanently increase <b>Max HP by +50</b>.' },
+  { id:'lucky_star',     name:'Lucky Star',      emoji:'*', rarity:'rare',      color:'#00c8ff', desc:'Permanently increase <b>Luck by +20%</b>.' },
+  { id:'stab_orb',       name:'STAB Orb',        emoji:'*', rarity:'rare',      color:'#00c8ff', desc:'Same-type attack bonus increases to <b>1.5</b> (from 1.25).' },
+  { id:'extra_life',     name:'Phoenix Feather', emoji:'*', rarity:'legendary', color:'#ffd700', desc:'Gain <b>+1 extra retry</b> for this and all future battles.', global:true },
+  { id:'chaos_core',     name:'Chaos Core',      emoji:'*', rarity:'legendary', color:'#ffd700', desc:'All moves deal <b>1.4x damage</b> but become random type.' },
+  { id:'ancient_honk',   name:'Ancient Honk',    emoji:'*', rarity:'legendary', color:'#ffd700', desc:'All moves permanently <b>+25% damage</b>.' },
+  { id:'heal_flask',     name:'Heal Flask',      emoji:'*', rarity:'rare',      color:'#00c8ff', desc:'Immediately restore <b>60 HP</b> right now.' },
+  { id:'mentor_whistle', name:'Mentor Whistle',  emoji:'*', rarity:'rare',      color:'#00c8ff', desc:'Party XP share bonus <b>+5%</b> for non-active honkers (stackable).', global:true },
 ];
+
+const CORE_LOOT_APPLIERS = {
+  hp_tonic: (p)=>{ const prevMax=getHonkerMaxHP(p); const cur=(p.currentHP ?? prevMax); p.maxHPBonus=(p.maxHPBonus||0)+25; const mx=getHonkerMaxHP(p); p.currentHP=Math.min(mx, cur+25); },
+  lucky_clover: (p)=>{ p.luckBonus=(p.luckBonus||0)+8; },
+  sharp_beak: (p)=>{ p.atkFlat=(p.atkFlat||0)+8; },
+  pp_seed: (p)=>{ p.ppBonus=(p.ppBonus||0)+3; (p.moves||[]).forEach(m=>{ m.maxPP+=3; m.pp=m.maxPP; }); },
+  power_crystal: (p)=>{ p.atkFlat=(p.atkFlat||0)+18; },
+  iron_feathers: (p)=>{ const prevMax=getHonkerMaxHP(p); const cur=(p.currentHP ?? prevMax); p.maxHPBonus=(p.maxHPBonus||0)+50; const mx=getHonkerMaxHP(p); p.currentHP=Math.min(mx, cur+50); },
+  lucky_star: (p)=>{ p.luckBonus=(p.luckBonus||0)+20; },
+  stab_orb: (p)=>{ p.stabBonus=1.5; },
+  extra_life: ()=>{ CAMPAIGN.maxRetries=Math.min(CAMPAIGN.maxRetries+1,5); CAMPAIGN.retries=Math.min(CAMPAIGN.retries+1,CAMPAIGN.maxRetries); },
+  chaos_core: (p)=>{ p.chaosMod=1.4; },
+  ancient_honk: (p)=>{ p.atkMult=(p.atkMult||1)*1.25; },
+  heal_flask: (p)=>{ const mx=getHonkerMaxHP(p); const cur=(p.currentHP ?? mx); p.currentHP=Math.min(mx, cur+60); },
+  mentor_whistle: ()=>{},
+};
+
+function enrichCoreLootItems(defs) {
+  return defs.map(d => ({ ...d, apply: CORE_LOOT_APPLIERS[d.id] || (()=>{}) }));
+}
+
+let CORE_LOOT_POOL = enrichCoreLootItems(CORE_LOOT_DEFAULT_DEFS);
 
 const MOVE_TYPE_LOOT_COLOR = {
   Fire: '#ff4e00',
