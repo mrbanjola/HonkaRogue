@@ -10,75 +10,75 @@ const MISSES=['But the attack whiffs!','But it sails past!','But the target side
   'But fate denies the strike!','But the blow goes wide!','But the honk misses entirely!'];
 
 function p1UsesMove(idx) {
-  if(bDead||bPhase!=='p1') return;
-  const move=bFighters[0].moves[idx];
+  if(BS.bDead||BS.bPhase!=='p1') return;
+  const move=BS.bFighters[0].moves[idx];
   if(!move||move.pp<=0) return;
 
   // lowHPOnly signature moves
-  if (move.lowHPOnly && bFighters[0].hpPct >= 0.5) {
-    log('ms', `⚠ <b>${bFighters[0].name}</b> isn't desperate enough! ${move.name} won't work above 50% HP.`);
+  if (move.lowHPOnly && BS.bFighters[0].hpPct >= 0.5) {
+    log('ms', `⚠ <b>${BS.bFighters[0].name}</b> isn't desperate enough! ${move.name} won't work above 50% HP.`);
     return;
   }
 
-  bPhase='busy';
-  bRound++;
-  document.getElementById('round-badge').textContent=`ROUND ${bRound}`;
-  log('r',`━━━━ ROUND ${bRound} ━━━━`);
+  BS.bPhase='busy';
+  BS.bRound++;
+  document.getElementById('round-badge').textContent=`ROUND ${BS.bRound}`;
+  log('r',`━━━━ ROUND ${BS.bRound} ━━━━`);
   maybeFireEvent();
   renderMovePanel();
 
   // Speed-based turn order: priority moves always go first.
   // Otherwise: enemy needs a clearer speed edge to strike first.
-  const playerSpd = bFighters[0].spd || 80;
-  const enemySpd  = bFighters[1].spd || 80;
+  const playerSpd = BS.bFighters[0].spd || 80;
+  const enemySpd  = BS.bFighters[1].spd || 80;
   const playerPriority = !!move.priority;
   const enemyGoesFirst = !playerPriority && (enemySpd - playerSpd > 16);
 
   if (enemyGoesFirst) {
-    log('ev', `⚡ <b>${bFighters[1].name}</b> is faster and strikes first! (SPD ${enemySpd} vs ${playerSpd})`);
-    bPhase='p2'; renderMovePanel();
-    const aiMove = bFighters[1].aiPickMove(bFighters[0]);
-    bPhase='busy';
-    doMove(bFighters[1], bFighters[0], aiMove, ()=>{
-      if(bDead) return;
-      doMove(bFighters[0], bFighters[1], move, ()=>{
-        if(bDead) return;
+    log('ev', `⚡ <b>${BS.bFighters[1].name}</b> is faster and strikes first! (SPD ${enemySpd} vs ${playerSpd})`);
+    BS.bPhase='p2'; renderMovePanel();
+    const aiMove = BS.bFighters[1].aiPickMove(BS.bFighters[0]);
+    BS.bPhase='busy';
+    doMove(BS.bFighters[1], BS.bFighters[0], aiMove, ()=>{
+      if(BS.bDead) return;
+      doMove(BS.bFighters[0], BS.bFighters[1], move, ()=>{
+        if(BS.bDead) return;
         tickEventState();
-        bPhase='p1'; renderMovePanel(); updateCatchButton();
+        BS.bPhase='p1'; renderMovePanel(); updateCatchButton();
       });
     });
   } else {
-    if (playerPriority) log('ev', `⚡ <b>${bFighters[0].name}</b> uses ${move.emoji} ${move.name} • priority move strikes first!`);
-    doMove(bFighters[0], bFighters[1], move, ()=>{
-      if(bDead) return;
-      bPhase='p2'; renderMovePanel(); updateCatchButton();
+    if (playerPriority) log('ev', `⚡ <b>${BS.bFighters[0].name}</b> uses ${move.emoji} ${move.name} • priority move strikes first!`);
+    doMove(BS.bFighters[0], BS.bFighters[1], move, ()=>{
+      if(BS.bDead) return;
+      BS.bPhase='p2'; renderMovePanel(); updateCatchButton();
       setTimeout(()=>{
-        if(bDead) return;
-        const aiMove=bFighters[1].aiPickMove(bFighters[0]);
-        bPhase='busy';
-        doMove(bFighters[1], bFighters[0], aiMove, ()=>{
-          if(bDead) return;
+        if(BS.bDead) return;
+        const aiMove=BS.bFighters[1].aiPickMove(BS.bFighters[0]);
+        BS.bPhase='busy';
+        doMove(BS.bFighters[1], BS.bFighters[0], aiMove, ()=>{
+          if(BS.bDead) return;
           tickEventState();
-          bPhase='p1'; renderMovePanel(); updateCatchButton();
+          BS.bPhase='p1'; renderMovePanel(); updateCatchButton();
         });
-      }, bAutoOn?600:880);
+      }, BS.bAutoOn?600:880);
     });
   }
 }
 
 function autoStep() {
-  if(bDead) return;
-  const atk=bFighters[bAutoTurn%2], def=bFighters[(bAutoTurn+1)%2];
-  if(bAutoTurn%2===0){
-    bRound++;
-    document.getElementById('round-badge').textContent=`ROUND ${bRound}`;
-    log('r',`━━━━ ROUND ${bRound} ━━━━`);
+  if(BS.bDead) return;
+  const atk=BS.bFighters[BS.bAutoTurn%2], def=BS.bFighters[(BS.bAutoTurn+1)%2];
+  if(BS.bAutoTurn%2===0){
+    BS.bRound++;
+    document.getElementById('round-badge').textContent=`ROUND ${BS.bRound}`;
+    log('r',`━━━━ ROUND ${BS.bRound} ━━━━`);
     maybeFireEvent();
   }
-  bAutoTurn++;
+  BS.bAutoTurn++;
   const move=atk.aiPickMove(def);
   doMove(atk, def, move, ()=>{
-    if(bAutoTurn%2===0) tickEventState();
+    if(BS.bAutoTurn%2===0) tickEventState();
   });
 }
 
@@ -248,7 +248,7 @@ function tickStatusEffects(f) {
 function doMove(atk, def, move, cb) {
   // Frozen: skip turn
   if (atk.statusEffects.frozen > 0) {
-    if (Math.random() < 0.5) {
+    if (BS.rng() < 0.5) {
       // Thawed! Act normally this turn
       atk.statusEffects.frozen--;
       if (atk.statusEffects.frozen <= 0) delete atk.statusEffects.frozen;
@@ -267,13 +267,13 @@ function doMove(atk, def, move, cb) {
     }
   }
 
-  const accMod    = (eventState.accuracyMod || 1) * atk.accModifier;
-  const guaranteed = eventState.guaranteedHit;
+  const accMod    = (BS.eventState.accuracyMod || 1) * atk.accModifier;
+  const guaranteed = BS.eventState.guaranteedHit;
   const effAcc    = guaranteed ? 100 : move.acc * accMod;
   // Luck-based evasion: defender has a small chance to dodge (luck/400 = 0-24% based on luck)
   const evadeChance = (def.effectiveLuck || 50) / 400;
-  const evaded = !guaranteed && Math.random() < evadeChance;
-  const hit = !evaded && (Math.random() * 100 <= effAcc);
+  const evaded = !guaranteed && BS.rng() < evadeChance;
+  const hit = !evaded && (BS.rng() * 100 <= effAcc);
 
   move.pp = Math.max(0, move.pp - 1);
   updatePPDots(atk, atk.side);
@@ -284,7 +284,7 @@ function doMove(atk, def, move, cb) {
   if (move.effect && move.power === 0) {
     log('m', `${opener} <b style="color:${TC[atk.type]}">${atk.name}</b> uses <b>${move.emoji} ${move.name}</b>!`);
     if (!hit) { log('ms', 'But it fails!'); shakeSpr(atk.side); setTimeout(cb, 370); return; }
-    const chanceRoll = Math.random() * 100;
+    const chanceRoll = BS.rng() * 100;
     if (chanceRoll > (move.effectChance || 100)) {
       log('ms', 'But it had no effect!');
       setTimeout(cb, 370);
@@ -323,13 +323,13 @@ function doMove(atk, def, move, cb) {
   }
   const eff   = getEff(mType, def.type, def.type2);
   const stab   = (mType === atk.type || mType === atk.type2) ? (atk.stabBonus || 1.25) : 1.0;
-  const rage   = (eventState.rageTarget === atk.side && eventState.rageMod) ? eventState.rageMod : 1;
+  const rage   = (BS.eventState.rageTarget === atk.side && BS.eventState.rageMod) ? BS.eventState.rageMod : 1;
   // Luck-based crits: attacker's luck/500 = 0-19% crit chance.
   const critChance = (atk.effectiveLuck || 50) / 500;
-  const isCrit = Math.random() < critChance;
+  const isCrit = BS.rng() < critChance;
   const level = Math.max(1, atk.level || 1);
   const critLevelMult = isCrit ? 2 : 1;
-  const randomMult = 0.85 + Math.random() * 0.15;
+  const randomMult = 0.85 + BS.rng() * 0.15;
   const atkStat = Math.max(1, Math.round(((atk.atk || 80) + (atk.atkFlat || 0)) * (atk.atkMult || 1) * atk.atkModifier));
   const defStat = Math.max(1, Math.round(def.def || 80));
   const chaos  = atk.chaosMod || 1;
@@ -345,9 +345,9 @@ function doMove(atk, def, move, cb) {
   else dmg = Math.max(1, dmg);
   if (isCrit) log('g', `🎯 <b>CRITICAL HIT!</b> (${atk.name}'s luck comes through!)`);
 
-  if (eventState.nextHitMult) {
-    dmg = Math.round(dmg * eventState.nextHitMult);
-    delete eventState.nextHitMult;
+  if (BS.eventState.nextHitMult) {
+    dmg = Math.round(dmg * BS.eventState.nextHitMult);
+    delete BS.eventState.nextHitMult;
     log('ev', `⚡ POWER SURGE activates! Damage tripled!`);
   }
 
@@ -360,11 +360,11 @@ function doMove(atk, def, move, cb) {
 
     setTimeout(() => {
       let reflected = 0;
-      if (eventState.mirror) {
-        reflected = Math.round(dmg * eventState.mirror);
-        delete eventState.mirror;
+      if (BS.eventState.mirror) {
+        reflected = Math.round(dmg * BS.eventState.mirror);
+        delete BS.eventState.mirror;
         clearStatusBadges('left'); clearStatusBadges('right');
-        bFighters.forEach(f => refreshStatusBadges(f));
+        BS.bFighters.forEach(f => refreshStatusBadges(f));
       }
 
       def.currentHP = Math.max(0, def.currentHP - dmg);
@@ -385,14 +385,14 @@ function doMove(atk, def, move, cb) {
       log('d', `💥 <b>${def.name}</b> takes <span style="color:#ff5252">${dmg} damage</span>${effLbl}! HP: ${def.currentHP}/${def.maxHP}`);
 
       // Passive: static_skin - 30% chance to paralyze attacker on hit
-      if (def.passive?.id === 'static_skin' && dmg > 0 && !atk.statusEffects.paralyzed && Math.random() < 0.3) {
+      if (def.passive?.id === 'static_skin' && dmg > 0 && !atk.statusEffects.paralyzed && BS.rng() < 0.3) {
         applyStatusEffect(atk, 'paralyzed', 2);
         log('ev', `⚡ ${def.name}'s Static Skin zaps ${atk.name}!`);
         spawnPtcl(atk.side, '#ffe600', '⚡');
       }
 
       // CHANCE TO APPLY BONUS STATUS ON DAMAGE MOVES
-      if (move.effect && move.power > 0 && Math.random() * 100 <= (move.effectChance || 0)) {
+      if (move.effect && move.power > 0 && BS.rng() * 100 <= (move.effectChance || 0)) {
         const statusTarget = move.effectTarget === 'self' ? atk : def;
         const canApply = STACKABLE_EFFECTS.includes(move.effect) || !statusTarget.statusEffects[move.effect];
         if (canApply) {

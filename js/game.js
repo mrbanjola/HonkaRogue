@@ -93,7 +93,7 @@ class Honker {
         if (m.effectTarget==='self' && self.hpPct < 0.4) s *= 1.5;
         return s;
       }
-      return m.power * (m.acc/100) * getEff(m.type, enemy.type, enemy.type2) * (0.7 + Math.random()*.6) * self.atkModifier;
+      return m.power * (m.acc/100) * getEff(m.type, enemy.type, enemy.type2) * (0.7 + (BS.rng?.() ?? Math.random())*.6) * self.atkModifier;
     };
     let best = avail[0];
     let bestScore = scoreMove(best);
@@ -110,8 +110,23 @@ class Honker {
 // "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
 
 function getBiomeForStage(n) {
-  const idx = Math.floor((n - 1) / 5) % BIOMES.length;
-  return BIOMES[idx];
+  const blockIdx = Math.floor((n - 1) / 5);
+  const runSeed = Number.isFinite(Number(CAMPAIGN?.runSeed)) ? (Number(CAMPAIGN.runSeed) >>> 0) : 0;
+  const biomeCount = BIOMES.length;
+  if (!biomeCount) return null;
+  let prevPick = -1;
+  let pick = 0;
+  for (let i = 0; i <= blockIdx; i++) {
+    const blockSeed = (((i + 1) * 104729) ^ runSeed ^ 0x9e3779b9) >>> 0;
+    const rng = seededRng(blockSeed);
+    pick = Math.floor(rng() * biomeCount);
+    if (biomeCount > 1 && pick === prevPick) {
+      const jump = 1 + Math.floor(rng() * (biomeCount - 1));
+      pick = (pick + jump) % biomeCount;
+    }
+    prevPick = pick;
+  }
+  return BIOMES[pick];
 }
 
 function buildDexPartBlueprint(dex) {
@@ -160,6 +175,32 @@ function pickBiomeType(biome, rng, isBoss) {
   const pool = isBoss ? base : [...base, 'Normal'];
   return pool[Math.floor(rng() * pool.length)] || 'Normal';
 }
+function inferEnemyTypesFromParts(parts, fallbackType = 'Normal') {
+  if (!parts) return { type: fallbackType, type2: null };
+  const torsoType = typeof partTypeFromData === 'function' ? partTypeFromData(parts.torso) : null;
+  const headType = typeof partTypeFromData === 'function' ? partTypeFromData(parts.head) : null;
+  const type = torsoType || headType || fallbackType || 'Normal';
+  const type2 = headType && headType !== type ? headType : null;
+  return { type, type2 };
+}
+function collectPartMoves(parts) {
+  if (!parts) return [];
+  const ids = [];
+  for (const slot of ['head', 'torso', 'wings', 'legs']) {
+    const part = parts[slot];
+    if (!part?.moveIds?.length) continue;
+    ids.push(...part.moveIds);
+  }
+  const seen = new Set();
+  const out = [];
+  for (const id of ids) {
+    if (!id || seen.has(id)) continue;
+    seen.add(id);
+    const mv = materializeMoveFromId(id);
+    if (mv) out.push(mv);
+  }
+  return out;
+}
 
 function chooseDexForStage(n, isBoss, rng, biome) {
   const all = (HONKER_DEX || []).filter(d => !!d.isBoss === !!isBoss);
@@ -207,8 +248,7 @@ function generateStage(n) {
   const dex    = useDex ? chooseDexForStage(n, isBoss, rng, biome) : null;
   if (dex) console.log(`  → Named Honker: ${dex.name}`);
   const dexBlueprint = dex ? buildDexPartBlueprint(dex) : null;
-  const types  = ['Fire','Ice','Lightning','Shadow','Normal'];
-  let type   = dex ? (dexBlueprint?.derived?.type || dex.type) : (pickBiomeType(biome, rng, isBoss) || types[Math.floor(rng() * (isBoss ? 4 : 5))]);
+  const biomeFallbackType = pickBiomeType(biome, rng, isBoss) || 'Normal';
   const earlyRamp = Math.min(1, n / 16);
   const earlyHpScale = n <= 15 ? (0.84 + earlyRamp * 0.16) : 1;
   const earlyPowScale = n <= 15 ? (0.72 + earlyRamp * 0.28) : 1;
@@ -239,52 +279,6 @@ function generateStage(n) {
   const luck    = Math.min(88, Math.round(25 + n * 2.2));
   const basePow = 26 + n * 3.2 + (isBoss ? 18 : 0);
 
-  let moves;
-  if (dexBlueprint?.derived?.moves?.length) {
-    moves = dexBlueprint.derived.moves.map(m => ({ ...cloneJson(m), pp: m.maxPP || m.pp, maxPP: m.maxPP || m.pp }));
-  } else {
-    const pool    = MOVES_BY_TYPE[type] || MOVES_BY_TYPE.Normal;
-    const nrmPool = MOVES_BY_TYPE.Normal;
-    const usedIdx = new Set();
-    const picked  = [];
-    const pickFrom = (p, t) => {
-      for (let tries = 0; tries < 20; tries++) {
-        const idx = Math.floor(rng() * p.length);
-        if (!usedIdx.has(`${t}-${idx}`)) { usedIdx.add(`${t}-${idx}`); return { ...p[idx], type: t }; }
-      }
-      return { ...p[0], type: t };
-    };
-    picked.push(pickFrom(pool, type));
-    picked.push(pickFrom(pool, type));
-    picked.push(pickFrom(pool, type));
-    picked.push(isBoss ? pickFrom(pool, type) : pickFrom(nrmPool, 'Normal'));
-    moves = picked.map(m => ({
-      id: m.id,
-      name: m.name, type: m.type, emoji: m.emoji, desc: m.desc,
-      power: Math.max(20, Math.round((m.basePower || 55) * (basePow / 55) * earlyPowScale)),
-      acc: m.acc, pp: m.pp, maxPP: m.pp,
-      ...(m.effect ? { effect: m.effect, effectTarget: m.effectTarget,
-        effectChance: m.effectChance, effectDur: m.effectDur } : {}),
-      ...(m.drain ? { drain: m.drain } : {}),
-      ...(m.recoil ? { recoil: m.recoil } : {}),
-      ...(m.priority ? { priority: true } : {}),
-      ...(m.lowHPOnly ? { lowHPOnly: true } : {}),
-    }));
-  }
-
-  const rawAtk = dex ? (dex.atk||80) : Math.min(130, Math.round(60 + n * 1.8 + (isBoss ? 18 : 0) + (rng()-0.5)*20));
-  const rawDef = dex ? (dex.def||80) : Math.min(130, Math.round(60 + n * 1.4 + (isBoss ? 15 : 0) + (rng()-0.5)*20));
-  const rawSpd = dex ? (dex.spd||80) : Math.min(130, Math.round(60 + n * 1.2 + (rng()-0.5)*25));
-  const genAtk = Math.max(30, Math.round(rawAtk * earlyStatScale));
-  const genDef = Math.max(30, Math.round(rawDef * earlyStatScale));
-  const genSpd = Math.max(30, Math.round(rawSpd * earlyStatScale));
-  const emojiPool  = dex ? null : (isBoss ? BOSS_EMOJIS : (ENEMY_EMOJIS[type] || ENEMY_EMOJIS.Normal));
-  const emoji      = dex ? dex.emoji : emojiPool[Math.floor(rng() * emojiPool.length)];
-  const passive    = dex ? (dex.passive || dexBlueprint?.derived?.passive || null) : null;
-  const enemyLevel = Math.max(1, Math.round(n * 0.18) + (isBoss ? 1 : 0) - (n <= 15 ? 1 : 0));
-  const difficulty = isBoss ? 5 : Math.min(4, Math.ceil(n / 4));
-  const xpReward   = xpRewardForEnemyLevel(enemyLevel, isBoss);
-
   let assembledParts = dexBlueprint?.assembledParts || null;
   if (!dex && PARTS_DATA && PARTS_DATA.parts) {
     const pickByRarityWeights = (pool) => {
@@ -313,12 +307,73 @@ function generateStage(n) {
       legs:  pickPart('legs'),
     };
   }
+
+  let type = 'Normal';
+  let type2 = null;
+  if (dex) {
+    type = dexBlueprint?.derived?.type || dex.type || 'Normal';
+    type2 = dexBlueprint?.derived?.type2 || dex.type2 || null;
+  } else {
+    const inferred = inferEnemyTypesFromParts(assembledParts, biomeFallbackType);
+    type = inferred.type;
+    type2 = inferred.type2;
+  }
+
+  let moves;
+  if (dexBlueprint?.derived?.moves?.length) {
+    moves = dexBlueprint.derived.moves.map(m => ({ ...cloneJson(m), pp: m.maxPP || m.pp, maxPP: m.maxPP || m.pp }));
+  } else {
+    const poolFromParts = collectPartMoves(assembledParts);
+    const nrmPool = MOVES_BY_TYPE.Normal || [];
+    const fallbackPool = [...(MOVES_BY_TYPE[type] || nrmPool), ...(type2 ? (MOVES_BY_TYPE[type2] || []) : []), ...nrmPool]
+      .filter(Boolean);
+    const sourcePool = poolFromParts.length ? poolFromParts : fallbackPool;
+    const picked = [];
+    const seen = new Set();
+    while (picked.length < 4 && seen.size < sourcePool.length) {
+      const idx = Math.floor(rng() * sourcePool.length);
+      if (seen.has(idx)) continue;
+      seen.add(idx);
+      picked.push(sourcePool[idx]);
+    }
+    while (picked.length < 4 && fallbackPool.length) {
+      const idx = Math.floor(rng() * fallbackPool.length);
+      picked.push(fallbackPool[idx]);
+    }
+    moves = picked.slice(0, 4).map(m => ({
+      id: m.id,
+      name: m.name, type: m.type, emoji: m.emoji, desc: m.desc,
+      power: Math.max(20, Math.round((m.basePower || 55) * (basePow / 55) * earlyPowScale)),
+      acc: m.acc, pp: m.pp, maxPP: m.pp,
+      ...(m.effect ? { effect: m.effect, effectTarget: m.effectTarget,
+        effectChance: m.effectChance, effectDur: m.effectDur } : {}),
+      ...(m.drain ? { drain: m.drain } : {}),
+      ...(m.recoil ? { recoil: m.recoil } : {}),
+      ...(m.priority ? { priority: true } : {}),
+      ...(m.lowHPOnly ? { lowHPOnly: true } : {}),
+    }));
+  }
+
+  const rawAtk = dex ? (dex.atk||80) : Math.min(130, Math.round(60 + n * 1.8 + (isBoss ? 18 : 0) + (rng()-0.5)*20));
+  const rawDef = dex ? (dex.def||80) : Math.min(130, Math.round(60 + n * 1.4 + (isBoss ? 15 : 0) + (rng()-0.5)*20));
+  const rawSpd = dex ? (dex.spd||80) : Math.min(130, Math.round(60 + n * 1.2 + (rng()-0.5)*25));
+  const genAtk = Math.max(30, Math.round(rawAtk * earlyStatScale));
+  const genDef = Math.max(30, Math.round(rawDef * earlyStatScale));
+  const genSpd = Math.max(30, Math.round(rawSpd * earlyStatScale));
+  const emojiPool  = dex ? null : (isBoss ? BOSS_EMOJIS : (ENEMY_EMOJIS[type] || ENEMY_EMOJIS.Normal));
+  const emoji      = dex ? dex.emoji : emojiPool[Math.floor(rng() * emojiPool.length)];
+  const passive    = dex ? (dex.passive || dexBlueprint?.derived?.passive || null) : null;
+  const enemyLevel = Math.max(1, Math.round(n * 0.18) + (isBoss ? 1 : 0) - (n <= 15 ? 1 : 0));
+  const difficulty = isBoss ? 5 : Math.min(4, Math.ceil(n / 4));
+  const xpReward   = xpRewardForEnemyLevel(enemyLevel, isBoss);
   
-  const enemyData = { name: enemyName, emoji, type, hp, luck, atk:genAtk, def:genDef, spd:genSpd,
+  const enemyData = { name: enemyName, emoji, type, type2, hp, luck, atk:genAtk, def:genDef, spd:genSpd,
                       moves, passive, dexId: dex?.id || null, assembledParts, level: enemyLevel };
   const hasNewParts = enemyHasUncaughtParts(enemyData);
 
   return { num: n, name: location, desc: lore, isBoss, difficulty, xpReward, hasNewParts,
+    biomeId: biome?.id || 'unknown',
+    biomeVisual: biome?.visual || null,
     enemy: enemyData };
 }
 
@@ -331,4 +386,3 @@ function playerPower(pb) {
 }
 
 console.log('[GAME] Module loaded');
-

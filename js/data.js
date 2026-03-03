@@ -197,9 +197,8 @@ const TYPE_EFF = {
   Shadow:    { Fire:2,  Ice:1,  Lightning:.5, Shadow:.5, Normal:1 },
   Normal:    { Fire:1,  Ice:1,  Lightning:1,  Shadow:1,  Normal:1 },
 };
-let typeOverride = false;
 function getEff(a, d1, d2 = null) {
-  if (typeOverride) return 1;
+  if (BS.typeOverride) return 1;
   const e1 = (TYPE_EFF[a]?.[d1]) ?? 1;
   const e2 = d2 ? ((TYPE_EFF[a]?.[d2]) ?? 1) : 1;
   return e1 * e2;
@@ -895,18 +894,43 @@ initDexPartIds();
 
 const BIOMES = [
   { id: 'meadow', name: 'Gosling Meadow', types: ['Normal', 'Fire'], families: ['Marshborn', 'Bloomcrest', 'Sunflare'],
+    visual: {
+      skyTop: '#87a7d8', skyBottom: '#7f95c7', haze: 'rgba(189,216,255,.22)',
+      horizon: '#3d7f42', groundA: '#3f8a48', groundB: '#377740', accent: 'rgba(255,225,145,.18)',
+      stripe: 'rgba(255,255,255,.04)'
+    },
     arenas: ['Sunlit Field', 'Windmill Yard', 'Barnside Ring'],
     lore: ['The wind carries feathers and old rivalry.', 'Friendly faces hide ruthless duelers.'] },
   { id: 'tundra', name: 'Frost Tundra', types: ['Ice', 'Normal'], families: ['Frostplume', 'Ironbarb', 'Marshborn'],
+    visual: {
+      skyTop: '#7c95b6', skyBottom: '#95abc7', haze: 'rgba(230,246,255,.24)',
+      horizon: '#95afbe', groundA: '#9fc3d0', groundB: '#8fb4c2', accent: 'rgba(220,245,255,.16)',
+      stripe: 'rgba(255,255,255,.06)'
+    },
     arenas: ['Glacier Pass', 'Rime Basin', 'Snowglass Flats'],
     lore: ['Every breath freezes before it lands.', 'One misstep and the ice answers back.'] },
   { id: 'storm', name: 'Storm Frontier', types: ['Lightning', 'Normal'], families: ['Stormcall', 'Ironbarb', 'Bloomcrest'],
+    visual: {
+      skyTop: '#5a6486', skyBottom: '#707aa3', haze: 'rgba(190,220,255,.16)',
+      horizon: '#2f4c5f', groundA: '#304f6a', groundB: '#2a4560', accent: 'rgba(255,238,128,.14)',
+      stripe: 'rgba(255,255,255,.05)'
+    },
     arenas: ['Voltage Cliffs', 'Static Causeway', 'Thunder Gate'],
     lore: ['Sparks dance before every impact.', 'Metal sings when storms roll in.'] },
   { id: 'ember', name: 'Ember Wastes', types: ['Fire', 'Shadow'], families: ['Embercrest', 'Sunflare', 'Duskveil'],
+    visual: {
+      skyTop: '#7a3a28', skyBottom: '#a34d2f', haze: 'rgba(255,183,124,.16)',
+      horizon: '#5b3827', groundA: '#6a3a29', groundB: '#5a2f21', accent: 'rgba(255,129,52,.18)',
+      stripe: 'rgba(255,230,180,.04)'
+    },
     arenas: ['Cinder Pit', 'Ashen Span', 'Magma Court'],
     lore: ['Heat haze makes distance lie.', 'The ground remembers every burn.'] },
   { id: 'veil', name: 'Veil of Dusk', types: ['Shadow', 'Ice'], families: ['Duskveil', 'Voidgild', 'Frostplume'],
+    visual: {
+      skyTop: '#2a2448', skyBottom: '#3b2f61', haze: 'rgba(198,168,255,.13)',
+      horizon: '#312d53', groundA: '#2b274a', groundB: '#241f3c', accent: 'rgba(170,120,255,.14)',
+      stripe: 'rgba(255,255,255,.03)'
+    },
     arenas: ['Moonlit Hollow', 'Gloom Bridge', 'Echo Crypt'],
     lore: ['Whispers linger longer than footsteps.', 'Shadows move first.'] },
 ];
@@ -1015,7 +1039,7 @@ const WILD_EVENTS = [
     log:'A WILD GOOSE appears and lunges at someone!' },
   { id:'amnesia', emoji:'*', name:'Type Amnesia',
     desc:'Type advantages are completely ignored for the next 3 rounds!',
-    apply:(state)=>{ state.typeIgnored=true; state.typeIgnoredRounds=3; typeOverride=true; },
+    apply:(state)=>{ state.typeIgnored=true; state.typeIgnoredRounds=3; BS.typeOverride=true; },
     log:'Type Amnesia! Type advantages ignored for 3 rounds!' },
   { id:'mirror',  emoji:'*', name:'Mirror Dimension',
     desc:'The next hit reflects 50% of damage back to the attacker!',
@@ -1043,7 +1067,7 @@ const WILD_EVENTS = [
     log:'THE TWIST! Fighters swap their HP values!' },
   { id:'doubles', emoji:'*', name:'Wild Card',
     desc:'One random move gets its power DOUBLED permanently!',
-    apply:(state,bF)=>{ const f=bF[Math.floor(Math.random()*2)]; const m=f.moves[Math.floor(Math.random()*f.moves.length)]; m.power*=2; state.doubledMove={name:m.name,fighter:f.name}; },
+    apply:(state,bF)=>{ const f=bF[Math.floor(BS.rng()*2)]; const m=f.moves[Math.floor(BS.rng()*f.moves.length)]; m.power*=2; state.doubledMove={name:m.name,fighter:f.name}; },
     log:'Wild Card! A random move just got permanently doubled!' },
 ];
 

@@ -202,7 +202,10 @@
   </div>
   <!-- Top bar -->
   <div class="battle-topbar">
-    <div class="topbar-left" id="btb-stage">STAGE 1</div>
+    <div class="topbar-left">
+      <div id="btb-stage">STAGE 1</div>
+      <span id="seed-badge" style="font-family:'Press Start 2P',monospace;font-size:.28rem;color:var(--dim);letter-spacing:.05em;"></span>
+    </div>
     <div class="topbar-right">
       <div style="font-family:'Press Start 2P',monospace;font-size:.32rem;color:var(--dim)">RETRIES</div>
       <div class="retry-row" id="bt-retries"></div>
@@ -210,7 +213,12 @@
   </div>
   <!-- Arena -->
   <div class="arena" id="arena">
-    <div class="arena-bg" id="arena-bg"></div>
+    <div class="arena-bg" id="arena-bg">
+      <div class="arena-sky"></div>
+      <div class="arena-mid"></div>
+      <div class="arena-ground"></div>
+      <div class="arena-lines"></div>
+    </div>
     <div class="ptcl-layer" id="ptcl"></div>
     <div id="eff-toast"></div>
     <!-- LEFT (player) -->
@@ -288,6 +296,7 @@
   <div class="over-title" style="color:#ff5252;">HONKED TO OBLIVION</div>
   <div class="over-sub">ALL RETRIES EXHAUSTED</div>
   <div class="over-stats" id="go-stats"></div>
+  <div id="go-seed" style="font-family:'Press Start 2P',monospace;font-size:.28rem;color:var(--dim);margin:.6rem 0;letter-spacing:.05em;"></div>
   <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-top:.5rem;">
     <button class="btn btn-gold" onclick="restartFromStage()">🔄 RETRY STAGE</button>
     <button class="btn btn-red" onclick="showScreen('screen-title')">↩ MAIN MENU</button>
@@ -382,9 +391,17 @@
   <button class="btn btn-blue" onclick="closeLootPartyOverlay()" style="font-size:.38rem;padding:.5rem 1.2rem">CLOSE</button>
 </div>
 
-<!-- .. PARTY SWITCH OVERLAY .. --
+<!-- .. ENEMY PARTS OVERLAY .. -->
+<div id="enemy-parts-overlay">
+  <div class="ep-title">🧩 ENEMY PARTS</div>
+  <div class="ep-sub">Click parts to inspect what you have already caught.</div>
+  <div class="ep-grid" id="enemy-parts-grid"></div>
+  <button class="btn btn-blue" onclick="closeEnemyPartsOverlay()" style="font-size:.38rem;padding:.5rem 1.2rem">CLOSE</button>
+</div>
+
+<!-- .. PARTY SWITCH OVERLAY .. -->
 <div id="switch-overlay">
-  <div class="sw-title">s HONKER FAINTED!</div>
+  <div class="sw-title">&#x26A0; HONKER FAINTED!</div>
   <div class="sw-sub" id="sw-sub">Choose your next fighter</div>
   <div class="sw-grid" id="sw-grid"></div>
 </div>
@@ -393,9 +410,16 @@
 <script src="js/data.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/game.js"></script>
+<script src="js/battle-state.js"></script>
 <script src="battle/engine.js"></script>
 <script src="core/gameloop.js"></script>
-<script src="js/ui.js"></script>
+<script src="js/ui-battle.js"></script>
+<script src="js/ui-save.js"></script>
+<script src="js/ui-dex.js"></script>
+<script src="js/ui-campaign.js"></script>
+<script src="js/ui-loot.js"></script>
+<script src="js/ui-charselect.js"></script>
+<script src="js/ui-screens.js"></script>
 
 <script>
 window.addEventListener("DOMContentLoaded", () => initTitle().catch(e => console.warn("[INIT]", e)));

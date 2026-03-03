@@ -62,7 +62,7 @@ function levelStatScale(level, key) {
 
 // Get type effectiveness
 function getEff(a, d1, d2 = null) {
-  if (typeOverride) return 1;
+  if (BS.typeOverride) return 1;
   const e1 = (TYPE_EFF[a]?.[d1]) ?? 1;
   const e2 = d2 ? ((TYPE_EFF[a]?.[d2]) ?? 1) : 1;
   return e1 * e2;

@@ -24,7 +24,37 @@ function startNextStageFromLoop() {
   startStageBattle(CAMPAIGN.stageIdx);
 }
 
+function applyBiomeArenaTheme(stage) {
+  const arena = document.getElementById('arena');
+  const arenaBg = document.getElementById('arena-bg');
+  if (!arena || !arenaBg) return;
+
+  const vars = [
+    ['--arena-sky-top', 'skyTop'],
+    ['--arena-sky-bottom', 'skyBottom'],
+    ['--arena-haze', 'haze'],
+    ['--arena-horizon', 'horizon'],
+    ['--arena-ground-a', 'groundA'],
+    ['--arena-ground-b', 'groundB'],
+    ['--arena-accent', 'accent'],
+    ['--arena-stripe', 'stripe'],
+  ];
+  const visual = stage?.biomeVisual || {};
+  vars.forEach(([cssVar, key]) => {
+    if (typeof visual[key] === 'string' && visual[key]) {
+      arena.style.setProperty(cssVar, visual[key]);
+    }
+  });
+
+  const biomeClasses = [...arena.classList].filter(c => c.startsWith('biome-'));
+  biomeClasses.forEach(c => arena.classList.remove(c));
+  if (stage?.biomeId) arena.classList.add(`biome-${stage.biomeId}`);
+
+  arenaBg.classList.toggle('event-active', !!stage?.isBoss);
+}
+
 function startStageBattle(stageIdx, isRetry=false) {
+  if (typeof closeLootPartyOverlay === 'function') closeLootPartyOverlay();
   console.log('startStageBattle called with stageIdx:', stageIdx);
   const stageN = stageIdx + 1;          // convert to 1-indexed
   console.log('Generating stage', stageN);
@@ -47,23 +77,24 @@ function startStageBattle(stageIdx, isRetry=false) {
   };
   if (isRetry && CAMPAIGN._savedPlayerHP) pBoosts.currentHP = CAMPAIGN._savedPlayerHP;
 
-  bFighters = [
+  BS.reset();
+  const runSeed = Number.isFinite(Number(CAMPAIGN?.runSeed)) ? (Number(CAMPAIGN.runSeed) >>> 0) : 0;
+  BS.rng = seededRng(((stageN * 6271 + 99991) ^ runSeed) >>> 0);
+  const seedEl = document.getElementById('seed-badge');
+  if (seedEl) seedEl.textContent = `SEED ${runSeed.toString(16).toUpperCase().padStart(8, '0')}`;
+  BS.bFighters = [
     new Honker(JSON.parse(JSON.stringify(pb)), 'left', pBoosts),
     new Honker(JSON.parse(JSON.stringify(stage.enemy)), 'right', {}),
   ];
-  bFighters[1]._dexId = stage.enemy.dexId || null;
-  bFighters[1]._isBoss = stage.isBoss || false;
-  bFighters[1]._hasNewParts = stage.hasNewParts || false;
-  if (isRetry && CAMPAIGN._savedPlayerHP) bFighters[0].currentHP = CAMPAIGN._savedPlayerHP;
+  BS.bFighters[1]._dexId = stage.enemy.dexId || null;
+  BS.bFighters[1]._isBoss = stage.isBoss || false;
+  BS.bFighters[1]._hasNewParts = stage.hasNewParts || false;
+  if (isRetry && CAMPAIGN._savedPlayerHP) BS.bFighters[0].currentHP = CAMPAIGN._savedPlayerHP;
 
   CAMPAIGN._currentStageIdx = stageIdx;
   CAMPAIGN._currentStage    = stage; // cache for reference after battle
-  CAMPAIGN._savedPlayerHP   = bFighters[0].maxHP;
+  CAMPAIGN._savedPlayerHP   = BS.bFighters[0].maxHP;
 
-  bRound=0; bPhase='p1'; bAutoOn=false; bAutoTurn=0; bDead=false; bAutoTmr=null;
-  bSwapMode=false;
-  typeOverride=false; eventState={}; lastEventRound=-5;
-  bFaintedPartyIdx = new Set();
   stopAuto();
   // Track dex seen
   let globalDirty = false;
@@ -89,12 +120,12 @@ function startStageBattle(stageIdx, isRetry=false) {
   document.getElementById('btb-stage').textContent = `STAGE ${stageN}${bossLabel}: ${stage.name}`;
   buildRetryIcons();
   buildTypeLegend();
-  setupFighterUI(bFighters[0], 'left');
-  setupFighterUI(bFighters[1], 'right');
-  refreshStatusBadges(bFighters[0]);
-  refreshStatusBadges(bFighters[1]);
+  setupFighterUI(BS.bFighters[0], 'left');
+  setupFighterUI(BS.bFighters[1], 'right');
+  refreshStatusBadges(BS.bFighters[0]);
+  refreshStatusBadges(BS.bFighters[1]);
   document.getElementById('round-badge').textContent = 'ROUND 1';
-  document.getElementById('arena-bg').className = stage.isBoss ? 'arena-bg event-active' : 'arena-bg';
+  applyBiomeArenaTheme(stage);
   document.getElementById('log').innerHTML = '';
 
   ['left','right'].forEach(s => {
@@ -106,8 +137,8 @@ function startStageBattle(stageIdx, isRetry=false) {
 
   // Apply player passive effects at battle start
   if (pb.passive?.id === 'cursed_aura') {
-    bFighters[1].statusEffects.cursed = 2;
-    refreshStatusBadges(bFighters[1]);
+    BS.bFighters[1].statusEffects.cursed = 2;
+    refreshStatusBadges(BS.bFighters[1]);
   }
 
   // Show passive strip
@@ -121,8 +152,8 @@ function startStageBattle(stageIdx, isRetry=false) {
 
   // Apply shield_wall passive
   if (pb.passive && pb.passive.id === 'shield_wall') {
-    bFighters[0].statusEffects.shielded = Math.max(1, Math.min(4, (bFighters[0].statusEffects.shielded || 0) + 1));
-    refreshStatusBadges(bFighters[0]);
+    BS.bFighters[0].statusEffects.shielded = Math.max(1, Math.min(4, (BS.bFighters[0].statusEffects.shielded || 0) + 1));
+    refreshStatusBadges(BS.bFighters[0]);
   }
   if (stage.isBoss) {
     log('ev', `BOSS STAGE ${stageN}! <b>${stage.enemy.name}</b> awaits...`);
@@ -141,7 +172,7 @@ function startStageBattle(stageIdx, isRetry=false) {
   renderMovePanel();
   console.log('About to show battle screen');
   showScreen('screen-battle');
-  console.log('Battle screen shown, bPhase:', bPhase);
+  console.log('Battle screen shown, bPhase:', BS.bPhase);
 }
 
 function afterLoot() {
@@ -149,22 +180,22 @@ function afterLoot() {
 }
 
 function toggleAuto() {
-  if(bDead) return;
-  bAutoOn=!bAutoOn;
+  if(BS.bDead) return;
+  BS.bAutoOn=!BS.bAutoOn;
   const btn=document.getElementById('btn-auto');
-  if(bAutoOn){
+  if(BS.bAutoOn){
     btn.textContent='⏸ PAUSE'; btn.className='btn btn-green active';
     btn.style.animation='autoPls 1s ease-in-out infinite';
     renderMovePanel();
-    bAutoTmr=setInterval(()=>{ if(bDead){stopAuto();return;} autoStep(); },720);
+    BS.bAutoTmr=setInterval(()=>{ if(BS.bDead){stopAuto();return;} autoStep(); },720);
   } else {
-    stopAuto(); bPhase='p1'; renderMovePanel();
+    stopAuto(); BS.bPhase='p1'; renderMovePanel();
   }
 }
 
 function stopAuto(){
-  if(bAutoTmr){clearInterval(bAutoTmr);bAutoTmr=null;}
-  bAutoOn=false;
+  if(BS.bAutoTmr){clearInterval(BS.bAutoTmr);BS.bAutoTmr=null;}
+  BS.bAutoOn=false;
   const b=document.getElementById('btn-auto');
   if(b){b.textContent='▶ AUTO BATTLE';b.className='btn btn-green';b.style.animation='';}
 }
