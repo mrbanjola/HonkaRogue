@@ -6,6 +6,22 @@
 // "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
 //  HONKER CLASS
 // "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
+
+function getHonkerMaxHP(h) {
+  if (!h) return 0;
+  const lv = Math.max(1, h.level || 1);
+  const partHpBase = (h.assembledParts && typeof h.assembledParts === 'object')
+    ? ['head', 'torso', 'wings', 'legs']
+        .map(slot => Number(h.assembledParts?.[slot]?.stats?.hp || 0))
+        .reduce((a, b) => a + b, 0)
+    : 0;
+  const hpStatBase = Number(h.hp || 0);
+  const hpBase = Math.max(1, hpStatBase > 0 ? hpStatBase : partHpBase);
+  const hpWithBonus = hpBase + Number(h.maxHPBonus || 0);
+  const masteryMult = masteryStatMultiplier(h.masteryLevel || 0);
+  return Math.max(1, Math.floor((((2 * hpWithBonus * lv) / 100) + lv + 10) * masteryMult));
+}
+
 class Honker {
   constructor(data, side, campBoosts={}) {
     Object.assign(this, JSON.parse(JSON.stringify(data)));
@@ -28,15 +44,7 @@ class Honker {
       m.pp = saved == null ? m.maxPP : Math.max(0, Math.min(m.maxPP, saved));
     });
     const masteryMult = masteryStatMultiplier(this.masteryLevel);
-    const partHpBase = (this.assembledParts && typeof this.assembledParts === 'object')
-      ? ['head', 'torso', 'wings', 'legs']
-          .map(slot => Number(this.assembledParts?.[slot]?.stats?.hp || 0))
-          .reduce((a, b) => a + b, 0)
-      : 0;
-    const hpBase = Math.max(1, partHpBase || Number(this.hp || 0));
-    const hpWithBonus = hpBase + Number(this.maxHPBonus || 0);
-    // Gen I/II style HP formula adapted with hpBase from parts, then mastery multiplier.
-    this.maxHP = Math.max(1, Math.floor((((2 * hpWithBonus * this.level) / 100) + this.level + 10) * masteryMult));
+    this.maxHP = getHonkerMaxHP(this);
     this.currentHP = Math.max(0, Math.min(this.maxHP, campBoosts.currentHP ?? this.maxHP));
     if (this.persistentEffects) {
       STACKABLE_EFFECTS.forEach(k => {
@@ -75,23 +83,25 @@ class Honker {
   aiPickMove(enemy) {
     const avail = this.moves.filter(m=>m.pp>0 && !(m.lowHPOnly && this.hpPct >= 0.5));
     if (!avail.length) return this.moves[0];
-    return avail.reduce((best,m)=>{
-      const eff = getEff(m.type, enemy.type, enemy.type2);
-      let score;
+    const self = this;
+    const scoreMove = (m) => {
       if (m.effect) {
         const alreadyAffected = m.effectTarget === 'self'
-          ? this.statusEffects[m.effect]
+          ? self.statusEffects[m.effect]
           : enemy.statusEffects[m.effect];
-        score = alreadyAffected ? 5 : (m.effect==='shield'||m.effect==='pump') ? 45 : 50;
-        if (m.effectTarget==='self' && this.hpPct < 0.4) score *= 1.5;
-      } else {
-        score = m.power * (m.acc/100) * eff * (0.7 + Math.random()*.6) * this.atkModifier;
+        let s = alreadyAffected ? 5 : (m.effect==='shield'||m.effect==='pump') ? 45 : 50;
+        if (m.effectTarget==='self' && self.hpPct < 0.4) s *= 1.5;
+        return s;
       }
-      const bestScore = best.effect
-        ? 30
-        : best.power * (best.acc/100) * getEff(best.type, enemy.type, enemy.type2) * this.atkModifier;
-      return score > bestScore ? m : best;
-    }, avail[0]);
+      return m.power * (m.acc/100) * getEff(m.type, enemy.type, enemy.type2) * (0.7 + Math.random()*.6) * self.atkModifier;
+    };
+    let best = avail[0];
+    let bestScore = scoreMove(best);
+    for (let i = 1; i < avail.length; i++) {
+      const s = scoreMove(avail[i]);
+      if (s > bestScore) { best = avail[i]; bestScore = s; }
+    }
+    return best;
   }
 }
 
@@ -177,7 +187,9 @@ function xpRewardForEnemyLevel(level, isBoss) {
 }
 
 function generateStage(n) {
-  const rng    = seededRng(n * 7919 + 31337);
+  const runSeed = Number.isFinite(Number(CAMPAIGN?.runSeed)) ? (Number(CAMPAIGN.runSeed) >>> 0) : 0;
+  const stageSeed = ((n * 7919 + 31337) ^ runSeed) >>> 0;
+  const rng    = seededRng(stageSeed);
   const biome = getBiomeForStage(n);
   const isBoss = (n % 5 === 0);
   rng(); rng();
@@ -191,9 +203,9 @@ function generateStage(n) {
     dexThreshold = isBoss ? 0.20 : 0.15;
   }
   const useDex = rngRoll < dexThreshold;
-  console.log(`Stage ${n} | RNG: ${rngRoll.toFixed(3)} | Threshold: ${(dexThreshold*100).toFixed(0)}% | UseDex: ${useDex} | ${useDex ? 'âœ¦ RARE' : 'PROCEDURAL'}`);
+  console.log(`Stage ${n} | RNG: ${rngRoll.toFixed(3)} | Threshold: ${(dexThreshold*100).toFixed(0)}% | UseDex: ${useDex} | ${useDex ? '✦ RARE' : 'PROCEDURAL'}`);
   const dex    = useDex ? chooseDexForStage(n, isBoss, rng, biome) : null;
-  if (dex) console.log(`  â†’ Named Honker: ${dex.name}`);
+  if (dex) console.log(`  → Named Honker: ${dex.name}`);
   const dexBlueprint = dex ? buildDexPartBlueprint(dex) : null;
   const types  = ['Fire','Ice','Lightning','Shadow','Normal'];
   let type   = dex ? (dexBlueprint?.derived?.type || dex.type) : (pickBiomeType(biome, rng, isBoss) || types[Math.floor(rng() * (isBoss ? 4 : 5))]);
@@ -217,7 +229,7 @@ function generateStage(n) {
   }
 
   const arena = biome?.arenas?.[Math.floor(rng() * biome.arenas.length)] || STAGE_LOCATIONS[(n - 1) % STAGE_LOCATIONS.length];
-  const location = `${biome?.name || 'Honklands'} â€¢ ${arena}`;
+  const location = `${biome?.name || 'Honklands'} • ${arena}`;
   const loreRaw  = dex ? dex.lore : (biome?.lore?.[Math.floor(rng() * biome.lore.length)] || STAGE_LORE[Math.floor(rng() * STAGE_LORE.length)]);
   const lore     = dex ? `"${loreRaw}"` : `"${loreRaw.replace('{n}', n)}"`;
 
@@ -316,102 +328,6 @@ function playerPower(pb) {
   const atkBase = Math.round((pb.atk || 80) * levelStatScale(pb.level || 1, 'atk'));
   const atk = (pb.atkMult||1) * (atkBase + (pb.atkFlat||0));
   return Math.round(hp * 0.6 + atk * 2);
-}
-
-// "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
-//  PARTS & DEX TRACKING
-// "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
-
-function ensurePartTrackingState() {
-  if (!CAMPAIGN.partsSeen) CAMPAIGN.partsSeen = [];
-  if (!CAMPAIGN.caughtParts) CAMPAIGN.caughtParts = [];
-  // Backfill legacy saves: any caught part should always count as seen.
-  if (CAMPAIGN.caughtParts.length) {
-    const seenSet = new Set(CAMPAIGN.partsSeen);
-    let changed = false;
-    for (const id of CAMPAIGN.caughtParts) {
-      if (!seenSet.has(id)) {
-        seenSet.add(id);
-        changed = true;
-      }
-    }
-    if (changed) CAMPAIGN.partsSeen = [...seenSet];
-  }
-}
-
-function getAllPartIds() {
-  return (PARTS_DATA?.parts || []).map(p => p.id);
-}
-
-function isPartUnlocked(partId) {
-  if (!partId) return false;
-  ensurePartTrackingState();
-  return CAMPAIGN.caughtParts.includes(partId);
-}
-
-function isPartSeen(partId) {
-  if (!partId) return false;
-  ensurePartTrackingState();
-  return CAMPAIGN.partsSeen.includes(partId);
-}
-
-function isPartCaught(partId) {
-  if (!partId) return false;
-  ensurePartTrackingState();
-  return CAMPAIGN.caughtParts.includes(partId);
-}
-
-function catchPartIds(honker, partsToAdd) {
-  if (!honker) return 0;
-  if (!Array.isArray(partsToAdd)) partsToAdd = [partsToAdd];
-  ensurePartTrackingState();
-  let unlocked = 0;
-  partsToAdd.forEach(partId => {
-    if (!partId) return;
-    if (!CAMPAIGN.partsSeen.includes(partId)) {
-      CAMPAIGN.partsSeen.push(partId);
-    }
-    if (!CAMPAIGN.caughtParts.includes(partId)) {
-      CAMPAIGN.caughtParts.push(partId);
-      unlocked++;
-    }
-  });
-  return unlocked;
-}
-
-function enemyHasUncaughtParts(enemyData) {
-  if (!enemyData?.assembledParts) return false;
-  ensurePartTrackingState();
-  const slots = ['head', 'torso', 'wings', 'legs'];
-  return slots.some(slot => {
-    const part = enemyData.assembledParts[slot];
-    return part && !CAMPAIGN.caughtParts.includes(part.id);
-  });
-}
-
-function grantCatchPartUnlocks(caught, rawEnemy) {
-  if (!caught || !caught.assembledParts) return 0;
-  const slots = ['head', 'torso', 'wings', 'legs'];
-  const parts = slots.map(s => caught.assembledParts[s]).filter(Boolean);
-  return catchPartIds(caught, parts.map(p => p.id));
-}
-
-function resetStarterCaughtParts() {
-  ensurePartTrackingState();
-  CAMPAIGN.caughtParts = (PARTS_DATA?.parts || [])
-    .filter(p => p.family?.name && (STARTER_FAMILIES || []).includes(p.family.name))
-    .map(p => p.id);
-}
-
-function resetStarterUnlockedParts() {
-  resetStarterCaughtParts();
-}
-
-function unlockAllParts() {
-  const allPartIds = getAllPartIds();
-  ensurePartTrackingState();
-  CAMPAIGN.caughtParts = [...allPartIds];
-  CAMPAIGN.partsSeen = [...allPartIds];
 }
 
 console.log('[GAME] Module loaded');

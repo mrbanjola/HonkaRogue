@@ -1,0 +1,411 @@
+// ============================================================================
+// HonkaRogue Battle Engine Module (battle/engine.js)
+// Turn execution, status logic, and damage resolution
+// ============================================================================
+
+const OPENERS=['With blazing resolve,','Eyes locked in fury,','Without warning,',
+  'Channeling pure rage,','Sensing an opening,','Drawing on hidden power,',
+  'In a burst of energy,','Calculating coldly,','With a battle cry,','Seizing the moment,'];
+const MISSES=['But the attack whiffs!','But it sails past!','But the target sidesteps!',
+  'But fate denies the strike!','But the blow goes wide!','But the honk misses entirely!'];
+
+function p1UsesMove(idx) {
+  if(bDead||bPhase!=='p1') return;
+  const move=bFighters[0].moves[idx];
+  if(!move||move.pp<=0) return;
+
+  // lowHPOnly signature moves
+  if (move.lowHPOnly && bFighters[0].hpPct >= 0.5) {
+    log('ms', `⚠ <b>${bFighters[0].name}</b> isn't desperate enough! ${move.name} won't work above 50% HP.`);
+    return;
+  }
+
+  bPhase='busy';
+  bRound++;
+  document.getElementById('round-badge').textContent=`ROUND ${bRound}`;
+  log('r',`━━━━ ROUND ${bRound} ━━━━`);
+  maybeFireEvent();
+  renderMovePanel();
+
+  // Speed-based turn order: priority moves always go first.
+  // Otherwise: enemy needs a clearer speed edge to strike first.
+  const playerSpd = bFighters[0].spd || 80;
+  const enemySpd  = bFighters[1].spd || 80;
+  const playerPriority = !!move.priority;
+  const enemyGoesFirst = !playerPriority && (enemySpd - playerSpd > 16);
+
+  if (enemyGoesFirst) {
+    log('ev', `⚡ <b>${bFighters[1].name}</b> is faster and strikes first! (SPD ${enemySpd} vs ${playerSpd})`);
+    bPhase='p2'; renderMovePanel();
+    const aiMove = bFighters[1].aiPickMove(bFighters[0]);
+    bPhase='busy';
+    doMove(bFighters[1], bFighters[0], aiMove, ()=>{
+      if(bDead) return;
+      doMove(bFighters[0], bFighters[1], move, ()=>{
+        if(bDead) return;
+        tickEventState();
+        bPhase='p1'; renderMovePanel(); updateCatchButton();
+      });
+    });
+  } else {
+    if (playerPriority) log('ev', `⚡ <b>${bFighters[0].name}</b> uses ${move.emoji} ${move.name} • priority move strikes first!`);
+    doMove(bFighters[0], bFighters[1], move, ()=>{
+      if(bDead) return;
+      bPhase='p2'; renderMovePanel(); updateCatchButton();
+      setTimeout(()=>{
+        if(bDead) return;
+        const aiMove=bFighters[1].aiPickMove(bFighters[0]);
+        bPhase='busy';
+        doMove(bFighters[1], bFighters[0], aiMove, ()=>{
+          if(bDead) return;
+          tickEventState();
+          bPhase='p1'; renderMovePanel(); updateCatchButton();
+        });
+      }, bAutoOn?600:880);
+    });
+  }
+}
+
+function autoStep() {
+  if(bDead) return;
+  const atk=bFighters[bAutoTurn%2], def=bFighters[(bAutoTurn+1)%2];
+  if(bAutoTurn%2===0){
+    bRound++;
+    document.getElementById('round-badge').textContent=`ROUND ${bRound}`;
+    log('r',`━━━━ ROUND ${bRound} ━━━━`);
+    maybeFireEvent();
+  }
+  bAutoTurn++;
+  const move=atk.aiPickMove(def);
+  doMove(atk, def, move, ()=>{
+    if(bAutoTurn%2===0) tickEventState();
+  });
+}
+
+const STATUS_META = {
+  burn:      { emoji:'🔥', color:'#ff4e00', label:'BURN'    },
+  frozen:    { emoji:'❄️', color:'#00c8ff', label:'FROZEN'  },
+  paralyzed: { emoji:'⚡', color:'#ffe600', label:'PARA'    },
+  cursed:    { emoji:'🌑', color:'#a020f0', label:'CURSE'   },
+  shielded:  { emoji:'🛡️', color:'#00ff88', label:'SHIELD'  },
+  pumped:    { emoji:'💪', color:'#ff9800', label:'PUMPED'  },
+};
+
+const TYPE_ICON = {
+  Fire: '🔥',
+  Ice: '❄️',
+  Lightning: '⚡',
+  Shadow: '🌑',
+  Normal: '🦆',
+};
+
+function restoreEmojiIcons() {
+  const specials = {
+    kevin: '🐓', // rooster
+  };
+  const passiveIcon = {
+    heat_proof: TYPE_ICON.Fire,
+    frost_armor: TYPE_ICON.Ice,
+    static_skin: TYPE_ICON.Lightning,
+    cursed_aura: TYPE_ICON.Shadow,
+    thick_skin: '🛡️',
+    underdog: '💪',
+    regeneration: '🪴',
+    shield_wall: '🛡️',
+    type_mastery: '✨',
+    resilient: '🧱',
+  };
+  const statusIcon = {
+    burn: TYPE_ICON.Fire,
+    frozen: TYPE_ICON.Ice,
+    paralyzed: TYPE_ICON.Lightning,
+    cursed: TYPE_ICON.Shadow,
+    shielded: '🛡️',
+    pumped: '💪',
+  };
+  const itemIcon = {
+    hp_tonic: '❤️',
+    lucky_clover: '🍀',
+    sharp_beak: '🐦',
+    pp_seed: '🌱',
+    power_crystal: '💎',
+    iron_feathers: '🛡️',
+    lucky_star: '⭐',
+    stab_orb: '✨',
+    extra_life: '🪶',
+    chaos_core: '🌀',
+    ancient_honk: '📜',
+    heal_flask: '🧪',
+  };
+  const badEmoji = (v) => !v || v === '*' || (/^[A-Za-z0-9 ?._'":-]{1,4}$/.test(v));
+  const fix = (obj, fallback) => {
+    if (!obj || typeof obj !== 'object') return;
+    if (badEmoji(obj.emoji)) obj.emoji = fallback;
+  };
+
+  for (const k of Object.keys(STATUS_META)) STATUS_META[k].emoji = statusIcon[k] || '✨';
+
+  (ROSTER || []).forEach(h => {
+    const base = specials[h.id] || TYPE_ICON[h.type] || '🦆';
+    fix(h, base);
+    if (h.passive) fix(h.passive, passiveIcon[h.passive.id] || '✨');
+    (h.moves || []).forEach(m => fix(m, TYPE_ICON[m.type] || '✨'));
+  });
+
+  (HONKER_DEX || []).forEach(h => {
+    const base = specials[h.id] || TYPE_ICON[h.type] || '🦆';
+    fix(h, base);
+    if (h.passive) fix(h.passive, passiveIcon[h.passive.id] || '✨');
+  });
+
+  if (typeof MOVES_BY_TYPE !== 'undefined' && MOVES_BY_TYPE) {
+    Object.entries(MOVES_BY_TYPE).forEach(([type, list]) => {
+      (list || []).forEach(m => fix(m, TYPE_ICON[type] || '✨'));
+    });
+  }
+
+  if (typeof ITEMS !== 'undefined' && ITEMS) (ITEMS || []).forEach(it => fix(it, itemIcon[it.id] || '🎁'));
+  if (typeof WILD_EVENTS !== 'undefined' && WILD_EVENTS) (WILD_EVENTS || []).forEach(ev => fix(ev, '✨'));
+  if (typeof PART_PASSIVES !== 'undefined' && PART_PASSIVES) Object.values(PART_PASSIVES || {}).forEach(p => fix(p, passiveIcon[p.id] || '✨'));
+}
+try { restoreEmojiIcons(); } catch (e) { console.warn('restoreEmojiIcons failed', e); }
+
+function refreshStatusBadges(f) {
+  const el = document.getElementById(`sb-${f.side}`);
+  el.innerHTML = '';
+  Object.entries(f.statusEffects).forEach(([key, val]) => {
+    if (!val || val <= 0) return;
+    const meta = STATUS_META[key];
+    if (!meta) return;
+    const suffix = STACKABLE_EFFECTS.includes(key) ? ` x${Math.max(1, Math.min(4, val))}` : (val>1 ? ` ·${val}` : '');
+    addStatusBadge(f.side, `${meta.emoji} ${meta.label}${suffix}`, meta.color);
+  });
+}
+
+function applyStatusEffect(target, effect, duration) {
+  // Passive: resilient blocks paralysis
+  if (effect === 'paralyzed' && target.passive?.id === 'resilient') {
+    log('n', `🛡️ <b>${target.name}</b>'s Resilient passive blocks paralysis!`);
+    return;
+  }
+  // Passive: heat_proof blocks burn
+  if (effect === 'burn' && target.passive?.id === 'heat_proof') {
+    log('n', `🔥 <b>${target.name}</b>'s Heat Proof passive blocks burn!`);
+    return;
+  }
+  if (STACKABLE_EFFECTS.includes(effect)) {
+    const cur = target.statusEffects[effect] || 0;
+    target.statusEffects[effect] = Math.max(1, Math.min(4, cur + 1));
+  } else {
+    // Classic timed effects (burn/frozen)
+    target.statusEffects[effect] = duration;
+  }
+  refreshStatusBadges(target);
+  const meta = STATUS_META[effect];
+  const stackTxt = STACKABLE_EFFECTS.includes(effect) ? ` (stack ${target.statusEffects[effect]}/4)` : '';
+  const msgs = {
+    burn:      `🔥 <b>${target.name}</b> is now <span style="color:#ff4e00">BURNING</span>! Takes damage each round.`,
+    frozen:    `❄️ <b>${target.name}</b> is <span style="color:#00c8ff">FROZEN SOLID</span>! Will skip their next turn!`,
+    paralyzed: `⚡ <b>${target.name}</b> is <span style="color:#ffe600">PARALYZED</span>! Accuracy reduced${stackTxt}.`,
+    cursed:    `🌑 <b>${target.name}</b> is <span style="color:#a020f0">CURSED</span>! Attack power reduced${stackTxt}.`,
+    shielded:  `🛡️ <b>${target.name}</b> raises a <span style="color:#00ff88">SHIELD</span>! Incoming damage reduced${stackTxt}.`,
+    pumped:    `💪 <b>${target.name}</b> is <span style="color:#ff9800">PUMPED UP</span>! Attack power increased${stackTxt}.`,
+  };
+  log('ev', msgs[effect] || `${meta.emoji} ${target.name} gains ${effect}!`);
+}
+
+function tickStatusEffects(f) {
+  // Passive: heat_proof - immune to burn (also blocked at apply, belt+suspenders)
+  if (f.passive?.id === 'heat_proof' && f.statusEffects.burn) {
+    delete f.statusEffects.burn;
+    refreshStatusBadges(f);
+  }
+  // Passive: regeneration - heal 6% max HP each round
+  if (f.passive?.id === 'regeneration' && f.currentHP < f.maxHP) {
+    const heal = Math.max(3, Math.round(f.maxHP * 0.06));
+    f.currentHP = Math.min(f.maxHP, f.currentHP + heal);
+    updateHP(f, f.side);
+    log('n', `🌱 <b>${f.name}</b> regenerates <span style="color:#00ff88">${heal} HP</span>!`);
+  }
+  // Burn deals 8% max HP damage per round
+  if (f.statusEffects.burn > 0) {
+    const burnDmg = Math.max(4, Math.round(f.maxHP * 0.08));
+    f.currentHP = Math.max(0, f.currentHP - burnDmg);
+    updateHP(f, f.side);
+    log('ev', `🔥 <b>${f.name}</b> takes <span style="color:#ff4e00">${burnDmg} burn damage</span>!`);
+    f.statusEffects.burn--;
+    if (f.statusEffects.burn <= 0) {
+      delete f.statusEffects.burn;
+      log('n', `🔥 ${f.name}'s burn fades.`);
+    }
+    if (f.isDead()) return true; // signal death from burn
+  }
+  // Stackable effects (paralyzed/cursed/shielded/pumped) persist until cleared.
+  refreshStatusBadges(f);
+  return false;
+}
+
+function doMove(atk, def, move, cb) {
+  // Frozen: skip turn
+  if (atk.statusEffects.frozen > 0) {
+    if (Math.random() < 0.5) {
+      // Thawed! Act normally this turn
+      atk.statusEffects.frozen--;
+      if (atk.statusEffects.frozen <= 0) delete atk.statusEffects.frozen;
+      refreshStatusBadges(atk);
+      log('n', `❄️ <b>${atk.name}</b> thaws out and acts!`);
+    } else {
+      atk.statusEffects.frozen--;
+      if (atk.statusEffects.frozen <= 0) delete atk.statusEffects.frozen;
+      refreshStatusBadges(atk);
+      move.pp = Math.max(0, move.pp - 1);
+      updatePPDots(atk, atk.side);
+      log('ms', `❄️ <b>${atk.name}</b> is frozen solid and cannot move!`);
+      shakeSpr(atk.side);
+      setTimeout(cb, 370);
+      return;
+    }
+  }
+
+  const accMod    = (eventState.accuracyMod || 1) * atk.accModifier;
+  const guaranteed = eventState.guaranteedHit;
+  const effAcc    = guaranteed ? 100 : move.acc * accMod;
+  // Luck-based evasion: defender has a small chance to dodge (luck/400 = 0-24% based on luck)
+  const evadeChance = (def.effectiveLuck || 50) / 400;
+  const evaded = !guaranteed && Math.random() < evadeChance;
+  const hit = !evaded && (Math.random() * 100 <= effAcc);
+
+  move.pp = Math.max(0, move.pp - 1);
+  updatePPDots(atk, atk.side);
+
+  const opener = OPENERS[Math.floor(Math.random() * OPENERS.length)];
+
+  // STATUS / BUFF MOVE (no damage)
+  if (move.effect && move.power === 0) {
+    log('m', `${opener} <b style="color:${TC[atk.type]}">${atk.name}</b> uses <b>${move.emoji} ${move.name}</b>!`);
+    if (!hit) { log('ms', 'But it fails!'); shakeSpr(atk.side); setTimeout(cb, 370); return; }
+    const chanceRoll = Math.random() * 100;
+    if (chanceRoll > (move.effectChance || 100)) {
+      log('ms', 'But it had no effect!');
+      setTimeout(cb, 370);
+      return;
+    }
+    const target = move.effectTarget === 'self' ? atk : def;
+    animAtk(atk.side, def.side);
+    setTimeout(() => {
+      applyStatusEffect(target, move.effect, move.effectDur || 2);
+      spawnPtcl(target.side, STATUS_META[move.effect]?.color || '#fff', move.emoji);
+      setTimeout(cb, 350);
+    }, 300);
+    return;
+  }
+
+  log('m', `${opener} <b style="color:${TC[atk.type]}">${atk.name}</b> uses <b>${move.emoji} ${move.name}</b>!`);
+
+  if (evaded) {
+    log('ms', `🌀 <b>${def.name}</b> dodged the attack! (Lucky!)`);
+    shakeSpr(def.side);
+    setTimeout(cb, 370);
+    return;
+  }
+  if (!hit) {
+    log('ms', MISSES[Math.floor(Math.random() * MISSES.length)]);
+    shakeSpr(atk.side);
+    setTimeout(cb, 370);
+    return;
+  }
+
+  // Gen-1 style core damage formula with game-specific modifiers layered on top.
+  let   mType = move.type;
+  if (atk.chaosMod && atk.chaosMod > 1) {
+    const types = ['Fire','Ice','Lightning','Shadow','Normal'];
+    mType = types[Math.floor(Math.random() * types.length)];
+  }
+  const eff   = getEff(mType, def.type, def.type2);
+  const stab   = (mType === atk.type || mType === atk.type2) ? (atk.stabBonus || 1.25) : 1.0;
+  const rage   = (eventState.rageTarget === atk.side && eventState.rageMod) ? eventState.rageMod : 1;
+  // Luck-based crits: attacker's luck/500 = 0-19% crit chance.
+  const critChance = (atk.effectiveLuck || 50) / 500;
+  const isCrit = Math.random() < critChance;
+  const level = Math.max(1, atk.level || 1);
+  const critLevelMult = isCrit ? 2 : 1;
+  const randomMult = 0.85 + Math.random() * 0.15;
+  const atkStat = Math.max(1, Math.round(((atk.atk || 80) + (atk.atkFlat || 0)) * (atk.atkMult || 1) * atk.atkModifier));
+  const defStat = Math.max(1, Math.round(def.def || 80));
+  const chaos  = atk.chaosMod || 1;
+  const shield = def.defModifier; // < 1 if shielded
+  // Passive: frost_armor - 25% less Ice damage
+  const frostArmor = (def.passive?.id === 'frost_armor' && (mType||move.type) === 'Ice') ? 0.75 : 1;
+  const pwr = Math.max(1, Math.round(move.power || 0));
+  const core1 = Math.floor((2 * level * critLevelMult) / 5) + 2;
+  const core2 = Math.floor((core1 * pwr * atkStat) / defStat);
+  const core3 = Math.floor(core2 / 50) + 2;
+  let dmg = Math.floor(core3 * stab * eff * randomMult * rage * chaos * shield * frostArmor);
+  if (eff <= 0) dmg = 0;
+  else dmg = Math.max(1, dmg);
+  if (isCrit) log('g', `🎯 <b>CRITICAL HIT!</b> (${atk.name}'s luck comes through!)`);
+
+  if (eventState.nextHitMult) {
+    dmg = Math.round(dmg * eventState.nextHitMult);
+    delete eventState.nextHitMult;
+    log('ev', `⚡ POWER SURGE activates! Damage tripled!`);
+  }
+
+  animAtk(atk.side, def.side);
+  setTimeout(() => {
+    showClash(move.emoji);
+    spawnPtcl(def.side, TC[mType || atk.type], move.emoji);
+    if (eff >= 2)    showToast('super', '⚡ SUPER EFFECTIVE!');
+    else if (eff <= .5) showToast('not', '🛡 Not very effective...');
+
+    setTimeout(() => {
+      let reflected = 0;
+      if (eventState.mirror) {
+        reflected = Math.round(dmg * eventState.mirror);
+        delete eventState.mirror;
+        clearStatusBadges('left'); clearStatusBadges('right');
+        bFighters.forEach(f => refreshStatusBadges(f));
+      }
+
+      def.currentHP = Math.max(0, def.currentHP - dmg);
+      updateHP(def, def.side);
+      if (reflected > 0) {
+        atk.currentHP = Math.max(0, atk.currentHP - reflected);
+        updateHP(atk, atk.side);
+        log('ev', `🪞 Mirror reflects ${reflected} damage back to ${atk.name}!`);
+      }
+
+      if (eff >= 2)       log('s', '🔥 It\'s super effective!');
+      else if (eff <= .5) log('w', '🛡 Not very effective...');
+      if (stab > 1)       log('n', '✨ Same-type bonus!');
+      if (def.statusEffects.shielded) log('n', `🛡️ Shield absorbs some damage!`);
+      if (frostArmor < 1) log('n', `❄️ Frost Armor reduces the Ice damage!`);
+
+      const effLbl = eff !== 1 ? ` (x${eff})` : '';
+      log('d', `💥 <b>${def.name}</b> takes <span style="color:#ff5252">${dmg} damage</span>${effLbl}! HP: ${def.currentHP}/${def.maxHP}`);
+
+      // Passive: static_skin - 30% chance to paralyze attacker on hit
+      if (def.passive?.id === 'static_skin' && dmg > 0 && !atk.statusEffects.paralyzed && Math.random() < 0.3) {
+        applyStatusEffect(atk, 'paralyzed', 2);
+        log('ev', `⚡ ${def.name}'s Static Skin zaps ${atk.name}!`);
+        spawnPtcl(atk.side, '#ffe600', '⚡');
+      }
+
+      // CHANCE TO APPLY BONUS STATUS ON DAMAGE MOVES
+      if (move.effect && move.power > 0 && Math.random() * 100 <= (move.effectChance || 0)) {
+        const statusTarget = move.effectTarget === 'self' ? atk : def;
+        const canApply = STACKABLE_EFFECTS.includes(move.effect) || !statusTarget.statusEffects[move.effect];
+        if (canApply) {
+          applyStatusEffect(statusTarget, move.effect, move.effectDur || 2);
+          spawnPtcl(statusTarget.side, STATUS_META[move.effect]?.color || '#fff', STATUS_META[move.effect]?.emoji || '●');
+        }
+      }
+
+      updateCatchButton();
+
+      if (def.isDead())                        { endBattle(atk, def); }
+      else if (reflected > 0 && atk.isDead())  { endBattle(def, atk); }
+      else { setTimeout(cb, 270); }
+    }, 330);
+  }, 230);
+}

@@ -1,4 +1,11 @@
 saves/
 Sprite_Backups/*
 Sounds/*
-
+node_modules/
+.agent-bridge/
+.agent-context/
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+.gitignore
+.githooks

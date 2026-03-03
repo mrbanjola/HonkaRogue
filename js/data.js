@@ -103,6 +103,26 @@ async function loadPartsData() {
   }
   return PARTS_DATA;
 }
+async function loadMovesData() {
+  const urls = ['/api/move-pool', 'data/moves_data.json'];
+  for (const url of urls) {
+    try {
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) continue;
+      const data = await res.json();
+      const pool = Array.isArray(data) ? data : (data.items || []);
+      if (!pool.length) continue;
+      MOVE_POOL = pool;
+      _buildMoveIndexes();
+      MOVE_LEARN_LOOT_POOL = MOVE_POOL.map(buildMoveLootItem).filter(Boolean);
+      LOOT_POOL = [...CORE_LOOT_POOL, ...MOVE_LEARN_LOOT_POOL];
+      console.log('[DATA] Moves loaded:', MOVE_POOL.length);
+      return true;
+    } catch (_) {}
+  }
+  console.warn('[DATA] loadMovesData: failed to load from all sources');
+  return false;
+}
 
 function normalizePartRarityByFamily(data) {
   if (!data || !Array.isArray(data.parts)) return;
@@ -188,7 +208,7 @@ const TC  = { Fire:'#ff4e00',Ice:'#00c8ff',Lightning:'#ffe600',Shadow:'#a020f0',
 const TCC = { Fire:'tc-fire',Ice:'tc-ice',Lightning:'tc-lightning',Shadow:'tc-shadow',Normal:'tc-normal' };
 
 // ROSTER (4 starter honkers)
-const ROSTER = [
+let ROSTER = [
   { id:'bengt', name:'Bengt', emoji:'*', type:'Fire', lore:'A goose of volcanic temperament.', hp:210, luck:72, atk:95, def:75, spd:65, passive:{ id:'heat_proof', emoji:'*', name:'Heat Proof', desc:'Immune to Burn.' }, moveIds:['fire_flame_honk','fire_eruption','normal_wing_slap','fire_scorchblast']},
   { id:'robin', name:'Robin Hood', emoji:'*', type:'Ice', lore:'Stole warmth, gave frostbite.', hp:175, luck:65, atk:75, def:90, spd:95, passive:{ id:'frost_armor', emoji:'*', name:'Frost Armor', desc:'Takes 25% less Ice damage.' }, moveIds:['ice_frost_arrow','ice_blizzard','normal_peck','ice_ice_lance']},
   { id:'zephyr', name:'Zephyr', emoji:'*', type:'Lightning', lore:'Calls lightning from clear skies.', hp:155, luck:52, atk:82, def:55, spd:120, passive:{ id:'static_skin', emoji:'*', name:'Static Skin', desc:'30% chance to Paralyze any attacker.' }, moveIds:['lightning_shock_honk','lightning_thunderclap','normal_talon_strike','lightning_chain_bolt']},
@@ -205,6 +225,7 @@ const CAMPAIGN = {
   stageIdx: 0,
   retries: 3,
   maxRetries: 3,
+  runSeed: null,
   completedStages: [],
   totalXP: 0,
   level: 1,
@@ -223,7 +244,7 @@ const CAMPAIGN = {
 // "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
 //  HONK?DEX   -  30 named honkers that fill stages 1 - 30
 // "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
-const HONKER_DEX = [
+let HONKER_DEX = [
   // Stage 1
   { dexNum:1,  id:'gerald',     name:'Gerald',              emoji:'*', type:'Normal',
     atk:50, def:55, spd:55,
@@ -375,825 +396,8 @@ const HONKER_DEX = [
     passive:{id:'cursed_aura',  emoji:'*', name:'Cursed Aura',   desc:'Enemy starts battle Cursed.'}, isBoss:true },
 ];
 
-// MOVE POOL (single source of truth)
-// Add/edit moves here; all type indexes and learnable loot are derived automatically.
-const MOVE_POOL = [
-  {
-    "name": "Flame Honk",
-    "types": [
-      "Fire"
-    ],
-    "emoji": "🔥",
-    "desc": "Reliable fiery bread-and-butter.",
-    "basePower": 50,
-    "acc": 95,
-    "pp": 20,
-    "id": "",
-    "tier": "common",
-    "type": "Fire"
-  },
-  {
-    "name": "Flame Burst",
-    "types": [
-      "Fire"
-    ],
-    "emoji": "*",
-    "desc": "A quick flame",
-    "basePower": 44,
-    "acc": 95,
-    "pp": 20
-  },
-  {
-    "name": "Scorchblast",
-    "types": [
-      "Fire"
-    ],
-    "emoji": "*",
-    "desc": "Ignites the target",
-    "basePower": 55,
-    "acc": 85,
-    "pp": 12
-  },
-  {
-    "name": "Ember",
-    "types": [
-      "Fire"
-    ],
-    "emoji": "*",
-    "desc": "Leaves a lingering burn.",
-    "basePower": 35,
-    "acc": 100,
-    "pp": 18,
-    "effect": "burn",
-    "effectTarget": "enemy",
-    "effectChance": 100,
-    "effectDur": 3,
-    "isLootLearnable": true,
-    "lootId": "move_ember",
-    "lootRarity": "common",
-    "lootColor": "#ff4e00",
-    "lootDesc": "Adds <b>Ember</b> (Fire) to your moveset. <i>Guarantees Burn for 3 rounds.</i>"
-  },
-  {
-    "name": "Magma Crash",
-    "types": [
-      "Fire"
-    ],
-    "emoji": "*",
-    "desc": "Molten impact",
-    "basePower": 80,
-    "acc": 75,
-    "pp": 8
-  },
-  {
-    "name": "Emit Spark",
-    "types": [
-      "Fire"
-    ],
-    "emoji": "🔥",
-    "desc": "Ignites the foe, increasing burn.",
-    "basePower": 30,
-    "acc": 95,
-    "pp": 16,
-    "effect": "burn",
-    "effectTarget": "enemy",
-    "effectChance": 95,
-    "effectDur": 3,
-    "id": "",
-    "tier": "common",
-    "type": "Fire"
-  },
-  {
-    "name": "Inferno Wave",
-    "types": [
-      "Fire"
-    ],
-    "emoji": "*",
-    "desc": "Massive heat wave.",
-    "basePower": 85,
-    "acc": 68,
-    "pp": 6
-  },
-  {
-    "name": "Eruption",
-    "types": [
-      "Fire"
-    ],
-    "emoji": "*",
-    "desc": "Volcano emerges from below.",
-    "basePower": 69,
-    "acc": 80,
-    "pp": 8
-  },
-  {
-    "name": "Lava Spit",
-    "types": [
-      "Fire"
-    ],
-    "emoji": "*",
-    "desc": "Steady, scorching.",
-    "basePower": 47,
-    "acc": 98,
-    "pp": 18
-  },
-  {
-    "name": "Solar Flare",
-    "types": [
-      "Fire"
-    ],
-    "emoji": "*",
-    "desc": "The sun itself, weaponised. User takes recoil.",
-    "basePower": 120,
-    "acc": 82,
-    "pp": 4,
-    "recoil": 0.25,
-    "isLootLearnable": true,
-    "lootId": "sig_solarflare",
-    "lootName": "Solar Flare",
-    "lootRarity": "legendary",
-    "lootColor": "#ff6a00",
-    "lootExclusiveTo": [
-      "bengt",
-      "embertail",
-      "scorchwick",
-      "pyrocluck",
-      "cinderquill",
-      "blazefowl",
-      "magnaroo"
-    ],
-    "lootDesc": "<b>Solar Flare</b>  -  Fire, PWR 155, 25% recoil. <i>Signature of fire glass cannons.</i>"
-  },
-  {
-    "name": "Flamewing",
-    "types": [
-      "Fire"
-    ],
-    "emoji": "*",
-    "desc": "Wings ablaze with power.",
-    "basePower": 43,
-    "acc": 96,
-    "pp": 22
-  },
-  {
-    "name": "Frost Arrow",
-    "types": [
-      "Ice"
-    ],
-    "emoji": "*",
-    "desc": "Icy precision shot.",
-    "basePower": 55,
-    "acc": 96,
-    "pp": 20
-  },
-  {
-    "name": "Ice Lance",
-    "types": [
-      "Ice"
-    ],
-    "emoji": "*",
-    "desc": "Sharp and piercing.",
-    "basePower": 70,
-    "acc": 84,
-    "pp": 10
-  },
-  {
-    "name": "Blizzard",
-    "types": [
-      "Ice"
-    ],
-    "emoji": "*",
-    "desc": "Total chaos. Very unreliable.",
-    "basePower": 95,
-    "acc": 65,
-    "pp": 5
-  },
-  {
-    "name": "Icy Gust",
-    "types": [
-      "Ice"
-    ],
-    "emoji": "*",
-    "desc": "A freezing wind.",
-    "basePower": 44,
-    "acc": 95,
-    "pp": 20
-  },
-  {
-    "name": "Frozen Spire",
-    "types": [
-      "Ice"
-    ],
-    "emoji": "*",
-    "desc": "Icicles from above.",
-    "basePower": 61,
-    "acc": 85,
-    "pp": 10
-  },
-  {
-    "name": "Flash Freeze",
-    "types": [
-      "Ice"
-    ],
-    "emoji": "*",
-    "desc": "May freeze the target solid.",
-    "basePower": 35,
-    "acc": 90,
-    "pp": 15,
-    "effect": "frozen",
-    "effectTarget": "enemy",
-    "effectChance": 65,
-    "effectDur": 1,
-    "isLootLearnable": true,
-    "lootId": "move_freeze",
-    "lootRarity": "rare",
-    "lootColor": "#00c8ff",
-    "lootDesc": "Adds <b>Flash Freeze</b> (Ice) to your moveset. <i>Chance to skip the enemy's next turn.</i>"
-  },
-  {
-    "name": "Ice Shell",
-    "types": [
-      "Ice"
-    ],
-    "emoji": "*",
-    "desc": "Wraps self in a frigid barrier. Stacks shield.",
-    "basePower": 30,
-    "acc": 100,
-    "pp": 12,
-    "effect": "shielded",
-    "effectTarget": "self",
-    "effectChance": 100,
-    "effectDur": 3
-  },
-  {
-    "name": "Permafrost",
-    "types": [
-      "Ice"
-    ],
-    "emoji": "*",
-    "desc": "Guarantees freeze. Low damage.",
-    "basePower": 30,
-    "acc": 88,
-    "pp": 12,
-    "effect": "frozen",
-    "effectTarget": "enemy",
-    "effectChance": 100,
-    "effectDur": 1
-  },
-  {
-    "name": "Permafrost Slam",
-    "types": [
-      "Ice"
-    ],
-    "emoji": "*",
-    "desc": "Seals the opponent in ice. Guaranteed freeze.",
-    "basePower": 60,
-    "acc": 90,
-    "pp": 10,
-    "effect": "frozen",
-    "effectTarget": "enemy",
-    "effectChance": 100,
-    "effectDur": 1,
-    "isLootLearnable": true,
-    "lootId": "sig_permafrost",
-    "lootName": "Permafrost Slam",
-    "lootRarity": "legendary",
-    "lootColor": "#00c8ff",
-    "lootExclusiveTo": [
-      "robin",
-      "frosting",
-      "brrrbeak",
-      "glaciergus",
-      "arcticclyde",
-      "snowquack",
-      "crystalwing"
-    ],
-    "lootDesc": "<b>Permafrost Slam</b>  -  Ice, PWR 60, <i>Guaranteed freeze</i>. Signature of icy tanks."
-  },
-  {
-    "name": "Glacial Slam",
-    "types": [
-      "Ice"
-    ],
-    "emoji": "*",
-    "desc": "Slow but crushingly powerful.",
-    "basePower": 96,
-    "acc": 70,
-    "pp": 4
-  },
-  {
-    "name": "Shock Honk",
-    "types": [
-      "Lightning"
-    ],
-    "emoji": "*",
-    "desc": "Quick electric jab.",
-    "basePower": 48,
-    "acc": 95,
-    "pp": 20
-  },
-  {
-    "name": "Chain Bolt",
-    "types": [
-      "Lightning"
-    ],
-    "emoji": "*",
-    "desc": "Arcs between targets.",
-    "basePower": 61,
-    "acc": 83,
-    "pp": 10
-  },
-  {
-    "name": "Thunderclap",
-    "types": [
-      "Lightning"
-    ],
-    "emoji": "*",
-    "desc": "Overwhelming voltage.",
-    "basePower": 91,
-    "acc": 65,
-    "pp": 5
-  },
-  {
-    "name": "Arc Pulse",
-    "types": [
-      "Lightning"
-    ],
-    "emoji": "*",
-    "desc": "Ricochets unpredictably.",
-    "basePower": 66,
-    "acc": 80,
-    "pp": 8
-  },
-  {
-    "name": "Static Honk",
-    "types": [
-      "Lightning"
-    ],
-    "emoji": "*",
-    "desc": "Consistent voltage.",
-    "basePower": 51,
-    "acc": 93,
-    "pp": 15
-  },
-  {
-    "name": "Ball Lightning",
-    "types": [
-      "Lightning"
-    ],
-    "emoji": "*",
-    "desc": "Slow but catastrophically explosive.",
-    "basePower": 72,
-    "acc": 76,
-    "pp": 8
-  },
-  {
-    "name": "Zap Field",
-    "types": [
-      "Lightning"
-    ],
-    "emoji": "*",
-    "desc": "Bathes the foe in static charge.",
-    "basePower": 30,
-    "acc": 93,
-    "pp": 15,
-    "effect": "paralyzed",
-    "effectTarget": "enemy",
-    "effectChance": 90,
-    "effectDur": 3,
-    "isLootLearnable": true,
-    "lootId": "move_zap",
-    "lootRarity": "rare",
-    "lootColor": "#ffe600",
-    "lootDesc": "Adds <b>Zap Field</b> (Lightning). <i>Paralyzes the enemy, reducing their accuracy.</i>"
-  },
-  {
-    "name": "Overclock",
-    "types": [
-      "Lightning"
-    ],
-    "emoji": "*",
-    "desc": "Overloads own nervous system.",
-    "basePower": 30,
-    "acc": 100,
-    "pp": 10,
-    "effect": "pumped",
-    "effectTarget": "self",
-    "effectChance": 100,
-    "effectDur": 2
-  },
-  {
-    "name": "Volt Dive",
-    "types": [
-      "Lightning"
-    ],
-    "emoji": "*",
-    "desc": "Priority strike. Always moves first.",
-    "basePower": 38,
-    "acc": 100,
-    "pp": 18,
-    "priority": true,
-    "isLootLearnable": true,
-    "lootId": "sig_voltdive",
-    "lootName": "Volt Dive",
-    "lootRarity": "rare",
-    "lootColor": "#ffe600",
-    "lootExclusiveTo": [
-      "zephyr",
-      "zappington",
-      "voltmare",
-      "staticlina",
-      "sparksworth",
-      "boltclaw",
-      "thunderbeak"
-    ],
-    "lootDesc": "<b>Volt Dive</b>  -  Lightning, always goes first (priority). Signature of fast electric types."
-  },
-  {
-    "name": "Discharge",
-    "types": [
-      "Lightning"
-    ],
-    "emoji": "*",
-    "desc": "Massive AoE  -  hurts user for 18%.",
-    "basePower": 85,
-    "acc": 78,
-    "pp": 6,
-    "recoil": 0.18
-  },
-  {
-    "name": "Soul Drain",
-    "types": [
-      "Shadow"
-    ],
-    "emoji": "*",
-    "desc": "Saps the enemy's life force.",
-    "basePower": 48,
-    "acc": 94,
-    "pp": 20,
-    "drain": 0.3
-  },
-  {
-    "name": "Dark Pulse",
-    "types": [
-      "Shadow"
-    ],
-    "emoji": "*",
-    "desc": "A wave of pure darkness.",
-    "basePower": 61,
-    "acc": 84,
-    "pp": 10
-  },
-  {
-    "name": "Void Collapse",
-    "types": [
-      "Shadow"
-    ],
-    "emoji": "*",
-    "desc": "Opens an abyss beneath them.",
-    "basePower": 91,
-    "acc": 63,
-    "pp": 5
-  },
-  {
-    "name": "Void Rend",
-    "types": [
-      "Shadow"
-    ],
-    "emoji": "*",
-    "desc": "Tears a void through the enemy. Heals attacker.",
-    "basePower": 120,
-    "acc": 80,
-    "pp": 6,
-    "drain": 0.35,
-    "isLootLearnable": true,
-    "lootId": "sig_voidrend",
-    "lootName": "Void Rend",
-    "lootRarity": "legendary",
-    "lootColor": "#a020f0",
-    "lootExclusiveTo": [
-      "mortem",
-      "thewraith",
-      "voidwing",
-      "gloomfeather",
-      "hexdown",
-      "eclipsar"
-    ],
-    "lootDesc": "<b>Void Rend</b>  -  Shadow, PWR 125, drains 35% as HP. <i>Signature of Mortem & The Wraith.</i>"
-  },
-  {
-    "name": "Shadow Slam",
-    "types": [
-      "Shadow"
-    ],
-    "emoji": "*",
-    "desc": "Pure dark force.",
-    "basePower": 66,
-    "acc": 80,
-    "pp": 8
-  },
-  {
-    "name": "Void Touch",
-    "types": [
-      "Shadow"
-    ],
-    "emoji": "*",
-    "desc": "Dark and draining.",
-    "basePower": 51,
-    "acc": 93,
-    "pp": 15,
-    "drain": 0.2
-  },
-  {
-    "name": "Eclipse Strike",
-    "types": [
-      "Shadow"
-    ],
-    "emoji": "*",
-    "desc": "Blots out hope itself.",
-    "basePower": 72,
-    "acc": 79,
-    "pp": 8
-  },
-  {
-    "name": "Hex",
-    "types": [
-      "Shadow"
-    ],
-    "emoji": "*",
-    "desc": "A dark curse saps their strength.",
-    "basePower": 30,
-    "acc": 92,
-    "pp": 15,
-    "effect": "cursed",
-    "effectTarget": "enemy",
-    "effectChance": 90,
-    "effectDur": 3,
-    "isLootLearnable": true,
-    "lootId": "move_hex",
-    "lootRarity": "common",
-    "lootColor": "#a020f0",
-    "lootDesc": "Adds <b>Hex</b> (Shadow) to your moveset. <i>Curses the enemy, reducing their attack.</i>"
-  },
-  {
-    "name": "Umbral Veil",
-    "types": [
-      "Shadow"
-    ],
-    "emoji": "*",
-    "desc": "Cloaks self in protective darkness. Stacks shield.",
-    "basePower": 30,
-    "acc": 100,
-    "pp": 12,
-    "effect": "shielded",
-    "effectTarget": "self",
-    "effectChance": 100,
-    "effectDur": 3
-  },
-  {
-    "name": "Oblivion",
-    "types": [
-      "Shadow"
-    ],
-    "emoji": "*",
-    "desc": "Terrifying. Unreliable. Legendary.",
-    "basePower": 116,
-    "acc": 52,
-    "pp": 3
-  },
-  {
-    "name": "Leech Feather",
-    "types": [
-      "Shadow"
-    ],
-    "emoji": "*",
-    "desc": "Drains 40% of damage as healing.",
-    "basePower": 44,
-    "acc": 90,
-    "pp": 14,
-    "drain": 0.4
-  },
-  {
-    "name": "Wing Slap",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Always connects. No type bonus.",
-    "basePower": 43,
-    "acc": 100,
-    "pp": 25
-  },
-  {
-    "name": "Peck",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Classic peck.",
-    "basePower": 37,
-    "acc": 100,
-    "pp": 30
-  },
-  {
-    "name": "Scratch",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Basic cursed scratch.",
-    "basePower": 40,
-    "acc": 100,
-    "pp": 30
-  },
-  {
-    "name": "Dive Bomb",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Straight down.",
-    "basePower": 50,
-    "acc": 92,
-    "pp": 15
-  },
-  {
-    "name": "Honk Slam",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Raw honk energy.",
-    "basePower": 52,
-    "acc": 88,
-    "pp": 12
-  },
-  {
-    "name": "Talon Strike",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Reliable talon.",
-    "basePower": 45,
-    "acc": 100,
-    "pp": 20
-  },
-  {
-    "name": "Wild Flap",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Chaotic but earnest.",
-    "basePower": 61,
-    "acc": 78,
-    "pp": 10
-  },
-  {
-    "name": "Iron Guard",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Raises an iron defensive shield. Stacks shield.",
-    "basePower": 30,
-    "acc": 100,
-    "pp": 12,
-    "effect": "shielded",
-    "effectTarget": "self",
-    "effectChance": 100,
-    "effectDur": 3,
-    "isLootLearnable": true,
-    "lootId": "move_shield",
-    "lootRarity": "rare",
-    "lootColor": "#00ff88",
-    "lootDesc": "Adds <b>Iron Guard</b> (Normal). <i>Applies stackable Shield (max 4), persistent until swap/boss clear.</i>"
-  },
-  {
-    "name": "War Honk",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Unleash a terrifying battle cry.",
-    "basePower": 30,
-    "acc": 100,
-    "pp": 12,
-    "effect": "pumped",
-    "effectTarget": "self",
-    "effectChance": 100,
-    "effectDur": 2,
-    "isLootLearnable": true,
-    "lootId": "move_pump",
-    "lootRarity": "common",
-    "lootColor": "#ff9800",
-    "lootDesc": "Adds <b>War Honk</b> (Normal). <i>Pumps yourself up  -  boosts your attack for 2 rounds.</i>"
-  },
-  {
-    "name": "Rampage",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Unstoppable. Unreliable. Legendary.",
-    "basePower": 110,
-    "acc": 60,
-    "pp": 5,
-    "isLootLearnable": true,
-    "lootId": "move_rampage",
-    "lootRarity": "legendary",
-    "lootColor": "#ffd700",
-    "lootDesc": "Adds <b>Rampage</b> (Normal, PWR 110) to your moveset. <i>Extremely powerful, low accuracy.</i>"
-  },
-  {
-    "name": "Kevin's Fury",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Only activates when cornered. Enormous.",
-    "basePower": 120,
-    "acc": 85,
-    "pp": 6,
-    "lowHPOnly": true,
-    "isLootLearnable": true,
-    "lootId": "sig_kevinfury",
-    "lootName": "Kevin's Fury",
-    "lootRarity": "legendary",
-    "lootColor": "#ffd700",
-    "lootExclusiveTo": [
-      "kevin",
-      "regularbarry"
-    ],
-    "lootDesc": "<b>Kevin's Fury</b>  -  Normal, PWR 145. <i>Only usable below 50% HP. Signature of Kevin & Barry.</i>"
-  },
-  {
-    "name": "Battle Cry",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "A rousing shout empowers attacks.",
-    "basePower": 30,
-    "acc": 100,
-    "pp": 12,
-    "effect": "pumped",
-    "effectTarget": "self",
-    "effectChance": 100,
-    "effectDur": 2
-  },
-  {
-    "name": "Feather Guard",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Raises a defensive wing shield. Stacks shield.",
-    "basePower": 30,
-    "acc": 100,
-    "pp": 12,
-    "effect": "shielded",
-    "effectTarget": "self",
-    "effectChance": 100,
-    "effectDur": 3
-  },
-  {
-    "name": "Quick Strike",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Always moves first. Low damage.",
-    "basePower": 30,
-    "acc": 100,
-    "pp": 20,
-    "priority": true
-  },
-  {
-    "name": "Bulldoze",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Brute force. Never misses.",
-    "basePower": 63,
-    "acc": 100,
-    "pp": 8
-  },
-  {
-    "name": "Berserker Charge",
-    "types": [
-      "Normal"
-    ],
-    "emoji": "*",
-    "desc": "Massive. 25% recoil damage.",
-    "basePower": 104,
-    "acc": 82,
-    "pp": 5,
-    "recoil": 0.25
-  }
-];
-
+// MOVE_POOL is loaded at runtime from data/moves_data.json via loadMovesData()
+let MOVE_POOL = [];
 function hash32(str) {
   let h = 2166136261 >>> 0;
   for (let i = 0; i < str.length; i++) {
@@ -1225,10 +429,13 @@ function normalizeMoveDef(m) {
   return { ...m, id, types, type: primaryType, category };
 }
 
-const MOVE_DB = {};
-const MOVES_BY_TYPE = {};
-const MOVES_BY_CATEGORY = {};
-(() => {
+let MOVE_DB = {};
+let MOVES_BY_TYPE = {};
+let MOVES_BY_CATEGORY = {};
+function _buildMoveIndexes() {
+  MOVE_DB = {};
+  MOVES_BY_TYPE = {};
+  MOVES_BY_CATEGORY = {};
   for (const raw of MOVE_POOL) {
     const rec = { ...normalizeMoveDef(raw) };
     rec.tier = moveTier(rec);
@@ -1240,21 +447,18 @@ const MOVES_BY_CATEGORY = {};
     if (!MOVES_BY_CATEGORY[rec.category]) MOVES_BY_CATEGORY[rec.category] = [];
     MOVES_BY_CATEGORY[rec.category].push(rec);
   }
-})();
+}
 
-function materializeMoveFromId(moveId, opts = {}) {
+function materializeMoveFromId(moveId) {
   const rec = MOVE_DB[moveId];
   if (!rec) return null;
-  const basePow = Number.isFinite(opts.basePow) ? opts.basePow : 55;
-  const powerScale = Number.isFinite(opts.powerScale) ? opts.powerScale : 1;
-  const fixedPower = Number.isFinite(opts.fixedPower) ? opts.fixedPower : null;
-  const out = {
+  return {
     id: rec.id,
     name: rec.name,
-    type: opts.type || rec.type,
+    type: rec.type,
     emoji: rec.emoji,
     desc: rec.desc,
-    power: rec.effect ? 0 : (fixedPower ?? Math.max(0, Math.round((rec.basePower || basePow) * powerScale))),
+    power: rec.effect ? 0 : (rec.basePower || 0),
     acc: rec.acc,
     pp: rec.pp,
     maxPP: rec.pp,
@@ -1269,10 +473,9 @@ function materializeMoveFromId(moveId, opts = {}) {
     ...(rec.priority ? { priority: true } : {}),
     ...(rec.lowHPOnly ? { lowHPOnly: true } : {}),
   };
-  return out;
 }
-function materializeMovesFromIds(moveIds, opts = {}) {
-  return (moveIds || []).map(id => materializeMoveFromId(id, opts)).filter(Boolean);
+function materializeMovesFromIds(moveIds) {
+  return (moveIds || []).map(materializeMoveFromId).filter(Boolean);
 }
 function resolveMoveId(move) {
   if (!move) return null;
@@ -1290,12 +493,12 @@ function ensureHonkerMoveIds(honker) {
 function moveSetHasId(moves, moveId) {
   return !!(moves || []).find(m => m.id === moveId || (MOVE_DB[moveId] && m.name === MOVE_DB[moveId].name));
 }
-function addMoveById(honker, moveId, opts = {}) {
+function addMoveById(honker, moveId) {
   if (!honker) return false;
   if (!Array.isArray(honker.moves)) honker.moves = [];
   if (!Array.isArray(honker.moveIds)) honker.moveIds = [];
   if (moveSetHasId(honker.moves, moveId)) return false;
-  const mv = materializeMoveFromId(moveId, opts);
+  const mv = materializeMoveFromId(moveId);
   if (!mv) return false;
   honker.moves.push(mv);
   if (!honker.moveIds.includes(moveId)) honker.moveIds.push(moveId);
@@ -1303,12 +506,8 @@ function addMoveById(honker, moveId, opts = {}) {
 }
 function normalizeRosterMoveSets() {
   (ROSTER || []).forEach(h => {
-    if (Array.isArray(h.moveIds) && h.moveIds.length) {
-      h.moves = materializeMovesFromIds(h.moveIds, { type: h.type, basePow: 55 });
-    } else {
-      ensureHonkerMoveIds(h);
-      h.moves = materializeMovesFromIds(h.moveIds, { type: h.type, basePow: 55 });
-    }
+    if (!Array.isArray(h.moveIds) || !h.moveIds.length) ensureHonkerMoveIds(h);
+    h.moves = materializeMovesFromIds(h.moveIds);
   });
 }
 normalizeRosterMoveSets();
@@ -1510,8 +709,9 @@ function seePartIds(ids) {
 }
 function resetStarterCaughtParts() {
   ensurePartTrackingState();
-  CAMPAIGN.caughtParts = getStarterUnlockedPartIds();
-  CAMPAIGN.partsSeen = getStarterUnlockedPartIds();
+  // Fresh run starts with no discovered parts; parts unlock through catches.
+  CAMPAIGN.caughtParts = [];
+  CAMPAIGN.partsSeen = [];
 }
 function unlockedPartsByFamilyType(type) {
   const fams = TYPE_TO_PART_FAMILIES[type] || [];
@@ -1691,12 +891,6 @@ function getDexAssembledParts(dex) {
   };
   return (out.head && out.torso && out.wings && out.legs) ? out : null;
 }
-function buildDexPartBlueprint(dex) {
-  const assembledParts = getDexAssembledParts(dex);
-  if (!assembledParts) return null;
-  const derived = deriveHonkerFromParts(assembledParts);
-  return { assembledParts, derived };
-}
 initDexPartIds();
 
 const BIOMES = [
@@ -1716,49 +910,6 @@ const BIOMES = [
     arenas: ['Moonlit Hollow', 'Gloom Bridge', 'Echo Crypt'],
     lore: ['Whispers linger longer than footsteps.', 'Shadows move first.'] },
 ];
-function getBiomeForStage(n) {
-  const idx = Math.floor((Math.max(1, n) - 1) / 5) % BIOMES.length;
-  return BIOMES[idx];
-}
-function pickWeightedIndex(weights, rng) {
-  const total = (weights || []).reduce((a, b) => a + Math.max(0, b || 0), 0);
-  if (!total) return 0;
-  let r = rng() * total;
-  for (let i = 0; i < weights.length; i++) {
-    r -= Math.max(0, weights[i] || 0);
-    if (r <= 0) return i;
-  }
-  return Math.max(0, weights.length - 1);
-}
-function pickBiomeType(biome, rng, isBoss) {
-  const base = biome?.types?.length ? biome.types : ['Normal'];
-  const pool = isBoss ? base : [...base, 'Normal'];
-  return pool[Math.floor(rng() * pool.length)] || 'Normal';
-}
-function chooseDexForStage(n, isBoss, rng, biome) {
-  const all = (HONKER_DEX || []).filter(d => !!d.isBoss === !!isBoss);
-  if (!all.length) return null;
-  const maxDex = Math.min(HONKER_DEX.length, Math.max(isBoss ? 5 : 6, Math.floor(6 + n * 1.15)));
-  const minDex = Math.max(1, maxDex - (isBoss ? 14 : 12));
-  let pool = all.filter(d => d.dexNum >= minDex && d.dexNum <= maxDex);
-  if (!pool.length) pool = all.slice();
-  const weights = pool.map(d => {
-    let w = 1;
-    if ((biome?.types || []).includes(d.type)) w *= 2.6;
-    const dist = Math.abs(d.dexNum - maxDex);
-    w *= Math.max(0.55, 1.2 - dist * 0.05);
-    return w;
-  });
-  return pool[pickWeightedIndex(weights, rng)] || pool[0];
-}
-function xpRewardForEnemyLevel(level, isBoss) {
-  const lv = Math.max(1, Number(level) || 1);
-  const base = 45;
-  const growth = 1.18;
-  let xp = Math.round(base * Math.pow(growth, lv - 1));
-  if (isBoss) xp = Math.round(xp * 1.6);
-  return Math.max(25, xp);
-}
 
 // STAGE NAME GENERATION DATA
 const STAGE_LOCATIONS = ['Honking Valley', 'Drake\'s Nest', 'Silent Bog', 'Windswept Meadow', 'Stonewood Grove',
@@ -1770,157 +921,6 @@ const E_BODIES = ['Honker', 'Drake', 'Goose', 'Fowl', 'Warden', 'Guardian', 'Kee
 const E_BOSS_SUFFIXES = ['of the North', 'of the Depths', 'Prime', 'Ascendant', 'Reborn', 'Eternal', 'Undying', 'Sovereign', 'Absolute', 'Unlimitable'];
 const STAGE_LORE = ['A place of old memory. Danger waits.', 'Few emerge unchanged from {n}.', 'The stage is set here. So is the trap.',
   'Legendary strength gathers in {n}.', 'Those who fear nothing fight here.', 'The current runs strong here.', 'Ancient power slumbers restlessly.'];
-
-// "?"? CORE GENERATOR "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
-function generateStage(n) {
-  const rng    = seededRng(n * 7919 + 31337);
-  const biome = getBiomeForStage(n);
-  const isBoss = (n % 5 === 0);
-  // Named honkers are rare encounters that players discover more as they progress
-  // Early game (stages 1-20): 2-5% chance, Mid game (21-50): 8-12%, Late game (50+): 15%+
-  rng(); rng(); // Burn entropy
-  const rngRoll = rng();
-  let dexThreshold;
-  if (n <= 20) {
-    dexThreshold = isBoss ? 0.05 : 0.02;  // Very rare early on
-  } else if (n <= 50) {
-    dexThreshold = isBoss ? 0.12 : 0.08;  // Moderate mid-game
-  } else {
-    dexThreshold = isBoss ? 0.20 : 0.15;  // More common late game
-  }
-  const useDex = rngRoll < dexThreshold;
-  // DEBUG: show spawn determination
-  console.log(`Stage ${n} | RNG: ${rngRoll.toFixed(3)} | Threshold: ${(dexThreshold*100).toFixed(0)}% | UseDex: ${useDex} | ${useDex ? '? RARE' : 'PROCEDURAL'}`);
-  const dex    = useDex ? chooseDexForStage(n, isBoss, rng, biome) : null;
-  if (dex) console.log(`  ? Named Honker: ${dex.name}`);
-  const dexBlueprint = dex ? buildDexPartBlueprint(dex) : null;
-  const types  = ['Fire','Ice','Lightning','Shadow','Normal'];
-  let type   = dex ? (dexBlueprint?.derived?.type || dex.type) : (pickBiomeType(biome, rng, isBoss) || types[Math.floor(rng() * (isBoss ? 4 : 5))]);
-  const earlyRamp = Math.min(1, n / 16);
-  const earlyHpScale = n <= 15 ? (0.84 + earlyRamp * 0.16) : 1;
-  const earlyPowScale = n <= 15 ? (0.72 + earlyRamp * 0.28) : 1;
-  const earlyStatScale = n <= 15 ? (0.88 + earlyRamp * 0.12) : 1;
-
-  // Name
-  let enemyName;
-  if (dex) {
-    enemyName = dex.name;
-  } else if (isBoss) {
-    const p = E_PREFIXES[Math.floor(rng() * E_PREFIXES.length)];
-    const b = E_BODIES[Math.floor(rng() * E_BODIES.length)];
-    const s = E_BOSS_SUFFIXES[Math.floor(rng() * E_BOSS_SUFFIXES.length)];
-    enemyName = `${p} ${b} ${s}`;
-  } else {
-    const p = E_PREFIXES[Math.floor(rng() * E_PREFIXES.length)];
-    const b = E_BODIES[Math.floor(rng() * E_BODIES.length)];
-    enemyName = `${p} ${b}`;
-  }
-
-  const arena = biome?.arenas?.[Math.floor(rng() * biome.arenas.length)] || STAGE_LOCATIONS[(n - 1) % STAGE_LOCATIONS.length];
-  const location = `${biome?.name || 'Honklands'} â€“ ${arena}`;
-  const loreRaw  = dex ? dex.lore : (biome?.lore?.[Math.floor(rng() * biome.lore.length)] || STAGE_LORE[Math.floor(rng() * STAGE_LORE.length)]);
-  const lore     = dex ? `"${loreRaw}"` : `"${loreRaw.replace('{n}', n)}"`;
-
-  const hpBase  = Math.round(100 + n * 19 + Math.pow(n, 1.35) * 1.8);
-  const hpRaw   = isBoss ? Math.round(hpBase * 1.75) : hpBase;
-  const hp      = Math.round(hpRaw * earlyHpScale);
-  const luck    = Math.min(88, Math.round(25 + n * 2.2));
-  const basePow = 26 + n * 3.2 + (isBoss ? 18 : 0);
-
-  let moves;
-  if (dexBlueprint?.derived?.moves?.length) {
-    moves = dexBlueprint.derived.moves.map(m => ({ ...cloneJson(m), pp: m.maxPP || m.pp, maxPP: m.maxPP || m.pp }));
-  } else {
-    const pool    = MOVES_BY_TYPE[type] || MOVES_BY_TYPE.Normal;
-    const nrmPool = MOVES_BY_TYPE.Normal;
-    const usedIdx = new Set();
-    const picked  = [];
-    const pickFrom = (p, t) => {
-      for (let tries = 0; tries < 20; tries++) {
-        const idx = Math.floor(rng() * p.length);
-        if (!usedIdx.has(`${t}-${idx}`)) { usedIdx.add(`${t}-${idx}`); return { ...p[idx], type: t }; }
-      }
-      return { ...p[0], type: t };
-    };
-    picked.push(pickFrom(pool, type));
-    picked.push(pickFrom(pool, type));
-    picked.push(pickFrom(pool, type));
-    picked.push(isBoss ? pickFrom(pool, type) : pickFrom(nrmPool, 'Normal'));
-    moves = picked.map(m => ({
-      id: m.id,
-      name: m.name, type: m.type, emoji: m.emoji, desc: m.desc,
-      power: Math.max(20, Math.round((m.basePower || 55) * (basePow / 55) * earlyPowScale)),
-      acc: m.acc, pp: m.pp, maxPP: m.pp,
-      ...(m.effect ? { effect: m.effect, effectTarget: m.effectTarget,
-        effectChance: m.effectChance, effectDur: m.effectDur } : {}),
-      ...(m.drain ? { drain: m.drain } : {}),
-      ...(m.recoil ? { recoil: m.recoil } : {}),
-      ...(m.priority ? { priority: true } : {}),
-      ...(m.lowHPOnly ? { lowHPOnly: true } : {}),
-    }));
-  }
-
-  // Procedural stats for stages beyond dex range
-  const rawAtk = dex ? (dex.atk||80) : Math.min(130, Math.round(60 + n * 1.8 + (isBoss ? 18 : 0) + (rng()-0.5)*20));
-  const rawDef = dex ? (dex.def||80) : Math.min(130, Math.round(60 + n * 1.4 + (isBoss ? 15 : 0) + (rng()-0.5)*20));
-  const rawSpd = dex ? (dex.spd||80) : Math.min(130, Math.round(60 + n * 1.2 + (rng()-0.5)*25));
-  const genAtk = Math.max(30, Math.round(rawAtk * earlyStatScale));
-  const genDef = Math.max(30, Math.round(rawDef * earlyStatScale));
-  const genSpd = Math.max(30, Math.round(rawSpd * earlyStatScale));
-  const emojiPool  = dex ? null : (isBoss ? BOSS_EMOJIS : (ENEMY_EMOJIS[type] || ENEMY_EMOJIS.Normal));
-  const emoji      = dex ? dex.emoji : emojiPool[Math.floor(rng() * emojiPool.length)];
-  const passive    = dex ? (dex.passive || dexBlueprint?.derived?.passive || null) : null;
-  const enemyLevel = Math.max(1, Math.round(n * 0.18) + (isBoss ? 1 : 0) - (n <= 15 ? 1 : 0));
-  const difficulty = isBoss ? 5 : Math.min(4, Math.ceil(n / 4));
-  const xpReward   = xpRewardForEnemyLevel(enemyLevel, isBoss);
-
-  // Procedural sprite fallback when not using a premade dex honker.
-  let assembledParts = dexBlueprint?.assembledParts || null;
-  if (!dex && PARTS_DATA && PARTS_DATA.parts) {
-    const pickByRarityWeights = (pool) => {
-      if (!pool.length) return null;
-      const common = pool.filter(p => (p.rarity || 'common') === 'common');
-      const rare = pool.filter(p => p.rarity === 'rare');
-      const legendary = pool.filter(p => p.rarity === 'legendary');
-      const r = rng();
-      let bucket = null;
-      if (r < 0.75) bucket = common.length ? common : (rare.length ? rare : legendary);
-      else if (r < 0.95) bucket = rare.length ? rare : (common.length ? common : legendary);
-      else bucket = legendary.length ? legendary : (rare.length ? rare : common);
-      if (!bucket || !bucket.length) bucket = pool;
-      return bucket[Math.floor(rng() * bucket.length)] || pool[0] || null;
-    };
-    const pickPart = slot => {
-      const famSet = new Set(biome?.families || []);
-      let pool = PARTS_DATA.parts.filter(p => p.slot === slot && famSet.has(p.family?.name));
-      if (!pool.length) pool = PARTS_DATA.parts.filter(p => p.slot === slot);
-      return pickByRarityWeights(pool);
-    };
-    assembledParts = {
-      head:  pickPart('head'),
-      torso: pickPart('torso'),
-      wings: pickPart('wings'),
-      legs:  pickPart('legs'),
-    };
-  }
-  
-  const enemyData = { name: enemyName, emoji, type, hp, luck, atk:genAtk, def:genDef, spd:genSpd,
-                      moves, passive, dexId: dex?.id || null, assembledParts, level: enemyLevel };
-  const hasNewParts = enemyHasUncaughtParts(enemyData);
-
-  return { num: n, name: location, desc: lore, isBoss, difficulty, xpReward, hasNewParts,
-    enemy: enemyData };
-}
-
-// "?"? POWER BALANCE DISPLAY "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
-// Returns a rough numeric "threat level" for a stage used in the map UI
-function stageThreat(n) { return Math.round(100 + n * 19 + Math.pow(n, 1.35) * 1.8); }
-function playerPower(pb) {
-  const hp = getHonkerMaxHP(pb);
-  const atkBase = Math.round((pb.atk || 80) * levelStatScale(pb.level || 1, 'atk'));
-  const atk = (pb.atkMult||1) * (atkBase + (pb.atkFlat||0));
-  return Math.round(hp * 0.6 + atk * 2);
-}
 
 // "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
 //  LOOT POOL
@@ -1962,6 +962,9 @@ const CORE_LOOT_POOL = [
   { id:'heal_flask',  name:'Heal Flask',     emoji:'*', rarity:'rare',      color:'#00c8ff',
     desc:'Immediately restore <b>60 HP</b> right now.',
     apply:(p)=>{ const mx=getHonkerMaxHP(p); const cur=(p.currentHP ?? mx); p.currentHP=Math.min(mx, cur+60); }},
+  { id:'mentor_whistle', name:'Mentor Whistle', emoji:'*', rarity:'rare',    color:'#00c8ff', global:true,
+    desc:'Party XP share bonus <b>+5%</b> for non-active honkers (stackable).',
+    apply:()=>{} },
 ];
 
 const MOVE_TYPE_LOOT_COLOR = {
@@ -1984,11 +987,11 @@ function buildMoveLootItem(move) {
     desc: move.lootDesc || `Adds <b>${move.name}</b> (${moveType}) to your moveset.`,
     ...(Array.isArray(move.lootExclusiveTo) && move.lootExclusiveTo.length ? { exclusiveTo: move.lootExclusiveTo.slice() } : {}),
     moveId: move.id,
-    apply:(p)=>{ addMoveById(p, move.id, { type: moveType, basePow: 55 }); },
+    apply:(p)=>{ addMoveById(p, move.id); },
   };
 }
-const MOVE_LEARN_LOOT_POOL = MOVE_POOL.map(buildMoveLootItem).filter(Boolean);
-const LOOT_POOL = [...CORE_LOOT_POOL, ...MOVE_LEARN_LOOT_POOL];
+let MOVE_LEARN_LOOT_POOL = [];
+let LOOT_POOL = [...CORE_LOOT_POOL];
 
 // "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
 //  RANDOM EVENTS
@@ -2054,30 +1057,4 @@ function levelStatScale(level, key) {
   return 1 + g * (lv - 1);
 }
 
-function deriveHonkerFromParts(parts) {
-  // Stub - needed by buildDexPartBlueprint, will be implemented in game.js
-  return { type:'Normal', moves:[], passive:null };
-}
-
-function getHonkerMaxHP(h) {
-  if (!h) return 0;
-  const lv = Math.max(1, h.level || 1);
-  const parts = h.assembledParts || null;
-  const partHpBase = parts
-    ? ['head', 'torso', 'wings', 'legs']
-      .map(slot => Number(parts?.[slot]?.stats?.hp || 0))
-      .reduce((a, b) => a + b, 0)
-    : 0;
-  const hpBase = Math.max(1, partHpBase || Number(h.hp || 0));
-  const hpWithBonus = hpBase + Number(h.maxHPBonus || 0);
-  const masteryMult = (typeof masteryStatMultiplier === 'function')
-    ? masteryStatMultiplier(h.masteryLevel || 0)
-    : 1;
-  return Math.max(1, Math.floor((((2 * hpWithBonus * lv) / 100) + lv + 10) * masteryMult));
-}
-
 console.log('[DATA] Module loaded: PARTS_DATA, ROSTER, CAMPAIGN');
-
-
-
-

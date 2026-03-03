@@ -6,10 +6,12 @@ const vm = require('vm');
 
 const HOST = process.env.HOST || '0.0.0.0';
 const PORT = Number(process.env.PORT || 8080);
+const MAX_BODY = 1 * 1024 * 1024; // 1 MB
 const ROOT = __dirname;
 const DATA_DIR = path.join(ROOT, 'data');
 const SAVES_DIR = path.join(ROOT, 'saves');
 const DATA_JS = path.join(ROOT, 'js', 'data.js');
+const MOVES_DATA_FILE = path.join(DATA_DIR, 'moves_data.json');
 const SLOT_DIRS = [
   { dir: 'Heads', slot: 'head' },
   { dir: 'Torsos', slot: 'torso' },
@@ -47,8 +49,13 @@ function safeJsonParse(raw) {
 }
 
 function savePathForKey(key) {
-  if (key === 'campaign') return path.join(SAVES_DIR, 'campaign.json');
-  if (key === 'dex') return path.join(SAVES_DIR, 'dex.json');
+  if (key === 'run' || key === 'campaign') return path.join(SAVES_DIR, 'run_save.json');
+  if (key === 'global' || key === 'dex') return path.join(SAVES_DIR, 'global_save.json');
+  return null;
+}
+function legacySavePathForKey(key) {
+  if (key === 'run' || key === 'campaign') return path.join(SAVES_DIR, 'campaign.json');
+  if (key === 'global' || key === 'dex') return path.join(SAVES_DIR, 'dex.json');
   return null;
 }
 
@@ -57,7 +64,7 @@ function readBody(req) {
     let raw = '';
     req.on('data', chunk => {
       raw += chunk;
-      if (raw.length > 10 * 1024 * 1024) {
+      if (raw.length > MAX_BODY) {
         reject(new Error('Payload too large'));
         req.destroy();
       }
@@ -170,36 +177,29 @@ function findConstObjectRange(source, marker) {
   }
   return null;
 }
-function findMovePoolRange(source) {
-  return findConstArrayRange(source, 'const MOVE_POOL = [');
-}
 function findRosterRange(source) {
-  return findConstArrayRange(source, 'const ROSTER = [');
+  return findConstArrayRange(source, 'let ROSTER = [');
 }
 function findHonkDexRange(source) {
-  return findConstArrayRange(source, 'const HONKER_DEX = [');
+  return findConstArrayRange(source, 'let HONKER_DEX = [');
 }
 function findDexPartOverridesRange(source) {
   return findConstObjectRange(source, 'const DEX_PARTS_OVERRIDES = {');
 }
 
-function readMovePoolFromDataJs() {
-  const src = fs.readFileSync(DATA_JS, 'utf8');
-  const range = findMovePoolRange(src);
-  if (!range) throw new Error('MOVE_POOL not found');
-  const arrExpr = src.slice(range.arrStart, range.arrEnd);
-  const pool = vm.runInNewContext(`(${arrExpr})`, {});
-  if (!Array.isArray(pool)) throw new Error('MOVE_POOL parse failed');
-  return pool;
+function readMovePoolFromFile() {
+  const raw = fs.readFileSync(MOVES_DATA_FILE, 'utf8');
+  const parsed = safeJsonParse(raw);
+  if (!parsed) throw new Error('Invalid moves_data.json');
+  const items = Array.isArray(parsed) ? parsed : parsed.items;
+  if (!Array.isArray(items)) throw new Error('Invalid move pool payload');
+  return items;
 }
 
-function writeMovePoolToDataJs(pool) {
-  const src = fs.readFileSync(DATA_JS, 'utf8');
-  const range = findMovePoolRange(src);
-  if (!range) throw new Error('MOVE_POOL not found');
-  const replacement = `const MOVE_POOL = ${JSON.stringify(pool, null, 2)};`;
-  const next = src.slice(0, range.start) + replacement + src.slice(range.end);
-  fs.writeFileSync(DATA_JS, next, 'utf8');
+function writeMovePoolToFile(items) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+  const payload = { items };
+  fs.writeFileSync(MOVES_DATA_FILE, JSON.stringify(payload, null, 2), 'utf8');
 }
 function readRosterFromDataJs() {
   const src = fs.readFileSync(DATA_JS, 'utf8');
@@ -323,10 +323,10 @@ const server = http.createServer(async (req, res) => {
   if (pathname === '/api/move-pool') {
     if (req.method === 'GET') {
       try {
-        const pool = readMovePoolFromDataJs();
+        const pool = readMovePoolFromFile();
         send(res, 200, JSON.stringify({ count: pool.length, items: pool }), MIME['.json']);
       } catch (err) {
-        send(res, 500, JSON.stringify({ error: 'Failed to read MOVE_POOL' }), MIME['.json']);
+        send(res, 500, JSON.stringify({ error: 'Failed to read move pool data' }), MIME['.json']);
       }
       return;
     }
@@ -339,10 +339,10 @@ const server = http.createServer(async (req, res) => {
           send(res, 400, JSON.stringify({ error: 'Expected array or {items:[]}' }), MIME['.json']);
           return;
         }
-        writeMovePoolToDataJs(items);
+        writeMovePoolToFile(items);
         send(res, 204, '');
       } catch (err) {
-        send(res, 500, JSON.stringify({ error: 'Failed to write MOVE_POOL' }), MIME['.json']);
+        send(res, 500, JSON.stringify({ error: 'Failed to write move pool data' }), MIME['.json']);
       }
       return;
     }
@@ -430,8 +430,13 @@ const server = http.createServer(async (req, res) => {
 
     if (req.method === 'GET') {
       fs.readFile(file, 'utf8', (err, raw) => {
-        if (err) return send(res, 204, '');
-        send(res, 200, raw, MIME['.json']);
+        if (!err) return send(res, 200, raw, MIME['.json']);
+        const legacyFile = legacySavePathForKey(key);
+        if (!legacyFile || legacyFile === file) return send(res, 204, '');
+        fs.readFile(legacyFile, 'utf8', (legacyErr, legacyRaw) => {
+          if (legacyErr) return send(res, 204, '');
+          send(res, 200, legacyRaw, MIME['.json']);
+        });
       });
       return;
     }
@@ -439,7 +444,12 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'DELETE') {
       fs.unlink(file, err => {
         if (err && err.code !== 'ENOENT') return send(res, 500, JSON.stringify({ error: 'Delete failed' }), MIME['.json']);
-        send(res, 204, '');
+        const legacyFile = legacySavePathForKey(key);
+        if (!legacyFile || legacyFile === file) return send(res, 204, '');
+        fs.unlink(legacyFile, legacyErr => {
+          if (legacyErr && legacyErr.code !== 'ENOENT') return send(res, 500, JSON.stringify({ error: 'Delete failed' }), MIME['.json']);
+          send(res, 204, '');
+        });
       });
       return;
     }
@@ -456,8 +466,12 @@ const server = http.createServer(async (req, res) => {
             send(res, 204, '');
           });
         });
-      } catch (_) {
-        send(res, 400, JSON.stringify({ error: 'Bad request' }), MIME['.json']);
+      } catch (err) {
+        if (err?.message === 'Payload too large') {
+          send(res, 413, JSON.stringify({ error: 'Payload too large' }), MIME['.json']);
+        } else {
+          send(res, 400, JSON.stringify({ error: 'Bad request' }), MIME['.json']);
+        }
       }
       return;
     }

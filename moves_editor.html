@@ -148,7 +148,7 @@
     async function saveAll(){
       const r=await fetch('/api/move-pool',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:st.items})});
       if(!r.ok){const t=await r.text().catch(()=> ''); throw new Error(`Save failed (${r.status}) ${t}`);}
-      setDirty(false); setStatus('Saved MOVE_POOL to js/data.js','ok');
+      setDirty(false); setStatus('Saved move pool to data/moves_data.json','ok');
     }
     function dl(){ const b=new Blob([JSON.stringify(st.items,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='move_pool.json'; a.click(); URL.revokeObjectURL(a.href); }
     function wire(){

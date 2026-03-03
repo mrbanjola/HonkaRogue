@@ -4,6 +4,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "node server.js"
+  },
+  "dependencies": {
+    "agent-bridge": "^0.6.2"
   }
 }
-
