@@ -1333,7 +1333,7 @@ body {
 
 #screen-battle .arena {
   flex: 1 1 auto;
-  min-height: 0;
+  min-height: 240px;
 }
 
 #screen-battle .type-legend,
@@ -1447,20 +1447,26 @@ body {
   inset: 0;
   overflow: hidden;
   isolation: isolate;
+  z-index: 0;
 }
 
 .arena-3d-layer {
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: 1;
   pointer-events: none;
 }
 
 .arena-3d-fx-layer {
   position: absolute;
   inset: 0;
-  z-index: 4;
+  z-index: 2;
   pointer-events: none;
+}
+
+.arena > .fighter-zone,
+.arena > .battle-center {
+  z-index: 6;
 }
 
 .arena-bg>div {
@@ -1574,6 +1580,9 @@ body {
   filter: drop-shadow(0 4px 20px rgba(0, 0, 0, .8));
   width: clamp(3rem, 8vw, 5.5rem);
   height: clamp(3rem, 8vw, 5.5rem);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 
 .fspr.composite {
@@ -1582,6 +1591,7 @@ body {
   height: 128px;
   position: relative;
   filter: none;
+  display: block;
 }
 
 .fspr.composite .cp-layer {
@@ -1761,6 +1771,11 @@ body {
   justify-content: center;
   margin-top: .3rem;
   min-height: 18px;
+}
+
+.status-badges:empty {
+  min-height: 0;
+  margin-top: 0;
 }
 
 .sbadge {
@@ -3537,11 +3552,14 @@ body {
     font-size: .32rem;
   }
 
-  .arena {
+  #screen-battle .arena {
     padding: .55rem .38rem;
     gap: .2rem;
-    min-height: 188px;
+    min-height: 232px;
     grid-template-columns: 1fr 38px 1fr;
+    align-items: start;
+    padding-top: .35rem;
+    padding-bottom: .25rem;
   }
 
   .f-label {
@@ -3557,11 +3575,15 @@ body {
   .type-badge {
     font-size: .5rem;
     padding: .1rem .35rem;
-    margin-bottom: .32rem;
+    margin-bottom: .22rem;
   }
 
   .hp-wrap {
     width: 128px;
+  }
+
+  .fighter-zone {
+    gap: 0;
   }
 
   .hp-track {
@@ -3569,9 +3591,9 @@ body {
   }
 
   .fspr {
-    font-size: clamp(2.2rem, 13vw, 3.3rem);
-    width: clamp(2.2rem, 13vw, 3.3rem);
-    height: clamp(2.2rem, 13vw, 3.3rem);
+    font-size: 4.8rem;
+    width: 88px;
+    height: 88px;
   }
 
   .fspr.composite {
@@ -3580,11 +3602,11 @@ body {
   }
 
   .pp-dots {
-    margin-top: .22rem;
+    margin-top: .14rem;
   }
 
   #battle-xp-bar {
-    margin-top: .12rem !important;
+    margin-top: .06rem !important;
   }
 
   .battle-center {
@@ -3633,14 +3655,16 @@ body {
   }
 
   .battle-controls {
-    padding: .45rem;
-    gap: .4rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: .4rem .45rem;
+    gap: .35rem;
   }
 
   .battle-controls .btn {
-    flex: 1 1 30%;
-    min-width: 112px;
-    min-height: 48px;
+    width: 100%;
+    min-width: 0;
+    min-height: 46px;
   }
 
   .starter-grid {
@@ -3767,17 +3791,32 @@ body {
     min-height: 48px;
   }
 
-  .battle-controls .btn {
-    flex: 1 1 100%;
+  #screen-battle .battle-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .32rem;
+    padding: .35rem .4rem;
+  }
+
+  #screen-battle .battle-controls .btn {
+    min-height: 44px;
   }
 
   .hp-wrap {
     width: 114px;
   }
 
-  .arena {
+  #screen-battle .arena {
     grid-template-columns: 1fr 28px 1fr;
-    min-height: 176px;
+    min-height: 216px;
+    align-items: start;
+    padding-top: .3rem;
+    padding-bottom: .2rem;
+  }
+
+  .fspr {
+    font-size: 4.2rem;
+    width: 78px;
+    height: 78px;
   }
 
   .fspr.composite {
