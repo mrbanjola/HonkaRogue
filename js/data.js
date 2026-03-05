@@ -5,6 +5,22 @@
 // PARTS DATA
 // PARTS DATA (loaded from server at runtime; fallback to bundled file when not served)
 let PARTS_DATA = { version:'0.0.0', generatedAt:null, source:'runtime', statsGuide:{}, summary:{ totalParts:0, perSlot:{ head:0, torso:0, wings:0, legs:0 }, rarityBreakdown:{}, archetypeBreakdown:{} }, families:[], parts:[] };
+const MAX_PART_MOVES = 4;
+function _sanitizeMoveIds(rawIds, max = MAX_PART_MOVES) {
+  return [...new Set((rawIds || []).map(x => String(x || '').trim()).filter(Boolean))].slice(0, max);
+}
+function _ensureFamilyMoveIdsByRarity(fam) {
+  const byR = fam?.moveIdsByRarity && typeof fam.moveIdsByRarity === 'object' ? fam.moveIdsByRarity : {};
+  const out = {
+    common: _sanitizeMoveIds(byR.common || []),
+    rare: _sanitizeMoveIds(byR.rare || []),
+    legendary: _sanitizeMoveIds(byR.legendary || []),
+  };
+  if (!out.common.length && Array.isArray(fam?.baseMoveIds) && fam.baseMoveIds.length) {
+    out.common = _sanitizeMoveIds(fam.baseMoveIds);
+  }
+  return out;
+}
 const FAMILY_NAME_TYPE_HINT = {
   Marshborn:'Normal', Embercrest:'Fire', Frostplume:'Ice', Stormcall:'Lightning',
   Ironbarb:'Normal', Duskveil:'Shadow', Sunflare:'Fire', Bloomcrest:'Normal', Voidgild:'Shadow',
@@ -37,7 +53,8 @@ function ensureFamiliesRegistry(data) {
       theme: String(fam.theme || ''),
       type: inferFamilyType(fam.type, fam.name, fam.theme),
       description: String(fam.description || ''),
-      baseMoveIds: Array.isArray(fam.baseMoveIds) ? [...new Set(fam.baseMoveIds.filter(Boolean))] : [],
+      baseMoveIds: _sanitizeMoveIds(fam.baseMoveIds || []),
+      moveIdsByRarity: _ensureFamilyMoveIdsByRarity(fam),
     };
     if (id) byId.set(id, rec);
     byName.set(rec.name.toLowerCase(), rec);
@@ -63,6 +80,8 @@ function ensureFamiliesRegistry(data) {
       if (!fam.id && pId) fam.id = pId;
       if (!fam.type || fam.type === 'Normal') fam.type = inferFamilyType(pType, fam.name, fam.theme);
     }
+    fam.moveIdsByRarity = _ensureFamilyMoveIdsByRarity(fam);
+    fam.baseMoveIds = _sanitizeMoveIds(fam.baseMoveIds || fam.moveIdsByRarity.common || []);
     part.familyId = fam.id;
     part.family = { id: fam.id, name: fam.name, theme: fam.theme, type: fam.type };
   }
@@ -101,6 +120,7 @@ async function loadPartsData() {
           if (!p) return;
           if (!p.name) p.name = String(p.id || 'Unnamed Part');
           p.isUnique = isPartUnique(p);
+          if (Array.isArray(p.moveIds)) p.moveIds = _sanitizeMoveIds(p.moveIds);
         });
         // Keep JSON-authored rarity unless explicitly requested.
         if (PARTS_DATA.autoNormalizeRarity === true) normalizePartRarityByFamily(PARTS_DATA);
@@ -824,7 +844,7 @@ function moveTier(m) {
   const desc = String(m?.desc || '').toLowerCase();
   const bp = Number(m?.basePower || 0);
   if (desc.includes('legendary') || bp >= 96 || (m.acc || 100) <= 60 || (m.pp || 99) <= 4) return 'legendary';
-  if (bp >= 69 || (m.acc || 100) <= 80 || (m.pp || 99) <= 8 || m.effect || m.drain || m.recoil || m.priority) return 'rare';
+  if (bp >= 69 || (m.acc || 100) <= 80 || (m.pp || 99) <= 8 || m.inflictStatus || m.applyBuff || m.secondaryEffect || m.priority) return 'rare';
   return 'common';
 }
 
@@ -866,18 +886,14 @@ function materializeMoveFromId(moveId) {
     ...(rec.animationType ? { animationType: rec.animationType } : {}),
     emoji: rec.emoji,
     desc: rec.desc,
-    power: rec.effect ? 0 : (rec.basePower || 0),
+    power: rec.statusOnly ? 0 : (rec.basePower || 0),
     acc: rec.acc,
     pp: rec.pp,
     maxPP: rec.pp,
-    ...(rec.effect ? {
-      effect: rec.effect,
-      effectTarget: rec.effectTarget,
-      effectChance: rec.effectChance,
-      effectDur: rec.effectDur,
-    } : {}),
-    ...(rec.drain ? { drain: rec.drain } : {}),
-    ...(rec.recoil ? { recoil: rec.recoil } : {}),
+    ...(rec.secondaryEffect ? { secondaryEffect: { ...rec.secondaryEffect } } : {}),
+    ...(rec.inflictStatus   ? { inflictStatus:   { ...rec.inflictStatus   } } : {}),
+    ...(rec.applyBuff       ? { applyBuff:       { ...rec.applyBuff       } } : {}),
+    ...(rec.statusOnly      ? { statusOnly: true } : {}),
     ...(rec.priority ? { priority: true } : {}),
     ...(rec.lowHPOnly ? { lowHPOnly: true } : {}),
   };
@@ -964,9 +980,13 @@ function partTypeFromData(part) {
 }
 function inheritedFamilyMoveIds(part, data = PARTS_DATA) {
   const fam = getPartFamily(part, data);
-  const ids = fam?.baseMoveIds;
-  if (!Array.isArray(ids) || !ids.length) return null;
-  return [...new Set(ids.filter(id => !!MOVE_DB[id]))];
+  if (!fam) return null;
+  const rarity = (part?.rarity === 'legendary' || part?.rarity === 'rare') ? part.rarity : 'common';
+  const byR = _ensureFamilyMoveIdsByRarity(fam);
+  const candidate = byR[rarity]?.length ? byR[rarity] : (fam?.baseMoveIds || []);
+  const ids = _sanitizeMoveIds(candidate).filter(id => !!MOVE_DB[id]);
+  if (!ids.length) return null;
+  return ids;
 }
 function scoreMoveForPart(move, part, idx) {
   const slot = part.slot || 'head';
@@ -974,9 +994,9 @@ function scoreMoveForPart(move, part, idx) {
   const pType = partTypeFromData(part);
   const targetTier = rarityTargetTier(part.rarity);
   const moveBasePower = Number(move.basePower || 0);
-  const isStatus = !!move.effect || moveBasePower <= 0;
-  const isUtility = !!move.effect || !!move.drain || !!move.priority;
-  const isHeavy = moveBasePower >= 69 || !!move.recoil;
+  const isStatus = !!move.inflictStatus || !!move.applyBuff || moveBasePower <= 0;
+  const isUtility = !!move.inflictStatus || !!move.applyBuff || !!move.secondaryEffect || !!move.priority;
+  const isHeavy = moveBasePower >= 69 || (move.secondaryEffect?.type === 'recoil');
   let s = 0;
   s += (move.type === pType ? 2.1 : (move.type === 'Normal' ? 0.65 : -0.35));
   s += 2.2 - (tierDistance(move.tier, targetTier) * 1.0);
@@ -1010,11 +1030,11 @@ function attachPartMoveLinks(data) {
   if (!data || !Array.isArray(data.parts)) return;
   for (const part of data.parts) {
     const explicit = Array.isArray(part.moveIds) && part.moveIds.length
-      ? [...new Set(part.moveIds.filter(id => !!MOVE_DB[id]))]
+      ? _sanitizeMoveIds(part.moveIds).filter(id => !!MOVE_DB[id])
       : null;
     const inherited = inheritedFamilyMoveIds(part, data);
     const ids = explicit || inherited || pickPartMoves(part);
-    part.moveIds = ids;
+    part.moveIds = _sanitizeMoveIds(ids);
   }
 }
 
@@ -1359,12 +1379,12 @@ const STAGE_LORE = ['A place of old memory. Danger waits.', 'Few emerge unchange
 //  LOOT POOL
 // "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
 const CORE_LOOT_DEFAULT_DEFS = [
-  { id:'hp_tonic',       name:'HP Tonic',        emoji:'*', rarity:'common',    color:'#aaaacc', desc:'Permanently increase <b>Max HP by +25</b>.' },
+  { id:'hp_tonic',       name:'HP Tonic',        emoji:'*', rarity:'common',    color:'#aaaacc', desc:'Permanently increase <b>HP by +3</b>.' },
   { id:'lucky_clover',   name:'Lucky Clover',    emoji:'*', rarity:'common',    color:'#aaaacc', desc:'Permanently increase <b>Luck by +8%</b>.' },
-  { id:'sharp_beak',     name:'Sharp Beak',      emoji:'*', rarity:'common',    color:'#aaaacc', desc:'All move power permanently <b>+8</b>.' },
+  { id:'sharp_beak',     name:'Sharp Beak',      emoji:'*', rarity:'common',    color:'#aaaacc', desc:'Permanently increase <b>ATK by +3</b>.' },
   { id:'pp_seed',        name:'PP Seed',         emoji:'*', rarity:'common',    color:'#aaaacc', desc:'Permanently increase all moves <b>max PP by +3</b>.' },
-  { id:'power_crystal',  name:'Power Crystal',   emoji:'*', rarity:'rare',      color:'#00c8ff', desc:'All move power permanently <b>+18</b>.' },
-  { id:'iron_feathers',  name:'Iron Feathers',   emoji:'*', rarity:'rare',      color:'#00c8ff', desc:'Permanently increase <b>Max HP by +50</b>.' },
+  { id:'power_crystal',  name:'Power Crystal',   emoji:'*', rarity:'rare',      color:'#00c8ff', desc:'Permanently increase <b>ATK by +6</b>.' },
+  { id:'iron_feathers',  name:'Iron Feathers',   emoji:'*', rarity:'rare',      color:'#00c8ff', desc:'Permanently increase <b>HP by +6</b>.' },
   { id:'lucky_star',     name:'Lucky Star',      emoji:'*', rarity:'rare',      color:'#00c8ff', desc:'Permanently increase <b>Luck by +20%</b>.' },
   { id:'stab_orb',       name:'STAB Orb',        emoji:'*', rarity:'rare',      color:'#00c8ff', desc:'Same-type attack bonus increases to <b>1.5</b> (from 1.25).' },
   { id:'extra_life',     name:'Phoenix Feather', emoji:'*', rarity:'legendary', color:'#ffd700', desc:'Gain <b>+1 extra retry</b> for this and all future battles.', global:true },
@@ -1375,12 +1395,12 @@ const CORE_LOOT_DEFAULT_DEFS = [
 ];
 
 const CORE_LOOT_APPLIERS = {
-  hp_tonic: (p)=>{ const prevMax=getHonkerMaxHP(p); const cur=(p.currentHP ?? prevMax); p.maxHPBonus=(p.maxHPBonus||0)+25; const mx=getHonkerMaxHP(p); p.currentHP=Math.min(mx, cur+25); },
+  hp_tonic: (p)=>{ p.hp=(p.hp||80)+3; const mx=getHonkerMaxHP(p); p.currentHP=Math.min(mx,(p.currentHP??mx)+3); },
   lucky_clover: (p)=>{ p.luckBonus=(p.luckBonus||0)+8; },
-  sharp_beak: (p)=>{ p.atkFlat=(p.atkFlat||0)+8; },
+  sharp_beak: (p)=>{ p.atk=(p.atk||80)+3; },
   pp_seed: (p)=>{ p.ppBonus=(p.ppBonus||0)+3; (p.moves||[]).forEach(m=>{ m.maxPP+=3; m.pp=m.maxPP; }); },
-  power_crystal: (p)=>{ p.atkFlat=(p.atkFlat||0)+18; },
-  iron_feathers: (p)=>{ const prevMax=getHonkerMaxHP(p); const cur=(p.currentHP ?? prevMax); p.maxHPBonus=(p.maxHPBonus||0)+50; const mx=getHonkerMaxHP(p); p.currentHP=Math.min(mx, cur+50); },
+  power_crystal: (p)=>{ p.atk=(p.atk||80)+6; },
+  iron_feathers: (p)=>{ p.hp=(p.hp||80)+6; const mx=getHonkerMaxHP(p); p.currentHP=Math.min(mx,(p.currentHP??mx)+6); },
   lucky_star: (p)=>{ p.luckBonus=(p.luckBonus||0)+20; },
   stab_orb: (p)=>{ p.stabBonus=1.5; },
   extra_life: ()=>{ CAMPAIGN.maxRetries=Math.min(CAMPAIGN.maxRetries+1,5); CAMPAIGN.retries=Math.min(CAMPAIGN.retries+1,CAMPAIGN.maxRetries); },
@@ -1478,7 +1498,7 @@ const WILD_EVENTS = [
 
 // BATTLE CONSTANTS
 const LEVEL_GROWTH = { hp: 0.045, atk: 0.035, def: 0.035, spd: 0.03 };
-const STACKABLE_EFFECTS = ['paralyzed', 'cursed', 'shielded', 'pumped'];
+const STACKABLE_EFFECTS = ['cursed', 'shielded', 'pumped', 'exposed'];
 
 function levelStatScale(level, key) {
   const lv = Math.max(1, Number(level) || 1);

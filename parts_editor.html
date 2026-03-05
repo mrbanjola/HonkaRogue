@@ -309,9 +309,20 @@
         <div class="row">
           <div><label>description</label><textarea id="fml-description" style="min-height:72px"></textarea></div>
           <div>
-            <label>baseMoveIds</label>
+            <label>Family Moves By Rarity (max 4 each)</label>
+            <div class="toolbar" style="margin-bottom:8px">
+              <select id="fml-move-rarity">
+                <option value="common">common</option>
+                <option value="rare">rare</option>
+                <option value="legendary">legendary</option>
+              </select>
+              <button id="fml-bulk-apply-rarity" class="btn-primary">Bulk Apply To Family Parts</button>
+            </div>
             <div id="fml-moves-picker" class="move-picker"></div>
-            <div style="margin-top:8px"><button id="fml-moves-by-type">Load Moves By Family Type</button></div>
+            <div class="toolbar" style="margin-top:8px">
+              <button id="fml-moves-by-type">Load By Family Type + Rarity</button>
+              <button id="fml-moves-clear">Clear Rarity Moves</button>
+            </div>
             <div id="fmlMovesSummary" class="status"></div>
           </div>
         </div>
@@ -332,8 +343,10 @@
     const state = {
       data: null, filteredIdx: [], selectedIdx: -1, dirty: false,
       familyPresets: [], unassignedImages: [], selectedFamilyId: null,
-      movePool: [], selectedFamilyMoveIds: [], selectedPartMoveIds: []
+      movePool: [], selectedFamilyMoveIds: [], selectedPartMoveIds: [],
+      selectedFamilyMoveRarity: 'common', selectedFamilyMoveIdsByRarity: { common: [], rare: [], legendary: [] }
     };
+    const MAX_PART_MOVES = 4;
     const KNOWN = new Set(['id','name','slot','file','family','variant','rarity','archetype','isUnique','stats','powerScore','tags','description']);
     const RARITY_BASE = { common: 20, rare: 30, legendary: 40 };
     // Archetype deltas to apply on top of rarity base via quick-balance actions.
@@ -366,6 +379,29 @@
       return 'Normal';
     }
     function normalizeMoveId(raw) { return String(raw ?? '').trim(); }
+    function sanitizeMoveIds(rawIds, max = MAX_PART_MOVES) {
+      return [...new Set((rawIds || []).map(normalizeMoveId).filter(Boolean))].slice(0, max);
+    }
+    function ensureFamilyMoveIdsByRarity(fam) {
+      if (!fam || typeof fam !== 'object') return { common: [], rare: [], legendary: [] };
+      const byR = fam.moveIdsByRarity && typeof fam.moveIdsByRarity === 'object' ? fam.moveIdsByRarity : {};
+      const out = {
+        common: sanitizeMoveIds(byR.common || []),
+        rare: sanitizeMoveIds(byR.rare || []),
+        legendary: sanitizeMoveIds(byR.legendary || []),
+      };
+      if (!out.common.length && Array.isArray(fam.baseMoveIds) && fam.baseMoveIds.length) {
+        out.common = sanitizeMoveIds(fam.baseMoveIds);
+      }
+      return out;
+    }
+    function getFamilyMovesForRarity(fam, rarity) {
+      const byR = ensureFamilyMoveIdsByRarity(fam);
+      const key = (rarity === 'legendary' || rarity === 'rare') ? rarity : 'common';
+      const ids = sanitizeMoveIds(byR[key] || []);
+      if (ids.length) return ids;
+      return sanitizeMoveIds(fam?.baseMoveIds || []);
+    }
     function getMoveId(m) { return normalizeMoveId(m?.id ?? m?.moveId ?? m?.key); }
     function getMoveName(m, moveId) { return String(m?.name || moveId || '(unnamed move)'); }
     function getMoveType(m) {
@@ -386,7 +422,7 @@
     function setSummary(elId, selectedIds) {
       const s = el(elId);
       if (!s) return;
-      s.textContent = `Selected ${selectedIds.length} move${selectedIds.length === 1 ? '' : 's'}`;
+      s.textContent = `Selected ${selectedIds.length}/${MAX_PART_MOVES} move${selectedIds.length === 1 ? '' : 's'}`;
     }
     function renderMovePicker(containerId, selectedIds, onToggle) {
       const host = el(containerId);
@@ -425,15 +461,23 @@
       const arr = Array.isArray(state[listKey]) ? [...state[listKey]] : [];
       const i = arr.indexOf(id);
       if (i >= 0) arr.splice(i, 1);
-      else arr.push(id);
-      state[listKey] = [...new Set(arr)];
+      else if (arr.length < MAX_PART_MOVES) arr.push(id);
+      state[listKey] = sanitizeMoveIds(arr);
     }
     function renderFamilyMovePicker() {
+      const rarity = state.selectedFamilyMoveRarity || 'common';
+      const byR = state.selectedFamilyMoveIdsByRarity || { common: [], rare: [], legendary: [] };
+      state.selectedFamilyMoveIds = sanitizeMoveIds(byR[rarity] || []);
       renderMovePicker('fml-moves-picker', state.selectedFamilyMoveIds, (moveId) => {
         toggleSelectedMove('selectedFamilyMoveIds', moveId);
+        state.selectedFamilyMoveIdsByRarity = {
+          ...(state.selectedFamilyMoveIdsByRarity || { common: [], rare: [], legendary: [] }),
+          [rarity]: sanitizeMoveIds(state.selectedFamilyMoveIds || []),
+        };
         renderFamilyMovePicker();
       });
-      setSummary('fmlMovesSummary', state.selectedFamilyMoveIds || []);
+      const s = el('fmlMovesSummary');
+      if (s) s.textContent = `Editing ${rarity}: ${(state.selectedFamilyMoveIds || []).length}/${MAX_PART_MOVES} selected`;
     }
     function renderPartMovePicker() {
       renderMovePicker('part-moves-picker', state.selectedPartMoveIds, (moveId) => {
@@ -504,7 +548,8 @@
           theme: String(f.theme || ''),
           type: inferFamilyType(f.type, f.name, f.theme),
           description: String(f.description || ''),
-          baseMoveIds: Array.isArray(f.baseMoveIds) ? [...new Set(f.baseMoveIds.filter(Boolean))] : [],
+          baseMoveIds: sanitizeMoveIds(f.baseMoveIds || []),
+          moveIdsByRarity: ensureFamilyMoveIdsByRarity(f),
         });
       }
       for (const p of (state.data.parts || [])) {
@@ -518,10 +563,20 @@
           const nextId = pid || (Math.max(0, ...byId.keys()) + 1);
           const nextName = pname || `Family${nextId}`;
           const nextTheme = ptheme || 'normal';
-          fam = { id: nextId, name: nextName, theme: nextTheme, type: inferFamilyType(ptype, nextName, nextTheme), description: '', baseMoveIds: [] };
+          fam = {
+            id: nextId,
+            name: nextName,
+            theme: nextTheme,
+            type: inferFamilyType(ptype, nextName, nextTheme),
+            description: '',
+            baseMoveIds: [],
+            moveIdsByRarity: { common: [], rare: [], legendary: [] },
+          };
           byId.set(nextId, fam);
         }
         fam.type = inferFamilyType(fam.type || ptype, fam.name, fam.theme);
+        fam.moveIdsByRarity = ensureFamilyMoveIdsByRarity(fam);
+        fam.baseMoveIds = sanitizeMoveIds(fam.baseMoveIds || fam.moveIdsByRarity.common || []);
         p.familyId = fam.id;
         p.family = { id: fam.id, name: fam.name, theme: fam.theme, type: fam.type };
       }
@@ -553,7 +608,10 @@
       el('fml-theme').value = f?.theme || '';
       el('fml-type').value = inferFamilyType(f?.type, f?.name, f?.theme);
       el('fml-description').value = f?.description || '';
-      state.selectedFamilyMoveIds = [...new Set((f?.baseMoveIds || []).map(normalizeMoveId).filter(Boolean))];
+      state.selectedFamilyMoveIdsByRarity = ensureFamilyMoveIdsByRarity(f || {});
+      const raritySel = el('fml-move-rarity');
+      if (raritySel) raritySel.value = state.selectedFamilyMoveRarity || 'common';
+      state.selectedFamilyMoveIds = sanitizeMoveIds(state.selectedFamilyMoveIdsByRarity[state.selectedFamilyMoveRarity || 'common'] || []);
       renderFamilyMovePicker();
     }
 
@@ -585,6 +643,7 @@
         if (!p) return;
         if (!p.name) p.name = String(p.id || 'Unnamed Part');
         p.isUnique = !!p.isUnique;
+        if (Array.isArray(p.moveIds)) p.moveIds = sanitizeMoveIds(p.moveIds);
       });
       state.selectedIdx = d.parts.length ? 0 : -1;
       state.dirty = false;
@@ -812,7 +871,7 @@
       const extra = {};
       Object.keys(p).forEach(k => { if (!KNOWN.has(k)) extra[k] = p[k]; });
       el('f_extraJson').value = JSON.stringify(extra, null, 2);
-      state.selectedPartMoveIds = Array.isArray(p.moveIds) ? [...new Set(p.moveIds.map(normalizeMoveId).filter(Boolean))] : [];
+      state.selectedPartMoveIds = sanitizeMoveIds(p.moveIds || []);
       renderPartMovePicker();
     }
 
@@ -876,7 +935,7 @@
       recalcPowerScore(merged);
       merged.tags = el('f_tags').value.split(',').map(v => v.trim()).filter(Boolean);
       merged.description = el('f_description').value;
-      const selectedMoveIds = [...new Set((state.selectedPartMoveIds || []).map(normalizeMoveId).filter(Boolean))];
+      const selectedMoveIds = sanitizeMoveIds(state.selectedPartMoveIds || []);
       if (selectedMoveIds.length) merged.moveIds = selectedMoveIds;
       else delete merged.moveIds;
       state.data.parts[state.selectedIdx] = merged;
@@ -904,6 +963,7 @@
       parsed.id = String(parsed.id || '').trim();
       parsed.name = String(parsed.name || parsed.id || 'Unnamed Part').trim() || parsed.id || 'Unnamed Part';
       parsed.isUnique = !!parsed.isUnique;
+      if (Array.isArray(parsed.moveIds)) parsed.moveIds = sanitizeMoveIds(parsed.moveIds);
       state.data.parts[state.selectedIdx] = parsed;
       state.dirty = true;
       buildFamilyPresets();
@@ -1026,17 +1086,23 @@
         return;
       }
       const description = el('fml-description').value.trim();
-      const baseMoveIds = [...new Set((state.selectedFamilyMoveIds || []).map(normalizeMoveId).filter(Boolean))];
+      const moveIdsByRarity = {
+        common: sanitizeMoveIds(state.selectedFamilyMoveIdsByRarity?.common || []),
+        rare: sanitizeMoveIds(state.selectedFamilyMoveIdsByRarity?.rare || []),
+        legendary: sanitizeMoveIds(state.selectedFamilyMoveIdsByRarity?.legendary || []),
+      };
+      const baseMoveIds = sanitizeMoveIds(moveIdsByRarity.common);
       let fam = getFamilyById(id);
       if (!fam) {
-        fam = { id, name, theme, type, description, baseMoveIds: [...new Set(baseMoveIds)] };
+        fam = { id, name, theme, type, description, baseMoveIds, moveIdsByRarity };
         state.data.families.push(fam);
       } else {
         fam.name = name;
         fam.theme = theme;
         fam.type = type;
         fam.description = description;
-        fam.baseMoveIds = [...new Set(baseMoveIds)];
+        fam.baseMoveIds = baseMoveIds;
+        fam.moveIdsByRarity = moveIdsByRarity;
       }
       for (const p of (state.data.parts || [])) {
         if (Number(p.familyId || p.family?.id) === id) {
@@ -1049,7 +1115,7 @@
       buildFamilyPresets();
       renderList();
       renderSelected();
-      setStatus(`Family ${name} applied.`, 'warn');
+      setStatus(`Family ${name} applied with rarity move sets (max ${MAX_PART_MOVES} each).`, 'warn');
     }
 
     function newFamily() {
@@ -1061,30 +1127,71 @@
       el('fml-theme').value = 'normal';
       el('fml-type').value = 'Normal';
       el('fml-description').value = '';
+      state.selectedFamilyMoveRarity = 'common';
+      state.selectedFamilyMoveIdsByRarity = { common: [], rare: [], legendary: [] };
       state.selectedFamilyMoveIds = [];
       renderFamilyMovePicker();
     }
     function loadFamilyMovesByType() {
       const familyType = inferFamilyType(el('fml-type').value, el('fml-name').value.trim(), el('fml-theme').value.trim());
+      const rarity = state.selectedFamilyMoveRarity || 'common';
       const ids = (state.movePool || [])
         .filter(m => {
           const types = Array.isArray(m.types) && m.types.length ? m.types : [m.type].filter(Boolean);
-          return types.includes(familyType);
+          if (!types.includes(familyType)) return false;
+          const moveTier = String(m.tier || 'common');
+          return moveTier === rarity;
         })
         .map(m => getMoveId(m))
         .filter(Boolean);
-      state.selectedFamilyMoveIds = [...new Set(ids)];
+      state.selectedFamilyMoveIds = sanitizeMoveIds(ids);
+      state.selectedFamilyMoveIdsByRarity = {
+        ...(state.selectedFamilyMoveIdsByRarity || { common: [], rare: [], legendary: [] }),
+        [rarity]: sanitizeMoveIds(state.selectedFamilyMoveIds),
+      };
       renderFamilyMovePicker();
-      setStatus(`Loaded ${state.selectedFamilyMoveIds.length} ${familyType} move(s) for this family. Apply to persist.`, 'warn');
+      setStatus(`Loaded ${state.selectedFamilyMoveIds.length}/${MAX_PART_MOVES} ${familyType} ${rarity} move(s). Apply family to persist.`, 'warn');
+    }
+    function clearFamilyMovesForActiveRarity() {
+      const rarity = state.selectedFamilyMoveRarity || 'common';
+      state.selectedFamilyMoveIds = [];
+      state.selectedFamilyMoveIdsByRarity = {
+        ...(state.selectedFamilyMoveIdsByRarity || { common: [], rare: [], legendary: [] }),
+        [rarity]: [],
+      };
+      renderFamilyMovePicker();
+      setStatus(`Cleared ${rarity} family move set. Apply family to persist.`, 'warn');
+    }
+    function bulkApplyFamilyRarityMovesToParts() {
+      const fam = getFamilyById(state.selectedFamilyId);
+      if (!fam) return;
+      const byR = ensureFamilyMoveIdsByRarity({
+        ...fam,
+        moveIdsByRarity: state.selectedFamilyMoveIdsByRarity,
+      });
+      let touched = 0;
+      for (const p of (state.data?.parts || [])) {
+        if (Number(p.familyId || p.family?.id) !== Number(fam.id)) continue;
+        const rarity = (p.rarity === 'legendary' || p.rarity === 'rare') ? p.rarity : 'common';
+        const ids = sanitizeMoveIds(byR[rarity] || []);
+        if (ids.length) p.moveIds = ids;
+        else delete p.moveIds;
+        touched += 1;
+      }
+      state.dirty = true;
+      renderList();
+      renderSelected();
+      setStatus(`Bulk applied rarity move sets to ${touched} part(s) in ${fam.name}.`, 'warn');
     }
     function useFamilyMovesForPartForm() {
       const p = getSelectedPart();
       if (!p) return;
       const famId = asInt(el('f_family_id').value, 0) || Number(p.familyId || p.family?.id) || 0;
       const fam = getFamilyById(famId);
-      state.selectedPartMoveIds = [...new Set((fam?.baseMoveIds || []).map(normalizeMoveId).filter(Boolean))];
+      const rarity = String(el('f_rarity').value || p.rarity || 'common');
+      state.selectedPartMoveIds = getFamilyMovesForRarity(fam, rarity);
       renderPartMovePicker();
-      setStatus(`Loaded ${state.selectedPartMoveIds.length} family move(s) into part override. Apply form to persist.`, 'warn');
+      setStatus(`Loaded ${state.selectedPartMoveIds.length}/${MAX_PART_MOVES} ${rarity} family move(s) into part override. Apply form to persist.`, 'warn');
     }
     function clearPartMoveOverrideForm() {
       state.selectedPartMoveIds = [];
@@ -1134,7 +1241,8 @@
         theme: String(f.theme || '').trim(),
         type: inferFamilyType(f.type, f.name, f.theme),
         description: String(f.description || '').trim(),
-        baseMoveIds: [...new Set((f.baseMoveIds || []).map(x => String(x || '').trim()).filter(Boolean))],
+        baseMoveIds: sanitizeMoveIds(f.baseMoveIds || []),
+        moveIdsByRarity: ensureFamilyMoveIdsByRarity(f),
       })).filter(f => f.id && f.name);
       state.data.parts = (state.data.parts || []).map(p => {
         const normalized = clone(p || {});
@@ -1142,6 +1250,7 @@
         normalized.id = id;
         normalized.name = String(normalized.name || id || 'Unnamed Part').trim() || id || 'Unnamed Part';
         normalized.isUnique = !!normalized.isUnique;
+        if (Array.isArray(normalized.moveIds)) normalized.moveIds = sanitizeMoveIds(normalized.moveIds);
         return normalized;
       });
       state.data.summary = recomputeSummary(state.data.parts || []);
@@ -1200,7 +1309,13 @@
       el('fml-new').onclick = newFamily;
       el('fml-apply').onclick = applyFamilyEditor;
       el('fml-delete').onclick = deleteFamily;
+      el('fml-move-rarity').addEventListener('change', () => {
+        state.selectedFamilyMoveRarity = el('fml-move-rarity').value || 'common';
+        renderFamilyMovePicker();
+      });
       el('fml-moves-by-type').onclick = loadFamilyMovesByType;
+      el('fml-moves-clear').onclick = clearFamilyMovesForActiveRarity;
+      el('fml-bulk-apply-rarity').onclick = bulkApplyFamilyRarityMovesToParts;
       el('partMovesFromFamilyBtn').onclick = useFamilyMovesForPartForm;
       el('partMovesClearBtn').onclick = clearPartMoveOverrideForm;
       el('applyFormBtn').onclick = applyFormToSelected;
