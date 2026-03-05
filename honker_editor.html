@@ -154,7 +154,7 @@
   <script>
     const st = {
       dex: [], partsData: null, movePool: [], dexOverrides: {}, idx: -1, filtered: [], dirty: false,
-      selectedMoveIds: [], partSel: { head:'', torso:'', wings:'', legs:'' }
+      selectedMoveIds: [], partSel: { head:'', torso:'', wings:'', legs:'' }, loaded: false, loadedCount: 0
     };
     const SLOT_KEYS = ['head', 'torso', 'wings', 'legs'];
     const TYPE_FROM_THEME = { fire:'Fire', ice:'Ice', lightning:'Lightning', shadow:'Shadow', normal:'Normal' };
@@ -466,11 +466,19 @@
       setDirty(true); renderList(); renderSel();
     }
     async function saveAll() {
+      if (!st.loaded) throw new Error('Refusing to save before a successful load.');
+      if (!Array.isArray(st.dex) || !st.dex.length) throw new Error('Refusing to save empty HONKER_DEX.');
+      if (st.loadedCount > 0 && st.dex.length < st.loadedCount * 0.7) {
+        const ok = confirm(`HONKER_DEX count dropped from ${st.loadedCount} to ${st.dex.length}. Continue save?`);
+        if (!ok) return;
+      }
       const sorted = [...st.dex].sort((a, b) => asInt(a.dexNum, 0) - asInt(b.dexNum, 0));
       const r = await fetch('/api/honkedex', { method:'POST', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify({ items: sorted }) });
       if (!r.ok) { const t = await r.text().catch(() => ''); throw new Error(`Save failed (${r.status}) ${t}`); }
       st.dex = sorted;
-      setDirty(false); setStatus('Saved HONKER_DEX to js/data.js', 'ok');
+      st.loaded = true;
+      st.loadedCount = st.dex.length;
+      setDirty(false); setStatus('Saved HONKER_DEX to data/honkedex.json', 'ok');
     }
     function downloadJson() {
       const b = new Blob([JSON.stringify(st.dex, null, 2)], { type:'application/json' });
@@ -496,6 +504,8 @@
         }
       } catch (_) {}
       st.dex = Array.isArray(rd.items) ? rd.items : [];
+      st.loaded = true;
+      st.loadedCount = st.dex.length;
       st.partsData = pd && Array.isArray(pd.parts) ? pd : { parts: [], families: [] };
       st.movePool = Array.isArray(md.items) ? md.items : [];
       rebuildMoveLookup();

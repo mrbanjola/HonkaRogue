@@ -12,6 +12,7 @@ const DATA_DIR = path.join(ROOT, 'data');
 const SAVES_DIR = path.join(ROOT, 'saves');
 const DATA_JS = path.join(ROOT, 'js', 'data.js');
 const MOVES_DATA_FILE = path.join(DATA_DIR, 'moves_data.json');
+const HONKDEX_DATA_FILE = path.join(DATA_DIR, 'honkedex.json');
 const SLOT_DIRS = [
   { dir: 'Heads', slot: 'head' },
   { dir: 'Torsos', slot: 'torso' },
@@ -178,10 +179,20 @@ function findConstObjectRange(source, marker) {
   return null;
 }
 function findRosterRange(source) {
-  return findConstArrayRange(source, 'let ROSTER = [');
+  const markers = ['let ROSTER = [', 'const ROSTER = ['];
+  for (const marker of markers) {
+    const range = findConstArrayRange(source, marker);
+    if (range) return { ...range, marker };
+  }
+  return null;
 }
 function findHonkDexRange(source) {
-  return findConstArrayRange(source, 'let HONKER_DEX = [');
+  const markers = ['let HONKER_DEX = [', 'const HONKER_DEX = ['];
+  for (const marker of markers) {
+    const range = findConstArrayRange(source, marker);
+    if (range) return { ...range, marker };
+  }
+  return null;
 }
 function findDexPartOverridesRange(source) {
   return findConstObjectRange(source, 'const DEX_PARTS_OVERRIDES = {');
@@ -201,6 +212,19 @@ function writeMovePoolToFile(items) {
   const payload = { items };
   fs.writeFileSync(MOVES_DATA_FILE, JSON.stringify(payload, null, 2), 'utf8');
 }
+function readHonkDexFromFile() {
+  const raw = fs.readFileSync(HONKDEX_DATA_FILE, 'utf8');
+  const parsed = safeJsonParse(raw);
+  if (!parsed) throw new Error('Invalid honkedex.json');
+  const items = Array.isArray(parsed) ? parsed : parsed.items;
+  if (!Array.isArray(items)) throw new Error('Invalid honkedex payload');
+  return items;
+}
+function writeHonkDexToFile(items) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+  const payload = { items };
+  fs.writeFileSync(HONKDEX_DATA_FILE, JSON.stringify(payload, null, 2), 'utf8');
+}
 function readRosterFromDataJs() {
   const src = fs.readFileSync(DATA_JS, 'utf8');
   const range = findRosterRange(src);
@@ -214,7 +238,8 @@ function writeRosterToDataJs(roster) {
   const src = fs.readFileSync(DATA_JS, 'utf8');
   const range = findRosterRange(src);
   if (!range) throw new Error('ROSTER not found');
-  const replacement = `const ROSTER = ${JSON.stringify(roster, null, 2)};`;
+  const decl = String(range.marker || '').startsWith('let ') ? 'let' : 'const';
+  const replacement = `${decl} ROSTER = ${JSON.stringify(roster, null, 2)};`;
   const next = src.slice(0, range.start) + replacement + src.slice(range.end);
   fs.writeFileSync(DATA_JS, next, 'utf8');
 }
@@ -231,7 +256,8 @@ function writeHonkDexToDataJs(dex) {
   const src = fs.readFileSync(DATA_JS, 'utf8');
   const range = findHonkDexRange(src);
   if (!range) throw new Error('HONKER_DEX not found');
-  const replacement = `const HONKER_DEX = ${JSON.stringify(dex, null, 2)};`;
+  const decl = String(range.marker || '').startsWith('let ') ? 'let' : 'const';
+  const replacement = `${decl} HONKER_DEX = ${JSON.stringify(dex, null, 2)};`;
   const next = src.slice(0, range.start) + replacement + src.slice(range.end);
   fs.writeFileSync(DATA_JS, next, 'utf8');
 }
@@ -383,10 +409,10 @@ const server = http.createServer(async (req, res) => {
   if (pathname === '/api/honkedex') {
     if (req.method === 'GET') {
       try {
-        const dex = readHonkDexFromDataJs();
+        const dex = readHonkDexFromFile();
         send(res, 200, JSON.stringify({ count: dex.length, items: dex }), MIME['.json']);
       } catch (err) {
-        send(res, 500, JSON.stringify({ error: 'Failed to read HONKER_DEX' }), MIME['.json']);
+        send(res, 500, JSON.stringify({ error: 'Failed to read honkedex data' }), MIME['.json']);
       }
       return;
     }
@@ -399,10 +425,10 @@ const server = http.createServer(async (req, res) => {
           send(res, 400, JSON.stringify({ error: 'Expected array or {items:[]}' }), MIME['.json']);
           return;
         }
-        writeHonkDexToDataJs(items);
+        writeHonkDexToFile(items);
         send(res, 204, '');
       } catch (err) {
-        send(res, 500, JSON.stringify({ error: 'Failed to write HONKER_DEX' }), MIME['.json']);
+        send(res, 500, JSON.stringify({ error: 'Failed to write honkedex data' }), MIME['.json']);
       }
       return;
     }

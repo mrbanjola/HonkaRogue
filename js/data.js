@@ -132,6 +132,24 @@ async function loadMovesData() {
   console.warn('[DATA] loadMovesData: failed to load from all sources');
   return false;
 }
+async function loadHonkDexData() {
+  const urls = ['/api/honkedex', 'data/honkedex.json'];
+  for (const url of urls) {
+    try {
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) continue;
+      const data = await res.json();
+      const items = Array.isArray(data) ? data : (data.items || []);
+      if (!Array.isArray(items) || !items.length) continue;
+      HONKER_DEX = items;
+      if (typeof initDexPartIds === 'function') initDexPartIds();
+      console.log('[DATA] Honkedex loaded:', HONKER_DEX.length);
+      return true;
+    } catch (_) {}
+  }
+  console.warn('[DATA] loadHonkDexData: failed to load from all sources');
+  return false;
+}
 
 async function loadLootData() {
   const urls = ['/api/loot-pool', 'data/loot_pool.json'];
@@ -272,155 +290,517 @@ const CAMPAIGN = {
 //  HONK?DEX   -  30 named honkers that fill stages 1 - 30
 // "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
 let HONKER_DEX = [
-  // Stage 1
-  { dexNum:1,  id:'gerald',     name:'Gerald',              emoji:'*', type:'Normal',
-    atk:50, def:55, spd:55,
-    lore:'Just a goose. No lore. He does his best.', passive:null },
-  // Stage 2
-  { dexNum:2,  id:'embertail',  name:'Embertail',           emoji:'*', type:'Fire',
-    atk:80, def:65, spd:75,
-    lore:'Born in a volcanic crater. Always slightly on fire.',
-    passive:{id:'heat_proof',   emoji:'*', name:'Heat Proof',    desc:'Immune to Burn.'}},
-  // Stage 3
-  { dexNum:3,  id:'frosting',   name:'Frosting',            emoji:'*', type:'Ice',
-    atk:62, def:95, spd:70,
-    lore:'Named after the dessert. Extremely dangerous.',
-    passive:{id:'frost_armor',  emoji:'*', name:'Frost Armor',   desc:'Takes 25% less Ice damage.'}},
-  // Stage 4
-  { dexNum:4,  id:'zappington', name:'Zappington',          emoji:'*', type:'Lightning',
-    atk:75, def:55, spd:110,
-    lore:'Has never been in the same room as a microwave.',
-    passive:{id:'static_skin',  emoji:'*', name:'Static Skin',   desc:'30% chance to Paralyze attackers.'}},
-  // Stage 5  -  BOSS
-  { dexNum:5,  id:'voidwing',   name:'Voidwing',            emoji:'*', type:'Shadow',
-    atk:90, def:80, spd:75,
-    lore:'Gazes into you. Does not blink. Has no eyelids.',
-    passive:{id:'cursed_aura',  emoji:'*', name:'Cursed Aura',   desc:'Enemy starts battle Cursed.'}, isBoss:true },
-  // Stage 6
-  { dexNum:6,  id:'kevin',      name:'Kevin',               emoji:'*', type:'Normal',
-    atk:115, def:60, spd:70,
-    lore:'Suspiciously strong for a Kevin.',
-    passive:{id:'underdog',     emoji:'*', name:'Underdog',      desc:'+30% ATK when below 50% HP.'}},
-  // Stage 7
-  { dexNum:7,  id:'scorchwick', name:'Scorchwick',          emoji:'*', type:'Fire',
-    atk:100, def:60, spd:85,
-    lore:'Breathes fire. Also talks about breathing fire constantly.',
-    passive:{id:'type_mastery', emoji:'*', name:'Type Mastery',  desc:'STAB bonus is -1.5 instead of -1.25.'}},
-  // Stage 8
-  { dexNum:8,  id:'brrrbeak',   name:'Brrrbeak',            emoji:'*', type:'Ice',
-    atk:65, def:105, spd:58,
-    lore:'Makes a brrrr sound. Not from the cold. Just vibes.',
-    passive:{id:'resilient',    emoji:'*', name:'Resilient',     desc:'Immune to Paralysis.'}},
-  // Stage 9
-  { dexNum:9,  id:'thunderbeak',name:'Thunderbeak',         emoji:'*', type:'Lightning',
-    atk:80, def:60, spd:105,
-    lore:'His beak is a lightning rod. He is fine with this.',
-    passive:{id:'thick_skin',   emoji:'*', name:'Thick Skin',    desc:'Takes 20% less damage from all sources.'}},
-  // Stage 10  -  BOSS
-  { dexNum:10, id:'magnaroo',   name:'Magnaroo Rex',        emoji:'*', type:'Fire',
-    atk:110, def:85, spd:72,
-    lore:'The lava cools when he arrives. Out of respect.',
-    passive:{id:'heat_proof',   emoji:'*', name:'Heat Proof',    desc:'Immune to Burn.'}, isBoss:true },
-  // Stage 11
-  { dexNum:11, id:'capthonk',   name:'Captain Honk',        emoji:'*', type:'Normal',
-    atk:78, def:85, spd:80,
-    lore:'Decorated veteran of the First Honk War.',
-    passive:{id:'shield_wall',  emoji:'*', name:'Shield Wall',   desc:'Enters battle Shielded for 1 round.'}},
-  // Stage 12
-  { dexNum:12, id:'glaciergus', name:'Glacier Gus',         emoji:'*', type:'Ice',
-    atk:60, def:125, spd:38,
-    lore:'Very slow. Very wide. Immovable object energy.',
-    passive:{id:'regeneration', emoji:'*', name:'Regeneration',  desc:'Heals 6% max HP at the start of each round.'}},
-  // Stage 13
-  { dexNum:13, id:'gloomfeather',name:'Gloomfeather',       emoji:'*', type:'Shadow',
-    atk:90, def:65, spd:85,
-    lore:'Brings a noticeable chill to every room.',
-    passive:{id:'cursed_aura',  emoji:'*', name:'Cursed Aura',   desc:'Enemy starts battle Cursed.'}},
-  // Stage 14
-  { dexNum:14, id:'staticlina', name:'Staticlina',          emoji:'*', type:'Lightning',
-    atk:78, def:60, spd:108,
-    lore:'Her feathers are frizzled. Has always been this way.',
-    passive:{id:'static_skin',  emoji:'*', name:'Static Skin',   desc:'30% chance to Paralyze attackers.'}},
-  // Stage 15  -  BOSS
-  { dexNum:15, id:'crystalwing',name:'Crystalwing Prime',   emoji:'*', type:'Ice',
-    atk:85, def:112, spd:62,
-    lore:'Carved from a single glacier. Hates room temperature.',
-    passive:{id:'frost_armor',  emoji:'*', name:'Frost Armor',   desc:'Takes 25% less Ice damage.'}, isBoss:true },
-  // Stage 16
-  { dexNum:16, id:'sirquacks',  name:'Sir Quacks-a-Lot',    emoji:'*', type:'Normal',
-    atk:80, def:80, spd:80,
-    lore:'Knighted for services to honking. No further questions.',
-    passive:{id:'underdog',     emoji:'*', name:'Underdog',      desc:'+30% ATK when below 50% HP.'}},
-  // Stage 17
-  { dexNum:17, id:'dreadquack', name:'Dreadquack',          emoji:'*', type:'Shadow',
-    atk:95, def:90, spd:68,
-    lore:'Arrived without invitation. Left without explanation.',
-    passive:{id:'thick_skin',   emoji:'*', name:'Thick Skin',    desc:'Takes 20% less damage from all sources.'}},
-  // Stage 18
-  { dexNum:18, id:'pyrocluck',  name:'Pyrocluck',           emoji:'*', type:'Fire',
-    atk:112, def:55, spd:90,
-    lore:'Spontaneously combusted once. Liked it.',
-    passive:{id:'type_mastery', emoji:'*', name:'Type Mastery',  desc:'STAB bonus is -1.5 instead of -1.25.'}},
-  // Stage 19
-  { dexNum:19, id:'voltmare',   name:'Voltmare',            emoji:'*', type:'Lightning',
-    atk:85, def:58, spd:122,
-    lore:'Nightmare horse energy. Lightning bird body.',
-    passive:{id:'resilient',    emoji:'*', name:'Resilient',     desc:'Immune to Paralysis.'}},
-  // Stage 20  -  BOSS
-  { dexNum:20, id:'eclipsar',   name:'Eclipsar Omega',      emoji:'*', type:'Shadow',
-    atk:102, def:90, spd:78,
-    lore:'Blocked out the sun. Filed the necessary paperwork.',
-    passive:{id:'cursed_aura',  emoji:'*', name:'Cursed Aura',   desc:'Enemy starts battle Cursed.'}, isBoss:true },
-  // Stage 21
-  { dexNum:21, id:'profwaddle', name:'Professor Waddle',    emoji:'*', type:'Normal',
-    atk:65, def:85, spd:62,
-    lore:'Has a PhD. In honking. From an accredited institution.',
-    passive:{id:'regeneration', emoji:'*', name:'Regeneration',  desc:'Heals 6% max HP at the start of each round.'}},
-  // Stage 22
-  { dexNum:22, id:'cinderquill',name:'Cinderquill',         emoji:'*', type:'Fire',
-    atk:98, def:68, spd:82,
-    lore:'Sheds smoldering feathers. They sell well.',
-    passive:{id:'heat_proof',   emoji:'*', name:'Heat Proof',    desc:'Immune to Burn.'}},
-  // Stage 23
-  { dexNum:23, id:'snowquack',  name:'Snowquack',           emoji:'*', type:'Ice',
-    atk:68, def:102, spd:62,
-    lore:'Emerged from a blizzard. Has not fully melted.',
-    passive:{id:'shield_wall',  emoji:'*', name:'Shield Wall',   desc:'Enters battle Shielded for 1 round.'}},
-  // Stage 24
-  { dexNum:24, id:'boltclaw',   name:'Boltclaw',            emoji:'*', type:'Lightning',
-    atk:90, def:65, spd:115,
-    lore:'Claws conduct electricity. Very gentle hugs.',
-    passive:{id:'type_mastery', emoji:'*', name:'Type Mastery',  desc:'STAB bonus is -1.5 instead of -1.25.'}},
-  // Stage 25  -  BOSS
-  { dexNum:25, id:'regularbarry',name:'Regular Barry',      emoji:'*', type:'Normal',
-    atk:122, def:65, spd:68,
-    lore:'"I am just a regular Barry."  -  Barry, who is not regular.',
-    passive:{id:'underdog',     emoji:'*', name:'Underdog',      desc:'+30% ATK when below 50% HP.'}, isBoss:true },
-  // Stage 26
-  { dexNum:26, id:'hexdown',    name:'Hexdown',             emoji:'Y,', type:'Shadow',
-    atk:85, def:85, spd:75,
-    lore:'Carries a grudge and several curses. Available for parties.',
-    passive:{id:'thick_skin',   emoji:'*', name:'Thick Skin',    desc:'Takes 20% less damage from all sources.'}},
-  // Stage 27
-  { dexNum:27, id:'blazefowl',  name:'Blazefowl',           emoji:'*', type:'Fire',
-    atk:108, def:70, spd:85,
-    lore:'Historically mistaken for a roast dinner. Does not appreciate it.',
-    passive:{id:'regeneration', emoji:'*', name:'Regeneration',  desc:'Heals 6% max HP at the start of each round.'}},
-  // Stage 28
-  { dexNum:28, id:'arcticclyde',name:'Arctic Clyde',        emoji:'*', type:'Ice',
-    atk:70, def:112, spd:48,
-    lore:'From the Northern Reaches. Doesn\'t talk about the Northern Reaches.',
-    passive:{id:'resilient',    emoji:'*', name:'Resilient',     desc:'Immune to Paralysis.'}},
-  // Stage 29
-  { dexNum:29, id:'sparksworth',name:'Sparksworth',         emoji:'*', type:'Lightning',
-    atk:88, def:62, spd:118,
-    lore:'Delicate appearance. Devastating voltage. Wears a monocle.',
-    passive:{id:'static_skin',  emoji:'*', name:'Static Skin',   desc:'30% chance to Paralyze attackers.'}},
-  // Stage 30  -  BOSS
-  { dexNum:30, id:'thewraith',  name:'The Wraith Ascendant',emoji:'*', type:'Shadow',
-    atk:118, def:95, spd:85,
-    lore:'The end of the known dex. And yet the stages continue.',
-    passive:{id:'cursed_aura',  emoji:'*', name:'Cursed Aura',   desc:'Enemy starts battle Cursed.'}, isBoss:true },
+  {
+    "dexNum": 1,
+    "id": "gerald",
+    "name": "Gerald",
+    "emoji": "*",
+    "type": "Normal",
+    "atk": 50,
+    "def": 55,
+    "spd": 55,
+    "lore": "Just a goose. No lore. He does his best.",
+    "passive": null
+  },
+  {
+    "dexNum": 2,
+    "id": "embertail",
+    "name": "Embertail",
+    "emoji": "*",
+    "type": "Fire",
+    "atk": 80,
+    "def": 65,
+    "spd": 75,
+    "lore": "Born in a volcanic crater. Always slightly on fire.",
+    "passive": {
+      "id": "heat_proof",
+      "emoji": "*",
+      "name": "Heat Proof",
+      "desc": "Immune to Burn."
+    }
+  },
+  {
+    "dexNum": 3,
+    "id": "frosting",
+    "name": "Frosting",
+    "emoji": "*",
+    "type": "Ice",
+    "atk": 62,
+    "def": 95,
+    "spd": 70,
+    "lore": "Named after the dessert. Extremely dangerous.",
+    "passive": {
+      "id": "frost_armor",
+      "emoji": "*",
+      "name": "Frost Armor",
+      "desc": "Takes 25% less Ice damage."
+    }
+  },
+  {
+    "dexNum": 4,
+    "id": "zappington",
+    "name": "Zappington",
+    "emoji": "*",
+    "type": "Lightning",
+    "atk": 75,
+    "def": 55,
+    "spd": 110,
+    "lore": "Has never been in the same room as a microwave.",
+    "passive": {
+      "id": "static_skin",
+      "emoji": "*",
+      "name": "Static Skin",
+      "desc": "30% chance to Paralyze attackers."
+    }
+  },
+  {
+    "dexNum": 5,
+    "id": "voidwing",
+    "name": "Voidwing",
+    "emoji": "*",
+    "type": "Shadow",
+    "atk": 90,
+    "def": 80,
+    "spd": 75,
+    "lore": "Gazes into you. Does not blink. Has no eyelids.",
+    "passive": {
+      "id": "cursed_aura",
+      "emoji": "*",
+      "name": "Cursed Aura",
+      "desc": "Enemy starts battle Cursed."
+    },
+    "isBoss": true
+  },
+  {
+    "dexNum": 6,
+    "id": "kevin",
+    "name": "Kevin",
+    "emoji": "*",
+    "type": "Normal",
+    "atk": 115,
+    "def": 60,
+    "spd": 70,
+    "lore": "Suspiciously strong for a Kevin.",
+    "passive": {
+      "id": "underdog",
+      "emoji": "*",
+      "name": "Underdog",
+      "desc": "+30% ATK when below 50% HP."
+    }
+  },
+  {
+    "dexNum": 7,
+    "id": "scorchwick",
+    "name": "Scorchwick",
+    "emoji": "*",
+    "type": "Fire",
+    "atk": 100,
+    "def": 60,
+    "spd": 85,
+    "lore": "Breathes fire. Also talks about breathing fire constantly.",
+    "passive": {
+      "id": "type_mastery",
+      "emoji": "*",
+      "name": "Type Mastery",
+      "desc": "STAB bonus is -1.5 instead of -1.25."
+    }
+  },
+  {
+    "dexNum": 8,
+    "id": "brrrbeak",
+    "name": "Brrrbeak",
+    "emoji": "*",
+    "type": "Ice",
+    "atk": 65,
+    "def": 105,
+    "spd": 58,
+    "lore": "Makes a brrrr sound. Not from the cold. Just vibes.",
+    "passive": {
+      "id": "resilient",
+      "emoji": "*",
+      "name": "Resilient",
+      "desc": "Immune to Paralysis."
+    }
+  },
+  {
+    "dexNum": 9,
+    "id": "thunderbeak",
+    "name": "Thunderbeak",
+    "emoji": "*",
+    "type": "Lightning",
+    "atk": 80,
+    "def": 60,
+    "spd": 105,
+    "lore": "His beak is a lightning rod. He is fine with this.",
+    "passive": {
+      "id": "thick_skin",
+      "emoji": "*",
+      "name": "Thick Skin",
+      "desc": "Takes 20% less damage from all sources."
+    }
+  },
+  {
+    "dexNum": 10,
+    "id": "magnaroo",
+    "name": "Magnaroo Rex",
+    "emoji": "*",
+    "type": "Fire",
+    "atk": 110,
+    "def": 85,
+    "spd": 72,
+    "lore": "The lava cools when he arrives. Out of respect.",
+    "passive": {
+      "id": "heat_proof",
+      "emoji": "*",
+      "name": "Heat Proof",
+      "desc": "Immune to Burn."
+    },
+    "isBoss": true
+  },
+  {
+    "dexNum": 11,
+    "id": "capthonk",
+    "name": "Captain Honk",
+    "emoji": "*",
+    "type": "Normal",
+    "atk": 78,
+    "def": 85,
+    "spd": 80,
+    "lore": "Decorated veteran of the First Honk War.",
+    "passive": {
+      "id": "shield_wall",
+      "emoji": "*",
+      "name": "Shield Wall",
+      "desc": "Enters battle Shielded for 1 round."
+    }
+  },
+  {
+    "dexNum": 12,
+    "id": "glaciergus",
+    "name": "Glacier Gus",
+    "emoji": "*",
+    "type": "Ice",
+    "atk": 60,
+    "def": 125,
+    "spd": 38,
+    "lore": "Very slow. Very wide. Immovable object energy.",
+    "passive": {
+      "id": "regeneration",
+      "emoji": "*",
+      "name": "Regeneration",
+      "desc": "Heals 6% max HP at the start of each round."
+    }
+  },
+  {
+    "dexNum": 13,
+    "id": "gloomfeather",
+    "name": "Gloomfeather",
+    "emoji": "*",
+    "type": "Shadow",
+    "atk": 90,
+    "def": 65,
+    "spd": 85,
+    "lore": "Brings a noticeable chill to every room.",
+    "passive": {
+      "id": "cursed_aura",
+      "emoji": "*",
+      "name": "Cursed Aura",
+      "desc": "Enemy starts battle Cursed."
+    }
+  },
+  {
+    "dexNum": 14,
+    "id": "staticlina",
+    "name": "Staticlina",
+    "emoji": "*",
+    "type": "Lightning",
+    "atk": 78,
+    "def": 60,
+    "spd": 108,
+    "lore": "Her feathers are frizzled. Has always been this way.",
+    "passive": {
+      "id": "static_skin",
+      "emoji": "*",
+      "name": "Static Skin",
+      "desc": "30% chance to Paralyze attackers."
+    }
+  },
+  {
+    "dexNum": 15,
+    "id": "crystalwing",
+    "name": "Crystalwing Prime",
+    "emoji": "*",
+    "type": "Ice",
+    "atk": 85,
+    "def": 112,
+    "spd": 62,
+    "lore": "Carved from a single glacier. Hates room temperature.",
+    "passive": {
+      "id": "frost_armor",
+      "emoji": "*",
+      "name": "Frost Armor",
+      "desc": "Takes 25% less Ice damage."
+    },
+    "isBoss": true
+  },
+  {
+    "dexNum": 16,
+    "id": "sirquacks",
+    "name": "Sir Quacks-a-Lot",
+    "emoji": "*",
+    "type": "Normal",
+    "atk": 80,
+    "def": 80,
+    "spd": 80,
+    "lore": "Knighted for services to honking. No further questions.",
+    "passive": {
+      "id": "underdog",
+      "emoji": "*",
+      "name": "Underdog",
+      "desc": "+30% ATK when below 50% HP."
+    }
+  },
+  {
+    "dexNum": 17,
+    "id": "dreadquack",
+    "name": "Dreadquack",
+    "emoji": "*",
+    "type": "Shadow",
+    "atk": 95,
+    "def": 90,
+    "spd": 68,
+    "lore": "Arrived without invitation. Left without explanation.",
+    "passive": {
+      "id": "thick_skin",
+      "emoji": "*",
+      "name": "Thick Skin",
+      "desc": "Takes 20% less damage from all sources."
+    }
+  },
+  {
+    "dexNum": 18,
+    "id": "pyrocluck",
+    "name": "Pyrocluck",
+    "emoji": "*",
+    "type": "Fire",
+    "atk": 112,
+    "def": 55,
+    "spd": 90,
+    "lore": "Spontaneously combusted once. Liked it.",
+    "passive": {
+      "id": "type_mastery",
+      "emoji": "*",
+      "name": "Type Mastery",
+      "desc": "STAB bonus is -1.5 instead of -1.25."
+    }
+  },
+  {
+    "dexNum": 19,
+    "id": "voltmare",
+    "name": "Voltmare",
+    "emoji": "*",
+    "type": "Lightning",
+    "atk": 85,
+    "def": 58,
+    "spd": 122,
+    "lore": "Nightmare horse energy. Lightning bird body.",
+    "passive": {
+      "id": "resilient",
+      "emoji": "*",
+      "name": "Resilient",
+      "desc": "Immune to Paralysis."
+    }
+  },
+  {
+    "dexNum": 20,
+    "id": "eclipsar",
+    "name": "Eclipsar Omega",
+    "emoji": "*",
+    "type": "Shadow",
+    "atk": 102,
+    "def": 90,
+    "spd": 78,
+    "lore": "Blocked out the sun. Filed the necessary paperwork.",
+    "passive": {
+      "id": "cursed_aura",
+      "emoji": "*",
+      "name": "Cursed Aura",
+      "desc": "Enemy starts battle Cursed."
+    },
+    "isBoss": true
+  },
+  {
+    "dexNum": 21,
+    "id": "profwaddle",
+    "name": "Professor Waddle",
+    "emoji": "*",
+    "type": "Normal",
+    "atk": 65,
+    "def": 85,
+    "spd": 62,
+    "lore": "Has a PhD. In honking. From an accredited institution.",
+    "passive": {
+      "id": "regeneration",
+      "emoji": "*",
+      "name": "Regeneration",
+      "desc": "Heals 6% max HP at the start of each round."
+    }
+  },
+  {
+    "dexNum": 22,
+    "id": "cinderquill",
+    "name": "Cinderquill",
+    "emoji": "*",
+    "type": "Fire",
+    "atk": 98,
+    "def": 68,
+    "spd": 82,
+    "lore": "Sheds smoldering feathers. They sell well.",
+    "passive": {
+      "id": "heat_proof",
+      "emoji": "*",
+      "name": "Heat Proof",
+      "desc": "Immune to Burn."
+    }
+  },
+  {
+    "dexNum": 23,
+    "id": "snowquack",
+    "name": "Snowquack",
+    "emoji": "*",
+    "type": "Ice",
+    "atk": 68,
+    "def": 102,
+    "spd": 62,
+    "lore": "Emerged from a blizzard. Has not fully melted.",
+    "passive": {
+      "id": "shield_wall",
+      "emoji": "*",
+      "name": "Shield Wall",
+      "desc": "Enters battle Shielded for 1 round."
+    }
+  },
+  {
+    "dexNum": 24,
+    "id": "boltclaw",
+    "name": "Boltclaw",
+    "emoji": "*",
+    "type": "Lightning",
+    "atk": 90,
+    "def": 65,
+    "spd": 115,
+    "lore": "Claws conduct electricity. Very gentle hugs.",
+    "passive": {
+      "id": "type_mastery",
+      "emoji": "*",
+      "name": "Type Mastery",
+      "desc": "STAB bonus is -1.5 instead of -1.25."
+    }
+  },
+  {
+    "dexNum": 25,
+    "id": "regularbarry",
+    "name": "Regular Barry",
+    "emoji": "*",
+    "type": "Normal",
+    "atk": 122,
+    "def": 65,
+    "spd": 68,
+    "lore": "\"I am just a regular Barry.\"  -  Barry, who is not regular.",
+    "passive": {
+      "id": "underdog",
+      "emoji": "*",
+      "name": "Underdog",
+      "desc": "+30% ATK when below 50% HP."
+    },
+    "isBoss": true
+  },
+  {
+    "dexNum": 26,
+    "id": "hexdown",
+    "name": "Hexdown",
+    "emoji": "Y,",
+    "type": "Shadow",
+    "atk": 85,
+    "def": 85,
+    "spd": 75,
+    "lore": "Carries a grudge and several curses. Available for parties.",
+    "passive": {
+      "id": "thick_skin",
+      "emoji": "*",
+      "name": "Thick Skin",
+      "desc": "Takes 20% less damage from all sources."
+    }
+  },
+  {
+    "dexNum": 27,
+    "id": "blazefowl",
+    "name": "Blazefowl",
+    "emoji": "*",
+    "type": "Fire",
+    "atk": 108,
+    "def": 70,
+    "spd": 85,
+    "lore": "Historically mistaken for a roast dinner. Does not appreciate it.",
+    "passive": {
+      "id": "regeneration",
+      "emoji": "*",
+      "name": "Regeneration",
+      "desc": "Heals 6% max HP at the start of each round."
+    }
+  },
+  {
+    "dexNum": 28,
+    "id": "arcticclyde",
+    "name": "Arctic Clyde",
+    "emoji": "*",
+    "type": "Ice",
+    "atk": 70,
+    "def": 112,
+    "spd": 48,
+    "lore": "From the Northern Reaches. Doesn't talk about the Northern Reaches.",
+    "passive": {
+      "id": "resilient",
+      "emoji": "*",
+      "name": "Resilient",
+      "desc": "Immune to Paralysis."
+    }
+  },
+  {
+    "dexNum": 29,
+    "id": "sparksworth",
+    "name": "Sparksworth",
+    "emoji": "*",
+    "type": "Lightning",
+    "atk": 88,
+    "def": 62,
+    "spd": 118,
+    "lore": "Delicate appearance. Devastating voltage. Wears a monocle.",
+    "passive": {
+      "id": "static_skin",
+      "emoji": "*",
+      "name": "Static Skin",
+      "desc": "30% chance to Paralyze attackers."
+    }
+  },
+  {
+    "dexNum": 30,
+    "id": "thewraith",
+    "name": "The Wraith Ascendant",
+    "emoji": "*",
+    "type": "Shadow",
+    "atk": 118,
+    "def": 95,
+    "spd": 85,
+    "lore": "The end of the known dex. And yet the stages continue.",
+    "passive": {
+      "id": "cursed_aura",
+      "emoji": "*",
+      "name": "Cursed Aura",
+      "desc": "Enemy starts battle Cursed."
+    },
+    "isBoss": true
+  }
 ];
 
 // MOVE_POOL is loaded at runtime from data/moves_data.json via loadMovesData()

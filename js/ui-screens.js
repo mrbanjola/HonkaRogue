@@ -19,6 +19,11 @@ async function initTitle() {
       await loadPartsData();
       console.log('[INIT] Parts data loaded:', PARTS_DATA?.parts?.length || 0);
     }
+    if (typeof loadHonkDexData === 'function') {
+      const dexLoaded = await loadHonkDexData();
+      if (!dexLoaded) console.warn('[INIT] Honkedex load failed; using bundled fallback');
+      console.log('[INIT] Honkedex loaded:', HONKER_DEX?.length || 0);
+    }
     if (typeof loadMovesData === 'function') {
       const movesLoaded = await loadMovesData();
       if (!movesLoaded) {
