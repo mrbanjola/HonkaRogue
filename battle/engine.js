@@ -9,24 +9,13 @@ const OPENERS=['With blazing resolve,','Eyes locked in fury,','Without warning,'
 const MISSES=['But the attack whiffs!','But it sails past!','But the target sidesteps!',
   'But fate denies the strike!','But the blow goes wide!','But the honk misses entirely!'];
 
-function shouldUseNovaFx(move) {
-  const sig = `${String(move?.id || '')} ${String(move?.name || '')}`.toLowerCase();
-  if (/(pulse|blast|wave|collapse|eruption|clap|nova|burst|field|crash|inferno|blizzard|thunder)/.test(sig)) return true;
-  const p = Number(move?.power || 0);
-  return Number.isFinite(p) && p >= 95;
-}
-function getNovaFxMode(move) {
-  const sig = `${String(move?.id || '')} ${String(move?.name || '')}`.toLowerCase();
-  if (/(void|oblivion|collapse|singularity|black hole|vortex)/.test(sig)) return 'reverse';
-  return 'normal';
-}
 function resolveMoveFxType(move) {
   const raw = String(move?.animationType || '').trim().toLowerCase();
   if (raw === 'nova') return 'nova';
   if (raw === 'reverse nova') return 'reverse_nova';
   if (raw === 'projectile') return 'projectile';
   if (raw === 'beam') return 'beam';
-  if (shouldUseNovaFx(move)) return getNovaFxMode(move) === 'reverse' ? 'reverse_nova' : 'nova';
+  if (raw === 'drain') return 'drain';
   return 'hit';
 }
 
@@ -110,7 +99,9 @@ const STATUS_META = {
   cursed:    { emoji:'🌑', color:'#a020f0', label:'CURSE'   },
   shielded:  { emoji:'🛡️', color:'#00ff88', label:'SHIELD'  },
   pumped:    { emoji:'💪', color:'#ff9800', label:'PUMPED'  },
+  exposed:   { emoji:'🔓', color:'#ff4444', label:'EXPOSED' },
 };
+const STATUS_DURATIONS = { burn: 3, frozen: 3, paralyzed: 2 };
 
 const TYPE_ICON = {
   Fire: '🔥',
@@ -227,10 +218,11 @@ function applyStatusEffect(target, effect, duration) {
   const msgs = {
     burn:      `🔥 <b>${target.name}</b> is now <span style="color:#ff4e00">BURNING</span>! Takes damage each round.`,
     frozen:    `❄️ <b>${target.name}</b> is <span style="color:#00c8ff">FROZEN SOLID</span>! Will skip their next turn!`,
-    paralyzed: `⚡ <b>${target.name}</b> is <span style="color:#ffe600">PARALYZED</span>! Accuracy reduced${stackTxt}.`,
+    paralyzed: `⚡ <b>${target.name}</b> is <span style="color:#ffe600">PARALYZED</span>! Accuracy reduced.`,
     cursed:    `🌑 <b>${target.name}</b> is <span style="color:#a020f0">CURSED</span>! Attack power reduced${stackTxt}.`,
     shielded:  `🛡️ <b>${target.name}</b> raises a <span style="color:#00ff88">SHIELD</span>! Incoming damage reduced${stackTxt}.`,
     pumped:    `💪 <b>${target.name}</b> is <span style="color:#ff9800">PUMPED UP</span>! Attack power increased${stackTxt}.`,
+    exposed:   `🔓 <b>${target.name}</b> is <span style="color:#ff4444">EXPOSED</span>! Defense reduced${stackTxt}.`,
   };
   log('ev', msgs[effect] || `${meta.emoji} ${target.name} gains ${effect}!`);
 }
@@ -261,7 +253,15 @@ function tickStatusEffects(f) {
     }
     if (f.isDead()) return true; // signal death from burn
   }
-  // Stackable effects (paralyzed/cursed/shielded/pumped) persist until cleared.
+  // Paralyzed ticks down each round
+  if (f.statusEffects.paralyzed > 0) {
+    f.statusEffects.paralyzed--;
+    if (f.statusEffects.paralyzed <= 0) {
+      delete f.statusEffects.paralyzed;
+      log('n', `⚡ ${f.name}'s paralysis fades.`);
+    }
+  }
+  // Stackable effects (cursed/shielded/pumped/exposed) persist until swap/faint/boss-clear.
   refreshStatusBadges(f);
   return false;
 }
@@ -302,23 +302,36 @@ function doMove(atk, def, move, cb) {
   const opener = OPENERS[Math.floor(Math.random() * OPENERS.length)];
 
   // STATUS / BUFF MOVE (no damage)
-  if (move.effect && move.power === 0) {
+  if (move.power <= 0 && (move.inflictStatus || move.applyBuff)) {
     log('m', `${opener} <b style="color:${TC[atk.type]}">${atk.name}</b> uses <b>${move.emoji} ${move.name}</b>!`);
     if (!hit) { log('ms', 'But it fails!'); shakeSpr(atk.side); setTimeout(cb, 370); return; }
-    const chanceRoll = BS.rng() * 100;
-    if (chanceRoll > (move.effectChance || 100)) {
-      log('ms', 'But it had no effect!');
-      setTimeout(cb, 370);
+    if (move.inflictStatus) {
+      if (BS.rng() * 100 > move.inflictStatus.chance) {
+        log('ms', 'But it had no effect!');
+        setTimeout(cb, 370);
+        return;
+      }
+      animAtk(atk.side, def.side);
+      setTimeout(() => {
+        const dur = STATUS_DURATIONS[move.inflictStatus.type] || 2;
+        applyStatusEffect(def, move.inflictStatus.type, dur);
+        spawnPtcl(def.side, STATUS_META[move.inflictStatus.type]?.color || '#fff', move.emoji);
+        setTimeout(cb, 350);
+      }, 300);
       return;
     }
-    const target = move.effectTarget === 'self' ? atk : def;
-    animAtk(atk.side, def.side);
-    setTimeout(() => {
-      applyStatusEffect(target, move.effect, move.effectDur || 2);
-      spawnPtcl(target.side, STATUS_META[move.effect]?.color || '#fff', move.emoji);
-      setTimeout(cb, 350);
-    }, 300);
-    return;
+    if (move.applyBuff) {
+      animAtk(atk.side, def.side);
+      setTimeout(() => {
+        const target = move.applyBuff.target === 'self' ? atk : def;
+        for (let i = 0; i < (move.applyBuff.stacks || 1); i++) {
+          applyStatusEffect(target, move.applyBuff.type, 99);
+        }
+        spawnPtcl(target.side, STATUS_META[move.applyBuff.type]?.color || '#fff', move.emoji);
+        setTimeout(cb, 350);
+      }, 300);
+      return;
+    }
   }
 
   log('m', `${opener} <b style="color:${TC[atk.type]}">${atk.name}</b> uses <b>${move.emoji} ${move.name}</b>!`);
@@ -392,6 +405,8 @@ function doMove(atk, def, move, cb) {
         if (typeof window.BattleThreeFx.spawnHit === 'function') window.BattleThreeFx.spawnHit(payload);
       } else if (fxType === 'projectile' && typeof window.BattleThreeFx.spawnProjectile === 'function') {
         window.BattleThreeFx.spawnProjectile(payload);
+      } else if (fxType === 'drain' && typeof window.BattleThreeFx.spawnDrain === 'function') {
+        window.BattleThreeFx.spawnDrain(payload);
       } else if (typeof window.BattleThreeFx.spawnHit === 'function') {
         window.BattleThreeFx.spawnHit(payload);
       }
@@ -432,20 +447,50 @@ function doMove(atk, def, move, cb) {
         spawnPtcl(atk.side, '#ffe600', '⚡');
       }
 
-      // CHANCE TO APPLY BONUS STATUS ON DAMAGE MOVES
-      if (move.effect && move.power > 0 && BS.rng() * 100 <= (move.effectChance || 0)) {
-        const statusTarget = move.effectTarget === 'self' ? atk : def;
-        const canApply = STACKABLE_EFFECTS.includes(move.effect) || !statusTarget.statusEffects[move.effect];
-        if (canApply) {
-          applyStatusEffect(statusTarget, move.effect, move.effectDur || 2);
-          spawnPtcl(statusTarget.side, STATUS_META[move.effect]?.color || '#fff', STATUS_META[move.effect]?.emoji || '●');
+      // --- secondaryEffect: drain or recoil ---
+      if (move.secondaryEffect && dmg > 0) {
+        const se = move.secondaryEffect;
+        if (se.type === 'drain') {
+          const healAmt = Math.max(1, Math.round(dmg * se.value));
+          atk.currentHP = Math.min(atk.maxHP, atk.currentHP + healAmt);
+          updateHP(atk, atk.side);
+          log('ev', `💚 <b>${atk.name}</b> drains <span style="color:#00ff88">${healAmt} HP</span>!`);
+          spawnPtcl(atk.side, '#00ff88', '💚');
+        } else if (se.type === 'recoil') {
+          const recoilAmt = Math.max(1, Math.round(dmg * se.value));
+          atk.currentHP = Math.max(0, atk.currentHP - recoilAmt);
+          updateHP(atk, atk.side);
+          log('ev', `💥 <b>${atk.name}</b> takes <span style="color:#ff9800">${recoilAmt} recoil damage</span>!`);
+          spawnPtcl(atk.side, '#ff9800', '💥');
         }
+      }
+
+      // --- inflictStatus: chance-based timed status on enemy ---
+      if (move.inflictStatus && dmg > 0) {
+        if (BS.rng() * 100 <= move.inflictStatus.chance) {
+          const st = move.inflictStatus.type;
+          const dur = STATUS_DURATIONS[st] || 2;
+          const canApply = !def.statusEffects[st];
+          if (canApply) {
+            applyStatusEffect(def, st, dur);
+            spawnPtcl(def.side, STATUS_META[st]?.color || '#fff', STATUS_META[st]?.emoji || '●');
+          }
+        }
+      }
+
+      // --- applyBuff: stackable effect on hit ---
+      if (move.applyBuff && dmg > 0) {
+        const target = move.applyBuff.target === 'self' ? atk : def;
+        for (let i = 0; i < (move.applyBuff.stacks || 1); i++) {
+          applyStatusEffect(target, move.applyBuff.type, 99);
+        }
+        spawnPtcl(target.side, STATUS_META[move.applyBuff.type]?.color || '#fff', STATUS_META[move.applyBuff.type]?.emoji || '●');
       }
 
       updateCatchButton();
 
-      if (def.isDead())                        { endBattle(atk, def); }
-      else if (reflected > 0 && atk.isDead())  { endBattle(def, atk); }
+      if (def.isDead())       { endBattle(atk, def); }
+      else if (atk.isDead())  { endBattle(def, atk); }
       else { setTimeout(cb, 270); }
     }, 330);
   }, 230);

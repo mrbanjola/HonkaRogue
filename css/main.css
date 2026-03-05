@@ -1460,7 +1460,7 @@ body {
 .arena-3d-fx-layer {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 7;
   pointer-events: none;
 }
 

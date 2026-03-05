@@ -1,6 +1,6 @@
 {
   "version": "1.2.1",
-  "generatedAt": "2026-03-03T13:04:54.441Z",
+  "generatedAt": "2026-03-05T12:46:04.457Z",
   "source": "Family registry migration (families[] + part.familyId)",
   "statsGuide": {
     "hp": "Max HP contribution",
@@ -73,7 +73,8 @@
         "shadow_oblivion",
         "shadow_leech_feather"
       ],
-      "name": "Dome of Stewart"
+      "name": "Dome of Stewart",
+      "isUnique": false
     },
     {
       "id": "head-sprite_011",
@@ -118,7 +119,8 @@
         "shadow_oblivion",
         "shadow_leech_feather"
       ],
-      "name": "Handsome Darkness"
+      "name": "Handsome Darkness",
+      "isUnique": false
     },
     {
       "id": "head-sprite_023",
@@ -163,7 +165,8 @@
         "shadow_oblivion",
         "shadow_leech_feather"
       ],
-      "name": "Head of Attention"
+      "name": "Head of Attention",
+      "isUnique": false
     },
     {
       "id": "head-sprite_024",
@@ -208,7 +211,8 @@
         "shadow_oblivion",
         "shadow_leech_feather"
       ],
-      "name": "Sour Honk"
+      "name": "Sour Honk",
+      "isUnique": false
     },
     {
       "id": "head-sprite_034",
@@ -258,7 +262,8 @@
         "normal_bulldoze",
         "normal_berserker_charge"
       ],
-      "name": "Masked Honkman"
+      "name": "Masked Honkman",
+      "isUnique": false
     },
     {
       "id": "head-sprite_036",
@@ -308,7 +313,8 @@
         "normal_bulldoze",
         "normal_berserker_charge"
       ],
-      "name": "Unseeing Eyes"
+      "name": "Unseeing Eyes",
+      "isUnique": false
     },
     {
       "id": "head-sprite_046",
@@ -342,18 +348,14 @@
       "familyId": 2,
       "moveIds": [
         "fire_flame_honk",
-        "fire_flame_burst",
-        "fire_scorchblast",
-        "fire_ember",
-        "fire_magma_crash",
         "fire_emit_spark",
-        "fire_inferno_wave",
-        "fire_eruption",
-        "fire_lava_spit",
-        "fire_solar_flare",
-        "fire_flamewing"
+        "normal_scratch",
+        "normal_honk_slam",
+        "normal_iron_guard",
+        "normal_battle_cry"
       ],
-      "name": "Honking Hothead"
+      "name": "Honking Hothead",
+      "isUnique": false
     },
     {
       "id": "head-sprite_047",
@@ -398,7 +400,8 @@
         "fire_solar_flare",
         "fire_flamewing"
       ],
-      "name": "Scorchface Killah"
+      "name": "Scorchface Killah",
+      "isUnique": false
     },
     {
       "id": "head-sprite_064",
@@ -448,7 +451,8 @@
         "normal_bulldoze",
         "normal_berserker_charge"
       ],
-      "name": "Rugged Rufus"
+      "name": "Rugged Rufus",
+      "isUnique": false
     },
     {
       "id": "head-sprite_067",
@@ -509,7 +513,8 @@
         "fire_solar_flare",
         "fire_flamewing"
       ],
-      "name": "Blinded Chickster"
+      "name": "Blinded Chickster",
+      "isUnique": false
     },
     {
       "id": "head-sprite_087",
@@ -553,7 +558,8 @@
         "ice_permafrost_slam",
         "ice_glacial_slam"
       ],
-      "name": "Icy Joe"
+      "name": "Icy Joe",
+      "isUnique": false
     },
     {
       "id": "head-sprite_092",
@@ -598,7 +604,8 @@
         "shadow_oblivion",
         "shadow_leech_feather"
       ],
-      "name": "Sir Swank"
+      "name": "Sir Swank",
+      "isUnique": false
     },
     {
       "id": "head-sprite_107",
@@ -642,7 +649,8 @@
         "ice_permafrost_slam",
         "ice_glacial_slam"
       ],
-      "name": "Frosty Frank"
+      "name": "Frosty Frank",
+      "isUnique": false
     },
     {
       "id": "head-sprite_112",
@@ -703,7 +711,8 @@
         "fire_solar_flare",
         "fire_flamewing"
       ],
-      "name": "Little Louis"
+      "name": "Little Louis",
+      "isUnique": false
     },
     {
       "id": "head-sprite_129",
@@ -764,7 +773,8 @@
         "fire_solar_flare",
         "fire_flamewing"
       ],
-      "name": "Curious Pete"
+      "name": "Curious Pete",
+      "isUnique": false
     },
     {
       "id": "head-sprite_132",
@@ -814,7 +824,8 @@
         "normal_wing_slap",
         "normal_peck"
       ],
-      "name": "Just Jerry"
+      "name": "Just Jerry",
+      "isUnique": false
     },
     {
       "id": "torso-sprite_001",
@@ -858,7 +869,8 @@
         "shadow_oblivion",
         "shadow_leech_feather"
       ],
-      "name": "Belly of Doom"
+      "name": "Belly of Doom",
+      "isUnique": false
     },
     {
       "id": "torso-sprite_009",
@@ -903,7 +915,8 @@
         "shadow_oblivion",
         "shadow_leech_feather"
       ],
-      "name": "Evil Shirt"
+      "name": "Evil Shirt",
+      "isUnique": false
     },
     {
       "id": "torso-sprite_016",
@@ -948,7 +961,8 @@
         "shadow_oblivion",
         "shadow_leech_feather"
       ],
-      "name": "torso-sprite_016"
+      "name": "torso-sprite_016",
+      "isUnique": false
     },
     {
       "id": "torso-sprite_017",
@@ -998,7 +1012,8 @@
         "normal_bulldoze",
         "normal_berserker_charge"
       ],
-      "name": "torso-sprite_017"
+      "name": "torso-sprite_017",
+      "isUnique": false
     },
     {
       "id": "torso-sprite_030",
@@ -1048,7 +1063,8 @@
         "normal_bulldoze",
         "normal_berserker_charge"
       ],
-      "name": "torso-sprite_030"
+      "name": "torso-sprite_030",
+      "isUnique": false
     },
     {
       "id": "torso-sprite_035",
@@ -1093,7 +1109,8 @@
         "fire_solar_flare",
         "fire_flamewing"
       ],
-      "name": "Ashen Bathrobe"
+      "name": "Ashen Bathrobe",
+      "isUnique": false
     },
     {
       "id": "torso-sprite_041",
@@ -1138,7 +1155,8 @@
         "fire_solar_flare",
         "fire_flamewing"
       ],
-      "name": "Lordlike Ember"
+      "name": "Lordlike Ember",
+      "isUnique": false
     },
     {
       "id": "torso-sprite_048",
@@ -1183,7 +1201,8 @@
         "fire_solar_flare",
         "fire_flamewing"
       ],
-      "name": "Here to Herald"
+      "name": "Here to Herald",
+      "isUnique": false
     },
     {
       "id": "torso-sprite_060",
@@ -1228,7 +1247,8 @@
         "fire_solar_flare",
         "fire_flamewing"
       ],
-      "name": "Ember Emperor"
+      "name": "Ember Emperor",
+      "isUnique": false
     },
     {
       "id": "torso-sprite_066",
@@ -1273,7 +1293,8 @@
         "fire_solar_flare",
         "fire_flamewing"
       ],
-      "name": "King Crusader"
+      "name": "King Crusader",
+      "isUnique": false
     },
     {
       "id": "torso-sprite_084",
@@ -1317,7 +1338,8 @@
         "ice_permafrost_slam",
         "ice_glacial_slam"
       ],
-      "name": "Cold Crevasses"
+      "name": "Cold Crevasses",
+      "isUnique": false
     },
     {
       "id": "torso-sprite_088",
@@ -1361,7 +1383,8 @@
         "ice_permafrost_slam",
         "ice_glacial_slam"
       ],
-      "name": "Frozen Fortress"
+      "name": "Frozen Fortress",
+      "isUnique": false
     },
     {
       "id": "torso-sprite_108",
@@ -1405,7 +1428,8 @@
         "lightning_volt_dive",
         "lightning_discharge"
       ],
-      "name": "Easy Electrician"
+      "name": "Easy Electrician",
+      "isUnique": false
     },
     {
       "id": "torso-sprite_110",
@@ -1455,7 +1479,8 @@
         "normal_wing_slap",
         "normal_peck"
       ],
-      "name": "Doctored Down"
+      "name": "Doctored Down",
+      "isUnique": false
     },
     {
       "id": "torso-sprite_131",
@@ -1505,7 +1530,8 @@
         "normal_wing_slap",
         "normal_peck"
       ],
-      "name": "Laundry Day"
+      "name": "Laundry Day",
+      "isUnique": false
     },
     {
       "id": "torso-sprite_133",
@@ -1555,7 +1581,8 @@
         "normal_wing_slap",
         "normal_peck"
       ],
-      "name": "Friendly Face(s)"
+      "name": "Friendly Face(s)",
+      "isUnique": false
     },
     {
       "id": "wings-sprite_003",
@@ -1600,7 +1627,8 @@
         "shadow_oblivion",
         "shadow_leech_feather"
       ],
-      "name": "Shadow Flappers"
+      "name": "Shadow Flappers",
+      "isUnique": false
     },
     {
       "id": "wings-sprite_012",
@@ -1645,7 +1673,8 @@
         "shadow_oblivion",
         "shadow_leech_feather"
       ],
-      "name": "Dark Duckwings"
+      "name": "Dark Duckwings",
+      "isUnique": false
     },
     {
       "id": "wings-sprite_021",
@@ -1689,7 +1718,8 @@
         "shadow_oblivion",
         "shadow_leech_feather"
       ],
-      "name": "wings-sprite_021"
+      "name": "wings-sprite_021",
+      "isUnique": false
     },
     {
       "id": "wings-sprite_022",
@@ -1734,7 +1764,8 @@
         "shadow_oblivion",
         "shadow_leech_feather"
       ],
-      "name": "wings-sprite_022"
+      "name": "wings-sprite_022",
+      "isUnique": false
     },
     {
       "id": "wings-sprite_032",
@@ -1795,7 +1826,8 @@
         "fire_solar_flare",
         "fire_flamewing"
       ],
-      "name": "Flew Too Close"
+      "name": "Flew Too Close",
+      "isUnique": false
     },
     {
       "id": "wings-sprite_033",
@@ -1856,7 +1888,8 @@
         "fire_solar_flare",
         "fire_flamewing"
       ],
-      "name": "Flared Up"
+      "name": "Flared Up",
+      "isUnique": false
     },
     {
       "id": "wings-sprite_039",
@@ -1901,7 +1934,8 @@
         "fire_solar_flare",
         "fire_flamewing"
       ],
-      "name": "Icaros Mistake"
+      "name": "Icaros Mistake",
+      "isUnique": false
     },
     {
       "id": "wings-sprite_044",
@@ -1946,7 +1980,8 @@
         "fire_solar_flare",
         "fire_flamewing"
       ],
-      "name": "Torched Tips"
+      "name": "Torched Tips",
+      "isUnique": false
     },
     {
       "id": "wings-sprite_065",
@@ -1991,7 +2026,8 @@
         "fire_solar_flare",
         "fire_flamewing"
       ],
-      "name": "Blazing Glory"
+      "name": "Blazing Glory",
+      "isUnique": false
     },
     {
       "id": "wings-sprite_085",
@@ -2035,7 +2071,8 @@
         "ice_permafrost_slam",
         "ice_glacial_slam"
       ],
-      "name": "Snow Plumes"
+      "name": "Snow Plumes",
+      "isUnique": false
     },
     {
       "id": "wings-sprite_089",
@@ -2079,7 +2116,8 @@
         "ice_permafrost_slam",
         "ice_glacial_slam"
       ],
-      "name": "Frosty Flakes"
+      "name": "Frosty Flakes",
+      "isUnique": false
     },
     {
       "id": "wings-sprite_109",
@@ -2123,7 +2161,8 @@
         "ice_permafrost_slam",
         "ice_glacial_slam"
       ],
-      "name": "Fairly Flapping"
+      "name": "Fairly Flapping",
+      "isUnique": false
     },
     {
       "id": "wings-sprite_111",
@@ -2173,7 +2212,8 @@
         "normal_wing_slap",
         "normal_peck"
       ],
-      "name": "Date Night Flappers"
+      "name": "Date Night Flappers",
+      "isUnique": false
     },
     {
       "id": "wings-sprite_124",
@@ -2223,7 +2263,8 @@
         "normal_wing_slap",
         "normal_peck"
       ],
-      "name": "Everyday Wingin'"
+      "name": "Everyday Wingin'",
+      "isUnique": false
     },
     {
       "id": "wings-sprite_130",
@@ -2267,7 +2308,8 @@
         "lightning_volt_dive",
         "lightning_discharge"
       ],
-      "name": "Shockproof(ish) Feathers"
+      "name": "Shockproof(ish) Feathers",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_002",
@@ -2312,7 +2354,8 @@
         "shadow_oblivion",
         "shadow_leech_feather"
       ],
-      "name": "legs-sprite_002"
+      "name": "legs-sprite_002",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_004",
@@ -2356,7 +2399,8 @@
         "shadow_oblivion",
         "shadow_leech_feather"
       ],
-      "name": "legs-sprite_004"
+      "name": "legs-sprite_004",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_005",
@@ -2400,7 +2444,8 @@
         "lightning_volt_dive",
         "lightning_discharge"
       ],
-      "name": "Arc to Toes"
+      "name": "Arc to Toes",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_006",
@@ -2445,7 +2490,8 @@
         "shadow_oblivion",
         "shadow_leech_feather"
       ],
-      "name": "Sneaky Talons"
+      "name": "Sneaky Talons",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_008",
@@ -2495,7 +2541,8 @@
         "normal_bulldoze",
         "normal_berserker_charge"
       ],
-      "name": "legs-sprite_008"
+      "name": "legs-sprite_008",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_010",
@@ -2545,7 +2592,8 @@
         "normal_bulldoze",
         "normal_berserker_charge"
       ],
-      "name": "legs-sprite_010"
+      "name": "legs-sprite_010",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_013",
@@ -2590,7 +2638,8 @@
         "shadow_oblivion",
         "shadow_leech_feather"
       ],
-      "name": "Small Sneakers"
+      "name": "Small Sneakers",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_014",
@@ -2635,7 +2684,8 @@
         "shadow_oblivion",
         "shadow_leech_feather"
       ],
-      "name": "legs-sprite_014"
+      "name": "legs-sprite_014",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_015",
@@ -2680,7 +2730,8 @@
         "shadow_oblivion",
         "shadow_leech_feather"
       ],
-      "name": "Bedazzled Sneakers"
+      "name": "Bedazzled Sneakers",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_018",
@@ -2725,7 +2776,8 @@
         "shadow_oblivion",
         "shadow_leech_feather"
       ],
-      "name": "Medium Sneakers"
+      "name": "Medium Sneakers",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_019",
@@ -2770,7 +2822,8 @@
         "shadow_oblivion",
         "shadow_leech_feather"
       ],
-      "name": "legs-sprite_019"
+      "name": "legs-sprite_019",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_020",
@@ -2815,7 +2868,8 @@
         "shadow_oblivion",
         "shadow_leech_feather"
       ],
-      "name": "legs-sprite_020"
+      "name": "legs-sprite_020",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_025",
@@ -2865,7 +2919,8 @@
         "normal_bulldoze",
         "normal_berserker_charge"
       ],
-      "name": "legs-sprite_025"
+      "name": "legs-sprite_025",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_026",
@@ -2915,7 +2970,8 @@
         "normal_bulldoze",
         "normal_berserker_charge"
       ],
-      "name": "Just Good Shoes"
+      "name": "Just Good Shoes",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_027",
@@ -2959,7 +3015,8 @@
         "lightning_volt_dive",
         "lightning_discharge"
       ],
-      "name": "Fine Sparkers"
+      "name": "Fine Sparkers",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_028",
@@ -3003,7 +3060,8 @@
         "lightning_volt_dive",
         "lightning_discharge"
       ],
-      "name": "Runaway Sparks"
+      "name": "Runaway Sparks",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_029",
@@ -3047,7 +3105,8 @@
         "lightning_volt_dive",
         "lightning_discharge"
       ],
-      "name": "Not Grounded"
+      "name": "Not Grounded",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_031",
@@ -3091,7 +3150,8 @@
         "lightning_volt_dive",
         "lightning_discharge"
       ],
-      "name": "Rubber Boots"
+      "name": "Rubber Boots",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_037",
@@ -3152,7 +3212,8 @@
         "fire_solar_flare",
         "fire_flamewing"
       ],
-      "name": "Solar Steps"
+      "name": "Solar Steps",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_038",
@@ -3197,7 +3258,8 @@
         "fire_solar_flare",
         "fire_flamewing"
       ],
-      "name": "Hot n' Heavy"
+      "name": "Hot n' Heavy",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_040",
@@ -3258,7 +3320,8 @@
         "fire_solar_flare",
         "fire_flamewing"
       ],
-      "name": "Sun-kissed Sandals"
+      "name": "Sun-kissed Sandals",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_042",
@@ -3303,7 +3366,8 @@
         "fire_solar_flare",
         "fire_flamewing"
       ],
-      "name": "Feet on Fire"
+      "name": "Feet on Fire",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_043",
@@ -3348,7 +3412,8 @@
         "fire_solar_flare",
         "fire_flamewing"
       ],
-      "name": "Small Smolder"
+      "name": "Small Smolder",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_045",
@@ -3393,7 +3458,8 @@
         "fire_solar_flare",
         "fire_flamewing"
       ],
-      "name": "Toasty Toes"
+      "name": "Toasty Toes",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_056",
@@ -3454,7 +3520,8 @@
         "fire_solar_flare",
         "fire_flamewing"
       ],
-      "name": "Beach Feet"
+      "name": "Beach Feet",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_057",
@@ -3504,7 +3571,8 @@
         "normal_bulldoze",
         "normal_berserker_charge"
       ],
-      "name": "Muddy Walkers"
+      "name": "Muddy Walkers",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_058",
@@ -3565,7 +3633,8 @@
         "fire_solar_flare",
         "fire_flamewing"
       ],
-      "name": "Sole Stepper"
+      "name": "Sole Stepper",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_059",
@@ -3610,7 +3679,8 @@
         "fire_solar_flare",
         "fire_flamewing"
       ],
-      "name": "Smoking Suede"
+      "name": "Smoking Suede",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_061",
@@ -3654,7 +3724,8 @@
         "ice_permafrost_slam",
         "ice_glacial_slam"
       ],
-      "name": "Cold Comfort"
+      "name": "Cold Comfort",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_062",
@@ -3699,7 +3770,8 @@
         "fire_solar_flare",
         "fire_flamewing"
       ],
-      "name": "Combusting Gaze"
+      "name": "Combusting Gaze",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_079",
@@ -3743,7 +3815,8 @@
         "ice_permafrost_slam",
         "ice_glacial_slam"
       ],
-      "name": "Fragile Shards"
+      "name": "Fragile Shards",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_080",
@@ -3787,7 +3860,8 @@
         "ice_permafrost_slam",
         "ice_glacial_slam"
       ],
-      "name": "Fancy ´n Prepared"
+      "name": "Fancy ´n Prepared",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_081",
@@ -3831,7 +3905,8 @@
         "ice_permafrost_slam",
         "ice_glacial_slam"
       ],
-      "name": "Shielded Boots"
+      "name": "Shielded Boots",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_082",
@@ -3875,7 +3950,8 @@
         "ice_permafrost_slam",
         "ice_glacial_slam"
       ],
-      "name": "Winter Walkers"
+      "name": "Winter Walkers",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_083",
@@ -3925,7 +4001,8 @@
         "normal_wing_slap",
         "normal_peck"
       ],
-      "name": "Booted Up"
+      "name": "Booted Up",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_086",
@@ -3969,7 +4046,8 @@
         "ice_permafrost_slam",
         "ice_glacial_slam"
       ],
-      "name": "Padded Snowshoes"
+      "name": "Padded Snowshoes",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_102",
@@ -4019,7 +4097,8 @@
         "normal_wing_slap",
         "normal_peck"
       ],
-      "name": "Socks 'n Sandals"
+      "name": "Socks 'n Sandals",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_103",
@@ -4069,7 +4148,8 @@
         "normal_bulldoze",
         "normal_berserker_charge"
       ],
-      "name": "legs-sprite_103"
+      "name": "legs-sprite_103",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_104",
@@ -4119,7 +4199,8 @@
         "normal_bulldoze",
         "normal_berserker_charge"
       ],
-      "name": "legs-sprite_104"
+      "name": "legs-sprite_104",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_105",
@@ -4169,7 +4250,8 @@
         "normal_bulldoze",
         "normal_berserker_charge"
       ],
-      "name": "legs-sprite_105"
+      "name": "legs-sprite_105",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_106",
@@ -4219,7 +4301,8 @@
         "normal_bulldoze",
         "normal_berserker_charge"
       ],
-      "name": "legs-sprite_106"
+      "name": "legs-sprite_106",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_113",
@@ -4263,7 +4346,8 @@
         "ice_permafrost_slam",
         "ice_glacial_slam"
       ],
-      "name": "Slippery Slippers"
+      "name": "Slippery Slippers",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_122",
@@ -4313,7 +4397,8 @@
         "normal_wing_slap",
         "normal_peck"
       ],
-      "name": "Ornaments On"
+      "name": "Ornaments On",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_123",
@@ -4363,7 +4448,8 @@
         "normal_bulldoze",
         "normal_berserker_charge"
       ],
-      "name": "legs-sprite_123"
+      "name": "legs-sprite_123",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_125",
@@ -4407,7 +4493,8 @@
         "lightning_volt_dive",
         "lightning_discharge"
       ],
-      "name": "Connected Loafers"
+      "name": "Connected Loafers",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_126",
@@ -4457,7 +4544,8 @@
         "normal_bulldoze",
         "normal_berserker_charge"
       ],
-      "name": "Not For Bogging"
+      "name": "Not For Bogging",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_127",
@@ -4506,7 +4594,8 @@
         "normal_wing_slap",
         "normal_peck"
       ],
-      "name": "Free the Feet"
+      "name": "Free the Feet",
+      "isUnique": false
     },
     {
       "id": "legs-sprite_128",
@@ -4556,7 +4645,8 @@
         "normal_wing_slap",
         "normal_peck"
       ],
-      "name": "Socks but Barely"
+      "name": "Socks but Barely",
+      "isUnique": false
     },
     {
       "id": "head-sprite_009",
@@ -4603,7 +4693,8 @@
         "normal_wing_slap",
         "normal_peck"
       ],
-      "name": "Clever Colin"
+      "name": "Clever Colin",
+      "isUnique": false
     },
     {
       "id": "torso-sprite_0431",
@@ -4650,7 +4741,8 @@
         "normal_wing_slap",
         "normal_peck"
       ],
-      "name": "Casual Attire"
+      "name": "Casual Attire",
+      "isUnique": false
     },
     {
       "id": "head-sprite_102",
@@ -4691,7 +4783,8 @@
         "lightning_overclock",
         "lightning_volt_dive",
         "lightning_discharge"
-      ]
+      ],
+      "isUnique": false
     },
     {
       "id": "head-sprite_127",
@@ -4732,7 +4825,8 @@
         "lightning_overclock",
         "lightning_volt_dive",
         "lightning_discharge"
-      ]
+      ],
+      "isUnique": false
     },
     {
       "id": "torso-sprite_096",
@@ -4773,7 +4867,8 @@
         "lightning_overclock",
         "lightning_volt_dive",
         "lightning_discharge"
-      ]
+      ],
+      "isUnique": false
     },
     {
       "id": "torso-sprite_113",
@@ -4814,7 +4909,8 @@
         "lightning_overclock",
         "lightning_volt_dive",
         "lightning_discharge"
-      ]
+      ],
+      "isUnique": false
     },
     {
       "id": "wings-sprite_100",
@@ -4855,7 +4951,8 @@
         "lightning_overclock",
         "lightning_volt_dive",
         "lightning_discharge"
-      ]
+      ],
+      "isUnique": false
     },
     {
       "id": "wings-sprite_129",
@@ -4896,7 +4993,8 @@
         "lightning_overclock",
         "lightning_volt_dive",
         "lightning_discharge"
-      ]
+      ],
+      "isUnique": false
     }
   ],
   "families": [
@@ -4932,17 +5030,22 @@
       "type": "Fire",
       "description": "",
       "baseMoveIds": [
-        "move_1",
-        "move_2",
-        "move_3",
-        "move_4",
-        "move_5",
-        "move_6",
-        "move_7",
-        "move_8",
-        "move_9",
-        "move_10",
-        "move_11"
+        "fire_flame_honk",
+        "fire_flame_burst",
+        "fire_scorchblast",
+        "fire_ember",
+        "fire_magma_crash",
+        "fire_emit_spark",
+        "fire_inferno_wave",
+        "fire_eruption",
+        "fire_lava_spit",
+        "fire_solar_flare",
+        "fire_flamewing",
+        "normal_peck",
+        "normal_wing_slap",
+        "normal_scratch",
+        "normal_honk_slam",
+        "normal_iron_guard"
       ]
     },
     {

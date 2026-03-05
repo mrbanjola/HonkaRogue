@@ -207,8 +207,9 @@ function buildPartSelectors() {
       const linkedMoves = (part.moveIds || []).map(id => MOVE_DB[id]).filter(Boolean);
       const moveRows = linkedMoves.map(m => {
         const pwr = Math.max(15, Math.round(m.basePower || 55));
-        return `<div class="part-move-chip">
-          <span class="part-move-name">${m.name}</span>
+        const lootOnly = m.isStarterSelectable === false;
+        return `<div class="part-move-chip"${lootOnly ? ' style="opacity:.5"' : ''}>
+          <span class="part-move-name">${m.name}${lootOnly ? ' <span style="font-size:.55rem;color:#ff9800">(loot)</span>' : ''}</span>
           <span class="part-move-meta">${m.type} \u00B7 P${pwr}</span>
         </div>`;
       }).join('');
@@ -328,7 +329,12 @@ function renderStarterMoveSelection(derived, allSelected) {
   grid.innerHTML = unique.map(m => {
     const selected = selectedStarterMoveIds.includes(m.id);
     const pwr = m.power || Math.max(15, Math.round(m.basePower || 55));
-    const note = m.effect ? `Effect: ${m.effect}` : (m.priority ? 'Priority move' : (m.drain ? `Drain ${Math.round(m.drain*100)}%` : (m.recoil ? `Recoil ${Math.round(m.recoil*100)}%` : '')));
+    const note = m.inflictStatus ? `${m.inflictStatus.chance}% ${m.inflictStatus.type}`
+      : m.applyBuff ? `Buff: ${m.applyBuff.type}`
+      : m.priority ? 'Priority move'
+      : m.secondaryEffect?.type === 'drain' ? `Drain ${Math.round(m.secondaryEffect.value*100)}%`
+      : m.secondaryEffect?.type === 'recoil' ? `Recoil ${Math.round(m.secondaryEffect.value*100)}%`
+      : '';
     return `<div class="starter-card ${selected ? 'selected' : ''}" data-mid="${m.id}">
       <div class="starter-top">
         <div class="starter-name">${m.emoji || ''} ${m.name}</div>
@@ -523,11 +529,11 @@ function deriveHonkerFromParts(parts) {
     ...(m.animationType ? { animationType: m.animationType } : {}),
     power: Math.max(15, Math.round(m.basePower || 55)),
     acc: m.acc, pp: m.pp, maxPP: m.pp,
-    ...(m.drain  ? { drain:  m.drain  } : {}),
-    ...(m.recoil ? { recoil: m.recoil } : {}),
+    ...(m.secondaryEffect ? { secondaryEffect: { ...m.secondaryEffect } } : {}),
+    ...(m.inflictStatus   ? { inflictStatus:   { ...m.inflictStatus   } } : {}),
+    ...(m.applyBuff       ? { applyBuff:       { ...m.applyBuff       } } : {}),
+    ...(m.statusOnly      ? { statusOnly: true } : {}),
     ...(m.priority ? { priority: m.priority } : {}),
-    ...(m.effect ? { effect: m.effect, effectTarget: m.effectTarget,
-      effectChance: m.effectChance, effectDur: m.effectDur } : {}),
   });
   const pickStarterMoves = (cands) => {
     const unique = [];
@@ -557,7 +563,8 @@ function deriveHonkerFromParts(parts) {
   };
 
   const partsList = Object.values(parts).filter(Boolean);
-  const candidateIds = partsList.flatMap(p => (Array.isArray(p.moveIds) && p.moveIds.length ? p.moveIds : pickPartMoves(p)));
+  const candidateIds = partsList.flatMap(p => (Array.isArray(p.moveIds) && p.moveIds.length ? p.moveIds : pickPartMoves(p)))
+    .filter(id => MOVE_DB[id]?.isStarterSelectable !== false);
   const moveCandidates = candidateIds
     .map(id => MOVE_DB[id])
     .filter(Boolean)

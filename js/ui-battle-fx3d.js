@@ -15,6 +15,7 @@
   const state = {
     started: false,
     failed: false,
+    running: false,
     modulePromise: null,
     THREE: null,
     arenaEl: null,
@@ -26,6 +27,23 @@
     rafId: 0,
     fx: [],
   };
+
+  // Shared geometries — lazily created, reused across all particles.
+  const sharedGeo = {
+    sphere: null,      // small sphere for travel/spark particles
+    sphereLg: null,    // larger sphere for nova sparks
+    ring: null,        // default impact ring
+  };
+
+  function getSharedSphere(THREE, large) {
+    const key = large ? 'sphereLg' : 'sphere';
+    if (!sharedGeo[key]) {
+      sharedGeo[key] = large
+        ? new THREE.SphereGeometry(0.1, 10, 10)
+        : new THREE.SphereGeometry(0.07, 9, 9);
+    }
+    return sharedGeo[key];
+  }
 
   async function loadThree() {
     if (!state.modulePromise) state.modulePromise = import(CDN_THREE);
@@ -59,7 +77,8 @@
   }
 
   function sidePos(side) {
-    const arena = document.getElementById('arena');
+    if (!state.arenaEl) state.arenaEl = document.getElementById('arena');
+    const arena = state.arenaEl;
     const zone = document.getElementById(`zone-${side}`);
     if (!arena || !zone || !state.camera) return { x: side === 'left' ? -3 : 3, y: 0.5 };
     const ar = arena.getBoundingClientRect();
@@ -87,10 +106,11 @@
     const travel = [];
     const travelCount = opts.crit ? 16 : 11;
     const travelDur = opts.crit ? 0.34 : 0.28;
+    const travelGeo = getSharedSphere(THREE, false);
     for (let i = 0; i < travelCount; i += 1) {
-      const g = new THREE.SphereGeometry(0.055 + Math.random() * 0.045, 9, 9);
       const m = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0, depthWrite: false });
-      const mesh = new THREE.Mesh(g, m);
+      const mesh = new THREE.Mesh(travelGeo, m);
+      mesh.scale.setScalar(0.8 + Math.random() * 0.65);
       mesh.position.set(atkPos.x, atkPos.y, 0);
       root.add(mesh);
       const lag = Math.random() * (opts.crit ? 0.10 : 0.08);
@@ -106,10 +126,11 @@
 
     const sparks = [];
     const count = opts.crit ? 18 : 12;
+    const sparkGeo = getSharedSphere(THREE, true);
     for (let i = 0; i < count; i += 1) {
-      const g = new THREE.SphereGeometry(0.07 + Math.random() * 0.07, 10, 10);
       const m = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0, depthWrite: false });
-      const mesh = new THREE.Mesh(g, m);
+      const mesh = new THREE.Mesh(sparkGeo, m);
+      mesh.scale.setScalar(0.7 + Math.random() * 0.7);
       mesh.position.set((Math.random() - 0.5) * 0.25, (Math.random() - 0.5) * 0.18, 0);
       impact.add(mesh);
       const a = Math.random() * Math.PI * 2;
@@ -215,8 +236,8 @@
 
     const sparks = [];
     const count = opts.crit ? 44 : 32;
+    const sparkGeo = getSharedSphere(THREE, true);
     for (let i = 0; i < count; i += 1) {
-      const g = new THREE.SphereGeometry(0.08 + Math.random() * 0.08, 10, 10);
       const m = new THREE.MeshBasicMaterial({
         color,
         transparent: true,
@@ -225,7 +246,8 @@
         depthTest: false,
         blending: THREE.AdditiveBlending,
       });
-      const mesh = new THREE.Mesh(g, m);
+      const mesh = new THREE.Mesh(sparkGeo, m);
+      mesh.scale.setScalar(0.8 + Math.random() * 0.8);
       const a = Math.random() * Math.PI * 2;
       const r = 0.18 + Math.random() * 0.26;
       const sx = Math.cos(a) * r;
@@ -469,6 +491,223 @@
     });
   }
 
+  // -- Smoke wisp shader for drain FX --
+  const SMOKE_VERT = /* glsl */ `
+    varying vec2 vUv;
+    void main() {
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `;
+  const SMOKE_FRAG = /* glsl */ `
+    uniform vec3 uColor;
+    uniform float uOpacity;
+    uniform float uTime;
+    uniform float uSeed;
+    varying vec2 vUv;
+
+    // Simple hash-based noise
+    float hash(vec2 p) {
+      return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+    }
+    float noise(vec2 p) {
+      vec2 i = floor(p);
+      vec2 f = fract(p);
+      f = f * f * (3.0 - 2.0 * f);
+      float a = hash(i);
+      float b = hash(i + vec2(1.0, 0.0));
+      float c = hash(i + vec2(0.0, 1.0));
+      float d = hash(i + vec2(1.0, 1.0));
+      return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+    }
+    float fbm(vec2 p) {
+      float v = 0.0;
+      v += 0.5 * noise(p); p *= 2.1;
+      v += 0.25 * noise(p); p *= 2.3;
+      v += 0.125 * noise(p);
+      return v;
+    }
+
+    void main() {
+      vec2 c = vUv - 0.5;
+      float dist = length(c);
+      // Soft radial falloff
+      float alpha = smoothstep(0.5, 0.08, dist);
+      // Wispy noise distortion
+      vec2 noiseCoord = c * 3.8 + vec2(uTime * 0.7, uSeed);
+      float n = fbm(noiseCoord);
+      alpha *= 0.55 + n * 0.65;
+      // Feathered edges with noise cutout
+      alpha *= smoothstep(0.48, 0.28, dist + n * 0.18);
+      gl_FragColor = vec4(uColor, alpha * uOpacity);
+    }
+  `;
+
+  function spawnDrain(opts) {
+    const THREE = state.THREE;
+    if (!THREE || !state.scene) return;
+    const defPos = sidePos(opts.defSide || 'right');
+    const atkPos = sidePos(opts.atkSide || 'left');
+    const color = typeColor(THREE, opts.type);
+    const root = new THREE.Group();
+    state.scene.add(root);
+
+    const dx = atkPos.x - defPos.x;
+    const dy = atkPos.y - defPos.y;
+    const dist = Math.max(0.001, Math.hypot(dx, dy));
+
+    // -- Victim aura: shrinking ring at defender --
+    const auraGeo = new THREE.RingGeometry(0.18, opts.crit ? 0.72 : 0.58, 48);
+    const auraMat = new THREE.MeshBasicMaterial({
+      color,
+      transparent: true,
+      opacity: 0,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+      depthTest: false,
+      blending: THREE.AdditiveBlending,
+    });
+    const aura = new THREE.Mesh(auraGeo, auraMat);
+    aura.position.set(defPos.x, defPos.y, 0);
+    root.add(aura);
+
+    // -- Absorb glow: growing orb at attacker --
+    const absorbGeo = new THREE.CircleGeometry(opts.crit ? 0.38 : 0.30, 44);
+    const absorbMat = new THREE.MeshBasicMaterial({
+      color: color.clone().lerp(new THREE.Color('#ffffff'), 0.55),
+      transparent: true,
+      opacity: 0,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+      depthTest: false,
+      blending: THREE.AdditiveBlending,
+    });
+    const absorb = new THREE.Mesh(absorbGeo, absorbMat);
+    absorb.position.set(atkPos.x, atkPos.y, 0);
+    root.add(absorb);
+
+    // -- Absorb pulse ring at attacker --
+    const pulseGeo = new THREE.RingGeometry(0.10, opts.crit ? 0.52 : 0.42, 44);
+    const pulseMat = new THREE.MeshBasicMaterial({
+      color,
+      transparent: true,
+      opacity: 0,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+      depthTest: false,
+      blending: THREE.AdditiveBlending,
+    });
+    const pulse = new THREE.Mesh(pulseGeo, pulseMat);
+    pulse.position.set(atkPos.x, atkPos.y, 0);
+    root.add(pulse);
+
+    // -- Smoke wisps: shader-based quads traveling def → atk --
+    const wispCount = opts.crit ? 18 : 12;
+    const wisps = [];
+    const planeGeo = new THREE.PlaneGeometry(1, 1);
+    for (let i = 0; i < wispCount; i += 1) {
+      const seed = Math.random() * 100;
+      const mat = new THREE.ShaderMaterial({
+        vertexShader: SMOKE_VERT,
+        fragmentShader: SMOKE_FRAG,
+        uniforms: {
+          uColor: { value: color.clone().lerp(new THREE.Color('#ffffff'), 0.12 + Math.random() * 0.2) },
+          uOpacity: { value: 0 },
+          uTime: { value: 0 },
+          uSeed: { value: seed },
+        },
+        transparent: true,
+        depthWrite: false,
+        depthTest: false,
+        blending: THREE.AdditiveBlending,
+        side: THREE.DoubleSide,
+      });
+      const mesh = new THREE.Mesh(planeGeo, mat);
+      const size = (opts.crit ? 0.7 : 0.55) + Math.random() * 0.45;
+      mesh.scale.set(size, size, 1);
+      // Start near defender with slight scatter
+      mesh.position.set(
+        defPos.x + (Math.random() - 0.5) * 0.6,
+        defPos.y + (Math.random() - 0.5) * 0.4,
+        0,
+      );
+      root.add(mesh);
+      const delay = i * (opts.crit ? 0.045 : 0.055) + Math.random() * 0.06;
+      const travelTime = (opts.crit ? 0.55 : 0.48) + Math.random() * 0.18;
+      // Spiral offset perpendicular to travel direction
+      const spiralAmp = (Math.random() - 0.5) * (opts.crit ? 1.4 : 1.0);
+      const spiralFreq = 2.5 + Math.random() * 2.5;
+      const startX = mesh.position.x;
+      const startY = mesh.position.y;
+      wisps.push({ mesh, mat, delay, travelTime, spiralAmp, spiralFreq, startX, startY, seed });
+    }
+
+    const life = opts.crit ? 1.4 : 1.2;
+
+    state.fx.push({
+      t: 0,
+      life,
+      root,
+      aura,
+      absorb,
+      pulse,
+      wisps,
+      update(dt, p) {
+        const t = this.t;
+
+        // Victim aura — starts bright, shrinks and fades
+        aura.scale.setScalar(Math.max(0.3, 1.8 - p * 1.5));
+        aura.rotation.z -= dt * 1.8;
+        aura.material.opacity = Math.max(0, (p < 0.15 ? p / 0.15 : 1) * (1 - p) * 0.85);
+
+        // Absorb glow — grows as wisps arrive
+        const absorbP = Math.max(0, (p - 0.3) / 0.7);
+        absorb.scale.setScalar(0.4 + absorbP * (opts.crit ? 2.2 : 1.8));
+        absorb.material.opacity = Math.max(0, absorbP * 0.9 * (1 - Math.max(0, (p - 0.85) / 0.15)));
+
+        // Pulse ring at attacker
+        const pulseWave = (Math.sin(t * 8) * 0.5 + 0.5);
+        pulse.scale.setScalar(1 + absorbP * (opts.crit ? 1.6 : 1.3) + pulseWave * 0.3);
+        pulse.rotation.z += dt * 3.5;
+        pulse.material.opacity = Math.max(0, absorbP * 0.7 * (1 - Math.max(0, (p - 0.82) / 0.18)));
+
+        // Smoke wisps
+        for (const w of wisps) {
+          const wispP = Math.max(0, Math.min(1, (t - w.delay) / w.travelTime));
+          // Ease-in-out for smooth acceleration
+          const ease = wispP < 0.5
+            ? 2 * wispP * wispP
+            : 1 - Math.pow(-2 * wispP + 2, 2) / 2;
+
+          // Perpendicular direction for spiral
+          const perpX = -dy / dist;
+          const perpY = dx / dist;
+          const spiral = Math.sin(wispP * Math.PI * w.spiralFreq) * w.spiralAmp * (1 - wispP);
+
+          const x = w.startX + (atkPos.x - w.startX) * ease + perpX * spiral;
+          const y = w.startY + (atkPos.y - w.startY) * ease + perpY * spiral;
+          w.mesh.position.set(x, y, 0);
+
+          // Rotation wobble
+          w.mesh.rotation.z = t * (1.2 + w.seed * 0.02);
+
+          // Scale: swell then shrink on arrival
+          const sizeP = wispP < 0.3 ? wispP / 0.3 : (wispP > 0.75 ? 1 - (wispP - 0.75) / 0.25 : 1);
+          const baseSize = (opts.crit ? 0.7 : 0.55) + 0.45 * (w.seed / 100);
+          w.mesh.scale.setScalar(baseSize * (0.6 + sizeP * 0.6));
+
+          // Opacity: fade in, sustain, fade out on arrival
+          const opac = wispP <= 0 ? 0
+            : (wispP < 0.15 ? wispP / 0.15
+            : (wispP > 0.8 ? Math.max(0, 1 - (wispP - 0.8) / 0.2)
+            : 1));
+          w.mat.uniforms.uOpacity.value = opac * 0.92;
+          w.mat.uniforms.uTime.value = t;
+        }
+      },
+    });
+  }
+
   function spawnHonk(opts) {
     // Scaffolded API for phase 2.
     spawnHit(opts);
@@ -485,13 +724,31 @@
       if (p >= 1) {
         if (fx.root && fx.root.parent) fx.root.parent.remove(fx.root);
         fx.root.traverse(obj => {
-          if (obj.geometry?.dispose) obj.geometry.dispose();
+          // Don't dispose shared geometries — only non-shared ones + materials.
+          if (obj.geometry?.dispose && !isSharedGeo(obj.geometry)) obj.geometry.dispose();
           if (obj.material?.dispose) obj.material.dispose();
         });
         state.fx.splice(i, 1);
       }
     }
     state.renderer.render(state.scene, state.camera);
+    // Self-pause when idle — restarts on next spawn().
+    if (state.fx.length > 0) {
+      state.rafId = requestAnimationFrame(tick);
+    } else {
+      state.running = false;
+      state.rafId = 0;
+    }
+  }
+
+  function isSharedGeo(geo) {
+    return geo === sharedGeo.sphere || geo === sharedGeo.sphereLg || geo === sharedGeo.ring;
+  }
+
+  function startLoop() {
+    if (state.running) return;
+    state.running = true;
+    if (state.clock) state.clock.getDelta(); // reset delta so first frame isn't huge
     state.rafId = requestAnimationFrame(tick);
   }
 
@@ -524,7 +781,6 @@
 
       onResize();
       window.addEventListener('resize', onResize);
-      tick();
       return true;
     } catch (err) {
       state.failed = true;
@@ -536,11 +792,40 @@
   async function spawn(kind, options) {
     const ok = await initIfNeeded();
     if (!ok) return;
-    if (kind === 'nova') return spawnNova(options || {});
-    if (kind === 'projectile') return spawnProjectile(options || {});
-    if (kind === 'beam') return spawnBeam(options || {});
-    if (kind === 'honk') return spawnHonk(options || {});
-    return spawnHit(options || {});
+    if (kind === 'nova') spawnNova(options || {});
+    else if (kind === 'projectile') spawnProjectile(options || {});
+    else if (kind === 'beam') spawnBeam(options || {});
+    else if (kind === 'drain') spawnDrain(options || {});
+    else if (kind === 'honk') spawnHonk(options || {});
+    else spawnHit(options || {});
+    startLoop();
+  }
+
+  function dispose() {
+    if (state.rafId) cancelAnimationFrame(state.rafId);
+    state.rafId = 0;
+    state.running = false;
+    window.removeEventListener('resize', onResize);
+    // Clean up active FX.
+    for (const fx of state.fx) {
+      if (fx.root && fx.root.parent) fx.root.parent.remove(fx.root);
+      fx.root.traverse(obj => {
+        if (obj.geometry?.dispose && !isSharedGeo(obj.geometry)) obj.geometry.dispose();
+        if (obj.material?.dispose) obj.material.dispose();
+      });
+    }
+    state.fx.length = 0;
+    // Dispose shared geometries.
+    for (const key of Object.keys(sharedGeo)) {
+      if (sharedGeo[key]) { sharedGeo[key].dispose(); sharedGeo[key] = null; }
+    }
+    if (state.renderer) { state.renderer.dispose(); state.renderer = null; }
+    if (state.layerEl) { state.layerEl.remove(); state.layerEl = null; }
+    state.scene = null;
+    state.camera = null;
+    state.clock = null;
+    state.started = false;
+    state.failed = false;
   }
 
   window.BattleThreeFx = {
@@ -548,6 +833,8 @@
     spawnNova: (opts) => spawn('nova', opts),
     spawnProjectile: (opts) => spawn('projectile', opts),
     spawnBeam: (opts) => spawn('beam', opts),
+    spawnDrain: (opts) => spawn('drain', opts),
     spawnHonk: (opts) => spawn('honk', opts),
+    dispose,
   };
 })();

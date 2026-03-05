@@ -72,6 +72,7 @@ class Honker {
   get defModifier() {
     let m = 1;
     if (this.statusEffects.shielded) m *= (1 / (1 + (0.25 * this.statusEffects.shielded)));
+    if (this.statusEffects.exposed) m *= (1 + 0.2 * this.statusEffects.exposed);
     if (this.passive?.id === 'thick_skin') m *= 0.8;
     return m;
   }
@@ -85,15 +86,23 @@ class Honker {
     if (!avail.length) return this.moves[0];
     const self = this;
     const scoreMove = (m) => {
-      if (m.effect) {
-        const alreadyAffected = m.effectTarget === 'self'
-          ? self.statusEffects[m.effect]
-          : enemy.statusEffects[m.effect];
-        let s = alreadyAffected ? 5 : (m.effect==='shield'||m.effect==='pump') ? 45 : 50;
-        if (m.effectTarget==='self' && self.hpPct < 0.4) s *= 1.5;
+      if (m.inflictStatus) {
+        const already = enemy.statusEffects[m.inflictStatus.type];
+        let s = already ? 5 : 50;
+        s *= (m.inflictStatus.chance / 100);
         return s;
       }
-      return m.power * (m.acc/100) * getEff(m.type, enemy.type, enemy.type2) * (0.7 + (BS.rng?.() ?? Math.random())*.6) * self.atkModifier;
+      if (m.applyBuff) {
+        const target = m.applyBuff.target === 'self' ? self : enemy;
+        const already = target.statusEffects[m.applyBuff.type];
+        let s = already >= 4 ? 5 : 45;
+        if (m.applyBuff.target === 'self' && self.hpPct < 0.4) s *= 1.5;
+        return s;
+      }
+      let s = m.power * (m.acc/100) * getEff(m.type, enemy.type, enemy.type2) * (0.7 + (BS.rng?.() ?? Math.random())*.6) * self.atkModifier;
+      if (m.secondaryEffect?.type === 'drain') s *= 1.2;
+      if (m.secondaryEffect?.type === 'recoil') s *= 0.85;
+      return s;
     };
     let best = avail[0];
     let bestScore = scoreMove(best);
@@ -346,10 +355,10 @@ function generateStage(n) {
       ...(m.animationType ? { animationType: m.animationType } : {}),
       power: Math.max(20, Math.round((m.basePower || 55) * (basePow / 55) * earlyPowScale)),
       acc: m.acc, pp: m.pp, maxPP: m.pp,
-      ...(m.effect ? { effect: m.effect, effectTarget: m.effectTarget,
-        effectChance: m.effectChance, effectDur: m.effectDur } : {}),
-      ...(m.drain ? { drain: m.drain } : {}),
-      ...(m.recoil ? { recoil: m.recoil } : {}),
+      ...(m.secondaryEffect ? { secondaryEffect: { ...m.secondaryEffect } } : {}),
+      ...(m.inflictStatus   ? { inflictStatus:   { ...m.inflictStatus   } } : {}),
+      ...(m.applyBuff       ? { applyBuff:       { ...m.applyBuff       } } : {}),
+      ...(m.statusOnly      ? { statusOnly: true } : {}),
       ...(m.priority ? { priority: true } : {}),
       ...(m.lowHPOnly ? { lowHPOnly: true } : {}),
     }));

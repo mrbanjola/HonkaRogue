@@ -99,7 +99,17 @@ function buyLootRevive() {
 }
 
 function pickLootChoices(n) {
-  const pool = [...LOOT_POOL];
+  // Collect all moveIds available on party members' assembled parts
+  const partyMoveIds = new Set();
+  (CAMPAIGN.party || []).forEach(h => {
+    if (!h.assembledParts) return;
+    for (const slot of ['head', 'torso', 'wings', 'legs']) {
+      const part = h.assembledParts[slot];
+      if (part?.moveIds) part.moveIds.forEach(id => partyMoveIds.add(id));
+    }
+  });
+  // Filter move loot to only moves that exist on at least one party member's parts
+  const pool = LOOT_POOL.filter(item => !item.moveId || partyMoveIds.has(item.moveId));
   // Weighted: legendary = 8%, rare = 28%, common = 64%
   const weights = pool.map(i=>i.rarity==='legendary'?8:i.rarity==='rare'?28:64);
   const _lootRunSeed = Number.isFinite(Number(CAMPAIGN?.runSeed)) ? (Number(CAMPAIGN.runSeed) >>> 0) : 0;
@@ -262,9 +272,13 @@ function showTeachOverlay(item) {
   const grid = document.getElementById('teach-grid');
   grid.innerHTML = '';
   CAMPAIGN.party.forEach((h, i) => {
-    // Signature moves: grey out and disable for ineligible honkers
+    // Grey out honkers that can't learn this move (signature exclusivity or parts mismatch)
     const exclusive = item.exclusiveTo;
-    const ineligible = exclusive && !exclusive.includes(h.id);
+    const isMoveLoot = !!item?.moveId;
+    const hasOnParts = !isMoveLoot || (h.assembledParts && ['head','torso','wings','legs'].some(
+      slot => h.assembledParts[slot]?.moveIds?.includes(item.moveId)
+    ));
+    const ineligible = (exclusive && !exclusive.includes(h.id)) || (isMoveLoot && !hasOnParts);
     const card = document.createElement('div');
     const isFull = !ineligible && h.moves.length >= 4;
     card.className = 'teach-card' + (isFull ? ' tc-full' : '') + (ineligible ? ' tc-ineligible' : '');

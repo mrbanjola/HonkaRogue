@@ -80,12 +80,44 @@
               <option>Reverse Nova</option>
               <option>Projectile</option>
               <option>Beam</option>
+              <option>Drain</option>
             </select>
           </div>
           <div></div>
           <div></div>
         </div>
-        <div class="row">
+        <div style="margin-top:8px;border-top:1px solid var(--border);padding-top:8px">
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="f_se_enabled"> <b>Secondary Effect</b> (drain / recoil)</label>
+          <div id="se_fields" style="display:none;margin-top:6px">
+            <div class="row">
+              <div><label>type</label><select id="f_se_type"><option>drain</option><option>recoil</option></select></div>
+              <div><label>value (0–1)</label><input id="f_se_value" type="number" step="0.05" min="0" max="1"></div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:8px;border-top:1px solid var(--border);padding-top:8px">
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="f_is_enabled"> <b>Inflict Status</b> (timed debuff on enemy)</label>
+          <div id="is_fields" style="display:none;margin-top:6px">
+            <div class="row">
+              <div><label>type</label><select id="f_is_type"><option>burn</option><option>frozen</option><option>paralyzed</option></select></div>
+              <div><label>chance (0–100)</label><input id="f_is_chance" type="number" min="0" max="100"></div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:8px;border-top:1px solid var(--border);padding-top:8px">
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="f_ab_enabled"> <b>Apply Buff</b> (stackable effect)</label>
+          <div id="ab_fields" style="display:none;margin-top:6px">
+            <div class="row3">
+              <div><label>target</label><select id="f_ab_target"><option>self</option><option>enemy</option></select></div>
+              <div><label>type</label><select id="f_ab_type"><option>pumped</option><option>shielded</option><option>cursed</option><option>exposed</option></select></div>
+              <div><label>stacks (1–4)</label><input id="f_ab_stacks" type="number" min="1" max="4" value="1"></div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:8px;border-top:1px solid var(--border);padding-top:8px">
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="f_isStarterSelectable" checked> <b>Starter Selectable</b> (available at character creation; uncheck = loot only)</label>
+        </div>
+        <div class="row" style="margin-top:10px">
           <button id="applyBtn">Apply Form</button>
           <button id="revertBtn">Revert</button>
         </div>
@@ -102,7 +134,7 @@
   </div>
   <script>
     const st={items:[],filtered:[],idx:-1,dirty:false};
-    const KNOWN=new Set(['id','name','types','type','emoji','desc','basePower','acc','pp','tier','animationType']);
+    const KNOWN=new Set(['id','name','types','type','emoji','desc','basePower','acc','pp','tier','animationType','secondaryEffect','inflictStatus','applyBuff','statusOnly','isStarterSelectable','isLootLearnable','lootId','lootName','lootRarity','lootDesc','lootColor','lootExclusiveTo']);
     const el=id=>document.getElementById(id);
     const clone=v=>JSON.parse(JSON.stringify(v));
     const int=(v,d=0)=>{const n=Number(v);return Number.isFinite(n)?Math.round(n):d;};
@@ -144,6 +176,27 @@
       el('f_animationType').value=m.animationType||'';
       const types=Array.isArray(m.types)?m.types:[m.type].filter(Boolean);
       [...el('f_types').options].forEach(o=>o.selected=types.includes(o.value));
+      // Secondary Effect
+      const se=m.secondaryEffect||null;
+      el('f_se_enabled').checked=!!se;
+      el('se_fields').style.display=se?'':'none';
+      el('f_se_type').value=se?se.type:'drain';
+      el('f_se_value').value=se?se.value:0.3;
+      // Inflict Status
+      const is=m.inflictStatus||null;
+      el('f_is_enabled').checked=!!is;
+      el('is_fields').style.display=is?'':'none';
+      el('f_is_type').value=is?is.type:'burn';
+      el('f_is_chance').value=is?is.chance:100;
+      // Apply Buff
+      const ab=m.applyBuff||null;
+      el('f_ab_enabled').checked=!!ab;
+      el('ab_fields').style.display=ab?'':'none';
+      el('f_ab_target').value=ab?ab.target:'self';
+      el('f_ab_type').value=ab?ab.type:'pumped';
+      el('f_ab_stacks').value=ab?ab.stacks:1;
+      // Starter Selectable
+      el('f_isStarterSelectable').checked=m.isStarterSelectable!==false;
     }
     function renderSel(){ const m=cur(); if(!m){el('raw').value=''; return;} fillForm(m); el('raw').value=JSON.stringify(m,null,2); }
     function applyForm(){
@@ -155,6 +208,22 @@
       if(anim) out.animationType=anim; else delete out.animationType;
       const types=[...el('f_types').selectedOptions].map(o=>o.value);
       out.types=types.length?types:['Normal']; out.type=out.types[0];
+      // Secondary Effect
+      if(el('f_se_enabled').checked){
+        out.secondaryEffect={type:el('f_se_type').value,value:parseFloat(el('f_se_value').value)||0.3};
+      } else { delete out.secondaryEffect; }
+      // Inflict Status
+      if(el('f_is_enabled').checked){
+        out.inflictStatus={type:el('f_is_type').value,chance:int(el('f_is_chance').value,100)};
+      } else { delete out.inflictStatus; }
+      // Apply Buff
+      if(el('f_ab_enabled').checked){
+        out.applyBuff={target:el('f_ab_target').value,type:el('f_ab_type').value,stacks:int(el('f_ab_stacks').value,1)};
+      } else { delete out.applyBuff; }
+      // statusOnly: true if basePower <= 0 and has inflictStatus or applyBuff
+      if(out.basePower<=0 && (out.inflictStatus||out.applyBuff)) out.statusOnly=true; else delete out.statusOnly;
+      // Starter Selectable
+      if(!el('f_isStarterSelectable').checked) out.isStarterSelectable=false; else delete out.isStarterSelectable;
       st.items[st.idx]=out; setDirty(true); renderList(); renderSel(); setStatus('Form applied. Save to persist.','warn');
     }
     function applyRaw(){ const m=cur(); if(!m) return; let p; try{p=JSON.parse(el('raw').value);}catch(e){setStatus(`Invalid JSON: ${e.message}`,'warn');return;}
@@ -178,6 +247,10 @@
       el('downloadBtn').onclick=dl;
       window.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'){e.preventDefault(); saveAll().catch(err=>{setStatus(err.message,'warn'); alert(err.message);});}});
       window.addEventListener('beforeunload',e=>{if(!st.dirty)return; e.preventDefault(); e.returnValue='';});
+      // Toggle visibility for effect sections
+      el('f_se_enabled').onchange=()=>{el('se_fields').style.display=el('f_se_enabled').checked?'':'none';};
+      el('f_is_enabled').onchange=()=>{el('is_fields').style.display=el('f_is_enabled').checked?'':'none';};
+      el('f_ab_enabled').onchange=()=>{el('ab_fields').style.display=el('f_ab_enabled').checked?'':'none';};
     }
     wire(); loadAll().catch(e=>setStatus(e.message,'warn'));
   </script>

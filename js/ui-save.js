@@ -116,7 +116,29 @@ function hydrateSavedHonker(saved) {
 const RUN_SAVE_KEY = 'run';
 const GLOBAL_SAVE_KEY = 'global';
 
-const SAVE_VERSION = 1;
+const SAVE_VERSION = 2;
+
+// Migrate old move properties (v1 → v2)
+function migrateMoveProps(m) {
+  if (!m) return;
+  if (m.drain && !m.secondaryEffect) {
+    m.secondaryEffect = { type: 'drain', value: m.drain };
+    delete m.drain;
+  }
+  if (m.recoil && !m.secondaryEffect) {
+    m.secondaryEffect = { type: 'recoil', value: m.recoil };
+    delete m.recoil;
+  }
+  if (m.effect && !m.inflictStatus && !m.applyBuff) {
+    if (['burn', 'frozen', 'paralyzed'].includes(m.effect) && m.effectTarget !== 'self') {
+      m.inflictStatus = { type: m.effect, chance: m.effectChance || 100 };
+    } else if (['shielded', 'pumped', 'cursed', 'exposed'].includes(m.effect)) {
+      m.applyBuff = { target: m.effectTarget || 'self', type: m.effect, stacks: 1 };
+    }
+    if (m.power <= 0 || (m.basePower || 0) <= 35) m.statusOnly = true;
+    delete m.effect; delete m.effectTarget; delete m.effectChance; delete m.effectDur;
+  }
+}
 
 function runToSave() {
   return {
@@ -196,10 +218,17 @@ async function loadCampaign() {
     const raw = await readSaveBlob(RUN_SAVE_KEY, 'campaign');
     if (!raw) return false;
     const d = JSON.parse(raw);
-    if (d.saveVersion !== SAVE_VERSION) {
+    if (d.saveVersion !== SAVE_VERSION && d.saveVersion !== 1) {
       console.warn('[LOAD] Save version mismatch (got', d.saveVersion, ', expected', SAVE_VERSION, '). Discarding.');
       await clearCampaignSave();
       return false;
+    }
+    // Migrate v1 saves: convert old move properties to new schema
+    if (d.saveVersion === 1) {
+      for (const h of [...(d.party || []), ...(d.fallen || [])]) {
+        if (h?.moves) h.moves.forEach(migrateMoveProps);
+      }
+      console.log('[LOAD] Migrated v1 save to v2 (move properties).');
     }
     const hydrated = (d.party || []).map(hydrateSavedHonker);
     const party = hydrated.filter(h => h.moves && h.moves.length > 0 && (h.hp || 0) > 0);

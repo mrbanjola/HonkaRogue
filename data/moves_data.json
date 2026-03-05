@@ -7,8 +7,8 @@
       ],
       "emoji": "🔥",
       "desc": "Reliable fiery bread-and-butter.",
-      "basePower": 50,
-      "acc": 95,
+      "basePower": 40,
+      "acc": 100,
       "pp": 20,
       "id": "fire_flame_honk",
       "tier": "common",
@@ -21,10 +21,12 @@
       ],
       "emoji": "*",
       "desc": "A quick flame",
-      "basePower": 44,
-      "acc": 95,
-      "pp": 20,
-      "id": "fire_flame_burst"
+      "basePower": 45,
+      "acc": 100,
+      "pp": 15,
+      "id": "fire_flame_burst",
+      "tier": "common",
+      "type": "Fire"
     },
     {
       "name": "Scorchblast",
@@ -33,10 +35,13 @@
       ],
       "emoji": "*",
       "desc": "Ignites the target",
-      "basePower": 55,
-      "acc": 85,
-      "pp": 12,
-      "id": "fire_scorchblast"
+      "basePower": 60,
+      "acc": 95,
+      "pp": 10,
+      "id": "fire_scorchblast",
+      "tier": "common",
+      "type": "Fire",
+      "isStarterSelectable": false
     },
     {
       "name": "Ember",
@@ -46,18 +51,20 @@
       "emoji": "*",
       "desc": "Leaves a lingering burn.",
       "basePower": 35,
-      "acc": 100,
-      "pp": 18,
-      "effect": "burn",
-      "effectTarget": "enemy",
-      "effectChance": 100,
-      "effectDur": 3,
+      "acc": 95,
+      "pp": 15,
+      "inflictStatus": {
+        "type": "burn",
+        "chance": 60
+      },
       "isLootLearnable": true,
       "lootId": "move_ember",
       "lootRarity": "common",
       "lootColor": "#ff4e00",
       "lootDesc": "Adds <b>Ember</b> (Fire) to your moveset. <i>Guarantees Burn for 3 rounds.</i>",
-      "id": "fire_ember"
+      "id": "fire_ember",
+      "tier": "common",
+      "type": "Fire"
     },
     {
       "name": "Magma Crash",
@@ -67,9 +74,15 @@
       "emoji": "*",
       "desc": "Molten impact",
       "basePower": 80,
-      "acc": 75,
-      "pp": 8,
-      "id": "fire_magma_crash"
+      "acc": 85,
+      "pp": 5,
+      "id": "fire_magma_crash",
+      "tier": "rare",
+      "type": "Fire",
+      "inflictStatus": {
+        "type": "burn",
+        "chance": 15
+      }
     },
     {
       "name": "Emit Spark",
@@ -79,12 +92,8 @@
       "emoji": "🔥",
       "desc": "Ignites the foe, increasing burn.",
       "basePower": 30,
-      "acc": 95,
-      "pp": 16,
-      "effect": "burn",
-      "effectTarget": "enemy",
-      "effectChance": 95,
-      "effectDur": 3,
+      "acc": 100,
+      "pp": 35,
       "id": "fire_emit_spark",
       "tier": "common",
       "type": "Fire"
@@ -96,10 +105,13 @@
       ],
       "emoji": "*",
       "desc": "Massive heat wave.",
-      "basePower": 85,
-      "acc": 68,
-      "pp": 6,
-      "id": "fire_inferno_wave"
+      "basePower": 95,
+      "acc": 80,
+      "pp": 5,
+      "id": "fire_inferno_wave",
+      "tier": "legendary",
+      "type": "Fire",
+      "isStarterSelectable": false
     },
     {
       "name": "Eruption",
@@ -108,10 +120,13 @@
       ],
       "emoji": "*",
       "desc": "Volcano emerges from below.",
-      "basePower": 69,
-      "acc": 80,
-      "pp": 8,
-      "id": "fire_eruption"
+      "basePower": 85,
+      "acc": 90,
+      "pp": 10,
+      "id": "fire_eruption",
+      "tier": "rare",
+      "type": "Fire",
+      "isStarterSelectable": false
     },
     {
       "name": "Lava Spit",
@@ -120,10 +135,12 @@
       ],
       "emoji": "*",
       "desc": "Steady, scorching.",
-      "basePower": 47,
-      "acc": 98,
-      "pp": 18,
-      "id": "fire_lava_spit"
+      "basePower": 65,
+      "acc": 95,
+      "pp": 15,
+      "id": "fire_lava_spit",
+      "tier": "rare",
+      "type": "Fire"
     },
     {
       "name": "Solar Flare",
@@ -131,11 +148,14 @@
         "Fire"
       ],
       "emoji": "*",
-      "desc": "The sun itself, weaponised. User takes recoil.",
+      "desc": "The sun itself, weaponised. User takes 1/4 of damage as recoil.",
       "basePower": 120,
-      "acc": 82,
-      "pp": 4,
-      "recoil": 0.25,
+      "acc": 95,
+      "pp": 3,
+      "secondaryEffect": {
+        "type": "recoil",
+        "value": 0.25
+      },
       "isLootLearnable": true,
       "lootId": "sig_solarflare",
       "lootName": "Solar Flare",
@@ -151,7 +171,10 @@
         "magnaroo"
       ],
       "lootDesc": "<b>Solar Flare</b>  -  Fire, PWR 155, 25% recoil. <i>Signature of fire glass cannons.</i>",
-      "id": "fire_solar_flare"
+      "id": "fire_solar_flare",
+      "tier": "legendary",
+      "type": "Fire",
+      "isStarterSelectable": false
     },
     {
       "name": "Flamewing",
@@ -160,10 +183,13 @@
       ],
       "emoji": "*",
       "desc": "Wings ablaze with power.",
-      "basePower": 43,
-      "acc": 96,
-      "pp": 22,
-      "id": "fire_flamewing"
+      "basePower": 70,
+      "acc": 90,
+      "pp": 10,
+      "id": "fire_flamewing",
+      "tier": "rare",
+      "type": "Fire",
+      "isStarterSelectable": false
     },
     {
       "name": "Frost Arrow",
@@ -235,10 +261,11 @@
       "basePower": 35,
       "acc": 90,
       "pp": 15,
-      "effect": "frozen",
-      "effectTarget": "enemy",
-      "effectChance": 65,
-      "effectDur": 1,
+      "statusOnly": true,
+      "inflictStatus": {
+        "type": "frozen",
+        "chance": 65
+      },
       "isLootLearnable": true,
       "lootId": "move_freeze",
       "lootRarity": "rare",
@@ -256,10 +283,12 @@
       "basePower": 30,
       "acc": 100,
       "pp": 12,
-      "effect": "shielded",
-      "effectTarget": "self",
-      "effectChance": 100,
-      "effectDur": 3,
+      "statusOnly": true,
+      "applyBuff": {
+        "target": "self",
+        "type": "shielded",
+        "stacks": 1
+      },
       "id": "ice_ice_shell"
     },
     {
@@ -272,10 +301,11 @@
       "basePower": 30,
       "acc": 88,
       "pp": 12,
-      "effect": "frozen",
-      "effectTarget": "enemy",
-      "effectChance": 100,
-      "effectDur": 1,
+      "statusOnly": true,
+      "inflictStatus": {
+        "type": "frozen",
+        "chance": 100
+      },
       "id": "ice_permafrost"
     },
     {
@@ -288,10 +318,11 @@
       "basePower": 60,
       "acc": 90,
       "pp": 10,
-      "effect": "frozen",
-      "effectTarget": "enemy",
-      "effectChance": 100,
-      "effectDur": 1,
+      "statusOnly": true,
+      "inflictStatus": {
+        "type": "frozen",
+        "chance": 100
+      },
       "isLootLearnable": true,
       "lootId": "sig_permafrost",
       "lootName": "Permafrost Slam",
@@ -403,10 +434,11 @@
       "basePower": 30,
       "acc": 93,
       "pp": 15,
-      "effect": "paralyzed",
-      "effectTarget": "enemy",
-      "effectChance": 90,
-      "effectDur": 3,
+      "statusOnly": true,
+      "inflictStatus": {
+        "type": "paralyzed",
+        "chance": 90
+      },
       "isLootLearnable": true,
       "lootId": "move_zap",
       "lootRarity": "rare",
@@ -424,10 +456,12 @@
       "basePower": 30,
       "acc": 100,
       "pp": 10,
-      "effect": "pumped",
-      "effectTarget": "self",
-      "effectChance": 100,
-      "effectDur": 2,
+      "statusOnly": true,
+      "applyBuff": {
+        "target": "self",
+        "type": "pumped",
+        "stacks": 1
+      },
       "id": "lightning_overclock"
     },
     {
@@ -468,7 +502,10 @@
       "basePower": 85,
       "acc": 78,
       "pp": 6,
-      "recoil": 0.18,
+      "secondaryEffect": {
+        "type": "recoil",
+        "value": 0.18
+      },
       "id": "lightning_discharge"
     },
     {
@@ -481,10 +518,13 @@
       "basePower": 48,
       "acc": 94,
       "pp": 20,
-      "drain": 0.3,
+      "secondaryEffect": {
+        "type": "drain",
+        "value": 0.3
+      },
       "id": "shadow_soul_drain",
       "tier": "common",
-      "animationType": "Beam",
+      "animationType": "Drain",
       "type": "Shadow"
     },
     {
@@ -521,7 +561,10 @@
       "basePower": 120,
       "acc": 80,
       "pp": 6,
-      "drain": 0.35,
+      "secondaryEffect": {
+        "type": "drain",
+        "value": 0.35
+      },
       "isLootLearnable": true,
       "lootId": "sig_voidrend",
       "lootName": "Void Rend",
@@ -560,7 +603,10 @@
       "basePower": 51,
       "acc": 93,
       "pp": 15,
-      "drain": 0.2,
+      "secondaryEffect": {
+        "type": "drain",
+        "value": 0.2
+      },
       "id": "shadow_void_touch"
     },
     {
@@ -585,10 +631,12 @@
       "basePower": 30,
       "acc": 92,
       "pp": 15,
-      "effect": "cursed",
-      "effectTarget": "enemy",
-      "effectChance": 90,
-      "effectDur": 3,
+      "statusOnly": true,
+      "applyBuff": {
+        "target": "enemy",
+        "type": "cursed",
+        "stacks": 1
+      },
       "isLootLearnable": true,
       "lootId": "move_hex",
       "lootRarity": "common",
@@ -606,10 +654,12 @@
       "basePower": 30,
       "acc": 100,
       "pp": 12,
-      "effect": "shielded",
-      "effectTarget": "self",
-      "effectChance": 100,
-      "effectDur": 3,
+      "statusOnly": true,
+      "applyBuff": {
+        "target": "self",
+        "type": "shielded",
+        "stacks": 1
+      },
       "id": "shadow_umbral_veil"
     },
     {
@@ -634,7 +684,10 @@
       "basePower": 44,
       "acc": 90,
       "pp": 14,
-      "drain": 0.4,
+      "secondaryEffect": {
+        "type": "drain",
+        "value": 0.4
+      },
       "id": "shadow_leech_feather"
     },
     {
@@ -731,10 +784,12 @@
       "basePower": 30,
       "acc": 100,
       "pp": 12,
-      "effect": "shielded",
-      "effectTarget": "self",
-      "effectChance": 100,
-      "effectDur": 3,
+      "statusOnly": true,
+      "applyBuff": {
+        "target": "self",
+        "type": "shielded",
+        "stacks": 1
+      },
       "isLootLearnable": true,
       "lootId": "move_shield",
       "lootRarity": "rare",
@@ -752,15 +807,17 @@
       "basePower": 30,
       "acc": 100,
       "pp": 12,
-      "effect": "pumped",
-      "effectTarget": "self",
-      "effectChance": 100,
-      "effectDur": 2,
+      "statusOnly": true,
+      "applyBuff": {
+        "target": "self",
+        "type": "pumped",
+        "stacks": 1
+      },
       "isLootLearnable": true,
       "lootId": "move_pump",
       "lootRarity": "common",
       "lootColor": "#ff9800",
-      "lootDesc": "Adds <b>War Honk</b> (Normal). <i>Pumps yourself up  -  boosts your attack for 2 rounds.</i>",
+      "lootDesc": "Adds <b>War Honk</b> (Normal). <i>Pumps yourself up  -  boosts your attack.</i>",
       "id": "normal_war_honk"
     },
     {
@@ -813,10 +870,12 @@
       "basePower": 30,
       "acc": 100,
       "pp": 12,
-      "effect": "pumped",
-      "effectTarget": "self",
-      "effectChance": 100,
-      "effectDur": 2,
+      "statusOnly": true,
+      "applyBuff": {
+        "target": "self",
+        "type": "pumped",
+        "stacks": 1
+      },
       "id": "normal_battle_cry"
     },
     {
@@ -829,10 +888,12 @@
       "basePower": 30,
       "acc": 100,
       "pp": 12,
-      "effect": "shielded",
-      "effectTarget": "self",
-      "effectChance": 100,
-      "effectDur": 3,
+      "statusOnly": true,
+      "applyBuff": {
+        "target": "self",
+        "type": "shielded",
+        "stacks": 1
+      },
       "id": "normal_feather_guard"
     },
     {
@@ -870,7 +931,10 @@
       "basePower": 104,
       "acc": 82,
       "pp": 5,
-      "recoil": 0.25,
+      "secondaryEffect": {
+        "type": "recoil",
+        "value": 0.25
+      },
       "id": "normal_berserker_charge"
     }
   ]
