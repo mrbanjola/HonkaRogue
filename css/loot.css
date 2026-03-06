@@ -1,0 +1,177 @@
+/* Loot Screen (css/loot.css) */
+/* ..........................................
+   LOOT SCREEN
+.......................................... */
+#screen-loot {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  gap: 1.2rem;
+}
+
+.loot-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(.7rem, 2.5vw, 1.3rem);
+  color: var(--gold);
+  text-shadow: 0 0 20px rgba(255, 214, 0, .8), 3px 3px 0 #7a3d00;
+}
+
+.loot-sub {
+  font-size: 1rem;
+  color: var(--dim);
+  letter-spacing: .1em;
+}
+
+.loot-xp-bar {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .42rem;
+  color: #00ff88;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.loot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  max-width: 720px;
+  width: 100%;
+}
+
+.loot-card {
+  background: var(--panel);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 1.3rem 1rem;
+  cursor: pointer;
+  transition: all .2s;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.loot-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--rc, transparent), transparent);
+  opacity: 0;
+  transition: opacity .3s;
+}
+
+.loot-card:hover::before {
+  opacity: .12;
+}
+
+.loot-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--rc, #888);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--rc, #888) 40%, transparent);
+}
+
+.loot-card:hover .loot-card-emoji {
+  animation: floatBob 1s ease-in-out infinite;
+}
+
+.loot-card-emoji {
+  font-size: 3rem;
+  margin-bottom: .5rem;
+  display: block;
+  filter: drop-shadow(0 0 10px var(--rc, transparent));
+}
+
+.loot-rarity {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .38rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  margin-bottom: .4rem;
+}
+
+.loot-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .55rem;
+  color: var(--text);
+  margin-bottom: .4rem;
+}
+
+.loot-effect {
+  font-size: .8rem;
+  color: var(--dim);
+  line-height: 1.5;
+}
+
+.loot-effect b {
+  color: var(--text);
+}
+
+.rarity-common {
+  color: var(--common);
+}
+
+.rarity-rare {
+  color: var(--rare);
+}
+
+.rarity-legendary {
+  color: var(--legendary);
+  background: linear-gradient(90deg, #ff6a00, var(--gold), #ff6a00);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 2s linear infinite;
+}
+
+.loot-skip {
+  font-size: .75rem;
+  color: var(--dim);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+
+.loot-skip:hover {
+  color: var(--text);
+}
+
+.loot-party-btn {
+  font-size: .38rem;
+  padding: .5rem 1rem;
+}
+
+.loot-shop {
+  width: 100%;
+  max-width: 720px;
+  background: var(--panel2);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: .8rem 1rem;
+}
+
+.loot-shop-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .4rem;
+  color: var(--gold);
+  margin-bottom: .5rem;
+}
+
+.loot-shop-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .7rem;
+  padding: .35rem 0;
+  border-top: 1px dashed var(--border);
+  font-size: .75rem;
+}
+
+.loot-shop-row:first-of-type {
+  border-top: none;
+}
+
+.loot-shop-buy {
+  font-size: .34rem;
+  padding: .35rem .7rem;
+  white-space: nowrap;
+}

@@ -1,0 +1,385 @@
+/* Campaign Map Screen (css/campaign.css) */
+/* ..........................................
+   CAMPAIGN MAP SCREEN
+.......................................... */
+#screen-campaign {
+  padding: 0;
+  flex-direction: row !important;
+}
+
+.camp-sidebar {
+  width: 240px;
+  min-width: 200px;
+  background: var(--panel);
+  border-right: 2px solid var(--border);
+  padding: 1.2rem .9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto;
+}
+
+.camp-main {
+  flex: 1;
+  padding: 1.2rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sidebar-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .4rem;
+  color: var(--dim);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  margin-bottom: .5rem;
+}
+
+.player-portrait {
+  text-align: center;
+}
+
+.portrait-emoji {
+  font-size: 3.5rem;
+  filter: drop-shadow(0 0 12px var(--gc, transparent));
+}
+
+.portrait-composite {
+  width: 72px;
+  height: 72px;
+  position: relative;
+  margin: 0 auto;
+}
+
+.portrait-composite .pc-layer {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.portrait-composite .pc-layer img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, .8));
+}
+
+.portrait-composite .pc-legs {
+  width: 100%;
+  height: 55%;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.portrait-composite .pc-wings {
+  width: 90%;
+  height: 55%;
+  top: 22%;
+  left: 35%;
+  z-index: 2;
+}
+
+.portrait-composite .pc-torso {
+  width: 72%;
+  height: 72%;
+  top: 15%;
+  left: 14%;
+  z-index: 3;
+}
+
+.portrait-composite .pc-head {
+  width: 60%;
+  height: 60%;
+  top: -12%;
+  left: 11%;
+  z-index: 4;
+}
+
+.portrait-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .52rem;
+  color: var(--gold);
+  margin: .4rem 0 .2rem;
+}
+
+.portrait-type {
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+}
+
+.level-badge {
+  display: inline-block;
+  background: var(--panel2);
+  border: 2px solid var(--gold);
+  border-radius: 20px;
+  padding: .25rem .7rem;
+  font-family: 'Press Start 2P', monospace;
+  font-size: .5rem;
+  color: var(--gold);
+  margin: .4rem 0;
+}
+
+.xp-bar-wrap {
+  margin: .3rem 0;
+}
+
+.xp-lbl {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .33rem;
+  color: var(--dim);
+  margin-bottom: .2rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.xp-track {
+  height: 8px;
+  background: #1a1a2e;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.xp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff6a00, var(--gold));
+  transition: width .6s ease-out;
+  border-radius: 4px;
+}
+
+.stat-row {
+  font-size: .75rem;
+  color: var(--dim);
+  display: flex;
+  justify-content: space-between;
+  padding: .18rem 0;
+  border-bottom: 1px solid #1a1a2e;
+}
+
+.stat-row b {
+  color: var(--text);
+}
+
+.retry-display {
+  display: flex;
+  gap: .4rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.retry-heart {
+  font-size: 1.1rem;
+  transition: all .3s;
+}
+
+.retry-heart.lost {
+  opacity: .2;
+  filter: grayscale(1);
+}
+
+.items-list {
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
+
+.item-chip {
+  font-size: .7rem;
+  padding: .3rem .5rem;
+  background: var(--panel2);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  border: 1px solid var(--border);
+}
+
+.item-chip .item-rarity {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.item-chip .item-name {
+  color: var(--text);
+}
+
+.item-chip .item-eff {
+  color: var(--dim);
+  font-size: .65rem;
+  margin-left: auto;
+}
+
+.no-items {
+  font-size: .72rem;
+  color: var(--dim);
+  font-style: italic;
+  text-align: center;
+  padding: .5rem;
+}
+
+/* Stage map */
+.map-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(.5rem, 1.8vw, .85rem);
+  color: var(--gold);
+  text-align: center;
+}
+
+.map-subtitle {
+  font-size: .85rem;
+  color: var(--dim);
+  text-align: center;
+  margin-top: .2rem;
+}
+
+.stage-path {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  align-items: center;
+  margin: .5rem 0;
+}
+
+.stage-connector {
+  width: 3px;
+  height: 30px;
+  background: var(--border);
+}
+
+.stage-connector.done {
+  background: linear-gradient(180deg, var(--gold), #ff6a00);
+}
+
+.stage-node {
+  width: 100%;
+  max-width: 480px;
+  background: var(--panel);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  position: relative;
+  transition: all .25s;
+}
+
+.stage-node.done {
+  border-color: #44ff88;
+  opacity: .8;
+}
+
+.stage-node.done::after {
+  content: 'o"';
+  position: absolute;
+  top: .6rem;
+  right: .8rem;
+  font-size: 1.2rem;
+  color: #44ff88;
+}
+
+.stage-node.current {
+  border-color: var(--gold);
+  box-shadow: 0 0 20px rgba(255, 214, 0, .3);
+  animation: nodePulse 2s ease-in-out infinite;
+}
+
+@keyframes nodePulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(255, 214, 0, .3);
+  }
+
+  50% {
+    box-shadow: 0 0 35px rgba(255, 214, 0, .55);
+  }
+}
+
+.stage-node.locked {
+  opacity: .4;
+}
+
+.sn-header {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  margin-bottom: .5rem;
+}
+
+.sn-num {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .4rem;
+  color: var(--dim);
+}
+
+.sn-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .55rem;
+  color: var(--gold);
+}
+
+.sn-enemy {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+
+.sn-enemy-emoji {
+  font-size: 2rem;
+}
+
+.sn-enemy-info {
+  font-size: .78rem;
+}
+
+.sn-enemy-name {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.sn-enemy-type {
+  color: var(--dim);
+}
+
+.sn-desc {
+  font-size: .75rem;
+  color: #999;
+  font-style: italic;
+  margin: .4rem 0;
+}
+
+.sn-rewards {
+  display: flex;
+  gap: .4rem;
+  flex-wrap: wrap;
+  margin-top: .5rem;
+}
+
+.reward-tag {
+  font-size: .65rem;
+  padding: .15rem .45rem;
+  border-radius: 8px;
+  border: 1px solid;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.difficulty-stars {
+  display: flex;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.diff-star {
+  font-size: .7rem;
+}
+
+.btn-fight {
+  margin-top: .8rem;
+  width: 100%;
+}

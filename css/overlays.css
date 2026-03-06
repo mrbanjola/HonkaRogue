@@ -1,0 +1,570 @@
+/* Overlays (css/overlays.css) */
+/* ..........................................
+   PARTY SWITCH OVERLAY
+.......................................... */
+#switch-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 10, .92);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 1.5rem;
+}
+
+#switch-overlay.show {
+  display: flex;
+}
+
+.sw-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(.6rem, 2.5vw, .9rem);
+  color: #ff5252;
+  text-align: center;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.sw-sub {
+  font-size: .95rem;
+  color: var(--dim);
+  text-align: center;
+}
+
+.sw-grid {
+  display: flex;
+  gap: .9rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 700px;
+}
+
+.sw-card {
+  background: var(--panel);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem .8rem;
+  cursor: pointer;
+  text-align: center;
+  min-width: 120px;
+  transition: all .2s;
+}
+
+.sw-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-4px);
+  box-shadow: 0 0 16px rgba(255, 214, 0, .3);
+}
+
+.sw-emoji {
+  font-size: 2.8rem;
+  display: block;
+  margin-bottom: .35rem;
+}
+
+.sw-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .36rem;
+  color: var(--gold);
+  margin-bottom: .2rem;
+}
+
+.sw-type {
+  font-size: .7rem;
+  font-weight: 700;
+}
+
+.sw-hp {
+  font-size: .7rem;
+  color: var(--dim);
+  margin-top: .25rem;
+}
+
+.sw-passive {
+  font-size: .62rem;
+  color: var(--gold);
+  margin-top: .2rem;
+}
+
+/* release button */
+.btn-release {
+  background: transparent;
+  color: #ff5252;
+  border: 1px solid #ff5252;
+  font-size: .28rem !important;
+  padding: .2rem .35rem !important;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Press Start 2P', monospace;
+  opacity: .7;
+  transition: all .15s;
+  flex-shrink: 0;
+}
+
+.btn-release:hover {
+  opacity: 1;
+  box-shadow: 0 0 8px rgba(255, 82, 82, .3);
+}
+
+/* replace screen overlay */
+#replace-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 10, .94);
+  z-index: 210;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+#replace-overlay.show {
+  display: flex;
+}
+
+.rep-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(.5rem, 2vw, .8rem);
+  color: var(--gold);
+  text-align: center;
+}
+
+.rep-sub {
+  font-size: .9rem;
+  color: var(--dim);
+  text-align: center;
+  max-width: 480px;
+}
+
+.rep-new {
+  background: var(--panel);
+  border: 2px solid var(--gold);
+  border-radius: 14px;
+  padding: 1rem;
+  text-align: center;
+  min-width: 140px;
+}
+
+.rep-new-emoji {
+  font-size: 2.8rem;
+  display: block;
+  margin-bottom: .3rem;
+}
+
+.rep-arrow {
+  font-size: 2rem;
+  color: var(--dim);
+}
+
+.rep-grid {
+  display: flex;
+  gap: .7rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 700px;
+}
+
+.rep-card {
+  background: var(--panel2);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: .8rem .6rem;
+  cursor: pointer;
+  text-align: center;
+  min-width: 110px;
+  transition: all .18s;
+}
+
+.rep-card:hover {
+  border-color: #ff5252;
+  transform: translateY(-3px);
+  box-shadow: 0 0 14px rgba(255, 82, 82, .3);
+}
+
+.rep-emoji {
+  font-size: 2.2rem;
+  display: block;
+  margin-bottom: .25rem;
+}
+
+.rep-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .33rem;
+  color: var(--text);
+  margin-bottom: .15rem;
+}
+
+.rep-type {
+  font-size: .65rem;
+  font-weight: 700;
+}
+
+.rep-hint {
+  font-size: .62rem;
+  color: var(--dim);
+  margin-top: .2rem;
+}
+
+/* loot party overlay */
+#loot-party-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 10, .94);
+  z-index: 215;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+#loot-party-overlay.show {
+  display: flex;
+}
+
+.lp-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(.5rem, 2vw, .8rem);
+  color: var(--gold);
+  text-align: center;
+}
+
+.lp-sub {
+  font-size: .9rem;
+  color: var(--dim);
+  text-align: center;
+  max-width: 640px;
+}
+
+.lp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: .7rem;
+  max-width: 860px;
+  width: 100%;
+}
+
+.lp-card {
+  background: var(--panel2);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: .6rem .7rem;
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+}
+
+.lp-top {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+}
+
+.lp-emoji {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.lp-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .33rem;
+  color: var(--text);
+}
+
+.lp-type {
+  font-size: .65rem;
+  font-weight: 700;
+}
+
+.lp-stats {
+  font-size: .7rem;
+  color: var(--dim);
+}
+
+.lp-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .4rem;
+}
+
+.lp-badge {
+  font-size: .58rem;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  padding: .1rem .35rem;
+}
+
+.lp-badge.lp-ko {
+  color: #ff5252;
+  border-color: #ff5252;
+}
+
+.lp-release {
+  font-size: .34rem;
+  padding: .35rem .7rem;
+}
+
+/* enemy parts overlay */
+#enemy-parts-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 10, .94);
+  z-index: 218;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+#enemy-parts-overlay.show {
+  display: flex;
+}
+
+.ep-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(.5rem, 2vw, .8rem);
+  color: var(--gold);
+  text-align: center;
+}
+
+.ep-sub {
+  font-size: .9rem;
+  color: var(--dim);
+  text-align: center;
+  max-width: 640px;
+}
+
+.ep-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: .7rem;
+  max-width: 860px;
+  width: 100%;
+}
+
+.ep-card {
+  background: var(--panel2);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: .55rem;
+  display: flex;
+  gap: .6rem;
+  align-items: center;
+}
+
+.ep-art {
+  width: 62px;
+  height: 62px;
+  flex-shrink: 0;
+  background: #0a0a12;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.ep-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.ep-meta {
+  min-width: 0;
+  flex: 1;
+}
+
+.ep-slot {
+  font-size: .58rem;
+  color: var(--dim);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.ep-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .32rem;
+  color: var(--text);
+  margin-top: .15rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ep-family {
+  font-size: .64rem;
+  color: #a9a9bf;
+  margin-top: .15rem;
+}
+
+.ep-row {
+  display: flex;
+  gap: .35rem;
+  flex-wrap: wrap;
+  margin-top: .2rem;
+}
+
+.ep-badge {
+  font-size: .54rem;
+  font-weight: 700;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: .04rem .34rem;
+}
+
+.ep-badge.caught {
+  color: #00ff88;
+  border-color: #00ff88;
+}
+
+.ep-badge.new {
+  color: #ff9800;
+  border-color: #ff9800;
+}
+
+/* move teach overlay */
+#teach-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 10, .93);
+  z-index: 220;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+#teach-overlay.show {
+  display: flex;
+}
+
+.teach-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(.5rem, 2vw, .8rem);
+  color: var(--gold);
+  text-align: center;
+}
+
+.teach-move-preview {
+  background: var(--panel);
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  padding: .8rem 1.2rem;
+  text-align: center;
+  max-width: 340px;
+}
+
+.teach-grid {
+  display: flex;
+  gap: .7rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 700px;
+}
+
+.teach-card {
+  background: var(--panel2);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: .9rem .7rem;
+  cursor: pointer;
+  text-align: center;
+  min-width: 130px;
+  transition: all .18s;
+}
+
+.teach-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-3px);
+  box-shadow: 0 0 14px rgba(255, 214, 0, .3);
+}
+
+.teach-card.tc-full {
+  border-color: #ff5252;
+}
+
+.teach-card.tc-ineligible {
+  opacity: .35;
+  cursor: not-allowed;
+  filter: grayscale(.8);
+}
+
+.teach-card.tc-full:hover {
+  border-color: #ff7070;
+}
+
+.teach-emoji {
+  font-size: 2.4rem;
+  display: block;
+  margin-bottom: .3rem;
+}
+
+.teach-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .34rem;
+  color: var(--gold);
+  margin-bottom: .15rem;
+}
+
+.teach-type {
+  font-size: .65rem;
+  font-weight: 700;
+}
+
+.teach-moves {
+  font-size: .6rem;
+  color: var(--dim);
+  margin-top: .3rem;
+  text-align: left;
+}
+
+.teach-move-row {
+  display: flex;
+  justify-content: space-between;
+  gap: .5rem;
+  padding: .1rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.teach-move-row:last-child {
+  border-bottom: none;
+}
+
+.tm-badge {
+  font-size: .55rem;
+  padding: .08rem .25rem;
+  border-radius: 3px;
+  background: rgba(255, 214, 0, .15);
+  color: var(--gold);
+}
+
+/* save indicator */
+#save-indicator {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  font-family: 'Press Start 2P', monospace;
+  font-size: .3rem;
+  color: var(--dim);
+  letter-spacing: .1em;
+  opacity: 0;
+  transition: opacity .5s;
+  z-index: 300;
+}
+
+#save-indicator.show {
+  opacity: 1;
+}

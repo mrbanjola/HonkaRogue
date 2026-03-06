@@ -87,15 +87,29 @@
       "name": "Kevin",
       "emoji": "*",
       "type": "Normal",
-      "atk": 115,
-      "def": 60,
-      "spd": 70,
+      "atk": 166,
+      "def": 150,
+      "spd": 167,
       "lore": "Suspiciously strong for a Kevin.",
       "passive": {
         "id": "underdog",
-        "emoji": "*",
         "name": "Underdog",
         "desc": "+30% ATK when below 50% HP."
+      },
+      "isBoss": false,
+      "hp": 157,
+      "luck": 83,
+      "moveIds": [
+        "normal_feather_guard",
+        "normal_kevin_s_fury",
+        "normal_war_honk",
+        "normal_berserker_charge"
+      ],
+      "partIds": {
+        "head": "head-sprite_0071",
+        "torso": "torso-sprite_002",
+        "wings": "wings-sprite_122",
+        "legs": "legs-sprite_118"
       }
     },
     {
@@ -413,17 +427,30 @@
       "name": "Regular Barry",
       "emoji": "*",
       "type": "Normal",
-      "atk": 122,
-      "def": 65,
-      "spd": 68,
+      "atk": 168,
+      "def": 148,
+      "spd": 169,
       "lore": "\"I am just a regular Barry.\"  -  Barry, who is not regular.",
       "passive": {
         "id": "underdog",
-        "emoji": "*",
         "name": "Underdog",
         "desc": "+30% ATK when below 50% HP."
       },
-      "isBoss": true
+      "isBoss": true,
+      "hp": 155,
+      "luck": 4,
+      "moveIds": [
+        "normal_war_honk",
+        "normal_feather_guard",
+        "shadow_soul_drain",
+        "lightning_zap_field"
+      ],
+      "partIds": {
+        "head": "head-sprite_116",
+        "torso": "torso-sprite_0301",
+        "wings": "wings-sprite_137",
+        "legs": "legs-sprite_095"
+      }
     },
     {
       "dexNum": 26,

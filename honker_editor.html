@@ -296,7 +296,7 @@
       for (const slot of SLOT_KEYS) {
         const sel = el(`p_${slot}`);
         const pool = (st.partsData?.parts || []).filter(p => p.slot === slot).sort((a,b) => String(a.id).localeCompare(String(b.id)));
-        sel.innerHTML = '<option value="">(none)</option>' + pool.map(p => `<option value="${p.id}">${p.id} [${p.rarity || '?'}]</option>`).join('');
+        sel.innerHTML = '<option value="">(none)</option>' + pool.map(p => `<option value="${p.id}">${p.name} [${p.rarity || '?'}]</option>`).join('');
         sel.value = st.partSel[slot] || '';
         sel.onchange = () => { st.partSel[slot] = sel.value; renderComputed(); renderMovePicker(); };
       }

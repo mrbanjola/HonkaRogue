@@ -1,0 +1,141 @@
+/* Parts Dex (css/partsdex.css) */
+/* Partsdex */
+#screen-partsdex {
+  padding: 1.2rem;
+  align-items: center;
+  gap: .9rem;
+}
+
+.pdx-controls {
+  display: flex;
+  gap: .45rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 980px;
+  width: 100%;
+}
+
+.pdx-ctl {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  padding: .45rem .55rem;
+  font-size: .72rem;
+  min-width: 120px;
+}
+
+.pdx-ctl.pdx-search {
+  min-width: 220px;
+  flex: 1;
+  max-width: 340px;
+}
+
+.pdx-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: .6rem;
+  max-width: 980px;
+  width: 100%;
+}
+
+.pdx-card {
+  background: var(--panel);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: .55rem;
+  display: flex;
+  gap: .55rem;
+  align-items: flex-start;
+  transition: all .18s;
+}
+
+.pdx-card:hover {
+  transform: translateY(-2px);
+  border-color: #555;
+}
+
+.pdx-card.pc-caught {
+  border-color: var(--gold);
+  box-shadow: 0 0 12px rgba(255, 214, 0, .25);
+}
+
+.pdx-card.pc-seen {
+  border-color: #444;
+}
+
+.pdx-card.pc-unseen {
+  filter: brightness(.35);
+}
+
+.pdx-art {
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  background: #0a0a12;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.pdx-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.pdx-unk {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1rem;
+  color: #666;
+}
+
+.pdx-meta {
+  min-width: 0;
+  flex: 1;
+}
+
+.pdx-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .34rem;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pdx-sub {
+  font-size: .62rem;
+  color: var(--dim);
+  margin-top: .2rem;
+  display: flex;
+  gap: .35rem;
+  flex-wrap: wrap;
+}
+
+.pdx-pill {
+  font-size: .54rem;
+  font-weight: 700;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: .06rem .35rem;
+}
+
+.pdx-power {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .32rem;
+  color: var(--gold);
+  margin-top: .25rem;
+}
+
+.pdx-stats {
+  font-size: .63rem;
+  color: #a9a9bf;
+  display: flex;
+  gap: .28rem;
+  flex-wrap: wrap;
+  margin-top: .2rem;
+}

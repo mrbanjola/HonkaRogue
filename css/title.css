@@ -1,0 +1,40 @@
+/* Title Screen (css/title.css) */
+/* ..........................................
+   TITLE SCREEN
+.......................................... */
+#screen-title {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  gap: 1rem;
+}
+
+.title-emblem {
+  font-size: 4.5rem;
+  filter: drop-shadow(0 0 28px rgba(255, 214, 0, .9));
+  animation: floatBob 3s ease-in-out infinite;
+  margin-bottom: .3rem;
+}
+
+.title-tagline {
+  font-size: 1rem;
+  color: var(--dim);
+  margin: .5rem 0 2rem;
+  letter-spacing: .1em;
+}
+
+.title-btns {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.highscore-strip {
+  margin-top: 1.5rem;
+  font-family: 'Press Start 2P', monospace;
+  font-size: .38rem;
+  color: var(--dim);
+  letter-spacing: .1em;
+}

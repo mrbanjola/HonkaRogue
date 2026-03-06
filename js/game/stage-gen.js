@@ -1,122 +1,7 @@
-﻿// ============================================================================
-// HonkaRogue Game Module (js/game.js)
-// Core game mechanics: battle system, stage generation, parts/dex system
 // ============================================================================
-
-// "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
-//  HONKER CLASS
-// "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
-
-function getHonkerMaxHP(h) {
-  if (!h) return 0;
-  const lv = Math.max(1, h.level || 1);
-  const partHpBase = (h.assembledParts && typeof h.assembledParts === 'object')
-    ? ['head', 'torso', 'wings', 'legs']
-        .map(slot => Number(h.assembledParts?.[slot]?.stats?.hp || 0))
-        .reduce((a, b) => a + b, 0)
-    : 0;
-  const hpStatBase = Number(h.hp || 0);
-  const hpBase = Math.max(1, hpStatBase > 0 ? hpStatBase : partHpBase);
-  const hpWithBonus = hpBase + Number(h.maxHPBonus || 0);
-  const masteryMult = masteryStatMultiplier(h.masteryLevel || 0);
-  return Math.max(1, Math.floor((((2 * hpWithBonus * lv) / 100) + lv + 10) * masteryMult));
-}
-
-class Honker {
-  constructor(data, side, campBoosts={}) {
-    Object.assign(this, JSON.parse(JSON.stringify(data)));
-    this.side = side;
-    this.maxHPBonus = campBoosts.maxHPBonus||0;
-    this.atkFlat    = campBoosts.atkFlat||0;
-    this.atkMult    = campBoosts.atkMult||1;
-    this.luckBonus  = campBoosts.luckBonus||0;
-    this.stabBonus  = campBoosts.stabBonus||1.25;
-    this.chaosMod   = campBoosts.chaosMod||1;
-    this.ppBonus    = campBoosts.ppBonus||0;
-    this.level      = campBoosts.level ?? this.level ?? 1;
-    this.movePP     = campBoosts.movePP||null;
-    this.persistentEffects = campBoosts.persistentEffects || null;
-    this.masteryLevel = Math.max(0, Number(this.masteryLevel) || 0);
-    this.statusEffects = {};
-    this.moves.forEach(m=>{
-      m.maxPP += this.ppBonus;
-      const saved = this.movePP ? (this.movePP[m.id] ?? this.movePP[m.name]) : null;
-      m.pp = saved == null ? m.maxPP : Math.max(0, Math.min(m.maxPP, saved));
-    });
-    const masteryMult = masteryStatMultiplier(this.masteryLevel);
-    this.maxHP = getHonkerMaxHP(this);
-    this.currentHP = Math.max(0, Math.min(this.maxHP, campBoosts.currentHP ?? this.maxHP));
-    if (this.persistentEffects) {
-      STACKABLE_EFFECTS.forEach(k => {
-        const v = this.persistentEffects[k] || 0;
-        if (v > 0) this.statusEffects[k] = Math.max(1, Math.min(4, v));
-      });
-    }
-    this.atk = Math.max(1, Math.round((this.atk || 80) * levelStatScale(this.level, 'atk') * masteryMult));
-    this.def = Math.max(1, Math.round((this.def || 80) * levelStatScale(this.level, 'def') * masteryMult));
-    this.spd = Math.max(1, Math.round((this.spd || 80) * levelStatScale(this.level, 'spd') * masteryMult));
-  }
-  get hpPct() { return Math.max(0, this.currentHP/this.maxHP); }
-  isDead() { return this.currentHP<=0; }
-  get effectiveLuck() {
-    const baseLuck = (this.luck||50)+(this.luckBonus||0);
-    return Math.min(95, Math.round(baseLuck * masteryStatMultiplier(this.masteryLevel)));
-  }
-  get atkModifier() {
-    let m = 1;
-    if (this.statusEffects.cursed)  m *= Math.max(0.25, 1 - (0.15 * this.statusEffects.cursed));
-    if (this.statusEffects.pumped)  m *= (1 + (0.25 * this.statusEffects.pumped));
-    if (this.passive?.id === 'underdog' && this.hpPct < 0.5) m *= 1.3;
-    return m;
-  }
-  get defModifier() {
-    let m = 1;
-    if (this.statusEffects.shielded) m *= (1 / (1 + (0.25 * this.statusEffects.shielded)));
-    if (this.statusEffects.exposed) m *= (1 + 0.2 * this.statusEffects.exposed);
-    if (this.passive?.id === 'thick_skin') m *= 0.8;
-    return m;
-  }
-  get accModifier() {
-    let m = 1;
-    if (this.statusEffects.paralyzed) m *= Math.max(0.3, 1 - (0.12 * this.statusEffects.paralyzed));
-    return m;
-  }
-  aiPickMove(enemy) {
-    const avail = this.moves.filter(m=>m.pp>0 && !(m.lowHPOnly && this.hpPct >= 0.5));
-    if (!avail.length) return this.moves[0];
-    const self = this;
-    const scoreMove = (m) => {
-      if (m.inflictStatus) {
-        const already = enemy.statusEffects[m.inflictStatus.type];
-        let s = already ? 5 : 50;
-        s *= (m.inflictStatus.chance / 100);
-        return s;
-      }
-      if (m.applyBuff) {
-        const target = m.applyBuff.target === 'self' ? self : enemy;
-        const already = target.statusEffects[m.applyBuff.type];
-        let s = already >= 4 ? 5 : 45;
-        if (m.applyBuff.target === 'self' && self.hpPct < 0.4) s *= 1.5;
-        return s;
-      }
-      let s = m.power * (m.acc/100) * getEff(m.type, enemy.type, enemy.type2) * (0.7 + (BS.rng?.() ?? Math.random())*.6) * self.atkModifier;
-      if (m.secondaryEffect?.type === 'drain') s *= 1.2;
-      if (m.secondaryEffect?.type === 'recoil') s *= 0.85;
-      return s;
-    };
-    let best = avail[0];
-    let bestScore = scoreMove(best);
-    for (let i = 1; i < avail.length; i++) {
-      const s = scoreMove(avail[i]);
-      if (s > bestScore) { best = avail[i]; bestScore = s; }
-    }
-    return best;
-  }
-}
-
-// "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
-//  STAGE GENERATION
-// "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
+// HonkaRogue Stage Generation (js/game/stage-gen.js)
+// Stage generation, biome selection, enemy generation, threat/power
+// ============================================================================
 
 function getBiomeForStage(n) {
   const blockIdx = Math.floor((n - 1) / 5);
@@ -140,43 +25,18 @@ function getBiomeForStage(n) {
 
 function buildDexPartBlueprint(dex) {
   if (!dex) return null;
-
-  // Use centralized dex-part presets from data.js when available.
   if (typeof getDexAssembledParts === 'function') {
     const assembledParts = getDexAssembledParts(dex);
     if (!assembledParts) return null;
     const derived = deriveHonkerFromParts(assembledParts);
     return { assembledParts, derived };
   }
-
-  // Legacy fallback for explicit embedded dex parts.
   if (dex.assembledParts && dex.assembledParts.head) {
     const parts = dex.assembledParts;
     const derived = deriveHonkerFromParts(parts);
     return { assembledParts: parts, derived };
   }
-
   return null;
-}
-
-function masteryStatMultiplier(level) {
-  const lv = Math.max(0, Number(level) || 0);
-  // +5% additive per mastery level to all stats.
-  return 1 + (lv * 0.05);
-}
-function masteryAttackMultiplier(level) {
-  // Backward-compatible alias for older callers.
-  return masteryStatMultiplier(level);
-}
-function pickWeightedIndex2(weights, rng) {
-  const total = (weights || []).reduce((a, b) => a + Math.max(0, b || 0), 0);
-  if (!total) return 0;
-  let r = rng() * total;
-  for (let i = 0; i < weights.length; i++) {
-    r -= Math.max(0, weights[i] || 0);
-    if (r <= 0) return i;
-  }
-  return Math.max(0, weights.length - 1);
 }
 
 function pickBiomeType(biome, rng, isBoss) {
@@ -225,7 +85,7 @@ function chooseDexForStage(n, isBoss, rng, biome) {
     w *= Math.max(0.55, 1.2 - dist * 0.05);
     return w;
   });
-  return pool[pickWeightedIndex2(weights, rng)] || pool[0];
+  return pool[pickWeightedIndex(weights, rng)] || pool[0];
 }
 function xpRewardForEnemyLevel(level, isBoss) {
   const lv = Math.max(1, Number(level) || 1);
@@ -253,9 +113,9 @@ function generateStage(n) {
     dexThreshold = isBoss ? 0.20 : 0.15;
   }
   const useDex = rngRoll < dexThreshold;
-  console.log(`Stage ${n} | RNG: ${rngRoll.toFixed(3)} | Threshold: ${(dexThreshold*100).toFixed(0)}% | UseDex: ${useDex} | ${useDex ? '✦ RARE' : 'PROCEDURAL'}`);
+  console.log(`Stage ${n} | RNG: ${rngRoll.toFixed(3)} | Threshold: ${(dexThreshold*100).toFixed(0)}% | UseDex: ${useDex} | ${useDex ? '\u2726 RARE' : 'PROCEDURAL'}`);
   const dex    = useDex ? chooseDexForStage(n, isBoss, rng, biome) : null;
-  if (dex) console.log(`  → Named Honker: ${dex.name}`);
+  if (dex) console.log(`  \u2192 Named Honker: ${dex.name}`);
   const dexBlueprint = dex ? buildDexPartBlueprint(dex) : null;
   const biomeFallbackType = pickBiomeType(biome, rng, isBoss) || 'Normal';
   const earlyRamp = Math.min(1, n / 16);
@@ -263,22 +123,12 @@ function generateStage(n) {
   const earlyPowScale = n <= 15 ? (0.72 + earlyRamp * 0.28) : 1;
   const earlyStatScale = n <= 15 ? (0.88 + earlyRamp * 0.12) : 1;
 
-  let enemyName;
-  if (dex) {
-    enemyName = dex.name;
-  } else if (isBoss) {
-    const p = E_PREFIXES[Math.floor(rng() * E_PREFIXES.length)];
-    const b = E_BODIES[Math.floor(rng() * E_BODIES.length)];
-    const s = E_BOSS_SUFFIXES[Math.floor(rng() * E_BOSS_SUFFIXES.length)];
-    enemyName = `${p} ${b} ${s}`;
-  } else {
-    const p = E_PREFIXES[Math.floor(rng() * E_PREFIXES.length)];
-    const b = E_BODIES[Math.floor(rng() * E_BODIES.length)];
-    enemyName = `${p} ${b}`;
-  }
+  // Enemy name is resolved later via generateHonkerName (after parts/type are known)
+  // Consume rng calls to preserve seed sequence for arena/lore below
+  rng(); rng(); rng(); rng();
 
   const arena = biome?.arenas?.[Math.floor(rng() * biome.arenas.length)] || STAGE_LOCATIONS[(n - 1) % STAGE_LOCATIONS.length];
-  const location = `${biome?.name || 'Honklands'} • ${arena}`;
+  const location = `${biome?.name || 'Honklands'} \u2022 ${arena}`;
   const loreRaw  = dex ? dex.lore : (biome?.lore?.[Math.floor(rng() * biome.lore.length)] || STAGE_LORE[Math.floor(rng() * STAGE_LORE.length)]);
   const lore     = dex ? `"${loreRaw}"` : `"${loreRaw.replace('{n}', n)}"`;
 
@@ -376,7 +226,16 @@ function generateStage(n) {
   const enemyLevel = Math.max(1, Math.round(n * 0.18) + (isBoss ? 1 : 0) - (n <= 15 ? 1 : 0));
   const difficulty = isBoss ? 5 : Math.min(4, Math.ceil(n / 4));
   const xpReward   = xpRewardForEnemyLevel(enemyLevel, isBoss);
-  
+
+  // --- Determine enemy name ---
+  let enemyName;
+  if (dex) {
+    enemyName = dex.name;
+  } else {
+    const headName = assembledParts?.head?.name || E_BODIES[Math.floor(((hash32(String(n)) >>> 0) % E_BODIES.length))];
+    enemyName = generateHonkerName({ headName, type, stats: { hp, atk: genAtk, def: genDef, spd: genSpd, luck }, isBoss });
+  }
+
   const enemyData = { name: enemyName, emoji, type, type2, hp, luck, atk:genAtk, def:genDef, spd:genSpd,
                       moves, passive, dexId: dex?.id || null, assembledParts, level: enemyLevel };
   const hasNewParts = enemyHasUncaughtParts(enemyData);
@@ -395,4 +254,4 @@ function playerPower(pb) {
   return Math.round(hp * 0.6 + atk * 2);
 }
 
-console.log('[GAME] Module loaded');
+console.log('[STAGE-GEN] Module loaded');

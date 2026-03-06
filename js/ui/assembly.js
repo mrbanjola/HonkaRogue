@@ -1,148 +1,8 @@
 // ============================================================================
-// HonkaRogue Character Select Module (js/ui-charselect.js)
-// Starter selection, honker assembly, and run initialization
+// HonkaRogue Assembly (js/ui/assembly.js)
+// Honker assembly screen, part selectors, deriveHonkerFromParts
 // ============================================================================
 
-// "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
-//  CHARACTER SELECT
-// "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
-let csSelected = null;
-function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
-function createRunSeed() {
-  if (typeof crypto !== 'undefined' && crypto?.getRandomValues) {
-    const buf = new Uint32Array(1);
-    crypto.getRandomValues(buf);
-    return buf[0] >>> 0;
-  }
-  return ((Date.now() & 0xffffffff) ^ Math.floor(Math.random() * 0xffffffff)) >>> 0;
-}
-function starterMovesForType(type, atkStat) {
-  const pool = MOVES_BY_TYPE[type] || MOVES_BY_TYPE.Normal || [];
-  const normal = MOVES_BY_TYPE.Normal || [];
-  const picks = [pool[0], pool[1], pool[2], type === 'Normal' ? normal[3] : normal[0]].filter(Boolean);
-  const seen = new Set();
-  const uniq = [];
-  for (const m of picks) {
-    if (seen.has(m.id)) continue;
-    seen.add(m.id);
-    uniq.push(m);
-  }
-  return uniq.slice(0, 4).map(m => materializeMoveFromId(m.id)).filter(Boolean);
-}
-function starterFromDex(dex) {
-  const dexBlueprint = buildDexPartBlueprint(dex);
-  const derived = dexBlueprint?.derived || null;
-  const dexType = derived?.type || dex.type || 'Normal';
-  const atk = dex.atk || 80;
-  const def = dex.def || 80;
-  const spd = dex.spd || 80;
-  const starterMoves = (derived?.moves && derived.moves.length)
-    ? derived.moves.map(m => ({ ...cloneJson(m), pp: m.maxPP || m.pp, maxPP: m.maxPP || m.pp }))
-    : starterMovesForType(dexType, atk);
-  const starterMoveIds = starterMoves.map(m => m.id).filter(Boolean);
-  return {
-    id: dex.id,
-    name: dex.name,
-    emoji: dex.emoji || '\u{1F986}',
-    type: dexType,
-    type2: derived?.type2 || null,
-    lore: dex.lore || 'A veteran from a previous journey.',
-    hp: clamp(Math.round(120 + def * 0.9), 145, 220),
-    luck: 50,
-    atk, def, spd,
-    passive: dex.passive ? JSON.parse(JSON.stringify(dex.passive)) : (derived?.passive ? cloneJson(derived.passive) : null),
-    moveIds: starterMoveIds,
-    moves: starterMoves,
-    moveCandidates: derived?.moveCandidates ? cloneJson(derived.moveCandidates) : [],
-    assembledParts: dexBlueprint?.assembledParts ? cloneJson(dexBlueprint.assembledParts) : null,
-  };
-}
-function getStarterRoster() {
-  const base = (ROSTER || []).map(h => {
-    const out = JSON.parse(JSON.stringify(h));
-    if (!Array.isArray(out.moveIds) || !out.moveIds.length) {
-      if (typeof ensureHonkerMoveIds === 'function') ensureHonkerMoveIds(out);
-    }
-    out.moves = materializeMovesFromIds(out.moveIds);
-    return out;
-  });
-  const ids = new Set(base.map(h => h.id));
-  const caughtDex = (CAMPAIGN.dexCaught || [])
-    .map(id => HONKER_DEX.find(d => d.id === id))
-    .filter(Boolean)
-    .filter(d => !ids.has(d.id))
-    .map(starterFromDex);
-  return [...base, ...caughtDex];
-}
-function buildCharSelect() {
-  const g=document.getElementById('cs-grid');
-  g.innerHTML='';
-  const roster = getStarterRoster();
-  roster.forEach(c=>{
-    const card=document.createElement('div');
-    card.className='char-card';
-    card.style.setProperty('--gc',TC[c.type]);
-    card.innerHTML=`
-      <span class="cc-emoji">${c.emoji}</span>
-      <div class="cc-name">${c.name}</div>
-      <div class="cc-type" style="color:${TC[c.type]}">${c.type} Type</div>
-      <div class="cc-stats">\u2764\uFE0F <b>${c.hp}</b> &nbsp; \u2694\uFE0F <b>${c.atk||80}</b> &nbsp; \uD83D\uDEE1\uFE0F <b>${c.def||80}</b> &nbsp; \u26A1 <b>${c.spd||80}</b> &nbsp; \uD83C\uDF40 <b>${c.luck}%</b></div>
-      <div style="display:flex;gap:.2rem;margin:.25rem 0;">${['atk','def','spd'].map(s=>
-        '<div style="flex:1"><div style="font-size:.38rem;color:var(--dim)">' + {atk:'\u2694 ATK',def:'\uD83D\uDEE1 DEF',spd:'\u26A1 SPD'}[s] + '</div><div style="background:var(--border);border-radius:3px;height:5px;overflow:hidden"><div style="height:100%;width:' + Math.round((c[s]||80)/130*100) + '%;background:' + {atk:'#ff4e00',def:'#00c8ff',spd:'#ffe600'}[s] + ';border-radius:3px"></div></div></div>'
-      ).join('')}</div>
-      <div style="margin-top:.55rem">${c.moves.map(m=>`<div class="cc-move-row"><span class="type-pip ${TCC[m.type]}">${m.type}</span><span style="color:#ccc">${m.emoji} ${m.name}</span><span style="color:var(--dim);font-size:.62rem">P${m.power}</span></div>`).join('')}</div>
-      <div class="cc-lore">"${c.lore}"</div>`;
-    if (c.assembledParts) {
-      const em = card.querySelector('.cc-emoji');
-      if (em) renderCompositePreview(c.assembledParts, em, 'cc-composite');
-    }
-    card.onclick=()=>{
-      g.querySelectorAll('.char-card').forEach(el=>el.classList.remove('selected'));
-      card.classList.add('selected'); csSelected=c;
-      document.getElementById('cs-btn').disabled=false;
-    };
-    g.appendChild(card);
-  });
-}
-
-function confirmCharSelect() {
-  if(!csSelected) { console.warn('No character selected'); return; }
-  console.log('Starting game with:', csSelected.name);
-  csSelected = JSON.parse(JSON.stringify(csSelected));
-  CAMPAIGN.playerBase = csSelected;
-  CAMPAIGN.player = null;
-  CAMPAIGN.party = [csSelected];
-  CAMPAIGN.activeIdx = 0;
-  CAMPAIGN.stageIdx = 0;
-  CAMPAIGN.runSeed = createRunSeed();
-  CAMPAIGN.retries = 3;
-  CAMPAIGN.maxRetries = 3;
-  CAMPAIGN.completedStages = [];
-  CAMPAIGN.totalXP = 0;
-  CAMPAIGN.level = 1;
-  CAMPAIGN.xp = 0;
-  CAMPAIGN.xpNeeded = 100;
-  CAMPAIGN.inventory = [];
-  CAMPAIGN.coins = 0;
-  CAMPAIGN.fallen = [];
-  ensurePartTrackingState();
-  // Reset per-honker inventories
-  CAMPAIGN.party.forEach(h => { h.inventory = []; });
-  CAMPAIGN.started = true;
-  // Reset player boosts
-  csSelected.maxHPBonus=0; csSelected.atkFlat=0; csSelected.atkMult=1;
-  csSelected.luckBonus=0; csSelected.stabBonus=1.25; csSelected.chaosMod=1; csSelected.ppBonus=0;
-  csSelected.level=1; csSelected.xp=0; csSelected.xpNeeded=100; csSelected.totalXp=0;
-  csSelected.masteryLevel=0; csSelected.masteryXP=0; csSelected.masteryXPNeeded=masteryXpNeededForLevel(0); csSelected.masteryTotalXp=0;
-  initHonkerRunState(csSelected);
-  console.log('Initialized honker run state, starting stage battle');
-  console.log('CAMPAIGN.party:', CAMPAIGN.party.length, 'active idx:', CAMPAIGN.activeIdx);
-  startNextStageFromLoop();
-}
-
-// "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
-//  HONKER ASSEMBLY
-// "?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?
 let assembledParts = { head: null, torso: null, wings: null, legs: null };
 let selectedStarterMoveIds = [];
 let starterSelectionInitialized = false;
@@ -168,7 +28,6 @@ function randomAssembly() {
   });
   selectedStarterMoveIds = [];
   starterSelectionInitialized = false;
-  // Update visual selection highlights
   const slotMap = {head:'heads-list',torso:'torsos-list',wings:'wings-list',legs:'legs-list'};
   Object.entries(slotMap).forEach(([slot, listId]) => {
     const items = document.getElementById(listId)?.querySelectorAll('.part-item') || [];
@@ -272,7 +131,6 @@ function selectPart(slot, part) {
   selectedStarterMoveIds = [];
   starterSelectionInitialized = false;
 
-  // Update visual selection
   const listId = {
     'head': 'heads-list',
     'torso': 'torsos-list',
@@ -360,14 +218,15 @@ function renderStarterMoveSelection(derived, allSelected) {
 }
 
 function updateAssemblyPreview() {
-  // Update preview images
   const previewMap = { head: 'preview-head', torso: 'preview-torso', wings: 'preview-wings', legs: 'preview-legs' };
 
   Object.entries(previewMap).forEach(([slot, elementId]) => {
     const element = document.getElementById(elementId);
+    const nameEl = document.getElementById('partname-' + slot);
     if (assembledParts[slot]) {
       element.innerHTML = `<img src="${assembledParts[slot].file}" alt="${slot}" style="width:100%;height:100%;object-fit:contain;">`;
       element.classList.add('filled');
+      if (nameEl) nameEl.textContent = assembledParts[slot].name || '';
     } else {
       element.innerHTML = {
         'head': '\u{1F5E3}\uFE0F',
@@ -376,14 +235,13 @@ function updateAssemblyPreview() {
         'legs': '\u{1F9B5}'
       }[slot];
       element.classList.remove('filled');
+      if (nameEl) nameEl.textContent = '';
     }
   });
 
-  // Update full honker canvas visualization (layered parts)
   const canvas = document.getElementById('honker-canvas');
   canvas.innerHTML = '';
 
-  // Layer order: legs (back), wings, torso, head (front)
   if (assembledParts.legs) {
     const legsDiv = document.createElement('div');
     legsDiv.className = 'honker-part';
@@ -416,13 +274,10 @@ function updateAssemblyPreview() {
     canvas.appendChild(headDiv);
   }
 
-  // Calculate and display combined stats
   updateCombinedStats();
 
-  // Enable confirm button only if all parts are selected
   const allSelected = Object.values(assembledParts).every(p => p !== null);
 
-  // Show derived type + name preview
   const derivedEl = document.getElementById('assembly-derived');
   let derived = null;
   if (derivedEl) {
@@ -460,7 +315,7 @@ function updateCombinedStats() {
   document.getElementById('stat-luck').textContent = stats.luck;
 }
 
-// Theme  -  game type mapping
+// Theme -> game type mapping
 const THEME_TYPE = {
   fire:'Fire', ice:'Ice', lightning:'Lightning', shadow:'Shadow', arcane:'Shadow',
   solar:'Fire', bog:'Normal', stone:'Normal', wild:'Normal',
@@ -477,7 +332,7 @@ const FAMILY_TYPE = {
   Voidgild:'Shadow',
 };
 
-// Archetype  -  passive ability
+// Archetype -> passive ability
 const ARCHETYPE_PASSIVE = {
   bulwark:   {id:'thick_skin',   emoji:'*', name:'Thick Skin',   desc:'Takes 20% less damage from all sources.'},
   raider:    {id:'underdog',     emoji:'*', name:'Underdog',     desc:'+30% ATK when below 50% HP.'},
@@ -504,24 +359,17 @@ function deriveHonkerFromParts(parts) {
     familyNames.add(part.family.name);
   });
 
-  // Primary/secondary typing from torso/head family (or fallback to theme)
   const dominant = Object.entries(themeCounts).sort((a,b)=>b[1]-a[1])[0]?.[0] || 'bog';
   const torsoType = parts.torso?.family?.type || FAMILY_TYPE[parts.torso?.family?.name] || THEME_TYPE[parts.torso?.family?.theme || ''] || null;
   const headType  = parts.head?.family?.type  || FAMILY_TYPE[parts.head?.family?.name]  || THEME_TYPE[parts.head?.family?.theme || ''] || null;
   const type = torsoType || headType || THEME_TYPE[dominant] || 'Normal';
   const type2 = headType && headType !== type ? headType : null;
 
-  // Dominant archetype  -  passive
   const domArch = Object.entries(archetypeCounts).sort((a,b)=>b[1]-a[1])[0]?.[0] || 'balanced';
   const passive = ARCHETYPE_PASSIVE[domArch] || null;
 
-  // Name: use the two most-represented family names
-  const topFamilies = [...familyNames].slice(0,2);
-  const ARCHETYPE_TITLE = {
-    bulwark:'Guardian', raider:'Marauder', trickster:'Trickster', balanced:'Striker'
-  };
-  const title = ARCHETYPE_TITLE[domArch] || 'Honker';
-  const name = topFamilies.join('-') + ' ' + title;
+  const headName = parts.head?.name || 'Honker';
+  const name = generateHonkerName({ headName, type, stats });
 
   const toMove = (m) => ({
     id: m.id,
@@ -571,10 +419,8 @@ function deriveHonkerFromParts(parts) {
     .map(toMove);
   const starterMoves = pickStarterMoves(moveCandidates);
 
-  // Emoji based on type
   const typeEmoji = TYPE_ICON[type] || '\u{1F986}';
 
-  // BST should always come directly from raw part stats.
   const combatStats = {
     hp: Math.max(1, Math.round(stats.hp)),
     atk: Math.max(1, Math.round(stats.atk)),
@@ -615,7 +461,6 @@ function confirmAssembly() {
     assembledParts: { head: assembledParts.head, torso: assembledParts.torso, wings: assembledParts.wings, legs: assembledParts.legs },
   };
 
-  // Use the assembled honker
   CAMPAIGN.playerBase = newHonker;
   CAMPAIGN.player = null;
   CAMPAIGN.party = [newHonker];
@@ -636,7 +481,6 @@ function confirmAssembly() {
   CAMPAIGN.party.forEach(h => { h.inventory = []; });
   CAMPAIGN.started = true;
 
-  // Reset boosts
   newHonker.maxHPBonus = 0;
   newHonker.atkFlat = 0;
   newHonker.atkMult = 1;
@@ -656,3 +500,5 @@ function confirmAssembly() {
 
   startNextStageFromLoop();
 }
+
+console.log('[ASSEMBLY] Module loaded');

@@ -1,0 +1,172 @@
+/* Dex Screen (css/dex.css) */
+/* ..........................................
+   POKÉDEX
+.......................................... */
+#screen-dex {
+  padding: 1.5rem;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dex-header {
+  text-align: center;
+}
+
+.dex-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(.6rem, 2.5vw, 1rem);
+  color: var(--gold);
+}
+
+.dex-progress {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .4rem;
+  color: var(--dim);
+  margin-top: .4rem;
+  letter-spacing: .1em;
+}
+
+.dex-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: .65rem;
+  max-width: 900px;
+  width: 100%;
+}
+
+.dex-card {
+  background: var(--panel);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: .7rem .5rem;
+  text-align: center;
+  position: relative;
+  transition: all .2s;
+}
+
+.dex-card.dc-caught {
+  border-color: var(--gold);
+  box-shadow: 0 0 12px rgba(255, 214, 0, .25);
+}
+
+.dex-card.dc-seen {
+  border-color: #444;
+}
+
+.dex-card.dc-unseen {
+  filter: brightness(.35);
+}
+
+.dex-card:not(.dc-unseen):hover {
+  transform: translateY(-3px);
+}
+
+.dex-num {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .3rem;
+  color: var(--dim);
+  margin-bottom: .25rem;
+}
+
+.dex-emoji {
+  font-size: 2.1rem;
+  margin: .15rem 0;
+}
+
+.dex-emoji.dex-composite {
+  font-size: initial;
+  width: 74px;
+  height: 74px;
+  margin: .15rem auto;
+}
+
+.comp-preview {
+  position: relative;
+  display: block
+}
+
+.comp-preview .cv-layer {
+  position: absolute
+}
+
+.comp-preview .cv-layer img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated
+}
+
+.comp-preview .cv-legs {
+  left: 6%;
+  top: 45%;
+  width: 88%;
+  height: 52%
+}
+
+.comp-preview .cv-wings {
+  left: 30%;
+  top: 22%;
+  width: 72%;
+  height: 48%
+}
+
+.comp-preview .cv-torso {
+  left: 18%;
+  top: 18%;
+  width: 64%;
+  height: 64%
+}
+
+.comp-preview .cv-head {
+  left: 16%;
+  top: -17%;
+  width: 58%;
+  height: 58%
+}
+
+.dex-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .35rem;
+  color: var(--text);
+  margin: .25rem 0 .1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dex-type-tag {
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+}
+
+.dex-passive-hint {
+  font-size: .58rem;
+  color: var(--gold);
+  margin-top: .2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dex-caught-badge {
+  position: absolute;
+  top: .28rem;
+  right: .35rem;
+  font-size: .7rem;
+}
+
+.dex-lore {
+  display: none;
+  font-size: .64rem;
+  color: #a9a9bf;
+  line-height: 1.35;
+  margin-top: .3rem;
+  text-align: left;
+  border-top: 1px dashed var(--border);
+  padding-top: .3rem;
+}
+
+.dex-card.show-lore .dex-lore {
+  display: block;
+}

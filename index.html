@@ -5,7 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HONKAROGUE  -  CAMPAIGN OF THE HONKS</title>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/main.css">
+<!-- CSS Components -->
+<link rel="stylesheet" href="css/vars.css">
+<link rel="stylesheet" href="css/shared.css">
+<link rel="stylesheet" href="css/title.css">
+<link rel="stylesheet" href="css/charselect.css">
+<link rel="stylesheet" href="css/assembly.css">
+<link rel="stylesheet" href="css/campaign.css">
+<link rel="stylesheet" href="css/battle.css">
+<link rel="stylesheet" href="css/battle-panels.css">
+<link rel="stylesheet" href="css/loot.css">
+<link rel="stylesheet" href="css/gameover.css">
+<link rel="stylesheet" href="css/dex.css">
+<link rel="stylesheet" href="css/partsdex.css">
+<link rel="stylesheet" href="css/overlays.css">
+<link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
 <div id="stars"></div>
@@ -72,18 +86,22 @@
           <div style="display:flex;flex-direction:column;align-items:center;gap:.4rem;">
             <div class="preview-slot" id="preview-head">&#x1F5E3;&#xFE0F;</div>
             <div class="slot-label">HEAD</div>
+            <div class="slot-part-name" id="partname-head"></div>
           </div>
           <div style="display:flex;flex-direction:column;align-items:center;gap:.4rem;">
             <div class="preview-slot" id="preview-torso">&#x1F4AA;</div>
             <div class="slot-label">TORSO</div>
+            <div class="slot-part-name" id="partname-torso"></div>
           </div>
           <div style="display:flex;flex-direction:column;align-items:center;gap:.4rem;">
             <div class="preview-slot" id="preview-wings">&#x1FABD;</div>
             <div class="slot-label">WINGS</div>
+            <div class="slot-part-name" id="partname-wings"></div>
           </div>
           <div style="display:flex;flex-direction:column;align-items:center;gap:.4rem;">
             <div class="preview-slot" id="preview-legs">&#x1F9B5;</div>
             <div class="slot-label">LEGS</div>
+            <div class="slot-part-name" id="partname-legs"></div>
           </div>
         </div>
         <div class="combined-stats">
@@ -406,22 +424,46 @@
   <div class="sw-grid" id="sw-grid"></div>
 </div>
 
-<!-- External Module Scripts (Refactoring Step 5) -->
-<script src="js/data.js"></script>
-<script src="js/utils.js"></script>
-<script src="js/game.js"></script>
-<script src="js/ui-battle-bg3d.js"></script>
-<script src="js/ui-battle-fx3d.js"></script>
-<script src="js/battle-state.js"></script>
-<script src="battle/engine.js"></script>
-<script src="core/gameloop.js"></script>
-<script src="js/ui-battle.js"></script>
-<script src="js/ui-save.js"></script>
-<script src="js/ui-dex.js"></script>
-<script src="js/ui-campaign.js"></script>
-<script src="js/ui-loot.js"></script>
-<script src="js/ui-charselect.js"></script>
-<script src="js/ui-screens.js"></script>
+<!-- Core -->
+<script src="js/core/constants.js"></script>
+<script src="js/core/campaign-state.js"></script>
+<script src="js/core/utils.js"></script>
+<script src="js/core/state-machine.js"></script>
+
+<!-- Data -->
+<script src="js/data/parts-manager.js"></script>
+<script src="js/data/move-manager.js"></script>
+<script src="js/data/dex-data.js"></script>
+<script src="js/data/loot-data.js"></script>
+
+<!-- Game -->
+<script src="js/game/naming.js"></script>
+<script src="js/game/honker.js"></script>
+<script src="js/game/stage-gen.js"></script>
+<script src="js/game/battle-engine.js"></script>
+<script src="js/game/gameloop.js"></script>
+
+<!-- UI: Battle -->
+<script src="js/ui/battle/battle-bg3d.js"></script>
+<script src="js/ui/battle/battle-fx3d.js"></script>
+<script src="js/ui/battle/battle-sprites.js"></script>
+<script src="js/ui/battle/battle-xp.js"></script>
+<script src="js/ui/battle/battle-anims.js"></script>
+<script src="js/ui/battle/battle-ui.js"></script>
+<script src="js/ui/battle/battle-events.js"></script>
+<script src="js/ui/battle/battle-catch.js"></script>
+<script src="js/ui/battle/battle-flow.js"></script>
+<script src="js/ui/battle/battle-party.js"></script>
+<script src="js/ui/battle/battle-gameover.js"></script>
+
+<!-- UI: Screens -->
+<script src="js/ui/save.js"></script>
+<script src="js/ui/dex.js"></script>
+<script src="js/ui/campaign.js"></script>
+<script src="js/ui/loot.js"></script>
+<script src="js/ui/charselect.js"></script>
+<script src="js/ui/assembly.js"></script>
+<script src="js/ui/screens.js"></script>
 
 <script>
 window.addEventListener("DOMContentLoaded", () => initTitle().catch(e => console.warn("[INIT]", e)));

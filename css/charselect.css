@@ -1,0 +1,132 @@
+/* Character Select Screen (css/charselect.css) */
+/* ..........................................
+   CHARACTER SELECT SCREEN
+.......................................... */
+#screen-charselect {
+  padding: 1.5rem;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cs-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(.5rem, 2vw, .9rem);
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: .5rem;
+}
+
+.chars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+  gap: .9rem;
+  max-width: 920px;
+  width: 100%;
+}
+
+.char-card {
+  background: var(--panel);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 1.1rem .9rem;
+  cursor: pointer;
+  transition: all .2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.char-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--gc, transparent), transparent);
+  opacity: 0;
+  transition: opacity .3s;
+}
+
+.char-card:hover::before,
+.char-card.selected::before {
+  opacity: .12;
+}
+
+.char-card.selected {
+  border-color: var(--gc, var(--gold));
+  box-shadow: 0 0 18px var(--gc, rgba(255, 214, 0, .4));
+  transform: translateY(-4px);
+}
+
+.char-card:hover {
+  transform: translateY(-3px);
+  border-color: #444;
+}
+
+.cc-emoji {
+  font-size: 3rem;
+  margin-bottom: .4rem;
+  display: block;
+}
+
+.cc-emoji.cc-composite {
+  font-size: initial;
+  width: 96px;
+  height: 96px;
+  margin: 0 auto .4rem;
+}
+
+.cc-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .48rem;
+  color: var(--gold);
+  margin-bottom: .35rem;
+}
+
+.cc-type {
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: .55rem;
+}
+
+.cc-stats {
+  font-size: .76rem;
+  color: var(--dim);
+  line-height: 1.75;
+  text-align: left;
+}
+
+.cc-stats b {
+  color: var(--text);
+}
+
+.cc-move-row {
+  font-size: .68rem;
+  color: #999;
+  display: flex;
+  gap: .35rem;
+  align-items: center;
+  padding: .08rem 0;
+}
+
+.type-pip {
+  display: inline-block;
+  padding: .08rem .38rem;
+  border-radius: 8px;
+  border: 1px solid currentColor;
+  font-size: .55rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.cc-lore {
+  font-size: .7rem;
+  color: #777;
+  margin-top: .55rem;
+  font-style: italic;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.cs-confirm {
+  margin-top: .5rem;
+}

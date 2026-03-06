@@ -1,0 +1,98 @@
+/* Game Over / Victory (css/gameover.css) */
+/* ..........................................
+   GAME OVER / VICTORY
+.......................................... */
+#screen-gameover,
+#screen-victory {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  gap: 1.2rem;
+}
+
+.over-emoji {
+  font-size: 5rem;
+  margin-bottom: .5rem;
+  animation: floatBob 3s ease-in-out infinite;
+}
+
+.over-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(.9rem, 3vw, 1.6rem);
+}
+
+.over-sub {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .52rem;
+  color: var(--dim);
+  letter-spacing: .12em;
+}
+
+.over-stats {
+  background: var(--panel);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  max-width: 400px;
+  width: 100%;
+}
+
+.os-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: .82rem;
+}
+
+.os-row b {
+  color: var(--gold);
+}
+
+/* ..........................................
+   TYPE HELPERS
+.......................................... */
+.tc-fire {
+  color: var(--fire) !important;
+  border-color: var(--fire) !important;
+}
+
+.tc-ice {
+  color: var(--ice) !important;
+  border-color: var(--ice) !important;
+}
+
+.tc-lightning {
+  color: var(--lightning) !important;
+  border-color: var(--lightning) !important;
+}
+
+.tc-shadow {
+  color: var(--shadow) !important;
+  border-color: var(--shadow) !important;
+}
+
+.tc-normal {
+  color: var(--normal) !important;
+  border-color: var(--normal) !important;
+}
+
+.f-stats {
+  font-size: .67rem;
+  color: white;
+  letter-spacing: .04em;
+  margin: .1rem 0;
+  display: flex;
+  gap: .45rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  background: rgba(0, 0, 0, .5);
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.f-stats span {
+  cursor: default;
+}

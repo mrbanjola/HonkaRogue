@@ -1,15 +1,15 @@
 // ============================================================================
-// HonkaRogue Utilities Module (js/utils.js)
-// Math, RNG, and general helper functions
+// HonkaRogue Utilities Module (js/core/utils.js)
+// Math, RNG, and general helper functions — single source of truth
 // ============================================================================
 
 // Deterministic seeded RNG - same seed yields same sequence
 function seededRng(seed) {
   let s = (seed ^ 0xdeadbeef) >>> 0;
-  return () => { 
-    s = Math.imul(s ^ (s >>> 15), s | 1); 
-    s ^= s + Math.imul(s ^ (s >>> 7), s | 61); 
-    return ((s ^ (s >>> 14)) >>> 0) / 0xffffffff; 
+  return () => {
+    s = Math.imul(s ^ (s >>> 15), s | 1);
+    s ^= s + Math.imul(s ^ (s >>> 7), s | 61);
+    return ((s ^ (s >>> 14)) >>> 0) / 0xffffffff;
   };
 }
 
@@ -24,8 +24,8 @@ function hash32(str) {
 }
 
 // Convert hash to [0, 1) value
-function seeded01(key) { 
-  return (hash32(String(key)) % 1000000) / 1000000; 
+function seeded01(key) {
+  return (hash32(String(key)) % 1000000) / 1000000;
 }
 
 // Convert string to slug (for move IDs, etc)
@@ -94,4 +94,4 @@ function log(msg, el = null) {
   }
 }
 
-console.log('[UTILS] Module loaded: seededRng, hash32, cloneJson, pickWeightedIndex');
+console.log('[UTILS] Module loaded');

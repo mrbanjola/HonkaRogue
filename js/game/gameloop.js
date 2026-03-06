@@ -82,7 +82,7 @@ function startStageBattle(stageIdx, isRetry=false) {
   };
   if (isRetry && CAMPAIGN._savedPlayerHP) pBoosts.currentHP = CAMPAIGN._savedPlayerHP;
 
-  BS.reset();
+  BS = new BattleState();
   const runSeed = Number.isFinite(Number(CAMPAIGN?.runSeed)) ? (Number(CAMPAIGN.runSeed) >>> 0) : 0;
   BS.rng = seededRng(((stageN * 6271 + 99991) ^ runSeed) >>> 0);
   const seedEl = document.getElementById('seed-badge');

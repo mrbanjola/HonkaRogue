@@ -1,0 +1,57 @@
+/* Variables (css/vars.css) */
+:root {
+  --fire: #ff4e00;
+  --ice: #00c8ff;
+  --lightning: #ffe600;
+  --shadow: #a020f0;
+  --normal: #aaaacc;
+  --bg: #0a0a12;
+  --panel: #12121e;
+  --panel2: #1a1a28;
+  --border: #2a2a3e;
+  --gold: #ffd700;
+  --text: #e8e8f0;
+  --dim: #666688;
+  --common: #aaaacc;
+  --rare: #00c8ff;
+  --legendary: #ffd700;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Rajdhani', sans-serif;
+}
+
+#stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(1px 1px at 18% 28%, #fff, transparent),
+    radial-gradient(1px 1px at 82% 12%, #fff, transparent),
+    radial-gradient(1px 1px at 50% 75%, rgba(255, 255, 255, .5), transparent),
+    radial-gradient(1px 1px at 8% 83%, #fff, transparent),
+    radial-gradient(1px 1px at 94% 57%, rgba(255, 255, 255, .4), transparent),
+    radial-gradient(1px 1px at 36% 15%, #fff, transparent),
+    radial-gradient(1px 1px at 64% 46%, rgba(255, 255, 255, .7), transparent),
+    radial-gradient(1px 1px at 5% 53%, #fff, transparent),
+    radial-gradient(2px 2px at 71% 22%, rgba(255, 220, 100, .8), transparent),
+    radial-gradient(2px 2px at 26% 67%, rgba(100, 200, 255, .6), transparent),
+    radial-gradient(1px 1px at 56% 36%, rgba(255, 255, 255, .5), transparent),
+    radial-gradient(1px 1px at 43% 89%, rgba(255, 255, 255, .3), transparent),
+    radial-gradient(1px 1px at 78% 55%, rgba(255, 200, 100, .4), transparent);
+}

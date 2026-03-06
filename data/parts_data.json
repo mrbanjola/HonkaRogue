@@ -1,6 +1,6 @@
 {
   "version": "1.2.1",
-  "generatedAt": "2026-03-05T12:46:04.457Z",
+  "generatedAt": "2026-03-06T12:06:23.979Z",
   "source": "Family registry migration (families[] + part.familyId)",
   "statsGuide": {
     "hp": "Max HP contribution",
@@ -10,22 +10,22 @@
     "luck": "Luck contribution"
   },
   "summary": {
-    "totalParts": 103,
+    "totalParts": 111,
     "perSlot": {
-      "head": 19,
-      "torso": 19,
-      "wings": 17,
-      "legs": 48
+      "head": 21,
+      "torso": 21,
+      "wings": 19,
+      "legs": 50
     },
     "rarityBreakdown": {
-      "legendary": 26,
+      "legendary": 34,
       "rare": 32,
       "common": 45
     },
     "archetypeBreakdown": {
-      "trickster": 25,
-      "raider": 25,
-      "bulwark": 23,
+      "trickster": 27,
+      "raider": 30,
+      "bulwark": 24,
       "balanced": 30
     }
   },
@@ -60,21 +60,14 @@
       ],
       "description": "Duskveil headpiece with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 6,
-      "moveIds": [
-        "shadow_soul_drain",
-        "shadow_dark_pulse",
-        "shadow_void_collapse",
-        "shadow_void_rend",
-        "shadow_shadow_slam",
-        "shadow_void_touch",
-        "shadow_eclipse_strike",
-        "shadow_hex",
-        "shadow_umbral_veil",
-        "shadow_oblivion",
-        "shadow_leech_feather"
-      ],
       "name": "Dome of Stewart",
-      "isUnique": false
+      "isUnique": false,
+      "moveIds": [
+        "shadow_oblivion",
+        "shadow_eclipse_strike",
+        "shadow_void_collapse",
+        "shadow_void_rend"
+      ]
     },
     {
       "id": "head-sprite_011",
@@ -106,21 +99,14 @@
       ],
       "description": "Duskveil headpiece with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 6,
-      "moveIds": [
-        "shadow_soul_drain",
-        "shadow_dark_pulse",
-        "shadow_void_collapse",
-        "shadow_void_rend",
-        "shadow_shadow_slam",
-        "shadow_void_touch",
-        "shadow_eclipse_strike",
-        "shadow_hex",
-        "shadow_umbral_veil",
-        "shadow_oblivion",
-        "shadow_leech_feather"
-      ],
       "name": "Handsome Darkness",
-      "isUnique": false
+      "isUnique": false,
+      "moveIds": [
+        "shadow_dark_pulse",
+        "shadow_umbral_veil",
+        "shadow_hex",
+        "shadow_soul_drain"
+      ]
     },
     {
       "id": "head-sprite_023",
@@ -156,14 +142,7 @@
         "shadow_soul_drain",
         "shadow_dark_pulse",
         "shadow_void_collapse",
-        "shadow_void_rend",
-        "shadow_shadow_slam",
-        "shadow_void_touch",
-        "shadow_eclipse_strike",
-        "shadow_hex",
-        "shadow_umbral_veil",
-        "shadow_oblivion",
-        "shadow_leech_feather"
+        "shadow_void_rend"
       ],
       "name": "Head of Attention",
       "isUnique": false
@@ -202,14 +181,7 @@
         "shadow_soul_drain",
         "shadow_dark_pulse",
         "shadow_void_collapse",
-        "shadow_void_rend",
-        "shadow_shadow_slam",
-        "shadow_void_touch",
-        "shadow_eclipse_strike",
-        "shadow_hex",
-        "shadow_umbral_veil",
-        "shadow_oblivion",
-        "shadow_leech_feather"
+        "shadow_void_rend"
       ],
       "name": "Sour Honk",
       "isUnique": false
@@ -248,19 +220,7 @@
         "normal_wing_slap",
         "normal_peck",
         "normal_scratch",
-        "normal_dive_bomb",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_bulldoze",
-        "normal_berserker_charge"
+        "normal_dive_bomb"
       ],
       "name": "Masked Honkman",
       "isUnique": false
@@ -299,19 +259,7 @@
         "normal_wing_slap",
         "normal_peck",
         "normal_scratch",
-        "normal_dive_bomb",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_bulldoze",
-        "normal_berserker_charge"
+        "normal_dive_bomb"
       ],
       "name": "Unseeing Eyes",
       "isUnique": false
@@ -348,11 +296,9 @@
       "familyId": 2,
       "moveIds": [
         "fire_flame_honk",
-        "fire_emit_spark",
-        "normal_scratch",
-        "normal_honk_slam",
+        "fire_flame_burst",
         "normal_iron_guard",
-        "normal_battle_cry"
+        "normal_scratch"
       ],
       "name": "Honking Hothead",
       "isUnique": false
@@ -388,17 +334,10 @@
       "description": "Embercrest headpiece with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 2,
       "moveIds": [
-        "fire_flame_honk",
         "fire_flame_burst",
         "fire_scorchblast",
         "fire_ember",
-        "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
-        "fire_eruption",
-        "fire_lava_spit",
-        "fire_solar_flare",
-        "fire_flamewing"
+        "normal_feather_guard"
       ],
       "name": "Scorchface Killah",
       "isUnique": false
@@ -437,19 +376,7 @@
         "normal_wing_slap",
         "normal_peck",
         "normal_scratch",
-        "normal_dive_bomb",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_bulldoze",
-        "normal_berserker_charge"
+        "normal_dive_bomb"
       ],
       "name": "Rugged Rufus",
       "isUnique": false
@@ -484,37 +411,14 @@
       ],
       "description": "Sunflare headpiece with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 7,
-      "moveIds": [
-        "normal_bulldoze",
-        "normal_berserker_charge",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_scratch",
-        "normal_dive_bomb",
-        "normal_wing_slap",
-        "normal_peck",
-        "fire_flame_honk",
-        "fire_flame_burst",
-        "fire_scorchblast",
-        "fire_ember",
-        "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
-        "fire_eruption",
-        "fire_lava_spit",
-        "fire_solar_flare",
-        "fire_flamewing"
-      ],
       "name": "Blinded Chickster",
-      "isUnique": false
+      "isUnique": false,
+      "moveIds": [
+        "normal_feather_guard",
+        "normal_bulldoze",
+        "fire_flamewing",
+        "fire_ember"
+      ]
     },
     {
       "id": "head-sprite_087",
@@ -549,14 +453,8 @@
       "moveIds": [
         "ice_frost_arrow",
         "ice_ice_lance",
-        "ice_blizzard",
-        "ice_icy_gust",
-        "ice_frozen_spire",
-        "ice_flash_freeze",
-        "ice_ice_shell",
-        "ice_permafrost",
-        "ice_permafrost_slam",
-        "ice_glacial_slam"
+        "normal_iron_guard",
+        "normal_peck"
       ],
       "name": "Icy Joe",
       "isUnique": false
@@ -595,14 +493,7 @@
         "shadow_soul_drain",
         "shadow_dark_pulse",
         "shadow_void_collapse",
-        "shadow_void_rend",
-        "shadow_shadow_slam",
-        "shadow_void_touch",
-        "shadow_eclipse_strike",
-        "shadow_hex",
-        "shadow_umbral_veil",
-        "shadow_oblivion",
-        "shadow_leech_feather"
+        "shadow_void_rend"
       ],
       "name": "Sir Swank",
       "isUnique": false
@@ -637,20 +528,14 @@
       ],
       "description": "Frostplume headpiece with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 3,
-      "moveIds": [
-        "ice_frost_arrow",
-        "ice_ice_lance",
-        "ice_blizzard",
-        "ice_icy_gust",
-        "ice_frozen_spire",
-        "ice_flash_freeze",
-        "ice_ice_shell",
-        "ice_permafrost",
-        "ice_permafrost_slam",
-        "ice_glacial_slam"
-      ],
       "name": "Frosty Frank",
-      "isUnique": false
+      "isUnique": false,
+      "moveIds": [
+        "ice_glacial_slam",
+        "ice_blizzard",
+        "normal_war_honk",
+        "ice_ice_lance"
+      ]
     },
     {
       "id": "head-sprite_112",
@@ -683,33 +568,10 @@
       "description": "Sunflare headpiece with a raider profile. Visual theme aligned to sprite style.",
       "familyId": 7,
       "moveIds": [
-        "normal_bulldoze",
-        "normal_berserker_charge",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_scratch",
-        "normal_dive_bomb",
-        "normal_wing_slap",
-        "normal_peck",
         "fire_flame_honk",
         "fire_flame_burst",
-        "fire_scorchblast",
-        "fire_ember",
-        "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
-        "fire_eruption",
-        "fire_lava_spit",
-        "fire_solar_flare",
-        "fire_flamewing"
+        "normal_iron_guard",
+        "normal_scratch"
       ],
       "name": "Little Louis",
       "isUnique": false
@@ -744,37 +606,14 @@
       ],
       "description": "Sunflare headpiece with a raider profile. Visual theme aligned to sprite style.",
       "familyId": 7,
-      "moveIds": [
-        "normal_bulldoze",
-        "normal_berserker_charge",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_scratch",
-        "normal_dive_bomb",
-        "normal_wing_slap",
-        "normal_peck",
-        "fire_flame_honk",
-        "fire_flame_burst",
-        "fire_scorchblast",
-        "fire_ember",
-        "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
-        "fire_eruption",
-        "fire_lava_spit",
-        "fire_solar_flare",
-        "fire_flamewing"
-      ],
       "name": "Curious Pete",
-      "isUnique": false
+      "isUnique": false,
+      "moveIds": [
+        "normal_feather_guard",
+        "normal_bulldoze",
+        "fire_flamewing",
+        "fire_ember"
+      ]
     },
     {
       "id": "head-sprite_132",
@@ -807,22 +646,10 @@
       "description": "Bloomcrest headpiece with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 8,
       "moveIds": [
-        "normal_feather_guard",
-        "normal_bulldoze",
-        "normal_berserker_charge",
-        "normal_quick_strike",
-        "normal_battle_cry",
-        "normal_kevin_s_fury",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_iron_guard",
-        "normal_wild_flap",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_dive_bomb",
         "normal_scratch",
         "normal_wing_slap",
-        "normal_peck"
+        "normal_iron_guard",
+        "normal_honk_slam"
       ],
       "name": "Just Jerry",
       "isUnique": false
@@ -856,21 +683,14 @@
       ],
       "description": "Duskveil torso core with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 6,
-      "moveIds": [
-        "shadow_soul_drain",
-        "shadow_dark_pulse",
-        "shadow_void_collapse",
-        "shadow_void_rend",
-        "shadow_shadow_slam",
-        "shadow_void_touch",
-        "shadow_eclipse_strike",
-        "shadow_hex",
-        "shadow_umbral_veil",
-        "shadow_oblivion",
-        "shadow_leech_feather"
-      ],
       "name": "Belly of Doom",
-      "isUnique": false
+      "isUnique": false,
+      "moveIds": [
+        "shadow_oblivion",
+        "shadow_eclipse_strike",
+        "shadow_void_collapse",
+        "shadow_void_rend"
+      ]
     },
     {
       "id": "torso-sprite_009",
@@ -902,21 +722,14 @@
       ],
       "description": "Duskveil torso core with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 6,
-      "moveIds": [
-        "shadow_soul_drain",
-        "shadow_dark_pulse",
-        "shadow_void_collapse",
-        "shadow_void_rend",
-        "shadow_shadow_slam",
-        "shadow_void_touch",
-        "shadow_eclipse_strike",
-        "shadow_hex",
-        "shadow_umbral_veil",
-        "shadow_oblivion",
-        "shadow_leech_feather"
-      ],
       "name": "Evil Shirt",
-      "isUnique": false
+      "isUnique": false,
+      "moveIds": [
+        "shadow_dark_pulse",
+        "shadow_umbral_veil",
+        "shadow_hex",
+        "shadow_soul_drain"
+      ]
     },
     {
       "id": "torso-sprite_016",
@@ -952,14 +765,7 @@
         "shadow_soul_drain",
         "shadow_dark_pulse",
         "shadow_void_collapse",
-        "shadow_void_rend",
-        "shadow_shadow_slam",
-        "shadow_void_touch",
-        "shadow_eclipse_strike",
-        "shadow_hex",
-        "shadow_umbral_veil",
-        "shadow_oblivion",
-        "shadow_leech_feather"
+        "shadow_void_rend"
       ],
       "name": "torso-sprite_016",
       "isUnique": false
@@ -998,19 +804,7 @@
         "normal_wing_slap",
         "normal_peck",
         "normal_scratch",
-        "normal_dive_bomb",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_bulldoze",
-        "normal_berserker_charge"
+        "normal_dive_bomb"
       ],
       "name": "torso-sprite_017",
       "isUnique": false
@@ -1049,19 +843,7 @@
         "normal_wing_slap",
         "normal_peck",
         "normal_scratch",
-        "normal_dive_bomb",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_bulldoze",
-        "normal_berserker_charge"
+        "normal_dive_bomb"
       ],
       "name": "torso-sprite_030",
       "isUnique": false
@@ -1099,15 +881,8 @@
       "moveIds": [
         "fire_flame_honk",
         "fire_flame_burst",
-        "fire_scorchblast",
-        "fire_ember",
-        "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
-        "fire_eruption",
-        "fire_lava_spit",
-        "fire_solar_flare",
-        "fire_flamewing"
+        "normal_iron_guard",
+        "normal_scratch"
       ],
       "name": "Ashen Bathrobe",
       "isUnique": false
@@ -1143,17 +918,10 @@
       "description": "Embercrest torso core with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 2,
       "moveIds": [
-        "fire_flame_honk",
         "fire_flame_burst",
         "fire_scorchblast",
         "fire_ember",
-        "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
-        "fire_eruption",
-        "fire_lava_spit",
-        "fire_solar_flare",
-        "fire_flamewing"
+        "normal_feather_guard"
       ],
       "name": "Lordlike Ember",
       "isUnique": false
@@ -1188,21 +956,14 @@
       ],
       "description": "Embercrest torso core with a bulwark profile. Visual theme aligned to sprite style.",
       "familyId": 2,
+      "name": "Here to Herald",
+      "isUnique": false,
       "moveIds": [
-        "fire_flame_honk",
-        "fire_flame_burst",
-        "fire_scorchblast",
-        "fire_ember",
         "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
         "fire_eruption",
-        "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ],
-      "name": "Here to Herald",
-      "isUnique": false
+      ]
     },
     {
       "id": "torso-sprite_060",
@@ -1235,17 +996,10 @@
       "description": "Embercrest torso core with a bulwark profile. Visual theme aligned to sprite style.",
       "familyId": 2,
       "moveIds": [
-        "fire_flame_honk",
         "fire_flame_burst",
         "fire_scorchblast",
         "fire_ember",
-        "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
-        "fire_eruption",
-        "fire_lava_spit",
-        "fire_solar_flare",
-        "fire_flamewing"
+        "normal_feather_guard"
       ],
       "name": "Ember Emperor",
       "isUnique": false
@@ -1280,21 +1034,14 @@
       ],
       "description": "Embercrest torso core with a bulwark profile. Visual theme aligned to sprite style.",
       "familyId": 2,
+      "name": "King Crusader",
+      "isUnique": false,
       "moveIds": [
-        "fire_flame_honk",
-        "fire_flame_burst",
-        "fire_scorchblast",
-        "fire_ember",
         "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
         "fire_eruption",
-        "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ],
-      "name": "King Crusader",
-      "isUnique": false
+      ]
     },
     {
       "id": "torso-sprite_084",
@@ -1329,14 +1076,8 @@
       "moveIds": [
         "ice_frost_arrow",
         "ice_ice_lance",
-        "ice_blizzard",
-        "ice_icy_gust",
-        "ice_frozen_spire",
-        "ice_flash_freeze",
-        "ice_ice_shell",
-        "ice_permafrost",
-        "ice_permafrost_slam",
-        "ice_glacial_slam"
+        "normal_iron_guard",
+        "normal_peck"
       ],
       "name": "Cold Crevasses",
       "isUnique": false
@@ -1371,20 +1112,14 @@
       ],
       "description": "Frostplume torso core with a bulwark profile. Visual theme aligned to sprite style.",
       "familyId": 3,
-      "moveIds": [
-        "ice_frost_arrow",
-        "ice_ice_lance",
-        "ice_blizzard",
-        "ice_icy_gust",
-        "ice_frozen_spire",
-        "ice_flash_freeze",
-        "ice_ice_shell",
-        "ice_permafrost",
-        "ice_permafrost_slam",
-        "ice_glacial_slam"
-      ],
       "name": "Frozen Fortress",
-      "isUnique": false
+      "isUnique": false,
+      "moveIds": [
+        "ice_glacial_slam",
+        "ice_blizzard",
+        "normal_war_honk",
+        "ice_ice_lance"
+      ]
     },
     {
       "id": "torso-sprite_108",
@@ -1419,14 +1154,8 @@
       "moveIds": [
         "lightning_shock_honk",
         "lightning_chain_bolt",
-        "lightning_thunderclap",
-        "lightning_arc_pulse",
-        "lightning_static_honk",
-        "lightning_ball_lightning",
-        "lightning_zap_field",
-        "lightning_overclock",
-        "lightning_volt_dive",
-        "lightning_discharge"
+        "normal_wing_slap",
+        "normal_quick_strike"
       ],
       "name": "Easy Electrician",
       "isUnique": false
@@ -1461,26 +1190,14 @@
       ],
       "description": "Bloomcrest torso core with a bulwark profile. Visual theme aligned to sprite style.",
       "familyId": 8,
+      "name": "Doctored Down",
+      "isUnique": false,
       "moveIds": [
-        "normal_feather_guard",
-        "normal_bulldoze",
-        "normal_berserker_charge",
-        "normal_quick_strike",
-        "normal_battle_cry",
-        "normal_kevin_s_fury",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_iron_guard",
-        "normal_wild_flap",
         "normal_honk_slam",
         "normal_talon_strike",
-        "normal_dive_bomb",
-        "normal_scratch",
-        "normal_wing_slap",
-        "normal_peck"
-      ],
-      "name": "Doctored Down",
-      "isUnique": false
+        "normal_war_honk",
+        "normal_feather_guard"
+      ]
     },
     {
       "id": "torso-sprite_131",
@@ -1513,22 +1230,10 @@
       "description": "Bloomcrest torso profile aligned for Normal typing.",
       "familyId": 8,
       "moveIds": [
-        "normal_feather_guard",
-        "normal_bulldoze",
-        "normal_berserker_charge",
-        "normal_quick_strike",
-        "normal_battle_cry",
-        "normal_kevin_s_fury",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_iron_guard",
-        "normal_wild_flap",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_dive_bomb",
         "normal_scratch",
         "normal_wing_slap",
-        "normal_peck"
+        "normal_iron_guard",
+        "normal_honk_slam"
       ],
       "name": "Laundry Day",
       "isUnique": false
@@ -1563,26 +1268,14 @@
       ],
       "description": "Bloomcrest torso profile aligned for Normal typing.",
       "familyId": 8,
+      "name": "Friendly Face(s)",
+      "isUnique": false,
       "moveIds": [
-        "normal_feather_guard",
-        "normal_bulldoze",
-        "normal_berserker_charge",
-        "normal_quick_strike",
-        "normal_battle_cry",
-        "normal_kevin_s_fury",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_iron_guard",
-        "normal_wild_flap",
         "normal_honk_slam",
         "normal_talon_strike",
-        "normal_dive_bomb",
-        "normal_scratch",
-        "normal_wing_slap",
-        "normal_peck"
-      ],
-      "name": "Friendly Face(s)",
-      "isUnique": false
+        "normal_war_honk",
+        "normal_feather_guard"
+      ]
     },
     {
       "id": "wings-sprite_003",
@@ -1614,21 +1307,14 @@
       ],
       "description": "Duskveil wing rig with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 6,
-      "moveIds": [
-        "shadow_soul_drain",
-        "shadow_dark_pulse",
-        "shadow_void_collapse",
-        "shadow_void_rend",
-        "shadow_shadow_slam",
-        "shadow_void_touch",
-        "shadow_eclipse_strike",
-        "shadow_hex",
-        "shadow_umbral_veil",
-        "shadow_oblivion",
-        "shadow_leech_feather"
-      ],
       "name": "Shadow Flappers",
-      "isUnique": false
+      "isUnique": false,
+      "moveIds": [
+        "shadow_oblivion",
+        "shadow_eclipse_strike",
+        "shadow_void_collapse",
+        "shadow_void_rend"
+      ]
     },
     {
       "id": "wings-sprite_012",
@@ -1660,21 +1346,14 @@
       ],
       "description": "Duskveil wing rig with a trickster profile. Visual theme aligned to sprite style.",
       "familyId": 6,
-      "moveIds": [
-        "shadow_soul_drain",
-        "shadow_dark_pulse",
-        "shadow_void_collapse",
-        "shadow_void_rend",
-        "shadow_shadow_slam",
-        "shadow_void_touch",
-        "shadow_eclipse_strike",
-        "shadow_hex",
-        "shadow_umbral_veil",
-        "shadow_oblivion",
-        "shadow_leech_feather"
-      ],
       "name": "Dark Duckwings",
-      "isUnique": false
+      "isUnique": false,
+      "moveIds": [
+        "shadow_dark_pulse",
+        "shadow_umbral_veil",
+        "shadow_hex",
+        "shadow_soul_drain"
+      ]
     },
     {
       "id": "wings-sprite_021",
@@ -1709,14 +1388,7 @@
         "shadow_soul_drain",
         "shadow_dark_pulse",
         "shadow_void_collapse",
-        "shadow_void_rend",
-        "shadow_shadow_slam",
-        "shadow_void_touch",
-        "shadow_eclipse_strike",
-        "shadow_hex",
-        "shadow_umbral_veil",
-        "shadow_oblivion",
-        "shadow_leech_feather"
+        "shadow_void_rend"
       ],
       "name": "wings-sprite_021",
       "isUnique": false
@@ -1755,14 +1427,7 @@
         "shadow_soul_drain",
         "shadow_dark_pulse",
         "shadow_void_collapse",
-        "shadow_void_rend",
-        "shadow_shadow_slam",
-        "shadow_void_touch",
-        "shadow_eclipse_strike",
-        "shadow_hex",
-        "shadow_umbral_veil",
-        "shadow_oblivion",
-        "shadow_leech_feather"
+        "shadow_void_rend"
       ],
       "name": "wings-sprite_022",
       "isUnique": false
@@ -1798,33 +1463,10 @@
       "description": "Sunflare wing rig with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 7,
       "moveIds": [
-        "normal_bulldoze",
-        "normal_berserker_charge",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_scratch",
-        "normal_dive_bomb",
-        "normal_wing_slap",
-        "normal_peck",
         "fire_flame_honk",
         "fire_flame_burst",
-        "fire_scorchblast",
-        "fire_ember",
-        "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
-        "fire_eruption",
-        "fire_lava_spit",
-        "fire_solar_flare",
-        "fire_flamewing"
+        "normal_iron_guard",
+        "normal_scratch"
       ],
       "name": "Flew Too Close",
       "isUnique": false
@@ -1859,37 +1501,14 @@
       ],
       "description": "Sunflare wing rig with a trickster profile. Visual theme aligned to sprite style.",
       "familyId": 7,
-      "moveIds": [
-        "normal_bulldoze",
-        "normal_berserker_charge",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_scratch",
-        "normal_dive_bomb",
-        "normal_wing_slap",
-        "normal_peck",
-        "fire_flame_honk",
-        "fire_flame_burst",
-        "fire_scorchblast",
-        "fire_ember",
-        "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
-        "fire_eruption",
-        "fire_lava_spit",
-        "fire_solar_flare",
-        "fire_flamewing"
-      ],
       "name": "Flared Up",
-      "isUnique": false
+      "isUnique": false,
+      "moveIds": [
+        "fire_magma_crash",
+        "fire_eruption",
+        "normal_feather_guard",
+        "normal_rampage"
+      ]
     },
     {
       "id": "wings-sprite_039",
@@ -1924,15 +1543,8 @@
       "moveIds": [
         "fire_flame_honk",
         "fire_flame_burst",
-        "fire_scorchblast",
-        "fire_ember",
-        "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
-        "fire_eruption",
-        "fire_lava_spit",
-        "fire_solar_flare",
-        "fire_flamewing"
+        "normal_iron_guard",
+        "normal_scratch"
       ],
       "name": "Icaros Mistake",
       "isUnique": false
@@ -1968,17 +1580,10 @@
       "description": "Embercrest wing rig with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 2,
       "moveIds": [
-        "fire_flame_honk",
         "fire_flame_burst",
         "fire_scorchblast",
         "fire_ember",
-        "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
-        "fire_eruption",
-        "fire_lava_spit",
-        "fire_solar_flare",
-        "fire_flamewing"
+        "normal_feather_guard"
       ],
       "name": "Torched Tips",
       "isUnique": false
@@ -2013,21 +1618,14 @@
       ],
       "description": "Embercrest wing rig with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 2,
+      "name": "Blazing Glory",
+      "isUnique": false,
       "moveIds": [
-        "fire_flame_honk",
-        "fire_flame_burst",
-        "fire_scorchblast",
-        "fire_ember",
         "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
         "fire_eruption",
-        "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ],
-      "name": "Blazing Glory",
-      "isUnique": false
+      ]
     },
     {
       "id": "wings-sprite_085",
@@ -2059,20 +1657,14 @@
       ],
       "description": "Frostplume wing rig with a trickster profile. Visual theme aligned to sprite style.",
       "familyId": 3,
-      "moveIds": [
-        "ice_frost_arrow",
-        "ice_ice_lance",
-        "ice_blizzard",
-        "ice_icy_gust",
-        "ice_frozen_spire",
-        "ice_flash_freeze",
-        "ice_ice_shell",
-        "ice_permafrost",
-        "ice_permafrost_slam",
-        "ice_glacial_slam"
-      ],
       "name": "Snow Plumes",
-      "isUnique": false
+      "isUnique": false,
+      "moveIds": [
+        "ice_glacial_slam",
+        "ice_blizzard",
+        "normal_war_honk",
+        "ice_ice_lance"
+      ]
     },
     {
       "id": "wings-sprite_089",
@@ -2104,20 +1696,14 @@
       ],
       "description": "Frostplume wing rig with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 3,
+      "name": "Frosty Flakes",
+      "isUnique": false,
       "moveIds": [
-        "ice_frost_arrow",
-        "ice_ice_lance",
-        "ice_blizzard",
-        "ice_icy_gust",
         "ice_frozen_spire",
         "ice_flash_freeze",
-        "ice_ice_shell",
-        "ice_permafrost",
-        "ice_permafrost_slam",
-        "ice_glacial_slam"
-      ],
-      "name": "Frosty Flakes",
-      "isUnique": false
+        "normal_war_honk",
+        "normal_dive_bomb"
+      ]
     },
     {
       "id": "wings-sprite_109",
@@ -2152,14 +1738,8 @@
       "moveIds": [
         "ice_frost_arrow",
         "ice_ice_lance",
-        "ice_blizzard",
-        "ice_icy_gust",
-        "ice_frozen_spire",
-        "ice_flash_freeze",
-        "ice_ice_shell",
-        "ice_permafrost",
-        "ice_permafrost_slam",
-        "ice_glacial_slam"
+        "normal_iron_guard",
+        "normal_peck"
       ],
       "name": "Fairly Flapping",
       "isUnique": false
@@ -2194,26 +1774,14 @@
       ],
       "description": "Bloomcrest wing rig with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 8,
-      "moveIds": [
-        "normal_feather_guard",
-        "normal_bulldoze",
-        "normal_berserker_charge",
-        "normal_quick_strike",
-        "normal_battle_cry",
-        "normal_kevin_s_fury",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_iron_guard",
-        "normal_wild_flap",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_dive_bomb",
-        "normal_scratch",
-        "normal_wing_slap",
-        "normal_peck"
-      ],
       "name": "Date Night Flappers",
-      "isUnique": false
+      "isUnique": false,
+      "moveIds": [
+        "normal_berserker_charge",
+        "normal_feather_guard",
+        "normal_rampage",
+        "normal_talon_strike"
+      ]
     },
     {
       "id": "wings-sprite_124",
@@ -2246,22 +1814,10 @@
       "description": "Bloomcrest wing rig with a trickster profile. Visual theme aligned to sprite style.",
       "familyId": 8,
       "moveIds": [
-        "normal_feather_guard",
-        "normal_bulldoze",
-        "normal_berserker_charge",
-        "normal_quick_strike",
-        "normal_battle_cry",
-        "normal_kevin_s_fury",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_iron_guard",
-        "normal_wild_flap",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_dive_bomb",
         "normal_scratch",
         "normal_wing_slap",
-        "normal_peck"
+        "normal_iron_guard",
+        "normal_honk_slam"
       ],
       "name": "Everyday Wingin'",
       "isUnique": false
@@ -2299,14 +1855,8 @@
       "moveIds": [
         "lightning_shock_honk",
         "lightning_chain_bolt",
-        "lightning_thunderclap",
-        "lightning_arc_pulse",
-        "lightning_static_honk",
-        "lightning_ball_lightning",
-        "lightning_zap_field",
-        "lightning_overclock",
-        "lightning_volt_dive",
-        "lightning_discharge"
+        "normal_wing_slap",
+        "normal_quick_strike"
       ],
       "name": "Shockproof(ish) Feathers",
       "isUnique": false
@@ -2345,14 +1895,7 @@
         "shadow_soul_drain",
         "shadow_dark_pulse",
         "shadow_void_collapse",
-        "shadow_void_rend",
-        "shadow_shadow_slam",
-        "shadow_void_touch",
-        "shadow_eclipse_strike",
-        "shadow_hex",
-        "shadow_umbral_veil",
-        "shadow_oblivion",
-        "shadow_leech_feather"
+        "shadow_void_rend"
       ],
       "name": "legs-sprite_002",
       "isUnique": false
@@ -2390,14 +1933,7 @@
         "shadow_soul_drain",
         "shadow_dark_pulse",
         "shadow_void_collapse",
-        "shadow_void_rend",
-        "shadow_shadow_slam",
-        "shadow_void_touch",
-        "shadow_eclipse_strike",
-        "shadow_hex",
-        "shadow_umbral_veil",
-        "shadow_oblivion",
-        "shadow_leech_feather"
+        "shadow_void_rend"
       ],
       "name": "legs-sprite_004",
       "isUnique": false
@@ -2432,20 +1968,14 @@
       ],
       "description": "Stormcall leg frame with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 4,
-      "moveIds": [
-        "lightning_shock_honk",
-        "lightning_chain_bolt",
-        "lightning_thunderclap",
-        "lightning_arc_pulse",
-        "lightning_static_honk",
-        "lightning_ball_lightning",
-        "lightning_zap_field",
-        "lightning_overclock",
-        "lightning_volt_dive",
-        "lightning_discharge"
-      ],
       "name": "Arc to Toes",
-      "isUnique": false
+      "isUnique": false,
+      "moveIds": [
+        "lightning_ball_lightning",
+        "lightning_overclock",
+        "normal_war_honk",
+        "normal_quick_strike"
+      ]
     },
     {
       "id": "legs-sprite_006",
@@ -2477,21 +2007,14 @@
       ],
       "description": "Duskveil leg frame with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 6,
-      "moveIds": [
-        "shadow_soul_drain",
-        "shadow_dark_pulse",
-        "shadow_void_collapse",
-        "shadow_void_rend",
-        "shadow_shadow_slam",
-        "shadow_void_touch",
-        "shadow_eclipse_strike",
-        "shadow_hex",
-        "shadow_umbral_veil",
-        "shadow_oblivion",
-        "shadow_leech_feather"
-      ],
       "name": "Sneaky Talons",
-      "isUnique": false
+      "isUnique": false,
+      "moveIds": [
+        "shadow_oblivion",
+        "shadow_eclipse_strike",
+        "shadow_void_collapse",
+        "shadow_void_rend"
+      ]
     },
     {
       "id": "legs-sprite_008",
@@ -2527,19 +2050,7 @@
         "normal_wing_slap",
         "normal_peck",
         "normal_scratch",
-        "normal_dive_bomb",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_bulldoze",
-        "normal_berserker_charge"
+        "normal_dive_bomb"
       ],
       "name": "legs-sprite_008",
       "isUnique": false
@@ -2578,19 +2089,7 @@
         "normal_wing_slap",
         "normal_peck",
         "normal_scratch",
-        "normal_dive_bomb",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_bulldoze",
-        "normal_berserker_charge"
+        "normal_dive_bomb"
       ],
       "name": "legs-sprite_010",
       "isUnique": false
@@ -2626,17 +2125,10 @@
       "description": "Duskveil leg frame with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 6,
       "moveIds": [
-        "shadow_soul_drain",
-        "shadow_dark_pulse",
-        "shadow_void_collapse",
-        "shadow_void_rend",
         "shadow_shadow_slam",
-        "shadow_void_touch",
-        "shadow_eclipse_strike",
-        "shadow_hex",
-        "shadow_umbral_veil",
-        "shadow_oblivion",
-        "shadow_leech_feather"
+        "shadow_leech_feather",
+        "normal_wing_slap",
+        "normal_iron_guard"
       ],
       "name": "Small Sneakers",
       "isUnique": false
@@ -2675,14 +2167,7 @@
         "shadow_soul_drain",
         "shadow_dark_pulse",
         "shadow_void_collapse",
-        "shadow_void_rend",
-        "shadow_shadow_slam",
-        "shadow_void_touch",
-        "shadow_eclipse_strike",
-        "shadow_hex",
-        "shadow_umbral_veil",
-        "shadow_oblivion",
-        "shadow_leech_feather"
+        "shadow_void_rend"
       ],
       "name": "legs-sprite_014",
       "isUnique": false
@@ -2717,21 +2202,14 @@
       ],
       "description": "Duskveil leg frame with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 6,
-      "moveIds": [
-        "shadow_soul_drain",
-        "shadow_dark_pulse",
-        "shadow_void_collapse",
-        "shadow_void_rend",
-        "shadow_shadow_slam",
-        "shadow_void_touch",
-        "shadow_eclipse_strike",
-        "shadow_hex",
-        "shadow_umbral_veil",
-        "shadow_oblivion",
-        "shadow_leech_feather"
-      ],
       "name": "Bedazzled Sneakers",
-      "isUnique": false
+      "isUnique": false,
+      "moveIds": [
+        "shadow_dark_pulse",
+        "shadow_umbral_veil",
+        "shadow_hex",
+        "shadow_soul_drain"
+      ]
     },
     {
       "id": "legs-sprite_018",
@@ -2764,17 +2242,10 @@
       "description": "Duskveil leg frame with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 6,
       "moveIds": [
-        "shadow_soul_drain",
-        "shadow_dark_pulse",
-        "shadow_void_collapse",
-        "shadow_void_rend",
         "shadow_shadow_slam",
-        "shadow_void_touch",
-        "shadow_eclipse_strike",
-        "shadow_hex",
-        "shadow_umbral_veil",
-        "shadow_oblivion",
-        "shadow_leech_feather"
+        "shadow_leech_feather",
+        "normal_wing_slap",
+        "normal_iron_guard"
       ],
       "name": "Medium Sneakers",
       "isUnique": false
@@ -2813,14 +2284,7 @@
         "shadow_soul_drain",
         "shadow_dark_pulse",
         "shadow_void_collapse",
-        "shadow_void_rend",
-        "shadow_shadow_slam",
-        "shadow_void_touch",
-        "shadow_eclipse_strike",
-        "shadow_hex",
-        "shadow_umbral_veil",
-        "shadow_oblivion",
-        "shadow_leech_feather"
+        "shadow_void_rend"
       ],
       "name": "legs-sprite_019",
       "isUnique": false
@@ -2859,14 +2323,7 @@
         "shadow_soul_drain",
         "shadow_dark_pulse",
         "shadow_void_collapse",
-        "shadow_void_rend",
-        "shadow_shadow_slam",
-        "shadow_void_touch",
-        "shadow_eclipse_strike",
-        "shadow_hex",
-        "shadow_umbral_veil",
-        "shadow_oblivion",
-        "shadow_leech_feather"
+        "shadow_void_rend"
       ],
       "name": "legs-sprite_020",
       "isUnique": false
@@ -2905,19 +2362,7 @@
         "normal_wing_slap",
         "normal_peck",
         "normal_scratch",
-        "normal_dive_bomb",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_bulldoze",
-        "normal_berserker_charge"
+        "normal_dive_bomb"
       ],
       "name": "legs-sprite_025",
       "isUnique": false
@@ -2956,19 +2401,7 @@
         "normal_wing_slap",
         "normal_peck",
         "normal_scratch",
-        "normal_dive_bomb",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_bulldoze",
-        "normal_berserker_charge"
+        "normal_dive_bomb"
       ],
       "name": "Just Good Shoes",
       "isUnique": false
@@ -3003,20 +2436,14 @@
       ],
       "description": "Stormcall leg frame with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 4,
+      "name": "Fine Sparkers",
+      "isUnique": false,
       "moveIds": [
-        "lightning_shock_honk",
         "lightning_chain_bolt",
         "lightning_thunderclap",
-        "lightning_arc_pulse",
-        "lightning_static_honk",
-        "lightning_ball_lightning",
-        "lightning_zap_field",
-        "lightning_overclock",
-        "lightning_volt_dive",
-        "lightning_discharge"
-      ],
-      "name": "Fine Sparkers",
-      "isUnique": false
+        "normal_talon_strike",
+        "normal_battle_cry"
+      ]
     },
     {
       "id": "legs-sprite_028",
@@ -3048,20 +2475,14 @@
       ],
       "description": "Stormcall leg frame with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 4,
+      "name": "Runaway Sparks",
+      "isUnique": false,
       "moveIds": [
-        "lightning_shock_honk",
         "lightning_chain_bolt",
         "lightning_thunderclap",
-        "lightning_arc_pulse",
-        "lightning_static_honk",
-        "lightning_ball_lightning",
-        "lightning_zap_field",
-        "lightning_overclock",
-        "lightning_volt_dive",
-        "lightning_discharge"
-      ],
-      "name": "Runaway Sparks",
-      "isUnique": false
+        "normal_talon_strike",
+        "normal_battle_cry"
+      ]
     },
     {
       "id": "legs-sprite_029",
@@ -3096,14 +2517,8 @@
       "moveIds": [
         "lightning_shock_honk",
         "lightning_chain_bolt",
-        "lightning_thunderclap",
-        "lightning_arc_pulse",
-        "lightning_static_honk",
-        "lightning_ball_lightning",
-        "lightning_zap_field",
-        "lightning_overclock",
-        "lightning_volt_dive",
-        "lightning_discharge"
+        "normal_wing_slap",
+        "normal_quick_strike"
       ],
       "name": "Not Grounded",
       "isUnique": false
@@ -3141,14 +2556,8 @@
       "moveIds": [
         "lightning_shock_honk",
         "lightning_chain_bolt",
-        "lightning_thunderclap",
-        "lightning_arc_pulse",
-        "lightning_static_honk",
-        "lightning_ball_lightning",
-        "lightning_zap_field",
-        "lightning_overclock",
-        "lightning_volt_dive",
-        "lightning_discharge"
+        "normal_wing_slap",
+        "normal_quick_strike"
       ],
       "name": "Rubber Boots",
       "isUnique": false
@@ -3183,37 +2592,14 @@
       ],
       "description": "Sunflare leg frame with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 7,
-      "moveIds": [
-        "normal_bulldoze",
-        "normal_berserker_charge",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_scratch",
-        "normal_dive_bomb",
-        "normal_wing_slap",
-        "normal_peck",
-        "fire_flame_honk",
-        "fire_flame_burst",
-        "fire_scorchblast",
-        "fire_ember",
-        "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
-        "fire_eruption",
-        "fire_lava_spit",
-        "fire_solar_flare",
-        "fire_flamewing"
-      ],
       "name": "Solar Steps",
-      "isUnique": false
+      "isUnique": false,
+      "moveIds": [
+        "normal_feather_guard",
+        "normal_bulldoze",
+        "fire_flamewing",
+        "fire_ember"
+      ]
     },
     {
       "id": "legs-sprite_038",
@@ -3245,21 +2631,14 @@
       ],
       "description": "Embercrest leg frame with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 2,
+      "name": "Hot n' Heavy",
+      "isUnique": false,
       "moveIds": [
-        "fire_flame_honk",
-        "fire_flame_burst",
-        "fire_scorchblast",
-        "fire_ember",
         "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
         "fire_eruption",
-        "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ],
-      "name": "Hot n' Heavy",
-      "isUnique": false
+      ]
     },
     {
       "id": "legs-sprite_040",
@@ -3291,37 +2670,14 @@
       ],
       "description": "Sunflare leg frame with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 7,
-      "moveIds": [
-        "normal_bulldoze",
-        "normal_berserker_charge",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_scratch",
-        "normal_dive_bomb",
-        "normal_wing_slap",
-        "normal_peck",
-        "fire_flame_honk",
-        "fire_flame_burst",
-        "fire_scorchblast",
-        "fire_ember",
-        "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
-        "fire_eruption",
-        "fire_lava_spit",
-        "fire_solar_flare",
-        "fire_flamewing"
-      ],
       "name": "Sun-kissed Sandals",
-      "isUnique": false
+      "isUnique": false,
+      "moveIds": [
+        "normal_feather_guard",
+        "normal_bulldoze",
+        "fire_flamewing",
+        "fire_ember"
+      ]
     },
     {
       "id": "legs-sprite_042",
@@ -3356,15 +2712,8 @@
       "moveIds": [
         "fire_flame_honk",
         "fire_flame_burst",
-        "fire_scorchblast",
-        "fire_ember",
-        "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
-        "fire_eruption",
-        "fire_lava_spit",
-        "fire_solar_flare",
-        "fire_flamewing"
+        "normal_iron_guard",
+        "normal_scratch"
       ],
       "name": "Feet on Fire",
       "isUnique": false
@@ -3402,15 +2751,8 @@
       "moveIds": [
         "fire_flame_honk",
         "fire_flame_burst",
-        "fire_scorchblast",
-        "fire_ember",
-        "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
-        "fire_eruption",
-        "fire_lava_spit",
-        "fire_solar_flare",
-        "fire_flamewing"
+        "normal_iron_guard",
+        "normal_scratch"
       ],
       "name": "Small Smolder",
       "isUnique": false
@@ -3446,17 +2788,10 @@
       "description": "Embercrest leg frame with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 2,
       "moveIds": [
-        "fire_flame_honk",
         "fire_flame_burst",
         "fire_scorchblast",
         "fire_ember",
-        "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
-        "fire_eruption",
-        "fire_lava_spit",
-        "fire_solar_flare",
-        "fire_flamewing"
+        "normal_feather_guard"
       ],
       "name": "Toasty Toes",
       "isUnique": false
@@ -3492,33 +2827,10 @@
       "description": "Sunflare leg frame with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 7,
       "moveIds": [
-        "normal_bulldoze",
-        "normal_berserker_charge",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_scratch",
-        "normal_dive_bomb",
-        "normal_wing_slap",
-        "normal_peck",
         "fire_flame_honk",
         "fire_flame_burst",
-        "fire_scorchblast",
-        "fire_ember",
-        "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
-        "fire_eruption",
-        "fire_lava_spit",
-        "fire_solar_flare",
-        "fire_flamewing"
+        "normal_iron_guard",
+        "normal_scratch"
       ],
       "name": "Beach Feet",
       "isUnique": false
@@ -3557,19 +2869,7 @@
         "normal_wing_slap",
         "normal_peck",
         "normal_scratch",
-        "normal_dive_bomb",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_bulldoze",
-        "normal_berserker_charge"
+        "normal_dive_bomb"
       ],
       "name": "Muddy Walkers",
       "isUnique": false
@@ -3604,37 +2904,14 @@
       ],
       "description": "Sunflare leg frame with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 7,
-      "moveIds": [
-        "normal_bulldoze",
-        "normal_berserker_charge",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_scratch",
-        "normal_dive_bomb",
-        "normal_wing_slap",
-        "normal_peck",
-        "fire_flame_honk",
-        "fire_flame_burst",
-        "fire_scorchblast",
-        "fire_ember",
-        "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
-        "fire_eruption",
-        "fire_lava_spit",
-        "fire_solar_flare",
-        "fire_flamewing"
-      ],
       "name": "Sole Stepper",
-      "isUnique": false
+      "isUnique": false,
+      "moveIds": [
+        "fire_magma_crash",
+        "fire_eruption",
+        "normal_feather_guard",
+        "normal_rampage"
+      ]
     },
     {
       "id": "legs-sprite_059",
@@ -3667,17 +2944,10 @@
       "description": "Embercrest leg frame with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 2,
       "moveIds": [
-        "fire_flame_honk",
         "fire_flame_burst",
         "fire_scorchblast",
         "fire_ember",
-        "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
-        "fire_eruption",
-        "fire_lava_spit",
-        "fire_solar_flare",
-        "fire_flamewing"
+        "normal_feather_guard"
       ],
       "name": "Smoking Suede",
       "isUnique": false
@@ -3715,14 +2985,8 @@
       "moveIds": [
         "ice_frost_arrow",
         "ice_ice_lance",
-        "ice_blizzard",
-        "ice_icy_gust",
-        "ice_frozen_spire",
-        "ice_flash_freeze",
-        "ice_ice_shell",
-        "ice_permafrost",
-        "ice_permafrost_slam",
-        "ice_glacial_slam"
+        "normal_iron_guard",
+        "normal_peck"
       ],
       "name": "Cold Comfort",
       "isUnique": false
@@ -3757,21 +3021,14 @@
       ],
       "description": "Embercrest leg frame with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 2,
+      "name": "Combusting Gaze",
+      "isUnique": false,
       "moveIds": [
-        "fire_flame_honk",
-        "fire_flame_burst",
-        "fire_scorchblast",
-        "fire_ember",
         "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
         "fire_eruption",
-        "fire_lava_spit",
         "fire_solar_flare",
         "fire_flamewing"
-      ],
-      "name": "Combusting Gaze",
-      "isUnique": false
+      ]
     },
     {
       "id": "legs-sprite_079",
@@ -3806,14 +3063,8 @@
       "moveIds": [
         "ice_frost_arrow",
         "ice_ice_lance",
-        "ice_blizzard",
-        "ice_icy_gust",
-        "ice_frozen_spire",
-        "ice_flash_freeze",
-        "ice_ice_shell",
-        "ice_permafrost",
-        "ice_permafrost_slam",
-        "ice_glacial_slam"
+        "normal_iron_guard",
+        "normal_peck"
       ],
       "name": "Fragile Shards",
       "isUnique": false
@@ -3848,20 +3099,14 @@
       ],
       "description": "Frostplume leg frame with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 3,
+      "name": "Fancy ´n Prepared",
+      "isUnique": false,
       "moveIds": [
-        "ice_frost_arrow",
-        "ice_ice_lance",
-        "ice_blizzard",
-        "ice_icy_gust",
         "ice_frozen_spire",
         "ice_flash_freeze",
-        "ice_ice_shell",
-        "ice_permafrost",
-        "ice_permafrost_slam",
-        "ice_glacial_slam"
-      ],
-      "name": "Fancy ´n Prepared",
-      "isUnique": false
+        "normal_war_honk",
+        "normal_dive_bomb"
+      ]
     },
     {
       "id": "legs-sprite_081",
@@ -3893,20 +3138,14 @@
       ],
       "description": "Frostplume leg frame with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 3,
+      "name": "Shielded Boots",
+      "isUnique": false,
       "moveIds": [
-        "ice_frost_arrow",
-        "ice_ice_lance",
-        "ice_blizzard",
-        "ice_icy_gust",
         "ice_frozen_spire",
         "ice_flash_freeze",
-        "ice_ice_shell",
-        "ice_permafrost",
-        "ice_permafrost_slam",
-        "ice_glacial_slam"
-      ],
-      "name": "Shielded Boots",
-      "isUnique": false
+        "normal_war_honk",
+        "normal_dive_bomb"
+      ]
     },
     {
       "id": "legs-sprite_082",
@@ -3941,14 +3180,8 @@
       "moveIds": [
         "ice_frost_arrow",
         "ice_ice_lance",
-        "ice_blizzard",
-        "ice_icy_gust",
-        "ice_frozen_spire",
-        "ice_flash_freeze",
-        "ice_ice_shell",
-        "ice_permafrost",
-        "ice_permafrost_slam",
-        "ice_glacial_slam"
+        "normal_iron_guard",
+        "normal_peck"
       ],
       "name": "Winter Walkers",
       "isUnique": false
@@ -3983,26 +3216,14 @@
       ],
       "description": "Bloomcrest leg frame with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 8,
-      "moveIds": [
-        "normal_feather_guard",
-        "normal_bulldoze",
-        "normal_berserker_charge",
-        "normal_quick_strike",
-        "normal_battle_cry",
-        "normal_kevin_s_fury",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_iron_guard",
-        "normal_wild_flap",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_dive_bomb",
-        "normal_scratch",
-        "normal_wing_slap",
-        "normal_peck"
-      ],
       "name": "Booted Up",
-      "isUnique": false
+      "isUnique": false,
+      "moveIds": [
+        "normal_berserker_charge",
+        "normal_feather_guard",
+        "normal_rampage",
+        "normal_talon_strike"
+      ]
     },
     {
       "id": "legs-sprite_086",
@@ -4034,20 +3255,14 @@
       ],
       "description": "Frostplume leg frame with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 3,
-      "moveIds": [
-        "ice_frost_arrow",
-        "ice_ice_lance",
-        "ice_blizzard",
-        "ice_icy_gust",
-        "ice_frozen_spire",
-        "ice_flash_freeze",
-        "ice_ice_shell",
-        "ice_permafrost",
-        "ice_permafrost_slam",
-        "ice_glacial_slam"
-      ],
       "name": "Padded Snowshoes",
-      "isUnique": false
+      "isUnique": false,
+      "moveIds": [
+        "ice_glacial_slam",
+        "ice_blizzard",
+        "normal_war_honk",
+        "ice_ice_lance"
+      ]
     },
     {
       "id": "legs-sprite_102",
@@ -4079,26 +3294,14 @@
       ],
       "description": "Bloomcrest leg frame with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 8,
-      "moveIds": [
-        "normal_feather_guard",
-        "normal_bulldoze",
-        "normal_berserker_charge",
-        "normal_quick_strike",
-        "normal_battle_cry",
-        "normal_kevin_s_fury",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_iron_guard",
-        "normal_wild_flap",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_dive_bomb",
-        "normal_scratch",
-        "normal_wing_slap",
-        "normal_peck"
-      ],
       "name": "Socks 'n Sandals",
-      "isUnique": false
+      "isUnique": false,
+      "moveIds": [
+        "normal_berserker_charge",
+        "normal_feather_guard",
+        "normal_rampage",
+        "normal_talon_strike"
+      ]
     },
     {
       "id": "legs-sprite_103",
@@ -4134,19 +3337,7 @@
         "normal_wing_slap",
         "normal_peck",
         "normal_scratch",
-        "normal_dive_bomb",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_bulldoze",
-        "normal_berserker_charge"
+        "normal_dive_bomb"
       ],
       "name": "legs-sprite_103",
       "isUnique": false
@@ -4185,19 +3376,7 @@
         "normal_wing_slap",
         "normal_peck",
         "normal_scratch",
-        "normal_dive_bomb",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_bulldoze",
-        "normal_berserker_charge"
+        "normal_dive_bomb"
       ],
       "name": "legs-sprite_104",
       "isUnique": false
@@ -4236,19 +3415,7 @@
         "normal_wing_slap",
         "normal_peck",
         "normal_scratch",
-        "normal_dive_bomb",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_bulldoze",
-        "normal_berserker_charge"
+        "normal_dive_bomb"
       ],
       "name": "legs-sprite_105",
       "isUnique": false
@@ -4287,19 +3454,7 @@
         "normal_wing_slap",
         "normal_peck",
         "normal_scratch",
-        "normal_dive_bomb",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_bulldoze",
-        "normal_berserker_charge"
+        "normal_dive_bomb"
       ],
       "name": "legs-sprite_106",
       "isUnique": false
@@ -4334,20 +3489,14 @@
       ],
       "description": "Frostplume leg frame with a balanced profile. Visual theme aligned to sprite style.",
       "familyId": 3,
+      "name": "Slippery Slippers",
+      "isUnique": false,
       "moveIds": [
-        "ice_frost_arrow",
-        "ice_ice_lance",
-        "ice_blizzard",
-        "ice_icy_gust",
         "ice_frozen_spire",
         "ice_flash_freeze",
-        "ice_ice_shell",
-        "ice_permafrost",
-        "ice_permafrost_slam",
-        "ice_glacial_slam"
-      ],
-      "name": "Slippery Slippers",
-      "isUnique": false
+        "normal_war_honk",
+        "normal_dive_bomb"
+      ]
     },
     {
       "id": "legs-sprite_122",
@@ -4379,26 +3528,14 @@
       ],
       "description": "Bloomcrest legs profile aligned for Normal typing.",
       "familyId": 8,
+      "name": "Ornaments On",
+      "isUnique": false,
       "moveIds": [
-        "normal_feather_guard",
-        "normal_bulldoze",
-        "normal_berserker_charge",
-        "normal_quick_strike",
-        "normal_battle_cry",
-        "normal_kevin_s_fury",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_iron_guard",
-        "normal_wild_flap",
         "normal_honk_slam",
         "normal_talon_strike",
-        "normal_dive_bomb",
-        "normal_scratch",
-        "normal_wing_slap",
-        "normal_peck"
-      ],
-      "name": "Ornaments On",
-      "isUnique": false
+        "normal_war_honk",
+        "normal_feather_guard"
+      ]
     },
     {
       "id": "legs-sprite_123",
@@ -4434,19 +3571,7 @@
         "normal_wing_slap",
         "normal_peck",
         "normal_scratch",
-        "normal_dive_bomb",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_bulldoze",
-        "normal_berserker_charge"
+        "normal_dive_bomb"
       ],
       "name": "legs-sprite_123",
       "isUnique": false
@@ -4484,14 +3609,8 @@
       "moveIds": [
         "lightning_shock_honk",
         "lightning_chain_bolt",
-        "lightning_thunderclap",
-        "lightning_arc_pulse",
-        "lightning_static_honk",
-        "lightning_ball_lightning",
-        "lightning_zap_field",
-        "lightning_overclock",
-        "lightning_volt_dive",
-        "lightning_discharge"
+        "normal_wing_slap",
+        "normal_quick_strike"
       ],
       "name": "Connected Loafers",
       "isUnique": false
@@ -4530,19 +3649,7 @@
         "normal_wing_slap",
         "normal_peck",
         "normal_scratch",
-        "normal_dive_bomb",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_wild_flap",
-        "normal_iron_guard",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_kevin_s_fury",
-        "normal_battle_cry",
-        "normal_feather_guard",
-        "normal_quick_strike",
-        "normal_bulldoze",
-        "normal_berserker_charge"
+        "normal_dive_bomb"
       ],
       "name": "Not For Bogging",
       "isUnique": false
@@ -4577,22 +3684,10 @@
       "description": "Bloomcrest legs profile aligned for Normal typing.",
       "familyId": 8,
       "moveIds": [
-        "normal_feather_guard",
-        "normal_bulldoze",
-        "normal_berserker_charge",
-        "normal_quick_strike",
-        "normal_battle_cry",
-        "normal_kevin_s_fury",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_iron_guard",
-        "normal_wild_flap",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_dive_bomb",
         "normal_scratch",
         "normal_wing_slap",
-        "normal_peck"
+        "normal_iron_guard",
+        "normal_honk_slam"
       ],
       "name": "Free the Feet",
       "isUnique": false
@@ -4628,22 +3723,10 @@
       "description": "Bloomcrest legs profile aligned for Normal typing.",
       "familyId": 8,
       "moveIds": [
-        "normal_feather_guard",
-        "normal_bulldoze",
-        "normal_berserker_charge",
-        "normal_quick_strike",
-        "normal_battle_cry",
-        "normal_kevin_s_fury",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_iron_guard",
-        "normal_wild_flap",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_dive_bomb",
         "normal_scratch",
         "normal_wing_slap",
-        "normal_peck"
+        "normal_iron_guard",
+        "normal_honk_slam"
       ],
       "name": "Socks but Barely",
       "isUnique": false
@@ -4675,26 +3758,14 @@
       ],
       "description": "Newly assigned from unreferenced image.",
       "familyId": 8,
-      "moveIds": [
-        "normal_feather_guard",
-        "normal_bulldoze",
-        "normal_berserker_charge",
-        "normal_quick_strike",
-        "normal_battle_cry",
-        "normal_kevin_s_fury",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_iron_guard",
-        "normal_wild_flap",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_dive_bomb",
-        "normal_scratch",
-        "normal_wing_slap",
-        "normal_peck"
-      ],
       "name": "Clever Colin",
-      "isUnique": false
+      "isUnique": false,
+      "moveIds": [
+        "normal_berserker_charge",
+        "normal_feather_guard",
+        "normal_rampage",
+        "normal_talon_strike"
+      ]
     },
     {
       "id": "torso-sprite_0431",
@@ -4723,26 +3794,14 @@
         "sprite_0431"
       ],
       "description": "Newly assigned from unreferenced image.",
-      "moveIds": [
-        "normal_feather_guard",
-        "normal_bulldoze",
-        "normal_berserker_charge",
-        "normal_quick_strike",
-        "normal_battle_cry",
-        "normal_kevin_s_fury",
-        "normal_war_honk",
-        "normal_rampage",
-        "normal_iron_guard",
-        "normal_wild_flap",
-        "normal_honk_slam",
-        "normal_talon_strike",
-        "normal_dive_bomb",
-        "normal_scratch",
-        "normal_wing_slap",
-        "normal_peck"
-      ],
       "name": "Casual Attire",
-      "isUnique": false
+      "isUnique": false,
+      "moveIds": [
+        "normal_berserker_charge",
+        "normal_feather_guard",
+        "normal_rampage",
+        "normal_talon_strike"
+      ]
     },
     {
       "id": "head-sprite_102",
@@ -4772,19 +3831,13 @@
         "sprite_102"
       ],
       "description": "Newly assigned from unreferenced image.",
+      "isUnique": false,
       "moveIds": [
-        "lightning_shock_honk",
         "lightning_chain_bolt",
         "lightning_thunderclap",
-        "lightning_arc_pulse",
-        "lightning_static_honk",
-        "lightning_ball_lightning",
-        "lightning_zap_field",
-        "lightning_overclock",
-        "lightning_volt_dive",
-        "lightning_discharge"
-      ],
-      "isUnique": false
+        "normal_talon_strike",
+        "normal_battle_cry"
+      ]
     },
     {
       "id": "head-sprite_127",
@@ -4817,14 +3870,8 @@
       "moveIds": [
         "lightning_shock_honk",
         "lightning_chain_bolt",
-        "lightning_thunderclap",
-        "lightning_arc_pulse",
-        "lightning_static_honk",
-        "lightning_ball_lightning",
-        "lightning_zap_field",
-        "lightning_overclock",
-        "lightning_volt_dive",
-        "lightning_discharge"
+        "normal_wing_slap",
+        "normal_quick_strike"
       ],
       "isUnique": false
     },
@@ -4856,19 +3903,13 @@
         "sprite_096"
       ],
       "description": "Newly assigned from unreferenced image.",
+      "isUnique": false,
       "moveIds": [
-        "lightning_shock_honk",
-        "lightning_chain_bolt",
-        "lightning_thunderclap",
-        "lightning_arc_pulse",
-        "lightning_static_honk",
         "lightning_ball_lightning",
-        "lightning_zap_field",
         "lightning_overclock",
-        "lightning_volt_dive",
-        "lightning_discharge"
-      ],
-      "isUnique": false
+        "normal_war_honk",
+        "normal_quick_strike"
+      ]
     },
     {
       "id": "torso-sprite_113",
@@ -4898,19 +3939,13 @@
         "sprite_113"
       ],
       "description": "Newly assigned from unreferenced image.",
+      "isUnique": false,
       "moveIds": [
-        "lightning_shock_honk",
         "lightning_chain_bolt",
         "lightning_thunderclap",
-        "lightning_arc_pulse",
-        "lightning_static_honk",
-        "lightning_ball_lightning",
-        "lightning_zap_field",
-        "lightning_overclock",
-        "lightning_volt_dive",
-        "lightning_discharge"
-      ],
-      "isUnique": false
+        "normal_talon_strike",
+        "normal_battle_cry"
+      ]
     },
     {
       "id": "wings-sprite_100",
@@ -4940,19 +3975,13 @@
         "sprite_100"
       ],
       "description": "Newly assigned from unreferenced image.",
+      "isUnique": false,
       "moveIds": [
-        "lightning_shock_honk",
-        "lightning_chain_bolt",
-        "lightning_thunderclap",
-        "lightning_arc_pulse",
-        "lightning_static_honk",
         "lightning_ball_lightning",
-        "lightning_zap_field",
         "lightning_overclock",
-        "lightning_volt_dive",
-        "lightning_discharge"
-      ],
-      "isUnique": false
+        "normal_war_honk",
+        "normal_quick_strike"
+      ]
     },
     {
       "id": "wings-sprite_129",
@@ -4982,19 +4011,301 @@
         "sprite_129"
       ],
       "description": "Newly assigned from unreferenced image.",
+      "isUnique": false,
       "moveIds": [
-        "lightning_shock_honk",
         "lightning_chain_bolt",
         "lightning_thunderclap",
-        "lightning_arc_pulse",
-        "lightning_static_honk",
-        "lightning_ball_lightning",
-        "lightning_zap_field",
-        "lightning_overclock",
-        "lightning_volt_dive",
-        "lightning_discharge"
+        "normal_talon_strike",
+        "normal_battle_cry"
+      ]
+    },
+    {
+      "id": "head-sprite_0071",
+      "name": "Kevin",
+      "slot": "head",
+      "file": "Heads/sprite_0071.png",
+      "familyId": 8,
+      "family": {
+        "id": 8,
+        "name": "Bloomcrest",
+        "theme": "wild",
+        "type": "Normal"
+      },
+      "variant": 20,
+      "rarity": "legendary",
+      "archetype": "raider",
+      "isUnique": true,
+      "stats": {
+        "hp": 38,
+        "atk": 43,
+        "def": 36,
+        "spd": 43,
+        "luck": 80
+      },
+      "powerScore": 240,
+      "tags": [
+        "head",
+        "sprite_0071"
       ],
-      "isUnique": false
+      "description": "Newly assigned from unreferenced image.",
+      "moveIds": [
+        "normal_feather_guard",
+        "normal_kevin_s_fury",
+        "normal_war_honk",
+        "normal_berserker_charge"
+      ]
+    },
+    {
+      "id": "torso-sprite_002",
+      "name": "Garb of Kevin",
+      "slot": "torso",
+      "file": "Torsos/sprite_002.png",
+      "familyId": 8,
+      "family": {
+        "id": 8,
+        "name": "Bloomcrest",
+        "theme": "wild",
+        "type": "Normal"
+      },
+      "variant": 20,
+      "rarity": "legendary",
+      "archetype": "raider",
+      "isUnique": true,
+      "stats": {
+        "hp": 38,
+        "atk": 43,
+        "def": 36,
+        "spd": 43,
+        "luck": 1
+      },
+      "powerScore": 161,
+      "tags": [
+        "torso",
+        "sprite_002"
+      ],
+      "description": "Newly assigned from unreferenced image.",
+      "moveIds": [
+        "normal_kevin_s_fury",
+        "normal_wild_flap",
+        "normal_bulldoze",
+        "normal_quick_strike"
+      ]
+    },
+    {
+      "id": "legs-sprite_118",
+      "name": "Kevin's Trotters",
+      "slot": "legs",
+      "file": "Legs/sprite_118.png",
+      "familyId": 8,
+      "family": {
+        "id": 8,
+        "name": "Bloomcrest",
+        "theme": "wild",
+        "type": "Normal"
+      },
+      "variant": 49,
+      "rarity": "legendary",
+      "archetype": "trickster",
+      "isUnique": true,
+      "stats": {
+        "hp": 39,
+        "atk": 42,
+        "def": 36,
+        "spd": 43,
+        "luck": 1
+      },
+      "powerScore": 161,
+      "tags": [
+        "legs",
+        "sprite_118"
+      ],
+      "description": "Newly assigned from unreferenced image.",
+      "moveIds": [
+        "normal_kevin_s_fury",
+        "normal_quick_strike",
+        "normal_rampage",
+        "normal_honk_slam"
+      ]
+    },
+    {
+      "id": "wings-sprite_122",
+      "name": "Flap Like Kev'",
+      "slot": "wings",
+      "file": "Wings/sprite_122.png",
+      "familyId": 10,
+      "family": {
+        "id": 10,
+        "name": "Unassigned",
+        "theme": "normal",
+        "type": "Normal"
+      },
+      "variant": 18,
+      "rarity": "legendary",
+      "archetype": "bulwark",
+      "isUnique": true,
+      "stats": {
+        "hp": 42,
+        "atk": 38,
+        "def": 42,
+        "spd": 38,
+        "luck": 1
+      },
+      "powerScore": 161,
+      "tags": [
+        "wings",
+        "sprite_122"
+      ],
+      "description": "Newly assigned from unreferenced image.",
+      "moveIds": [
+        "normal_feather_guard",
+        "normal_battle_cry",
+        "normal_war_honk",
+        "normal_kevin_s_fury"
+      ]
+    },
+    {
+      "id": "head-sprite_116",
+      "name": "Regular Barry",
+      "slot": "head",
+      "file": "Heads/sprite_116.png",
+      "familyId": 8,
+      "family": {
+        "id": 8,
+        "name": "Bloomcrest",
+        "theme": "wild",
+        "type": "Normal"
+      },
+      "variant": 21,
+      "rarity": "legendary",
+      "archetype": "raider",
+      "isUnique": true,
+      "stats": {
+        "hp": 38,
+        "atk": 43,
+        "def": 36,
+        "spd": 43,
+        "luck": 1
+      },
+      "powerScore": 161,
+      "tags": [
+        "head",
+        "sprite_116"
+      ],
+      "description": "Newly assigned from unreferenced image.",
+      "moveIds": [
+        "lightning_shock_honk",
+        "normal_dive_bomb",
+        "normal_iron_guard",
+        "normal_war_honk"
+      ]
+    },
+    {
+      "id": "torso-sprite_0301",
+      "name": "Barry's Choice",
+      "slot": "torso",
+      "file": "Torsos/sprite_0301.png",
+      "familyId": 8,
+      "family": {
+        "id": 8,
+        "name": "Bloomcrest",
+        "theme": "wild",
+        "type": "Normal"
+      },
+      "variant": 21,
+      "rarity": "legendary",
+      "archetype": "raider",
+      "isUnique": true,
+      "stats": {
+        "hp": 40,
+        "atk": 40,
+        "def": 40,
+        "spd": 40,
+        "luck": 1
+      },
+      "powerScore": 161,
+      "tags": [
+        "torso",
+        "sprite_0301"
+      ],
+      "description": "Newly assigned from unreferenced image.",
+      "moveIds": [
+        "normal_berserker_charge",
+        "normal_feather_guard",
+        "normal_rampage",
+        "shadow_soul_drain"
+      ]
+    },
+    {
+      "id": "wings-sprite_137",
+      "name": "sprite_137",
+      "slot": "wings",
+      "file": "Wings/sprite_137.png",
+      "familyId": 8,
+      "family": {
+        "id": 8,
+        "name": "Bloomcrest",
+        "theme": "wild",
+        "type": "Normal"
+      },
+      "variant": 19,
+      "rarity": "legendary",
+      "archetype": "raider",
+      "isUnique": true,
+      "stats": {
+        "hp": 38,
+        "atk": 43,
+        "def": 36,
+        "spd": 43,
+        "luck": 1
+      },
+      "powerScore": 161,
+      "tags": [
+        "wings",
+        "sprite_137"
+      ],
+      "description": "Newly assigned from unreferenced image.",
+      "moveIds": [
+        "fire_ember",
+        "ice_flash_freeze",
+        "lightning_zap_field",
+        "shadow_hex"
+      ]
+    },
+    {
+      "id": "legs-sprite_095",
+      "name": "Barry's Claws",
+      "slot": "legs",
+      "file": "Legs/sprite_095.png",
+      "familyId": 10,
+      "family": {
+        "id": 10,
+        "name": "Unassigned",
+        "theme": "normal",
+        "type": "Normal"
+      },
+      "variant": 50,
+      "rarity": "legendary",
+      "archetype": "trickster",
+      "isUnique": true,
+      "stats": {
+        "hp": 39,
+        "atk": 42,
+        "def": 36,
+        "spd": 43,
+        "luck": 1
+      },
+      "powerScore": 161,
+      "tags": [
+        "legs",
+        "sprite_095"
+      ],
+      "description": "Newly assigned from unreferenced image.",
+      "moveIds": [
+        "normal_feather_guard",
+        "normal_war_honk",
+        "lightning_thunderclap",
+        "fire_eruption"
+      ]
     }
   ],
   "families": [
@@ -5008,20 +4319,18 @@
         "move_43",
         "move_44",
         "move_45",
-        "move_46",
-        "move_47",
-        "move_48",
-        "move_49",
-        "move_50",
-        "move_51",
-        "move_52",
-        "move_53",
-        "move_54",
-        "move_55",
-        "move_56",
-        "move_57",
-        "move_58"
-      ]
+        "move_46"
+      ],
+      "moveIdsByRarity": {
+        "common": [
+          "move_43",
+          "move_44",
+          "move_45",
+          "move_46"
+        ],
+        "rare": [],
+        "legendary": []
+      }
     },
     {
       "id": 2,
@@ -5033,20 +4342,18 @@
         "fire_flame_honk",
         "fire_flame_burst",
         "fire_scorchblast",
-        "fire_ember",
-        "fire_magma_crash",
-        "fire_emit_spark",
-        "fire_inferno_wave",
-        "fire_eruption",
-        "fire_lava_spit",
-        "fire_solar_flare",
-        "fire_flamewing",
-        "normal_peck",
-        "normal_wing_slap",
-        "normal_scratch",
-        "normal_honk_slam",
-        "normal_iron_guard"
-      ]
+        "fire_ember"
+      ],
+      "moveIdsByRarity": {
+        "common": [
+          "fire_flame_honk",
+          "fire_flame_burst",
+          "fire_scorchblast",
+          "fire_ember"
+        ],
+        "rare": [],
+        "legendary": []
+      }
     },
     {
       "id": 3,
@@ -5058,14 +4365,18 @@
         "move_12",
         "move_13",
         "move_14",
-        "move_15",
-        "move_16",
-        "move_17",
-        "move_18",
-        "move_19",
-        "move_20",
-        "move_21"
-      ]
+        "move_15"
+      ],
+      "moveIdsByRarity": {
+        "common": [
+          "move_12",
+          "move_13",
+          "move_14",
+          "move_15"
+        ],
+        "rare": [],
+        "legendary": []
+      }
     },
     {
       "id": 4,
@@ -5077,14 +4388,18 @@
         "lightning_shock_honk",
         "lightning_chain_bolt",
         "lightning_thunderclap",
-        "lightning_arc_pulse",
-        "lightning_static_honk",
-        "lightning_ball_lightning",
-        "lightning_zap_field",
-        "lightning_overclock",
-        "lightning_volt_dive",
-        "lightning_discharge"
-      ]
+        "lightning_arc_pulse"
+      ],
+      "moveIdsByRarity": {
+        "common": [
+          "lightning_shock_honk",
+          "lightning_chain_bolt",
+          "lightning_thunderclap",
+          "lightning_arc_pulse"
+        ],
+        "rare": [],
+        "legendary": []
+      }
     },
     {
       "id": 5,
@@ -5096,20 +4411,18 @@
         "move_43",
         "move_44",
         "move_45",
-        "move_46",
-        "move_47",
-        "move_48",
-        "move_49",
-        "move_50",
-        "move_51",
-        "move_52",
-        "move_53",
-        "move_54",
-        "move_55",
-        "move_56",
-        "move_57",
-        "move_58"
-      ]
+        "move_46"
+      ],
+      "moveIdsByRarity": {
+        "common": [
+          "move_43",
+          "move_44",
+          "move_45",
+          "move_46"
+        ],
+        "rare": [],
+        "legendary": []
+      }
     },
     {
       "id": 6,
@@ -5121,15 +4434,18 @@
         "move_32",
         "move_33",
         "move_34",
-        "move_35",
-        "move_36",
-        "move_37",
-        "move_38",
-        "move_39",
-        "move_40",
-        "move_41",
-        "move_42"
-      ]
+        "move_35"
+      ],
+      "moveIdsByRarity": {
+        "common": [
+          "move_32",
+          "move_33",
+          "move_34",
+          "move_35"
+        ],
+        "rare": [],
+        "legendary": []
+      }
     },
     {
       "id": 7,
@@ -5141,31 +4457,18 @@
         "move_57",
         "move_58",
         "move_55",
-        "move_56",
-        "move_53",
-        "move_54",
-        "move_51",
-        "move_52",
-        "move_49",
-        "move_50",
-        "move_47",
-        "move_48",
-        "move_45",
-        "move_46",
-        "move_43",
-        "move_44",
-        "move_1",
-        "move_2",
-        "move_3",
-        "move_4",
-        "move_5",
-        "move_6",
-        "move_7",
-        "move_8",
-        "move_9",
-        "move_10",
-        "move_11"
-      ]
+        "move_56"
+      ],
+      "moveIdsByRarity": {
+        "common": [
+          "move_57",
+          "move_58",
+          "move_55",
+          "move_56"
+        ],
+        "rare": [],
+        "legendary": []
+      }
     },
     {
       "id": 8,
@@ -5177,20 +4480,18 @@
         "move_55",
         "move_57",
         "move_58",
-        "move_56",
-        "move_54",
-        "move_53",
-        "move_51",
-        "move_52",
-        "move_50",
-        "move_49",
-        "move_47",
-        "move_48",
-        "move_46",
-        "move_45",
-        "move_43",
-        "move_44"
-      ]
+        "move_56"
+      ],
+      "moveIdsByRarity": {
+        "common": [
+          "move_55",
+          "move_57",
+          "move_58",
+          "move_56"
+        ],
+        "rare": [],
+        "legendary": []
+      }
     },
     {
       "id": 9,
@@ -5202,15 +4503,18 @@
         "move_32",
         "move_33",
         "move_34",
-        "move_35",
-        "move_36",
-        "move_37",
-        "move_38",
-        "move_39",
-        "move_40",
-        "move_41",
-        "move_42"
-      ]
+        "move_35"
+      ],
+      "moveIdsByRarity": {
+        "common": [
+          "move_32",
+          "move_33",
+          "move_34",
+          "move_35"
+        ],
+        "rare": [],
+        "legendary": []
+      }
     },
     {
       "id": 10,
@@ -5222,20 +4526,18 @@
         "move_43",
         "move_44",
         "move_45",
-        "move_46",
-        "move_47",
-        "move_48",
-        "move_49",
-        "move_50",
-        "move_51",
-        "move_52",
-        "move_53",
-        "move_54",
-        "move_55",
-        "move_56",
-        "move_57",
-        "move_58"
-      ]
+        "move_46"
+      ],
+      "moveIdsByRarity": {
+        "common": [
+          "move_43",
+          "move_44",
+          "move_45",
+          "move_46"
+        ],
+        "rare": [],
+        "legendary": []
+      }
     }
   ]
 }
