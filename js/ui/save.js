@@ -3,20 +3,21 @@
 // Campaign persistence, serialization, and global progress tracking
 // ============================================================================
 
-async function clearCampaignSave() {
+async function clearRunSave() {
   try {
     try {
       await fetch('/api/save/run', { method: 'DELETE' });
       await fetch('/api/save/campaign', { method: 'DELETE' });
-      await fetch('/api/save/global', { method: 'DELETE' });
-      await fetch('/api/save/dex', { method: 'DELETE' });
     } catch (_) {}
   } catch(e) {}
+}
+async function clearCampaignSave() {
+  await clearRunSave();
 }
 async function continueCampaign(){
   const ok = await loadCampaign();
   if (!ok || !CAMPAIGN.party || CAMPAIGN.party.length === 0) {
-    await clearCampaignSave();
+    await clearRunSave();
     const contBtn = document.getElementById('cont-btn');
     if (contBtn) contBtn.style.display = 'none';
     showScreen('screen-title');
@@ -33,7 +34,7 @@ function serializeHonkerForSave(h) {
   return {
     id: h.id, name: h.name, emoji: h.emoji, type: h.type, type2: h.type2 || null,
     hp: h.hp, luck: h.luck, lore: h.lore, isCaught: h.isCaught || false,
-    passive: h.passive || null,
+    passiveId: h.passiveId || h.passive?.id || null,
     level: h.level||1, xp: h.xp||0, xpNeeded: h.xpNeeded||100, totalXp: h.totalXp||0,
     masteryLevel: h.masteryLevel||0, masteryXP: h.masteryXP||0,
     masteryXPNeeded: h.masteryXPNeeded||masteryXpNeededForLevel(h.masteryLevel||0),
@@ -100,6 +101,7 @@ function hydrateSavedHonker(saved) {
   h.type2      = saved.type2      || null;
   h.assembledParts = saved.assembledParts || null;
   h.currentHP  = saved.currentHP ?? getHonkerMaxHP(h);
+  h.passiveId  = saved.passiveId || saved.passive?.id || h.passiveId || h.passive?.id || null;
   h.movePP     = saved.movePP || null;
   if (h.movePP && Array.isArray(h.moves)) {
     const normalizedPP = {};
@@ -110,7 +112,7 @@ function hydrateSavedHonker(saved) {
     h.movePP = normalizedPP;
   }
   h.persistentEffects = saved.persistentEffects || {};
-  if (saved.passive) h.passive = saved.passive;
+  if (typeof normalizePassiveRef === 'function') normalizePassiveRef(h);
   return h;
 }
 const RUN_SAVE_KEY = 'run';
@@ -220,7 +222,7 @@ async function loadCampaign() {
     const d = JSON.parse(raw);
     if (d.saveVersion !== SAVE_VERSION && d.saveVersion !== 1) {
       console.warn('[LOAD] Save version mismatch (got', d.saveVersion, ', expected', SAVE_VERSION, '). Discarding.');
-      await clearCampaignSave();
+      await clearRunSave();
       return false;
     }
     // Migrate v1 saves: convert old move properties to new schema
@@ -237,7 +239,7 @@ async function loadCampaign() {
     }
     if (party.length === 0) {
       console.warn('[LOAD] Party empty after validation. Discarding save.');
-      await clearCampaignSave();
+      await clearRunSave();
       return false;
     }
     const fallen = (d.fallen || []).map(hydrateSavedHonker);

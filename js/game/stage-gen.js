@@ -231,7 +231,8 @@ function generateStage(n) {
 
   const emojiPool  = dex ? null : (isBoss ? BOSS_EMOJIS : (ENEMY_EMOJIS[type] || ENEMY_EMOJIS.Normal));
   const emoji      = dex ? dex.emoji : emojiPool[Math.floor(rng() * emojiPool.length)];
-  const passive    = dex ? (dex.passive || dexBlueprint?.derived?.passive || null) : null;
+  const passiveId  = dex ? (dex.passiveId || dex.passive?.id || dexBlueprint?.derived?.passiveId || null) : null;
+  const passive    = dex ? (getPassiveMetaById(passiveId) || dex.passive || dexBlueprint?.derived?.passive || null) : null;
   // Enemy level scales with stage — leveling system handles all stat growth
   const enemyLevel = Math.max(1, Math.round(n * 0.5) + (isBoss ? 2 : 0));
   const difficulty = isBoss ? 5 : Math.min(4, Math.ceil(n / 4));
@@ -250,7 +251,7 @@ function generateStage(n) {
   const shieldPct = isBoss ? 0.25 : 0;
 
   const enemyData = { name: enemyName, emoji, type, type2, hp, luck, atk:genAtk, def:genDef, spd:genSpd,
-                      moves, passive, dexId: dex?.id || null, assembledParts, level: enemyLevel,
+                      moves, passiveId, passive, dexId: dex?.id || null, assembledParts, level: enemyLevel,
                       shieldPct };
   const hasNewParts = enemyHasUncaughtParts(enemyData);
 

@@ -334,10 +334,10 @@ const FAMILY_TYPE = {
 
 // Archetype -> passive ability
 const ARCHETYPE_PASSIVE = {
-  bulwark:   {id:'thick_skin',   emoji:'*', name:'Thick Skin',   desc:'Takes 20% less damage from all sources.'},
-  raider:    {id:'underdog',     emoji:'*', name:'Underdog',     desc:'+30% ATK when below 50% HP.'},
-  trickster: {id:'cursed_aura',  emoji:'*', name:'Cursed Aura',  desc:'Enemies begin battle Cursed for 2 rounds.'},
-  balanced:  null,
+  bulwark: 'thick_skin',
+  raider: 'underdog',
+  trickster: 'cursed_aura',
+  balanced: null,
 };
 
 function deriveHonkerFromParts(parts) {
@@ -366,7 +366,8 @@ function deriveHonkerFromParts(parts) {
   const type2 = headType && headType !== type ? headType : null;
 
   const domArch = Object.entries(archetypeCounts).sort((a,b)=>b[1]-a[1])[0]?.[0] || 'balanced';
-  const passive = ARCHETYPE_PASSIVE[domArch] || null;
+  const passiveId = ARCHETYPE_PASSIVE[domArch] || null;
+  const passive = getPassiveMetaById(passiveId);
 
   const headName = parts.head?.name || 'Honker';
   const name = generateHonkerName({ headName, type, stats });
@@ -429,7 +430,7 @@ function deriveHonkerFromParts(parts) {
     luck: Math.max(1, Math.round(stats.luck)),
   };
 
-  return { name, type, type2, passive, stats: combatStats, moves: starterMoves, moveCandidates, emoji: typeEmoji };
+  return { name, type, type2, passiveId, passive, stats: combatStats, moves: starterMoves, moveCandidates, emoji: typeEmoji };
 }
 
 function confirmAssembly() {
@@ -457,6 +458,7 @@ function confirmAssembly() {
     moves: selectedMoves,
     moveCandidates: derived.moveCandidates || [],
     lore: `Built from ${[...new Set(Object.values(assembledParts).map(p=>p.family.name))].join(', ')} parts. Custom-forged in the workshop.`,
+    passiveId: derived.passiveId || null,
     passive: derived.passive,
     assembledParts: { head: assembledParts.head, torso: assembledParts.torso, wings: assembledParts.wings, legs: assembledParts.legs },
   };

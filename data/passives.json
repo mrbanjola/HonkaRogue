@@ -1,0 +1,74 @@
+{
+  "items": [
+    {
+      "id": "heat_proof",
+      "name": "Heat Proof",
+      "emoji": "🔥",
+      "desc": "Immune to Burn.",
+      "hooks": ["onApplyStatus", "onTurnStart"]
+    },
+    {
+      "id": "frost_armor",
+      "name": "Frost Armor",
+      "emoji": "❄️",
+      "desc": "Takes 25% less Ice damage.",
+      "hooks": ["modifyIncomingDamage"]
+    },
+    {
+      "id": "static_skin",
+      "name": "Static Skin",
+      "emoji": "⚡",
+      "desc": "30% chance to Paralyze attackers.",
+      "hooks": ["onAfterDamaged"]
+    },
+    {
+      "id": "cursed_aura",
+      "name": "Cursed Aura",
+      "emoji": "🌑",
+      "desc": "Enemies begin battle Cursed for 2 rounds.",
+      "hooks": ["onBattleStart"]
+    },
+    {
+      "id": "underdog",
+      "name": "Underdog",
+      "emoji": "💪",
+      "desc": "+30% ATK when below 50% HP.",
+      "hooks": ["modifyAttack"]
+    },
+    {
+      "id": "type_mastery",
+      "name": "Type Mastery",
+      "emoji": "✨",
+      "desc": "STAB bonus is 1.5 instead of 1.25.",
+      "hooks": ["modifyStab"]
+    },
+    {
+      "id": "resilient",
+      "name": "Resilient",
+      "emoji": "🧱",
+      "desc": "Immune to Paralysis.",
+      "hooks": ["onApplyStatus"]
+    },
+    {
+      "id": "thick_skin",
+      "name": "Thick Skin",
+      "emoji": "🛡️",
+      "desc": "Takes 20% less damage from all sources.",
+      "hooks": ["modifyIncomingDamage"]
+    },
+    {
+      "id": "shield_wall",
+      "name": "Shield Wall",
+      "emoji": "🛡️",
+      "desc": "Enters battle Shielded for 1 round.",
+      "hooks": ["onBattleStart"]
+    },
+    {
+      "id": "regeneration",
+      "name": "Regeneration",
+      "emoji": "🪴",
+      "desc": "Heals 6% max HP at the start of each round.",
+      "hooks": ["onTurnStart"]
+    }
+  ]
+}

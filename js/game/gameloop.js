@@ -140,10 +140,9 @@ function startStageBattle(stageIdx, isRetry=false) {
   });
   // Fresh fighter objects already carry intended status state.
 
-  // Apply player passive effects at battle start
-  if (pb.passive?.id === 'cursed_aura') {
-    BS.bFighters[1].statusEffects.cursed = 2;
-    refreshStatusBadges(BS.bFighters[1]);
+  if (typeof runPassiveHook === 'function') {
+    runPassiveHook(BS.bFighters[0], 'onBattleStart', { self: BS.bFighters[0], opponent: BS.bFighters[1], battleState: BS });
+    runPassiveHook(BS.bFighters[1], 'onBattleStart', { self: BS.bFighters[1], opponent: BS.bFighters[0], battleState: BS });
   }
 
   // Show passive strip
@@ -155,11 +154,6 @@ function startStageBattle(stageIdx, isRetry=false) {
     ps.style.display = 'none';
   }
 
-  // Apply shield_wall passive
-  if (pb.passive && pb.passive.id === 'shield_wall') {
-    BS.bFighters[0].statusEffects.shielded = Math.max(1, Math.min(4, (BS.bFighters[0].statusEffects.shielded || 0) + 1));
-    refreshStatusBadges(BS.bFighters[0]);
-  }
   // Dispose any leftover shield visual, then spawn for bosses
   if (typeof disposeBossShield === 'function') disposeBossShield();
   if (stage.isBoss && BS.bFighters[1].shieldMax > 0 && typeof createBossShield === 'function') {

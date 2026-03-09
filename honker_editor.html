@@ -153,7 +153,7 @@
   </div>
   <script>
     const st = {
-      dex: [], partsData: null, movePool: [], dexOverrides: {}, idx: -1, filtered: [], dirty: false,
+      dex: [], partsData: null, movePool: [], dexOverrides: {}, passives: [], passiveById: new Map(), idx: -1, filtered: [], dirty: false,
       selectedMoveIds: [], partSel: { head:'', torso:'', wings:'', legs:'' }, loaded: false, loadedCount: 0
     };
     const SLOT_KEYS = ['head', 'torso', 'wings', 'legs'];
@@ -347,6 +347,16 @@
       renderMovePicker();
     }
     function cur() { return st.idx >= 0 ? st.dex[st.idx] : null; }
+    function getPassiveMeta(passiveId) {
+      return st.passiveById.get(String(passiveId || '').trim()) || null;
+    }
+    function syncPassiveFieldsFromId() {
+      const id = el('f_passive_id').value.trim();
+      const meta = getPassiveMeta(id);
+      if (!meta) return;
+      el('f_passive_name').value = meta.name || '';
+      el('f_passive_desc').value = meta.desc || '';
+    }
     function extractPartSelection(h) {
       st.partSel = { head:'', torso:'', wings:'', legs:'' };
       const ids = h?.partIds || null;
@@ -372,7 +382,9 @@
       el('f_id').value = h.id || ''; el('f_name').value = h.name || ''; el('f_emoji').value = h.emoji || '';
       el('f_type').value = h.type || 'Normal'; el('f_lore').value = h.lore || '';
       el('f_isBoss').checked = !!h.isBoss;
-      el('f_passive_id').value = h.passive?.id || ''; el('f_passive_name').value = h.passive?.name || ''; el('f_passive_desc').value = h.passive?.desc || '';
+      const passiveId = h.passiveId || h.passive?.id || '';
+      const passiveMeta = getPassiveMeta(passiveId) || h.passive || null;
+      el('f_passive_id').value = passiveId; el('f_passive_name').value = passiveMeta?.name || ''; el('f_passive_desc').value = passiveMeta?.desc || '';
       st.selectedMoveIds = Array.isArray(h.moveIds)
         ? [...new Set(h.moveIds.map(resolveMoveId).filter(Boolean))].slice(0, 4)
         : [];
@@ -430,7 +442,10 @@
       out.type = el('f_type').value || inferType(parts); out.lore = el('f_lore').value;
       out.isBoss = !!el('f_isBoss').checked;
       out.hp = stats.hp; out.atk = stats.atk; out.def = stats.def; out.spd = stats.spd; out.luck = stats.luck;
-      out.passive = { id: el('f_passive_id').value.trim(), name: el('f_passive_name').value.trim(), desc: el('f_passive_desc').value };
+      const passiveId = el('f_passive_id').value.trim();
+      if (passiveId) out.passiveId = passiveId;
+      else delete out.passiveId;
+      delete out.passive;
       out.moveIds = [...new Set(st.selectedMoveIds.map(resolveMoveId).filter(Boolean))];
       out.partIds = {
         head: String(parts.head.id),
@@ -450,7 +465,7 @@
       const fresh = {
         dexNum: st.dex.length + 1,
         id:`honker_${Date.now()}`, name:'New Honker', emoji:'*', type:'Normal', lore:'',
-        hp:1, atk:1, def:1, spd:1, luck:1, passive:{ id:'', name:'', desc:'' }, moveIds:[], isBoss:false
+        hp:1, atk:1, def:1, spd:1, luck:1, passive:null, moveIds:[], isBoss:false
       };
       st.dex.push(fresh); st.idx = st.dex.length - 1; setDirty(true); renderList(); renderSel();
     }
@@ -486,15 +501,17 @@
     }
     async function loadAll() {
       setStatus('Loading...');
-      const [rp, pp, mp] = await Promise.all([
+      const [rp, pp, mp, ap] = await Promise.all([
         fetch('/api/honkedex', { cache:'no-store' }),
         fetch('/api/parts-data', { cache:'no-store' }),
         fetch('/api/move-pool', { cache:'no-store' }),
+        fetch('data/passives.json', { cache:'no-store' }),
       ]);
       if (!rp.ok) throw new Error(`HONKER_DEX load failed (${rp.status})`);
       if (!pp.ok) throw new Error(`Parts load failed (${pp.status})`);
       if (!mp.ok) throw new Error(`Move pool load failed (${mp.status})`);
-      const rd = await rp.json(); const pd = await pp.json(); const md = await mp.json();
+      if (!ap.ok) throw new Error(`Passives load failed (${ap.status})`);
+      const rd = await rp.json(); const pd = await pp.json(); const md = await mp.json(); const ad = await ap.json();
       let ov = {};
       try {
         const ovr = await fetch('/api/dex-part-overrides', { cache:'no-store' });
@@ -508,15 +525,18 @@
       st.loadedCount = st.dex.length;
       st.partsData = pd && Array.isArray(pd.parts) ? pd : { parts: [], families: [] };
       st.movePool = Array.isArray(md.items) ? md.items : [];
+      st.passives = Array.isArray(ad.items) ? ad.items : [];
+      st.passiveById = new Map(st.passives.map(p => [String(p.id || '').trim(), p]).filter(([id]) => !!id));
       rebuildMoveLookup();
       st.dexOverrides = ov;
       st.idx = st.dex.length ? 0 : -1;
       setDirty(false); renderList(); renderSel();
-      setStatus(`Loaded ${st.dex.length} honkedex entries, ${st.partsData.parts.length} parts, ${st.movePool.length} moves.`, 'ok');
+      setStatus(`Loaded ${st.dex.length} honkedex entries, ${st.partsData.parts.length} parts, ${st.movePool.length} moves, ${st.passives.length} passives.`, 'ok');
     }
     function wire() {
       el('search').addEventListener('input', renderList);
       el('typeFilter').addEventListener('change', renderList);
+      el('f_passive_id').addEventListener('input', syncPassiveFieldsFromId);
       el('addBtn').onclick = addHonker; el('dupBtn').onclick = dupHonker; el('delBtn').onclick = delHonker;
       el('reloadBtn').onclick = () => loadAll().catch(e => setStatus(e.message, 'warn'));
       el('saveBtn').onclick = () => saveAll().catch(e => { setStatus(e.message, 'warn'); alert(e.message); });

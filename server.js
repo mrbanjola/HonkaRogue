@@ -10,7 +10,8 @@ const MAX_BODY = 1 * 1024 * 1024; // 1 MB
 const ROOT = __dirname;
 const DATA_DIR = path.join(ROOT, 'data');
 const SAVES_DIR = path.join(ROOT, 'saves');
-const DATA_JS = path.join(ROOT, 'js', 'data.js');
+const ROSTER_JS = path.join(ROOT, 'js', 'core', 'campaign-state.js');
+const DEX_DATA_JS = path.join(ROOT, 'js', 'data', 'dex-data.js');
 const MOVES_DATA_FILE = path.join(DATA_DIR, 'moves_data.json');
 const HONKDEX_DATA_FILE = path.join(DATA_DIR, 'honkedex.json');
 const SLOT_DIRS = [
@@ -226,7 +227,7 @@ function writeHonkDexToFile(items) {
   fs.writeFileSync(HONKDEX_DATA_FILE, JSON.stringify(payload, null, 2), 'utf8');
 }
 function readRosterFromDataJs() {
-  const src = fs.readFileSync(DATA_JS, 'utf8');
+  const src = fs.readFileSync(ROSTER_JS, 'utf8');
   const range = findRosterRange(src);
   if (!range) throw new Error('ROSTER not found');
   const arrExpr = src.slice(range.arrStart, range.arrEnd);
@@ -235,16 +236,16 @@ function readRosterFromDataJs() {
   return roster;
 }
 function writeRosterToDataJs(roster) {
-  const src = fs.readFileSync(DATA_JS, 'utf8');
+  const src = fs.readFileSync(ROSTER_JS, 'utf8');
   const range = findRosterRange(src);
   if (!range) throw new Error('ROSTER not found');
   const decl = String(range.marker || '').startsWith('let ') ? 'let' : 'const';
   const replacement = `${decl} ROSTER = ${JSON.stringify(roster, null, 2)};`;
   const next = src.slice(0, range.start) + replacement + src.slice(range.end);
-  fs.writeFileSync(DATA_JS, next, 'utf8');
+  fs.writeFileSync(ROSTER_JS, next, 'utf8');
 }
 function readHonkDexFromDataJs() {
-  const src = fs.readFileSync(DATA_JS, 'utf8');
+  const src = fs.readFileSync(DEX_DATA_JS, 'utf8');
   const range = findHonkDexRange(src);
   if (!range) throw new Error('HONKER_DEX not found');
   const arrExpr = src.slice(range.arrStart, range.arrEnd);
@@ -253,16 +254,16 @@ function readHonkDexFromDataJs() {
   return dex;
 }
 function writeHonkDexToDataJs(dex) {
-  const src = fs.readFileSync(DATA_JS, 'utf8');
+  const src = fs.readFileSync(DEX_DATA_JS, 'utf8');
   const range = findHonkDexRange(src);
   if (!range) throw new Error('HONKER_DEX not found');
   const decl = String(range.marker || '').startsWith('let ') ? 'let' : 'const';
   const replacement = `${decl} HONKER_DEX = ${JSON.stringify(dex, null, 2)};`;
   const next = src.slice(0, range.start) + replacement + src.slice(range.end);
-  fs.writeFileSync(DATA_JS, next, 'utf8');
+  fs.writeFileSync(DEX_DATA_JS, next, 'utf8');
 }
 function readDexPartOverridesFromDataJs() {
-  const src = fs.readFileSync(DATA_JS, 'utf8');
+  const src = fs.readFileSync(DEX_DATA_JS, 'utf8');
   const range = findDexPartOverridesRange(src);
   if (!range) throw new Error('DEX_PARTS_OVERRIDES not found');
   const objExpr = src.slice(range.objStart, range.objEnd);

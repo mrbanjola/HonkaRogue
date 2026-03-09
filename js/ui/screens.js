@@ -16,6 +16,10 @@ async function initTitle() {
       await loadPartsData();
       console.log('[INIT] Parts data loaded:', PARTS_DATA?.parts?.length || 0);
     }
+    if (typeof loadPassivesData === 'function') {
+      await loadPassivesData();
+      console.log('[INIT] Passives loaded:', Object.keys(PASSIVE_DB || {}).length);
+    }
     if (typeof loadHonkDexData === 'function') {
       const dexLoaded = await loadHonkDexData();
       if (!dexLoaded) console.warn('[INIT] Honkedex load failed; using bundled fallback');

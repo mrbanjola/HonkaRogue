@@ -195,14 +195,10 @@ function refreshStatusBadges(f) {
 }
 
 function applyStatusEffect(target, effect, duration) {
-  // Passive: resilient blocks paralysis
-  if (effect === 'paralyzed' && target.passive?.id === 'resilient') {
-    log('n', `🛡️ <b>${target.name}</b>'s Resilient passive blocks paralysis!`);
-    return;
-  }
-  // Passive: heat_proof blocks burn
-  if (effect === 'burn' && target.passive?.id === 'heat_proof') {
-    log('n', `🔥 <b>${target.name}</b>'s Heat Proof passive blocks burn!`);
+  const hookCtx = { target, self: target, effect, duration, cancel: false, message: '' };
+  if (typeof runPassiveHook === 'function') runPassiveHook(target, 'onApplyStatus', hookCtx);
+  if (hookCtx.cancel) {
+    if (hookCtx.message) log('n', hookCtx.message);
     return;
   }
   if (STACKABLE_EFFECTS.includes(effect)) {
@@ -228,18 +224,7 @@ function applyStatusEffect(target, effect, duration) {
 }
 
 function tickStatusEffects(f) {
-  // Passive: heat_proof - immune to burn (also blocked at apply, belt+suspenders)
-  if (f.passive?.id === 'heat_proof' && f.statusEffects.burn) {
-    delete f.statusEffects.burn;
-    refreshStatusBadges(f);
-  }
-  // Passive: regeneration - heal 6% max HP each round
-  if (f.passive?.id === 'regeneration' && f.currentHP < f.maxHP) {
-    const heal = Math.max(3, Math.round(f.maxHP * 0.06));
-    f.currentHP = Math.min(f.maxHP, f.currentHP + heal);
-    updateHP(f, f.side);
-    log('n', `🌱 <b>${f.name}</b> regenerates <span style="color:#00ff88">${heal} HP</span>!`);
-  }
+  if (typeof runPassiveHook === 'function') runPassiveHook(f, 'onTurnStart', { self: f, battleState: BS });
   // Burn deals 8% max HP damage per round
   if (f.statusEffects.burn > 0) {
     const burnDmg = Math.max(4, Math.round(f.maxHP * 0.08));
@@ -353,10 +338,19 @@ function doMove(atk, def, move, cb) {
   let   mType = move.type;
   if (atk.chaosMod && atk.chaosMod > 1) {
     const types = ['Fire','Ice','Lightning','Shadow','Normal'];
-    mType = types[Math.floor(Math.random() * types.length)];
+    mType = types[Math.floor((BS.rng?.() ?? Math.random()) * types.length)];
   }
   const eff   = getEff(mType, def.type, def.type2);
-  const stab   = (mType === atk.type || mType === atk.type2) ? (atk.stabBonus || 1.25) : 1.0;
+  const stabCtx = {
+    self: atk,
+    defender: def,
+    move,
+    mType,
+    isStab: (mType === atk.type || mType === atk.type2),
+    stab: (mType === atk.type || mType === atk.type2) ? (atk.stabBonus || 1.25) : 1.0,
+  };
+  if (typeof runPassiveHook === 'function') runPassiveHook(atk, 'modifyStab', stabCtx);
+  const stab = stabCtx.stab;
   const rage   = (BS.eventState.rageTarget === atk.side && BS.eventState.rageMod) ? BS.eventState.rageMod : 1;
   // Luck-based crits: attacker's luck/500 = 0-19% crit chance.
   const critChance = (atk.effectiveLuck || 50) / 500;
@@ -368,13 +362,14 @@ function doMove(atk, def, move, cb) {
   const defStat = Math.max(1, Math.round(def.def || 80));
   const chaos  = atk.chaosMod || 1;
   const shield = def.defModifier; // < 1 if shielded
-  // Passive: frost_armor - 25% less Ice damage
-  const frostArmor = (def.passive?.id === 'frost_armor' && (mType||move.type) === 'Ice') ? 0.75 : 1;
+  const incomingCtx = { self: def, attacker: atk, move, mType: (mType || move.type), mult: 1 };
+  if (typeof runPassiveHook === 'function') runPassiveHook(def, 'modifyIncomingDamage', incomingCtx);
+  const incomingMult = incomingCtx.mult;
   const pwr = Math.max(1, Math.round(move.power || 0));
   const core1 = Math.floor((2 * level * critLevelMult) / 5) + 2;
   const core2 = Math.floor((core1 * pwr * atkStat) / defStat);
   const core3 = Math.floor(core2 / 15) + 2;
-  let dmg = Math.floor(core3 * stab * eff * randomMult * rage * chaos * shield * frostArmor);
+  let dmg = Math.floor(core3 * stab * eff * randomMult * rage * chaos * shield * incomingMult);
   if (eff <= 0) dmg = 0;
   else dmg = Math.max(1, dmg);
   if (isCrit) log('g', `🎯 <b>CRITICAL HIT!</b> (${atk.name}'s luck comes through!)`);
@@ -451,17 +446,22 @@ function doMove(atk, def, move, cb) {
       else if (eff <= .5) log('w', '🛡 Not very effective...');
       if (stab > 1)       log('n', '✨ Same-type bonus!');
       if (def.statusEffects.shielded) log('n', `🛡️ Shield absorbs some damage!`);
-      if (frostArmor < 1) log('n', `❄️ Frost Armor reduces the Ice damage!`);
+      if (incomingMult < 1) log('n', `🛡️ Passive resistance reduces the damage!`);
 
       const effLbl = eff !== 1 ? ` (x${eff})` : '';
       const totalHit = shieldAbsorbed + dmg;
       log('d', `💥 <b>${def.name}</b> takes <span style="color:#ff5252">${totalHit} damage</span>${effLbl}! HP: ${def.currentHP}/${def.maxHP}`);
 
-      // Passive: static_skin - 30% chance to paralyze attacker on hit
-      if (def.passive?.id === 'static_skin' && dmg > 0 && !atk.statusEffects.paralyzed && BS.rng() < 0.3) {
-        applyStatusEffect(atk, 'paralyzed', 2);
-        log('ev', `⚡ ${def.name}'s Static Skin zaps ${atk.name}!`);
-        spawnPtcl(atk.side, '#ffe600', '⚡');
+      if (typeof runPassiveHook === 'function') {
+        runPassiveHook(def, 'onAfterDamaged', {
+          self: def,
+          attacker: atk,
+          move,
+          mType: (mType || move.type),
+          damageDealt: dmg,
+          rng: BS.rng,
+          battleState: BS,
+        });
       }
 
       // --- secondaryEffect: drain or recoil ---

@@ -29,6 +29,7 @@ function masteryAttackMultiplier(level) {
 class Honker {
   constructor(data, side, campBoosts={}) {
     Object.assign(this, JSON.parse(JSON.stringify(data)));
+    if (typeof normalizePassiveRef === 'function') normalizePassiveRef(this);
     this.side = side;
     this.maxHPBonus = campBoosts.maxHPBonus||0;
     this.atkFlat    = campBoosts.atkFlat||0;
@@ -75,14 +76,15 @@ class Honker {
     let m = 1;
     if (this.statusEffects.cursed)  m *= Math.max(0.25, 1 - (0.15 * this.statusEffects.cursed));
     if (this.statusEffects.pumped)  m *= (1 + (0.25 * this.statusEffects.pumped));
-    if (this.passive?.id === 'underdog' && this.hpPct < 0.5) m *= 1.3;
+    const ctx = { self: this, mult: m };
+    if (typeof runPassiveHook === 'function') runPassiveHook(this, 'modifyAttack', ctx);
+    m = ctx.mult;
     return m;
   }
   get defModifier() {
     let m = 1;
     if (this.statusEffects.shielded) m *= (1 / (1 + (0.25 * this.statusEffects.shielded)));
     if (this.statusEffects.exposed) m *= (1 + 0.2 * this.statusEffects.exposed);
-    if (this.passive?.id === 'thick_skin') m *= 0.8;
     return m;
   }
   get accModifier() {

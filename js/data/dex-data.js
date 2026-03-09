@@ -636,6 +636,10 @@ async function loadHonkDexData() {
       const items = Array.isArray(data) ? data : (data.items || []);
       if (!Array.isArray(items) || !items.length) continue;
       HONKER_DEX = items;
+      if (typeof normalizePassiveList === 'function') normalizePassiveList(HONKER_DEX);
+      if (typeof restoreEmojiIcons === 'function') {
+        try { restoreEmojiIcons(); } catch (_) {}
+      }
       if (typeof initDexPartIds === 'function') initDexPartIds();
       console.log('[DEX-DATA] Honkedex loaded:', HONKER_DEX.length);
       return true;

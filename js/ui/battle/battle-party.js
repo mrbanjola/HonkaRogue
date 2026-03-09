@@ -139,11 +139,8 @@ function switchInPartyMember(partyIdx) {
   BS.bDead = false; BS.bPhase = 'p1';
   setupFighterUI(newFighter, 'left');
   resetSpriteClass('left');
-  if (pb.passive && pb.passive.id === 'cursed_aura' && !BS.bFighters[1].statusEffects.cursed) {
-    BS.bFighters[1].statusEffects.cursed = 2; refreshStatusBadges(BS.bFighters[1]);
-  }
-  if (pb.passive && pb.passive.id === 'shield_wall') {
-    newFighter.statusEffects.shielded = Math.max(1, Math.min(4, (newFighter.statusEffects.shielded || 0) + 1)); refreshStatusBadges(newFighter);
+  if (typeof runPassiveHook === 'function') {
+    runPassiveHook(newFighter, 'onBattleStart', { self: newFighter, opponent: BS.bFighters[1], battleState: BS });
   }
   const ps = document.getElementById('passive-left');
   if (pb.passive) { ps.textContent = pb.passive.emoji + ' ' + pb.passive.name; ps.style.display = ''; }

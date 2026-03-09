@@ -47,6 +47,7 @@ function starterFromDex(dex) {
     hp: clamp(Math.round(120 + def * 0.9), 145, 220),
     luck: 50,
     atk, def, spd,
+    passiveId: dex.passiveId || dex.passive?.id || derived?.passiveId || null,
     passive: dex.passive ? JSON.parse(JSON.stringify(dex.passive)) : (derived?.passive ? cloneJson(derived.passive) : null),
     moveIds: starterMoveIds,
     moves: starterMoves,
@@ -60,6 +61,7 @@ function getStarterRoster() {
     if (!Array.isArray(out.moveIds) || !out.moveIds.length) {
       if (typeof ensureHonkerMoveIds === 'function') ensureHonkerMoveIds(out);
     }
+    if (typeof normalizePassiveRef === 'function') normalizePassiveRef(out);
     out.moves = materializeMovesFromIds(out.moveIds);
     return out;
   });
@@ -68,7 +70,8 @@ function getStarterRoster() {
     .map(id => HONKER_DEX.find(d => d.id === id))
     .filter(Boolean)
     .filter(d => !ids.has(d.id))
-    .map(starterFromDex);
+    .map(starterFromDex)
+    .map(h => (typeof normalizePassiveRef === 'function' ? (normalizePassiveRef(h), h) : h));
   return [...base, ...caughtDex];
 }
 function buildCharSelect() {
