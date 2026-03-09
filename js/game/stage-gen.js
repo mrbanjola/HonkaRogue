@@ -96,6 +96,23 @@ function xpRewardForEnemyLevel(level, isBoss) {
   return Math.max(25, xp);
 }
 
+// Sum base stats from assembled parts (same logic as player assembly)
+function sumPartStats(parts) {
+  const s = { hp: 0, atk: 0, def: 0, spd: 0, luck: 0 };
+  if (!parts) return s;
+  ['head', 'torso', 'wings', 'legs'].forEach(slot => {
+    const p = parts[slot];
+    if (p?.stats) {
+      s.hp   += p.stats.hp   || 0;
+      s.atk  += p.stats.atk  || 0;
+      s.def  += p.stats.def  || 0;
+      s.spd  += p.stats.spd  || 0;
+      s.luck += p.stats.luck || 0;
+    }
+  });
+  return s;
+}
+
 function generateStage(n) {
   const runSeed = Number.isFinite(Number(CAMPAIGN?.runSeed)) ? (Number(CAMPAIGN.runSeed) >>> 0) : 0;
   const stageSeed = ((n * 7919 + 31337) ^ runSeed) >>> 0;
@@ -118,10 +135,6 @@ function generateStage(n) {
   if (dex) console.log(`  \u2192 Named Honker: ${dex.name}`);
   const dexBlueprint = dex ? buildDexPartBlueprint(dex) : null;
   const biomeFallbackType = pickBiomeType(biome, rng, isBoss) || 'Normal';
-  const earlyRamp = Math.min(1, n / 16);
-  const earlyHpScale = n <= 15 ? (0.84 + earlyRamp * 0.16) : 1;
-  const earlyPowScale = n <= 15 ? (0.72 + earlyRamp * 0.28) : 1;
-  const earlyStatScale = n <= 15 ? (0.88 + earlyRamp * 0.12) : 1;
 
   // Enemy name is resolved later via generateHonkerName (after parts/type are known)
   // Consume rng calls to preserve seed sequence for arena/lore below
@@ -131,12 +144,6 @@ function generateStage(n) {
   const location = `${biome?.name || 'Honklands'} \u2022 ${arena}`;
   const loreRaw  = dex ? dex.lore : (biome?.lore?.[Math.floor(rng() * biome.lore.length)] || STAGE_LORE[Math.floor(rng() * STAGE_LORE.length)]);
   const lore     = dex ? `"${loreRaw}"` : `"${loreRaw.replace('{n}', n)}"`;
-
-  const hpBase  = Math.round(100 + n * 19 + Math.pow(n, 1.35) * 1.8);
-  const hpRaw   = isBoss ? Math.round(hpBase * 1.75) : hpBase;
-  const hp      = Math.round(hpRaw * earlyHpScale);
-  const luck    = Math.min(88, Math.round(25 + n * 2.2));
-  const basePow = 26 + n * 3.2 + (isBoss ? 18 : 0);
 
   let assembledParts = dexBlueprint?.assembledParts || null;
   if (!dex && PARTS_DATA && PARTS_DATA.parts) {
@@ -203,7 +210,7 @@ function generateStage(n) {
       id: m.id,
       name: m.name, type: m.type, emoji: m.emoji, desc: m.desc,
       ...(m.animationType ? { animationType: m.animationType } : {}),
-      power: Math.max(20, Math.round((m.basePower || 55) * (basePow / 55) * earlyPowScale)),
+      power: Math.max(15, Math.round(m.basePower || 55)),
       acc: m.acc, pp: m.pp, maxPP: m.pp,
       ...(m.secondaryEffect ? { secondaryEffect: { ...m.secondaryEffect } } : {}),
       ...(m.inflictStatus   ? { inflictStatus:   { ...m.inflictStatus   } } : {}),
@@ -214,16 +221,19 @@ function generateStage(n) {
     }));
   }
 
-  const rawAtk = dex ? (dex.atk||80) : Math.min(130, Math.round(60 + n * 1.8 + (isBoss ? 18 : 0) + (rng()-0.5)*20));
-  const rawDef = dex ? (dex.def||80) : Math.min(130, Math.round(60 + n * 1.4 + (isBoss ? 15 : 0) + (rng()-0.5)*20));
-  const rawSpd = dex ? (dex.spd||80) : Math.min(130, Math.round(60 + n * 1.2 + (rng()-0.5)*25));
-  const genAtk = Math.max(30, Math.round(rawAtk * earlyStatScale));
-  const genDef = Math.max(30, Math.round(rawDef * earlyStatScale));
-  const genSpd = Math.max(30, Math.round(rawSpd * earlyStatScale));
+  // --- Stats from parts (same system as player) ---
+  const partStats = dex ? null : sumPartStats(assembledParts);
+  const hp   = dex ? (dex.hp  || 80) : Math.max(1, partStats.hp);
+  const luck = dex ? (dex.luck|| 20) : Math.max(1, partStats.luck);
+  const genAtk = dex ? (dex.atk || 80) : Math.max(1, partStats.atk);
+  const genDef = dex ? (dex.def || 80) : Math.max(1, partStats.def);
+  const genSpd = dex ? (dex.spd || 80) : Math.max(1, partStats.spd);
+
   const emojiPool  = dex ? null : (isBoss ? BOSS_EMOJIS : (ENEMY_EMOJIS[type] || ENEMY_EMOJIS.Normal));
   const emoji      = dex ? dex.emoji : emojiPool[Math.floor(rng() * emojiPool.length)];
   const passive    = dex ? (dex.passive || dexBlueprint?.derived?.passive || null) : null;
-  const enemyLevel = Math.max(1, Math.round(n * 0.18) + (isBoss ? 1 : 0) - (n <= 15 ? 1 : 0));
+  // Enemy level scales with stage — leveling system handles all stat growth
+  const enemyLevel = Math.max(1, Math.round(n * 0.5) + (isBoss ? 2 : 0));
   const difficulty = isBoss ? 5 : Math.min(4, Math.ceil(n / 4));
   const xpReward   = xpRewardForEnemyLevel(enemyLevel, isBoss);
 
@@ -236,8 +246,12 @@ function generateStage(n) {
     enemyName = generateHonkerName({ headName, type, stats: { hp, atk: genAtk, def: genDef, spd: genSpd, luck }, isBoss });
   }
 
+  // Boss shield: 25% of max HP as a separate shield bar
+  const shieldPct = isBoss ? 0.25 : 0;
+
   const enemyData = { name: enemyName, emoji, type, type2, hp, luck, atk:genAtk, def:genDef, spd:genSpd,
-                      moves, passive, dexId: dex?.id || null, assembledParts, level: enemyLevel };
+                      moves, passive, dexId: dex?.id || null, assembledParts, level: enemyLevel,
+                      shieldPct };
   const hasNewParts = enemyHasUncaughtParts(enemyData);
 
   return { num: n, name: location, desc: lore, isBoss, difficulty, xpReward, hasNewParts,
@@ -246,10 +260,15 @@ function generateStage(n) {
     enemy: enemyData };
 }
 
-function stageThreat(n) { return Math.round(100 + n * 19 + Math.pow(n, 1.35) * 1.8); }
+function stageThreat(n) {
+  const isBoss = (n % 5 === 0);
+  const lv = Math.max(1, Math.round(n * 0.5) + (isBoss ? 2 : 0));
+  const avgBase = 115; // typical 4-part stat sum
+  return Math.round(avgBase * levelStatScale(lv) * (isBoss ? 1.3 : 1));
+}
 function playerPower(pb) {
   const hp = getHonkerMaxHP(pb);
-  const atkBase = Math.round((pb.atk || 80) * levelStatScale(pb.level || 1, 'atk'));
+  const atkBase = Math.round((pb.atk || 80) * levelStatScale(pb.level || 1));
   const atk = (pb.atkMult||1) * (atkBase + (pb.atkFlat||0));
   return Math.round(hp * 0.6 + atk * 2);
 }

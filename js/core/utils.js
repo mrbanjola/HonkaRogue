@@ -53,11 +53,10 @@ function pickWeightedIndex(weights, rng) {
   return Math.max(0, weights.length - 1);
 }
 
-// Stat scaling by level
-function levelStatScale(level, key) {
+// Stat scaling by level — universal rate for all stats
+function levelStatScale(level) {
   const lv = Math.max(1, Number(level) || 1);
-  const g = LEVEL_GROWTH[key] || 0;
-  return 1 + g * (lv - 1);
+  return 1 + LEVEL_GROWTH_RATE * (lv - 1);
 }
 
 // Get type effectiveness

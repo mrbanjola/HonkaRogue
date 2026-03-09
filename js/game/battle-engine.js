@@ -373,7 +373,7 @@ function doMove(atk, def, move, cb) {
   const pwr = Math.max(1, Math.round(move.power || 0));
   const core1 = Math.floor((2 * level * critLevelMult) / 5) + 2;
   const core2 = Math.floor((core1 * pwr * atkStat) / defStat);
-  const core3 = Math.floor(core2 / 50) + 2;
+  const core3 = Math.floor(core2 / 15) + 2;
   let dmg = Math.floor(core3 * stab * eff * randomMult * rage * chaos * shield * frostArmor);
   if (eff <= 0) dmg = 0;
   else dmg = Math.max(1, dmg);
@@ -423,6 +423,20 @@ function doMove(atk, def, move, cb) {
         BS.bFighters.forEach(f => refreshStatusBadges(f));
       }
 
+      // Boss shield absorbs damage before HP
+      let shieldBroke = false;
+      let shieldAbsorbed = 0;
+      if (def.shieldHP > 0 && dmg > 0) {
+        shieldAbsorbed = Math.min(def.shieldHP, dmg);
+        def.shieldHP -= shieldAbsorbed;
+        dmg -= shieldAbsorbed;
+        if (typeof updateShieldBar === 'function') updateShieldBar(def, def.side);
+        if (def.shieldHP <= 0) {
+          shieldBroke = true;
+          if (typeof onShieldBreak === 'function') onShieldBreak(def, def.side);
+        }
+      }
+
       def.currentHP = Math.max(0, def.currentHP - dmg);
       updateHP(def, def.side);
       if (reflected > 0) {
@@ -431,6 +445,8 @@ function doMove(atk, def, move, cb) {
         log('ev', `🪞 Mirror reflects ${reflected} damage back to ${atk.name}!`);
       }
 
+      if (shieldAbsorbed > 0) log('n', `🛡️ Shield absorbs <span style="color:#7ad7ff">${shieldAbsorbed} damage</span>!`);
+      if (shieldBroke) log('ev', `💥 <b>${def.name}</b>'s <span style="color:#ff4e00">SHIELD SHATTERED!</span>`);
       if (eff >= 2)       log('s', '🔥 It\'s super effective!');
       else if (eff <= .5) log('w', '🛡 Not very effective...');
       if (stab > 1)       log('n', '✨ Same-type bonus!');
@@ -438,7 +454,8 @@ function doMove(atk, def, move, cb) {
       if (frostArmor < 1) log('n', `❄️ Frost Armor reduces the Ice damage!`);
 
       const effLbl = eff !== 1 ? ` (x${eff})` : '';
-      log('d', `💥 <b>${def.name}</b> takes <span style="color:#ff5252">${dmg} damage</span>${effLbl}! HP: ${def.currentHP}/${def.maxHP}`);
+      const totalHit = shieldAbsorbed + dmg;
+      log('d', `💥 <b>${def.name}</b> takes <span style="color:#ff5252">${totalHit} damage</span>${effLbl}! HP: ${def.currentHP}/${def.maxHP}`);
 
       // Passive: static_skin - 30% chance to paralyze attacker on hit
       if (def.passive?.id === 'static_skin' && dmg > 0 && !atk.statusEffects.paralyzed && BS.rng() < 0.3) {

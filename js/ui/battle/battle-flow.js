@@ -61,6 +61,7 @@ function initHonkerRunState(h) {
 function endBattle(winner, loser) {
   BS.bDead=true;
   stopAuto();
+  if (typeof disposeBossShield === 'function') disposeBossShield();
   setTimeout(()=>{
     setSpriteAnimClass(loser.side, 'a-d');
     log('x',`\uD83D\uDC80 <b>${loser.name}</b> has been honked into oblivion!`);

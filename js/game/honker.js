@@ -15,7 +15,7 @@ function getHonkerMaxHP(h) {
   const hpBase = Math.max(1, hpStatBase > 0 ? hpStatBase : partHpBase);
   const hpWithBonus = hpBase + Number(h.maxHPBonus || 0);
   const masteryMult = masteryStatMultiplier(h.masteryLevel || 0);
-  return Math.max(1, Math.floor((((2 * hpWithBonus * lv) / 100) + lv + 10) * masteryMult));
+  return Math.max(1, Math.floor(hpWithBonus * levelStatScale(lv) * masteryMult));
 }
 
 function masteryStatMultiplier(level) {
@@ -56,9 +56,14 @@ class Honker {
         if (v > 0) this.statusEffects[k] = Math.max(1, Math.min(4, v));
       });
     }
-    this.atk = Math.max(1, Math.round((this.atk || 80) * levelStatScale(this.level, 'atk') * masteryMult));
-    this.def = Math.max(1, Math.round((this.def || 80) * levelStatScale(this.level, 'def') * masteryMult));
-    this.spd = Math.max(1, Math.round((this.spd || 80) * levelStatScale(this.level, 'spd') * masteryMult));
+    const statScale = levelStatScale(this.level) * masteryMult;
+    this.atk = Math.max(1, Math.round((this.atk || 80) * statScale));
+    this.def = Math.max(1, Math.round((this.def || 80) * statScale));
+    this.spd = Math.max(1, Math.round((this.spd || 80) * statScale));
+    // Boss shield — separate HP pool that absorbs damage first
+    const shieldPct = Number(this.shieldPct) || 0;
+    this.shieldMax = shieldPct > 0 ? Math.max(1, Math.round(this.maxHP * shieldPct)) : 0;
+    this.shieldHP  = this.shieldMax;
   }
   get hpPct() { return Math.max(0, this.currentHP/this.maxHP); }
   isDead() { return this.currentHP<=0; }

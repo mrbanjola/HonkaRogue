@@ -418,6 +418,194 @@
   }
 }
 
+/* Boss shield 3D canvas — positioned over the sprite via margin trick */
+.shield-3d-canvas {
+  display: block;
+  width: 180px;
+  height: 180px;
+  margin-top: -154px;
+  margin-left: -10px;
+  pointer-events: none;
+  z-index: 10;
+  align-self: center;
+  border-radius: 50%;
+}
+
+/* Boss shield bar */
+.shield-wrap { margin-bottom: .15rem; }
+.shield-track {
+  background: #0d1a33 !important;
+  border-color: #2a5caa !important;
+}
+.shield-fill {
+  background: linear-gradient(90deg, #3a8fff, #7ad7ff) !important;
+  animation: none !important;
+}
+.shield-val { color: #7ad7ff !important; }
+
+@keyframes shieldBreak {
+  0% { opacity: 1; transform: scaleX(1); }
+  50% { opacity: .6; transform: scaleX(1.05); }
+  100% { opacity: 0; transform: scaleX(0); }
+}
+.shield-wrap.breaking {
+  animation: shieldBreak .5s ease-out forwards;
+}
+
+/* ---- Encounter Intro Overlay ---- */
+.encounter-intro {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.encounter-intro.show {
+  display: flex;
+  animation: eiFadeIn .4s ease-out;
+}
+
+.ei-backdrop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  padding: 2rem 1rem;
+  justify-content: center;
+  gap: .4rem;
+  background: radial-gradient(ellipse at 50% 40%, rgba(10,10,30,.92), rgba(5,5,15,.97));
+}
+
+.ei-backdrop.ei-boss {
+  background: radial-gradient(ellipse at 50% 40%, rgba(40,10,10,.94), rgba(10,5,15,.97));
+}
+
+.ei-sprite-wrap {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin-bottom: .5rem;
+  animation: eiSpriteIn .6s ease-out;
+}
+
+.ei-cp-layer {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.ei-cp-layer img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 12px rgba(0,0,0,.8));
+}
+
+.ei-cp-legs  { width: 100%; height: 55%; bottom: 0; left: 0; z-index: 1; }
+.ei-cp-wings { width: 90%; height: 55%; top: 22%; left: 35%; z-index: 2; }
+.ei-cp-torso { width: 72%; height: 72%; top: 15%; left: 14%; z-index: 3; }
+.ei-cp-head  { width: 60%; height: 60%; top: -12%; left: 11%; z-index: 4; }
+
+.ei-emoji {
+  font-size: 5rem;
+  line-height: 1;
+  filter: drop-shadow(0 4px 20px rgba(0,0,0,.8));
+}
+
+.ei-boss-tag {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .55rem;
+  color: #ff4444;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  text-shadow: 0 0 16px rgba(255,50,50,.6);
+  animation: eiBossPulse 1.2s ease-in-out infinite;
+}
+
+.ei-wild-tag {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: .95rem;
+  color: var(--dim);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.ei-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(.6rem, 3vw, 1rem);
+  text-shadow: 0 0 20px currentColor;
+  animation: eiNameIn .5s ease-out .2s both;
+}
+
+.ei-types {
+  display: flex;
+  gap: .5rem;
+  justify-content: center;
+  animation: eiNameIn .5s ease-out .35s both;
+}
+
+.ei-type {
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  padding: .12rem .5rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+  border: 1px solid;
+}
+
+.ei-level {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: .85rem;
+  color: var(--dim);
+  letter-spacing: .1em;
+  animation: eiNameIn .5s ease-out .45s both;
+}
+
+.ei-shield-line {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: .85rem;
+  letter-spacing: .06em;
+  text-shadow: 0 0 12px currentColor;
+  animation: eiNameIn .5s ease-out .55s both;
+}
+
+.ei-tap {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: .75rem;
+  color: var(--dim);
+  margin-top: 1rem;
+  opacity: .5;
+  animation: eiFadeIn 1s ease-out 1s both;
+}
+
+@keyframes eiFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes eiSpriteIn {
+  0%   { transform: scale(0.3) translateY(20px); opacity: 0; }
+  60%  { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+@keyframes eiNameIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes eiBossPulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: .6; }
+}
+
 .pp-dots {
   display: flex;
   gap: 2px;

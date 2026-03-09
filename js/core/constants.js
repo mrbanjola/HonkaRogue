@@ -15,7 +15,7 @@ const TC  = { Fire:'#ff4e00',Ice:'#00c8ff',Lightning:'#ffe600',Shadow:'#a020f0',
 const TCC = { Fire:'tc-fire',Ice:'tc-ice',Lightning:'tc-lightning',Shadow:'tc-shadow',Normal:'tc-normal' };
 
 // BATTLE CONSTANTS
-const LEVEL_GROWTH = { hp: 0.045, atk: 0.035, def: 0.035, spd: 0.03 };
+const LEVEL_GROWTH_RATE = 0.04; // universal for all stats — preserves build identity at every level
 const STACKABLE_EFFECTS = ['cursed', 'shielded', 'pumped', 'exposed'];
 
 // ENEMY EMOJI POOLS

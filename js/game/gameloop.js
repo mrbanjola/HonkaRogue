@@ -160,8 +160,16 @@ function startStageBattle(stageIdx, isRetry=false) {
     BS.bFighters[0].statusEffects.shielded = Math.max(1, Math.min(4, (BS.bFighters[0].statusEffects.shielded || 0) + 1));
     refreshStatusBadges(BS.bFighters[0]);
   }
+  // Dispose any leftover shield visual, then spawn for bosses
+  if (typeof disposeBossShield === 'function') disposeBossShield();
+  if (stage.isBoss && BS.bFighters[1].shieldMax > 0 && typeof createBossShield === 'function') {
+    createBossShield('right', stage.enemy.type);
+  }
   if (stage.isBoss) {
     log('ev', `BOSS STAGE ${stageN}! <b>${stage.enemy.name}</b> awaits...`);
+    if (BS.bFighters[1].shieldMax > 0) {
+      log('ev', `\u{1F6E1}\uFE0F <b>${stage.enemy.name}</b> is protected by an <span style="color:${TC[stage.enemy.type] || '#7ad7ff'}">ENERGY SHIELD</span>!`);
+    }
   }
   // Show caught badge if already caught this dex entry
   const caughtBadge = document.getElementById('enemy-caught-badge');
@@ -174,10 +182,19 @@ function startStageBattle(stageIdx, isRetry=false) {
   log('n', `⚔️ Stage ${stageN}: <b>${stage.name}</b>`);
   log('n', `<b style="color:${TC[pb.type]}">${pb.name}</b> (LV ${pb.level||1}) faces <b style="color:${TC[stage.enemy.type]}">${stage.enemy.name}</b>!`);
   if (isRetry) log('ev', `🔄 RETRY • You have <b>${CAMPAIGN.retries}</b> retr${CAMPAIGN.retries===1?'y':'ies'} remaining. Returning with 40% HP.`);
-  renderMovePanel();
-  console.log('About to show battle screen');
+  // Show encounter intro for bosses and named (dex) honkers, then enable moves
+  BS.bPhase = 'busy';
   showScreen('screen-battle');
-  console.log('Battle screen shown, bPhase:', BS.bPhase);
+  renderMovePanel();
+  const showIntro = stage.isBoss || stage.enemy.dexId;
+  if (showIntro && typeof showEncounterIntro === 'function') {
+    showEncounterIntro({ stage, enemy: BS.bFighters[1] }).then(() => {
+      BS.bPhase = 'p1';
+      renderMovePanel();
+    });
+  } else {
+    BS.bPhase = 'p1';
+  }
 }
 
 function afterLoot() {

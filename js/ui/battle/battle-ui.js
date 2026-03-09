@@ -64,6 +64,7 @@ function setupFighterUI(f, side) {
   tb.textContent = f.type2 ? `${f.type}/${f.type2}` : f.type; tb.className = `type-badge ${TCC[f.type]}`;
   tb.style.color = TC[f.type]; tb.style.borderColor = TC[f.type];
   updateHP(f, side);
+  setupShieldBar(f, side);
   updatePPDots(f, side);
   let statStrip = nameEl.parentElement.querySelector('.f-stats');
   if (!statStrip) {
@@ -143,6 +144,33 @@ function updateHP(f, side) {
   b.style.width=pct+'%';
   b.className='hp-fill '+(pct>50?'hg':pct>20?'hm':'hl');
   document.getElementById(`hpv-${side}`).textContent=Math.max(0,f.currentHP);
+}
+
+// Boss shield bar
+function setupShieldBar(f, side) {
+  const wrap = document.getElementById(`shield-wrap-${side}`);
+  if (!wrap) return;
+  if (f.shieldMax > 0) {
+    wrap.style.display = '';
+    wrap.classList.remove('breaking');
+    document.getElementById(`shv-${side}`).textContent = f.shieldHP;
+    document.getElementById(`shb-${side}`).style.width = '100%';
+  } else {
+    wrap.style.display = 'none';
+  }
+}
+function updateShieldBar(f, side) {
+  const wrap = document.getElementById(`shield-wrap-${side}`);
+  if (!wrap || f.shieldMax <= 0) return;
+  const pct = Math.max(0, (f.shieldHP / f.shieldMax) * 100);
+  document.getElementById(`shb-${side}`).style.width = pct + '%';
+  document.getElementById(`shv-${side}`).textContent = Math.max(0, f.shieldHP);
+}
+function onShieldBreak(f, side) {
+  const wrap = document.getElementById(`shield-wrap-${side}`);
+  if (wrap) wrap.classList.add('breaking');
+  // Trigger animated shield break (dissolves over ~0.7s, then auto-disposes)
+  if (typeof breakBossShield === 'function') breakBossShield();
 }
 
 function updatePPDots(f, side) {
