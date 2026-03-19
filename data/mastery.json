@@ -1,0 +1,34 @@
+{
+  "tiers": [
+    { "level": 1, "xpRequired": 2000,  "statBonus": 0.05, "label": "Novice" },
+    { "level": 2, "xpRequired": 6000,  "statBonus": 0.10, "label": "Adept" },
+    { "level": 3, "xpRequired": 15000, "statBonus": 0.15, "label": "Master" }
+  ],
+  "passiveUnlockTier": 3,
+  "honkerMastery": {
+    "bengt": {
+      "moveUnlocks": {
+        "1": ["fire_magma_crash"],
+        "2": ["fire_inferno_wave"]
+      }
+    },
+    "robin": {
+      "moveUnlocks": {
+        "1": ["ice_frozen_spire"],
+        "2": ["ice_permafrost"]
+      }
+    },
+    "zephyr": {
+      "moveUnlocks": {
+        "1": ["lightning_ball_lightning"],
+        "2": ["lightning_overclock"]
+      }
+    },
+    "mortem": {
+      "moveUnlocks": {
+        "1": ["shadow_void_rend"],
+        "2": ["shadow_hex"]
+      }
+    }
+  }
+}

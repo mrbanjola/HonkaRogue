@@ -51,7 +51,11 @@ function currentHpForSelection(h) {
 }
 function initHonkerRunState(h) {
   if (!h) return;
-  ensureMasteryState(h);
+  if (typeof hydrateMasteryFields === 'function') {
+    hydrateMasteryFields(h);
+  } else {
+    ensureMasteryState(h);
+  }
   h.currentHP = getHonkerMaxHP(h);
   h.movePP = {};
   h.persistentEffects = {};
@@ -61,9 +65,11 @@ function initHonkerRunState(h) {
 function endBattle(winner, loser) {
   BS.bDead=true;
   stopAuto();
+  if (typeof GameAudio !== 'undefined') GameAudio.fadeOut(1500);
   if (typeof disposeBossShield === 'function') disposeBossShield();
   setTimeout(()=>{
     setSpriteAnimClass(loser.side, 'a-d');
+    if (typeof BattleSFX !== 'undefined') BattleSFX.faint();
     log('x',`\uD83D\uDC80 <b>${loser.name}</b> has been honked into oblivion!`);
     log('g',`\uD83C\uDFC6 <b style="color:${TC[winner.type]}">${winner.name}</b> WINS THE BATTLE!`);
     const playerWon = winner.side==='left';
@@ -97,13 +103,37 @@ function onPlayerWin(player) {
     fullRestorePartyAfterBoss();
   }
 
+  // Award mastery XP to contributing premade honkers
+  let masteryResults = [];
+  if (typeof awardBattleMastery === 'function') {
+    masteryResults = awardBattleMastery(xpGain);
+  }
+
+  // Apply level XP to party
   addXP(xpGain, () => {
     saveCampaign();
-      log('g', `\uD83E\uDE99 +${coinGain} coins earned.`);
-    if (stage.isBoss) {
-      showBossClear(stage, stageN, xpGain);
+
+    // Show animated results screen, then proceed to loot
+    if (typeof showBattleResults === 'function') {
+      showBattleResults({
+        xpGain, coinGain, masteryResults,
+        isBoss: !!stage.isBoss,
+        stageName: stage.name,
+        stageN,
+      }, () => {
+        if (stage.isBoss) {
+          showBossClear(stage, stageN, xpGain);
+        } else {
+          showLootScreen(xpGain);
+        }
+      });
     } else {
-      showLootScreen(xpGain);
+      // Fallback if results module not loaded
+      if (stage.isBoss) {
+        showBossClear(stage, stageN, xpGain);
+      } else {
+        showLootScreen(xpGain);
+      }
     }
   });
 }

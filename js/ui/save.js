@@ -89,11 +89,16 @@ function hydrateSavedHonker(saved) {
   h.xpNeeded   = saved.xpNeeded || 100;
   h.totalXp    = Number.isFinite(saved.totalXp) ? saved.totalXp : undefined;
   ensureLevelState(h);
-  h.masteryLevel = saved.masteryLevel || 0;
-  h.masteryXP = saved.masteryXP || 0;
-  h.masteryXPNeeded = saved.masteryXPNeeded || masteryXpNeededForLevel(h.masteryLevel);
-  h.masteryTotalXp = Number.isFinite(saved.masteryTotalXp) ? saved.masteryTotalXp : undefined;
-  ensureMasteryState(h);
+  // Hydrate mastery fields from the mastery manager (source of truth: CAMPAIGN.honkerMastery)
+  if (typeof hydrateMasteryFields === 'function') {
+    hydrateMasteryFields(h);
+  } else {
+    h.masteryLevel = saved.masteryLevel || 0;
+    h.masteryXP = saved.masteryXP || 0;
+    h.masteryXPNeeded = saved.masteryXPNeeded || masteryXpNeededForLevel(h.masteryLevel);
+    h.masteryTotalXp = Number.isFinite(saved.masteryTotalXp) ? saved.masteryTotalXp : undefined;
+    ensureMasteryState(h);
+  }
   h.inventory  = saved.inventory || [];
   h.atk        = saved.atk        || 80;
   h.def        = saved.def        || 80;
@@ -170,6 +175,7 @@ function globalProgressToSave() {
     partsSeen: CAMPAIGN.partsSeen || [],
     caughtParts: CAMPAIGN.caughtParts || [],
     honkerMastery: CAMPAIGN.honkerMastery || {},
+    _masteryV2Reset: CAMPAIGN._masteryV2Reset || false,
   };
 }
 async function saveGlobalProgress() {
@@ -290,6 +296,8 @@ async function loadGlobalDex() {
     CAMPAIGN.caughtParts = d.caughtParts || d.unlockedParts || [];
     CAMPAIGN.unlockedParts = CAMPAIGN.caughtParts.slice();
     CAMPAIGN.honkerMastery = d.honkerMastery || d.mastery || {};
+    CAMPAIGN._masteryV2Reset = d._masteryV2Reset || false;
+    if (typeof migrateMasteryData === 'function') migrateMasteryData();
     ensurePartTrackingState();
   } catch(e) {}
 }

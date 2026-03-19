@@ -150,8 +150,8 @@
       "emoji": "*",
       "desc": "The sun itself, weaponised. User takes 1/4 of damage as recoil.",
       "basePower": 120,
-      "acc": 95,
-      "pp": 3,
+      "acc": 90,
+      "pp": 5,
       "secondaryEffect": {
         "type": "recoil",
         "value": 0.25
@@ -174,7 +174,8 @@
       "id": "fire_solar_flare",
       "tier": "legendary",
       "type": "Fire",
-      "isStarterSelectable": false
+      "isStarterSelectable": false,
+      "animationType": "Beam"
     },
     {
       "name": "Flamewing",
@@ -696,11 +697,14 @@
         "Normal"
       ],
       "emoji": "*",
-      "desc": "Always connects. No type bonus.",
-      "basePower": 43,
+      "desc": "Right in the cheek, get slapped.",
+      "basePower": 30,
       "acc": 100,
-      "pp": 25,
-      "id": "normal_wing_slap"
+      "pp": 35,
+      "id": "normal_wing_slap",
+      "tier": "common",
+      "animationType": "Projectile",
+      "type": "Normal"
     },
     {
       "name": "Peck",
@@ -709,10 +713,13 @@
       ],
       "emoji": "*",
       "desc": "Classic peck.",
-      "basePower": 37,
+      "basePower": 35,
       "acc": 100,
-      "pp": 30,
-      "id": "normal_peck"
+      "pp": 35,
+      "id": "normal_peck",
+      "tier": "common",
+      "animationType": "Projectile",
+      "type": "Normal"
     },
     {
       "name": "Scratch",
@@ -846,7 +853,7 @@
       "desc": "Only activates when cornered. Enormous.",
       "basePower": 120,
       "acc": 85,
-      "pp": 6,
+      "pp": 5,
       "lowHPOnly": true,
       "isLootLearnable": true,
       "lootId": "sig_kevinfury",
@@ -858,7 +865,16 @@
         "regularbarry"
       ],
       "lootDesc": "<b>Kevin's Fury</b>  -  Normal, PWR 145. <i>Only usable below 50% HP. Signature of Kevin & Barry.</i>",
-      "id": "normal_kevin_s_fury"
+      "id": "normal_kevin_s_fury",
+      "tier": "legendary",
+      "animationType": "Beam",
+      "type": "Normal",
+      "applyBuff": {
+        "target": "self",
+        "type": "pumped",
+        "stacks": 1
+      },
+      "isStarterSelectable": false
     },
     {
       "name": "Battle Cry",
@@ -887,14 +903,15 @@
       "desc": "Raises a defensive wing shield. Stacks shield.",
       "basePower": 30,
       "acc": 100,
-      "pp": 12,
-      "statusOnly": true,
+      "pp": 10,
       "applyBuff": {
         "target": "self",
         "type": "shielded",
         "stacks": 1
       },
-      "id": "normal_feather_guard"
+      "id": "normal_feather_guard",
+      "tier": "rare",
+      "type": "Normal"
     },
     {
       "name": "Quick Strike",

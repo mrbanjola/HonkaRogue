@@ -204,9 +204,11 @@ function applyStatusEffect(target, effect, duration) {
   if (STACKABLE_EFFECTS.includes(effect)) {
     const cur = target.statusEffects[effect] || 0;
     target.statusEffects[effect] = Math.max(1, Math.min(4, cur + 1));
+    if (typeof BattleSFX !== 'undefined') BattleSFX.buff();
   } else {
     // Classic timed effects (burn/frozen)
     target.statusEffects[effect] = duration;
+    if (typeof BattleSFX !== 'undefined') BattleSFX.status();
   }
   refreshStatusBadges(target);
   const meta = STATUS_META[effect];
@@ -267,6 +269,7 @@ function doMove(atk, def, move, cb) {
       move.pp = Math.max(0, move.pp - 1);
       updatePPDots(atk, atk.side);
       log('ms', `❄️ <b>${atk.name}</b> is frozen solid and cannot move!`);
+      if (typeof BattleSFX !== 'undefined') BattleSFX.frozen();
       shakeSpr(atk.side);
       setTimeout(cb, 370);
       return;
@@ -296,7 +299,7 @@ function doMove(atk, def, move, cb) {
         setTimeout(cb, 370);
         return;
       }
-      animAtk(atk.side, def.side);
+      animAtk(atk.side, def.side, resolveMoveFxType(move));
       setTimeout(() => {
         const dur = STATUS_DURATIONS[move.inflictStatus.type] || 2;
         applyStatusEffect(def, move.inflictStatus.type, dur);
@@ -306,7 +309,7 @@ function doMove(atk, def, move, cb) {
       return;
     }
     if (move.applyBuff) {
-      animAtk(atk.side, def.side);
+      animAtk(atk.side, def.side, resolveMoveFxType(move));
       setTimeout(() => {
         const target = move.applyBuff.target === 'self' ? atk : def;
         for (let i = 0; i < (move.applyBuff.stacks || 1); i++) {
@@ -380,12 +383,13 @@ function doMove(atk, def, move, cb) {
     log('ev', `⚡ POWER SURGE activates! Damage tripled!`);
   }
 
-  animAtk(atk.side, def.side);
+  const moveFxType = resolveMoveFxType(move);
+  animAtk(atk.side, def.side, moveFxType);
   setTimeout(() => {
     showClash(move.emoji);
     spawnPtcl(def.side, TC[mType || atk.type], move.emoji);
     if (window.BattleThreeFx) {
-      const fxType = resolveMoveFxType(move);
+      const fxType = moveFxType;
       const payload = {
         atkSide: atk.side,
         defSide: def.side,
@@ -406,8 +410,8 @@ function doMove(atk, def, move, cb) {
         window.BattleThreeFx.spawnHit(payload);
       }
     }
-    if (eff >= 2)    showToast('super', '⚡ SUPER EFFECTIVE!');
-    else if (eff <= .5) showToast('not', '🛡 Not very effective...');
+    if (eff >= 2)    showToast('super', '⚡ SUPER EFFECTIVE!', moveFxType);
+    else if (eff <= .5) showToast('not', '🛡 Not very effective...', moveFxType);
 
     setTimeout(() => {
       let reflected = 0;
@@ -473,12 +477,14 @@ function doMove(atk, def, move, cb) {
           updateHP(atk, atk.side);
           log('ev', `💚 <b>${atk.name}</b> drains <span style="color:#00ff88">${healAmt} HP</span>!`);
           spawnPtcl(atk.side, '#00ff88', '💚');
+          if (typeof BattleSFX !== 'undefined') BattleSFX.heal();
         } else if (se.type === 'recoil') {
           const recoilAmt = Math.max(1, Math.round(dmg * se.value));
           atk.currentHP = Math.max(0, atk.currentHP - recoilAmt);
           updateHP(atk, atk.side);
           log('ev', `💥 <b>${atk.name}</b> takes <span style="color:#ff9800">${recoilAmt} recoil damage</span>!`);
           spawnPtcl(atk.side, '#ff9800', '💥');
+          if (typeof BattleSFX !== 'undefined') BattleSFX.recoil();
         }
       }
 

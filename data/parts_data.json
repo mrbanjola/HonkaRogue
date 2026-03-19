@@ -1,6 +1,6 @@
 {
   "version": "1.2.1",
-  "generatedAt": "2026-03-06T12:06:23.979Z",
+  "generatedAt": "2026-03-11T12:08:16.120Z",
   "source": "Family registry migration (families[] + part.familyId)",
   "statsGuide": {
     "hp": "Max HP contribution",
@@ -10,23 +10,23 @@
     "luck": "Luck contribution"
   },
   "summary": {
-    "totalParts": 111,
+    "totalParts": 115,
     "perSlot": {
-      "head": 21,
-      "torso": 21,
-      "wings": 19,
-      "legs": 50
+      "head": 22,
+      "torso": 22,
+      "wings": 20,
+      "legs": 51
     },
     "rarityBreakdown": {
       "legendary": 34,
       "rare": 32,
-      "common": 45
+      "common": 49
     },
     "archetypeBreakdown": {
       "trickster": 27,
       "raider": 30,
       "bulwark": 24,
-      "balanced": 30
+      "balanced": 34
     }
   },
   "parts": [
@@ -4306,6 +4306,150 @@
         "lightning_thunderclap",
         "fire_eruption"
       ]
+    },
+    {
+      "id": "head-gerald_head",
+      "name": "Geralds Gabber",
+      "slot": "head",
+      "file": "Heads/Gerald_Head.png",
+      "familyId": 8,
+      "family": {
+        "id": 8,
+        "name": "Bloomcrest",
+        "theme": "wild",
+        "type": "Normal"
+      },
+      "variant": 22,
+      "rarity": "common",
+      "archetype": "balanced",
+      "isUnique": true,
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 1
+      },
+      "powerScore": 81,
+      "tags": [
+        "head",
+        "gerald_head"
+      ],
+      "description": "Nothing to see here, just a regular goose face.",
+      "moveIds": [
+        "normal_peck",
+        "normal_quick_strike",
+        "normal_scratch",
+        "normal_wing_slap"
+      ]
+    },
+    {
+      "id": "torso-gerald_torso",
+      "name": "Gerald's Centerpiece",
+      "slot": "torso",
+      "file": "Torsos/Gerald_Torso.png",
+      "familyId": 8,
+      "family": {
+        "id": 8,
+        "name": "Bloomcrest",
+        "theme": "wild",
+        "type": "Normal"
+      },
+      "variant": 22,
+      "rarity": "common",
+      "archetype": "balanced",
+      "isUnique": true,
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 1
+      },
+      "powerScore": 81,
+      "tags": [
+        "torso",
+        "gerald_torso"
+      ],
+      "description": "A little out of shape, but stull glorious.",
+      "moveIds": [
+        "normal_peck",
+        "normal_quick_strike",
+        "normal_scratch",
+        "normal_wing_slap"
+      ]
+    },
+    {
+      "id": "wings-gerald_wings",
+      "name": "Gerald's Wings",
+      "slot": "wings",
+      "file": "Wings/Gerald_Wings.png",
+      "familyId": 8,
+      "family": {
+        "id": 8,
+        "name": "Bloomcrest",
+        "theme": "wild",
+        "type": "Normal"
+      },
+      "variant": 20,
+      "rarity": "common",
+      "archetype": "balanced",
+      "isUnique": true,
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 1
+      },
+      "powerScore": 81,
+      "tags": [
+        "wings",
+        "gerald_wings"
+      ],
+      "description": "It ain't much, but it's honest flapping.",
+      "moveIds": [
+        "normal_peck",
+        "normal_quick_strike",
+        "normal_scratch",
+        "normal_wing_slap"
+      ]
+    },
+    {
+      "id": "legs-gerald_legs",
+      "name": "Gerald's Feet",
+      "slot": "legs",
+      "file": "Legs/Gerald_Legs.png",
+      "familyId": 8,
+      "family": {
+        "id": 8,
+        "name": "Bloomcrest",
+        "theme": "wild",
+        "type": "Normal"
+      },
+      "variant": 51,
+      "rarity": "common",
+      "archetype": "balanced",
+      "isUnique": true,
+      "stats": {
+        "hp": 20,
+        "atk": 20,
+        "def": 20,
+        "spd": 20,
+        "luck": 1
+      },
+      "powerScore": 81,
+      "tags": [
+        "legs",
+        "gerald_legs"
+      ],
+      "description": "One step at a time.",
+      "moveIds": [
+        "normal_peck",
+        "normal_quick_strike",
+        "normal_scratch",
+        "normal_wing_slap"
+      ]
     }
   ],
   "families": [
@@ -4477,17 +4621,17 @@
       "type": "Normal",
       "description": "",
       "baseMoveIds": [
-        "move_55",
-        "move_57",
-        "move_58",
-        "move_56"
+        "normal_peck",
+        "normal_quick_strike",
+        "normal_scratch",
+        "normal_wing_slap"
       ],
       "moveIdsByRarity": {
         "common": [
-          "move_55",
-          "move_57",
-          "move_58",
-          "move_56"
+          "normal_peck",
+          "normal_quick_strike",
+          "normal_scratch",
+          "normal_wing_slap"
         ],
         "rare": [],
         "legendary": []

@@ -136,6 +136,10 @@ function switchInPartyMember(partyIdx) {
   };
   const newFighter = new Honker(JSON.parse(JSON.stringify(pb)), 'left', pBoosts);
   BS.bFighters[0] = newFighter;
+  // Register switched-in honker as mastery contributor
+  if (typeof registerMasteryContributor === 'function') {
+    registerMasteryContributor(pb);
+  }
   BS.bDead = false; BS.bPhase = 'p1';
   setupFighterUI(newFighter, 'left');
   resetSpriteClass('left');

@@ -10,23 +10,14 @@ function xpNeededForLevel(level) {
 function applyXpToHonker(h, xpAmount) {
   if (!h) return;
   ensureLevelState(h);
-  ensureMasteryState(h);
   const prevLevel = h.level;
-  const prevMasteryLevel = h.masteryLevel;
 
   h.totalXp = Math.max(0, Number(h.totalXp) || 0) + xpAmount;
-  h.masteryTotalXp = Math.max(0, Number(h.masteryTotalXp) || 0) + xpAmount;
   applyLevelProgressFromTotal(h);
-  applyMasteryProgressFromTotal(h);
 
   if (h.level > prevLevel) {
     for (let lv = prevLevel + 1; lv <= h.level; lv++) {
       onLevelUp({ ...h, level: lv });
-    }
-  }
-  if (h.masteryLevel > prevMasteryLevel) {
-    for (let mlv = prevMasteryLevel + 1; mlv <= h.masteryLevel; mlv++) {
-      onMasteryLevelUp({ ...h, masteryLevel: mlv });
     }
   }
 }

@@ -10,6 +10,8 @@
 
   #screen-campaign {
     flex-direction: column !important;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .camp-sidebar {
@@ -19,10 +21,14 @@
     border-bottom: 2px solid var(--border);
     padding: .8rem;
     max-height: none;
+    overflow-y: visible;
+    flex-shrink: 0;
   }
 
   .camp-main {
     padding: .8rem;
+    overflow-y: visible;
+    flex-shrink: 0;
   }
 
   .assembly-container {

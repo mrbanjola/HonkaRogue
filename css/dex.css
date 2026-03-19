@@ -1,52 +1,73 @@
 /* Dex Screen (css/dex.css) */
-/* ..........................................
-   POKÉDEX
-.......................................... */
+
+/* ── HONKDEX SCREEN ───────────────────────────────────────────────────────── */
 #screen-dex {
-  padding: 1.5rem;
+  padding: var(--sp-lg);
   align-items: center;
-  gap: 1rem;
+  gap: var(--sp-md);
 }
 
 .dex-header {
   text-align: center;
+  width: 100%;
+  max-width: 900px;
 }
 
 .dex-title {
   font-family: 'Press Start 2P', monospace;
-  font-size: clamp(.6rem, 2.5vw, 1rem);
+  font-size: clamp(var(--fs-pixel-sm), 2.5vw, var(--fs-pixel-lg));
   color: var(--gold);
 }
 
 .dex-progress {
-  font-family: 'Press Start 2P', monospace;
-  font-size: .4rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: var(--fs-sm);
+  font-weight: 600;
   color: var(--dim);
   margin-top: .4rem;
-  letter-spacing: .1em;
+  letter-spacing: .08em;
+  text-transform: uppercase;
 }
 
+.dex-controls {
+  display: flex;
+  gap: .45rem;
+  margin-top: .6rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.dex-controls .pdx-ctl {
+  font-size: var(--fs-sm);
+}
+
+/* ── GRID CARDS ───────────────────────────────────────────────────────────── */
 .dex-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: .65rem;
+  grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+  gap: .7rem;
   max-width: 900px;
   width: 100%;
 }
 
 .dex-card {
   background: var(--panel);
-  border: 2px solid var(--border);
-  border-radius: 10px;
-  padding: .7rem .5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: .75rem .55rem .55rem;
   text-align: center;
   position: relative;
   transition: all .2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .2rem;
+  box-shadow: var(--shadow-sm);
 }
 
 .dex-card.dc-caught {
   border-color: var(--gold);
-  box-shadow: 0 0 12px rgba(255, 214, 0, .25);
+  box-shadow: 0 0 12px rgba(255, 214, 0, .18);
 }
 
 .dex-card.dc-seen {
@@ -59,114 +80,565 @@
 
 .dex-card:not(.dc-unseen):hover {
   transform: translateY(-3px);
+  box-shadow: var(--shadow-card-hover);
 }
 
 .dex-num {
-  font-family: 'Press Start 2P', monospace;
-  font-size: .3rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: var(--fs-xs);
+  font-weight: 600;
   color: var(--dim);
-  margin-bottom: .25rem;
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  position: relative;
+  z-index: 2;
+  margin-bottom: .1rem;
+}
+
+.dex-boss-tag {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  border-radius: 3px;
+  padding: .05rem .25rem;
 }
 
 .dex-emoji {
-  font-size: 2.1rem;
-  margin: .15rem 0;
+  font-size: 2.2rem;
+  margin: .1rem 0;
+  overflow: hidden;
 }
 
 .dex-emoji.dex-composite {
   font-size: initial;
-  width: 74px;
-  height: 74px;
-  margin: .15rem auto;
+  width: 78px;
+  height: 78px;
+  margin: .1rem auto;
+  overflow: visible;
+}
+
+/* Keep composite sprite layers from overlapping the number row */
+.dex-card .comp-preview {
+  margin-top: 12px;
 }
 
 .comp-preview {
   position: relative;
-  display: block
+  display: block;
 }
 
 .comp-preview .cv-layer {
-  position: absolute
+  position: absolute;
 }
 
 .comp-preview .cv-layer img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  image-rendering: pixelated
+  image-rendering: pixelated;
 }
 
 .comp-preview .cv-legs {
   left: 6%;
   top: 45%;
   width: 88%;
-  height: 52%
+  height: 52%;
 }
 
 .comp-preview .cv-wings {
   left: 30%;
   top: 22%;
   width: 72%;
-  height: 48%
+  height: 48%;
 }
 
 .comp-preview .cv-torso {
   left: 18%;
   top: 18%;
   width: 64%;
-  height: 64%
+  height: 64%;
 }
 
 .comp-preview .cv-head {
   left: 16%;
   top: -17%;
   width: 58%;
-  height: 58%
+  height: 58%;
 }
 
 .dex-name {
-  font-family: 'Press Start 2P', monospace;
-  font-size: .35rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: var(--fs-sm);
+  font-weight: 700;
   color: var(--text);
-  margin: .25rem 0 .1rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .dex-type-tag {
-  font-size: .62rem;
+  font-size: var(--fs-xs);
   font-weight: 700;
   letter-spacing: .05em;
+  border: 1px solid;
+  border-radius: 4px;
+  padding: .08rem .4rem;
 }
 
 .dex-passive-hint {
-  font-size: .58rem;
+  font-size: var(--fs-xs);
   color: var(--gold);
-  margin-top: .2rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .dex-caught-badge {
   position: absolute;
-  top: .28rem;
-  right: .35rem;
-  font-size: .7rem;
+  top: .25rem;
+  right: .3rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--gold);
+  background: rgba(0,0,0,.5);
+  padding: .1rem .3rem;
+  border-radius: 3px;
 }
 
-.dex-lore {
+/* ── MASTERY STARS (card + detail) ────────────────────────────────────────── */
+.dex-mastery-row {
+  display: flex;
+  gap: .15rem;
+  justify-content: center;
+}
+
+.dex-star {
+  font-size: .75rem;
+  color: #444;
+}
+
+.dex-star.filled {
+  color: var(--gold);
+  text-shadow: 0 0 6px rgba(255, 214, 0, .5);
+}
+
+/* ── COMPACT STAT BARS (card) ─────────────────────────────────────────────── */
+.dex-stat-bars {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+  margin-top: .15rem;
+  padding: 0 .15rem;
+}
+
+.dex-sbar {
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+}
+
+.dex-slbl {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--dim);
+  width: 2rem;
+  text-align: right;
+}
+
+.dex-strack {
+  flex: 1;
+  height: 5px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.dex-sfill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width .3s;
+}
+
+.dex-sval {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--dim);
+  width: 1.6rem;
+}
+
+/* ── DETAIL OVERLAY ───────────────────────────────────────────────────────── */
+.dex-detail-overlay {
   display: none;
-  font-size: .64rem;
-  color: #a9a9bf;
-  line-height: 1.35;
-  margin-top: .3rem;
-  text-align: left;
-  border-top: 1px dashed var(--border);
-  padding-top: .3rem;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.75);
+  z-index: 200;
+  justify-content: center;
+  align-items: flex-start;
+  padding: var(--sp-xl) var(--sp-md);
+  overflow-y: auto;
 }
 
-.dex-card.show-lore .dex-lore {
-  display: block;
+.dex-detail-overlay.show {
+  display: flex;
+}
+
+.dex-detail-panel {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  max-width: 500px;
+  width: 100%;
+  padding: var(--sp-lg);
+  position: relative;
+  box-shadow: var(--shadow-overlay);
+}
+
+.dxd-close {
+  position: absolute;
+  top: .6rem;
+  right: .7rem;
+  background: none;
+  border: none;
+  color: var(--dim);
+  font-size: 1.2rem;
+  cursor: pointer;
+  line-height: 1;
+  z-index: 2;
+}
+
+.dxd-close:hover {
+  color: var(--text);
+}
+
+/* ── DETAIL TOP (sprite + identity) ───────────────────────────────────────── */
+.dxd-top {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-md);
+  margin-bottom: .7rem;
+}
+
+.dxd-sprite {
+  font-size: 3rem;
+  flex-shrink: 0;
+}
+
+.dxd-sprite.dex-composite {
+  font-size: initial;
+  width: 100px;
+  height: 100px;
+}
+
+.dxd-identity {
+  flex: 1;
+  min-width: 0;
+}
+
+.dxd-num {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--dim);
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  margin-bottom: .2rem;
+}
+
+.dxd-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: var(--fs-pixel-sm);
+  color: var(--text);
+  margin-bottom: .3rem;
+}
+
+.dxd-type {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  border: 1px solid;
+  border-radius: 5px;
+  padding: .12rem .45rem;
+  display: inline-block;
+}
+
+.dxd-caught-count {
+  font-size: var(--fs-xs);
+  color: var(--dim);
+  margin-top: .3rem;
+}
+
+/* ── LORE ──────────────────────────────────────────────────────────────────── */
+.dxd-lore {
+  font-size: var(--fs-sm);
+  color: var(--text2);
+  font-style: italic;
+  line-height: 1.5;
+  margin-bottom: .7rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px dashed var(--border);
+}
+
+/* ── PASSIVE ──────────────────────────────────────────────────────────────── */
+.dxd-passive {
+  margin-bottom: .5rem;
+  font-size: var(--fs-sm);
+}
+
+.dxd-passive-icon {
+  font-size: 1rem;
+}
+
+.dxd-passive-desc {
+  font-size: var(--fs-xs);
+  color: var(--dim);
+  margin-top: .1rem;
+}
+
+/* ── SECTION TITLES ───────────────────────────────────────────────────────── */
+.dxd-section-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--dim);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: .7rem 0 .35rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: .2rem;
+}
+
+/* ── DETAIL STAT BARS ─────────────────────────────────────────────────────── */
+.dxd-stats {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+}
+
+.dxd-stat-row {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+
+.dxd-stat-lbl {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--dim);
+  width: 2.4rem;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.dxd-stat-track {
+  flex: 1;
+  height: 7px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.dxd-stat-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width .4s;
+}
+
+.dxd-stat-val {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--text);
+  width: 2rem;
+}
+
+/* ── MASTERY (detail) ─────────────────────────────────────────────────────── */
+.dxd-mastery {
+  padding: .35rem 0;
+}
+
+.dxd-mastery-stars {
+  display: flex;
+  gap: .25rem;
+  margin-bottom: .35rem;
+}
+
+.dxd-mastery-stars .dex-star {
+  font-size: 1.1rem;
+}
+
+.dxd-mastery-xp {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  margin-bottom: .45rem;
+}
+
+.dxd-mastery-bar {
+  flex: 1;
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.dxd-mastery-fill {
+  height: 100%;
+  background: var(--gold);
+  border-radius: 4px;
+  transition: width .4s;
+}
+
+.dxd-mastery-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--dim);
+  white-space: nowrap;
+}
+
+.dxd-mastery-rewards {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+
+.dxd-reward {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .25rem .4rem;
+  background: rgba(255,255,255,.03);
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+  opacity: .5;
+}
+
+.dxd-reward.unlocked {
+  opacity: 1;
+  border-color: var(--gold);
+  background: rgba(255, 214, 0, .06);
+}
+
+.dxd-reward-tier {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--text);
+  min-width: 3rem;
+}
+
+.dxd-reward-text {
+  font-size: var(--fs-xs);
+  color: var(--dim);
+  flex: 1;
+}
+
+.dxd-reward.unlocked .dxd-reward-text {
+  color: var(--text);
+}
+
+/* ── MOVES (detail) ───────────────────────────────────────────────────────── */
+.dxd-moves {
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+}
+
+.dxd-move {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .25rem .4rem;
+  background: rgba(255,255,255,.03);
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+}
+
+.dxd-move-extra {
+  opacity: .5;
+  border-style: dashed;
+}
+
+.dxd-move-type {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  min-width: 4rem;
+  text-transform: uppercase;
+}
+
+.dxd-move-name {
+  flex: 1;
+  font-size: var(--fs-sm);
+  color: var(--text);
+}
+
+.dxd-move-stat {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--dim);
+}
+
+.dxd-moves-locked {
+  font-size: var(--fs-xs);
+  color: var(--dim);
+  font-style: italic;
+  padding: .3rem 0;
+}
+
+/* ── PARTS (detail) ───────────────────────────────────────────────────────── */
+.dxd-parts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .4rem;
+}
+
+.dxd-part {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .3rem;
+  background: rgba(255,255,255,.03);
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+}
+
+.dxd-part-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+.dxd-part-info {
+  min-width: 0;
+}
+
+.dxd-part-name {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dxd-part-meta {
+  font-size: var(--fs-xs);
+  color: var(--dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

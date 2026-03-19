@@ -6,14 +6,17 @@
 let assembledParts = { head: null, torso: null, wings: null, legs: null };
 let selectedStarterMoveIds = [];
 let starterSelectionInitialized = false;
+let selectedAssemblyPassiveId = null; // 'none' or a passive id
 
 function showAssemblyScreen() {
   ensurePartTrackingState();
   assembledParts = { head: null, torso: null, wings: null, legs: null };
   selectedStarterMoveIds = [];
   starterSelectionInitialized = false;
+  selectedAssemblyPassiveId = null;
   buildPartSelectors();
   updateAssemblyPreview();
+  renderPassiveSelector();
   showScreen('screen-assembly');
 }
 
@@ -458,8 +461,8 @@ function confirmAssembly() {
     moves: selectedMoves,
     moveCandidates: derived.moveCandidates || [],
     lore: `Built from ${[...new Set(Object.values(assembledParts).map(p=>p.family.name))].join(', ')} parts. Custom-forged in the workshop.`,
-    passiveId: derived.passiveId || null,
-    passive: derived.passive,
+    passiveId: selectedAssemblyPassiveId || derived.passiveId || null,
+    passive: selectedAssemblyPassiveId ? (typeof getPassiveMetaById === 'function' ? getPassiveMetaById(selectedAssemblyPassiveId) : null) : derived.passive,
     assembledParts: { head: assembledParts.head, torso: assembledParts.torso, wings: assembledParts.wings, legs: assembledParts.legs },
   };
 
@@ -501,6 +504,47 @@ function confirmAssembly() {
   initHonkerRunState(newHonker);
 
   startNextStageFromLoop();
+}
+
+function renderPassiveSelector() {
+  const wrap = document.getElementById('passive-selector-wrap');
+  const grid = document.getElementById('passive-selector-grid');
+  const sub = document.getElementById('passive-selector-sub');
+  if (!wrap || !grid) return;
+
+  const unlockedIds = typeof getUnlockedAssemblyPassiveIds === 'function' ? getUnlockedAssemblyPassiveIds() : [];
+  if (unlockedIds.length === 0) {
+    wrap.style.display = 'none';
+    selectedAssemblyPassiveId = null;
+    return;
+  }
+
+  wrap.style.display = '';
+  sub.textContent = selectedAssemblyPassiveId ? '1 selected' : 'Choose a passive or leave as None';
+
+  const options = [{ id: null, name: 'None', emoji: '-', desc: 'No passive ability.' }];
+  for (const pid of unlockedIds) {
+    const meta = typeof getPassiveMetaById === 'function' ? getPassiveMetaById(pid) : null;
+    if (meta) options.push(meta);
+  }
+
+  grid.innerHTML = options.map(opt => {
+    const selected = (selectedAssemblyPassiveId || null) === (opt.id || null);
+    return `<div class="starter-card ${selected ? 'selected' : ''}" data-pid="${opt.id || ''}">
+      <div class="starter-top">
+        <div class="starter-name">${opt.emoji || ''} ${opt.name}</div>
+      </div>
+      <div class="starter-meta"><span>${opt.desc || ''}</span></div>
+    </div>`;
+  }).join('');
+
+  grid.querySelectorAll('.starter-card').forEach(card => {
+    card.onclick = () => {
+      const pid = card.getAttribute('data-pid') || null;
+      selectedAssemblyPassiveId = pid || null;
+      renderPassiveSelector();
+    };
+  });
 }
 
 console.log('[ASSEMBLY] Module loaded');

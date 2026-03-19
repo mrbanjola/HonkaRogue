@@ -1,0 +1,316 @@
+/* Battle Results Screen (css/results.css) */
+
+#screen-results {
+  padding: 1.5rem 1rem;
+  align-items: center;
+  overflow-y: auto;
+}
+
+#results-body {
+  max-width: 520px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+.res-header {
+  text-align: center;
+  margin-bottom: .2rem;
+}
+
+.res-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(.55rem, 2.5vw, .85rem);
+  color: var(--gold);
+  text-shadow: 0 0 20px rgba(255, 215, 0, .4);
+  animation: resTitlePulse 1.5s ease-in-out infinite;
+}
+
+@keyframes resTitlePulse {
+  0%, 100% { text-shadow: 0 0 20px rgba(255, 215, 0, .4); }
+  50% { text-shadow: 0 0 30px rgba(255, 215, 0, .7); }
+}
+
+.res-stage {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .3rem;
+  color: var(--dim);
+  margin-top: .25rem;
+  letter-spacing: .1em;
+}
+
+/* ── Coins ───────────────────────────────────────────────────────────────── */
+.res-coins {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .3rem;
+  font-family: 'Press Start 2P', monospace;
+  font-size: .4rem;
+  color: var(--gold);
+}
+
+.res-coin-icon { font-size: 1rem; }
+
+/* ── Section Title ───────────────────────────────────────────────────────── */
+.res-section-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .28rem;
+  color: var(--dim);
+  letter-spacing: .12em;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: .15rem;
+}
+
+/* ── Honker Rows ─────────────────────────────────────────────────────────── */
+.res-honker {
+  display: flex;
+  align-items: flex-start;
+  gap: .6rem;
+  padding: .5rem .6rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.res-honker.res-active {
+  border-color: var(--gold);
+  box-shadow: 0 0 12px rgba(255, 215, 0, .12);
+}
+
+.res-h-sprite {
+  font-size: 2rem;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.res-h-sprite.res-composite {
+  font-size: initial;
+}
+
+.res-h-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+}
+
+.res-h-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .3rem;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.res-active-tag {
+  font-size: .2rem;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  border-radius: 3px;
+  padding: .02rem .15rem;
+  vertical-align: middle;
+}
+
+.res-fainted {
+  font-size: .2rem;
+  color: #ff5252;
+  border: 1px solid #ff5252;
+  border-radius: 3px;
+  padding: .02rem .15rem;
+  vertical-align: middle;
+}
+
+.res-h-level {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .24rem;
+  color: var(--gold);
+  transition: all .3s;
+}
+
+.res-h-level.res-lv-pop {
+  animation: resLvPop .5s ease-out;
+}
+
+@keyframes resLvPop {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.6); color: #fff; }
+  100% { transform: scale(1); }
+}
+
+/* ── XP Bar ──────────────────────────────────────────────────────────────── */
+.res-xp-wrap {
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+}
+
+.res-xp-track {
+  flex: 1;
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.res-xp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4488ff, #66bbff);
+  border-radius: 4px;
+  transition: width .3s ease-out;
+  box-shadow: 0 0 6px rgba(68, 136, 255, .5);
+}
+
+.res-xp-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .2rem;
+  color: var(--dim);
+  white-space: nowrap;
+  min-width: 4rem;
+}
+
+/* ── Level Up Flash ──────────────────────────────────────────────────────── */
+.res-lvup-flash {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .26rem;
+  color: #66bbff;
+  text-shadow: 0 0 8px rgba(68, 136, 255, .6);
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all .3s ease-out;
+}
+
+.res-lvup-flash.show {
+  max-height: 2rem;
+  opacity: 1;
+  animation: resFlashIn .5s ease-out;
+}
+
+@keyframes resFlashIn {
+  0% { transform: translateY(-5px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* ── Mastery Row ─────────────────────────────────────────────────────────── */
+.res-mastery-row {
+  margin-top: .2rem;
+  padding-top: .2rem;
+  border-top: 1px dashed var(--border);
+}
+
+.res-mastery-stars {
+  display: flex;
+  gap: .1rem;
+  margin-bottom: .1rem;
+  transition: all .3s;
+}
+
+.res-mastery-stars.res-stars-pop {
+  animation: resStarsPop .6s ease-out;
+}
+
+@keyframes resStarsPop {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.5); filter: brightness(2); }
+  100% { transform: scale(1); }
+}
+
+.res-mastery-stars .dex-star {
+  font-size: .6rem;
+}
+
+.res-mastery-wrap {
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+}
+
+.res-mastery-track {
+  flex: 1;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.res-mastery-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #cc9900, var(--gold));
+  border-radius: 3px;
+  transition: width .3s ease-out;
+  box-shadow: 0 0 6px rgba(255, 215, 0, .4);
+}
+
+.res-mastery-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .18rem;
+  color: var(--dim);
+  white-space: nowrap;
+  min-width: 3.5rem;
+}
+
+/* ── Mastery Tier Flash ──────────────────────────────────────────────────── */
+.res-mastery-flash {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .24rem;
+  color: var(--gold);
+  text-shadow: 0 0 12px rgba(255, 215, 0, .7);
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all .3s ease-out;
+}
+
+.res-mastery-flash.show {
+  max-height: 2rem;
+  opacity: 1;
+  margin-top: .15rem;
+  animation: resMasteryFlash .7s ease-out;
+}
+
+@keyframes resMasteryFlash {
+  0% { transform: scale(0.5); opacity: 0; }
+  40% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Golden shimmer overlay on mastery tier up */
+.res-honker.res-mastery-glow {
+  animation: resMasteryGlow 1.5s ease-out;
+}
+
+@keyframes resMasteryGlow {
+  0% { box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
+  30% { box-shadow: 0 0 30px rgba(255, 215, 0, .5), inset 0 0 20px rgba(255, 215, 0, .15); }
+  100% { box-shadow: 0 0 12px rgba(255, 215, 0, .12); }
+}
+
+/* ── Continue Button ─────────────────────────────────────────────────────── */
+.res-continue {
+  margin-top: .5rem;
+  align-self: center;
+  opacity: .4;
+  transition: opacity .3s, transform .3s;
+}
+
+.res-continue.res-continue-ready {
+  opacity: 1;
+  animation: resContinuePulse 1.2s ease-in-out infinite;
+}
+
+@keyframes resContinuePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}

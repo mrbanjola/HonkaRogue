@@ -5,6 +5,7 @@
 #screen-campaign {
   padding: 0;
   flex-direction: row !important;
+  overflow: hidden;
 }
 
 .camp-sidebar {

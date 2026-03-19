@@ -20,6 +20,7 @@ class BattleState {
     this.bFaintedPartyIdx  = new Set();
     this._pendingCaught    = null;  // caught honker waiting for placement
     this.rng               = null;  // seeded RNG for this battle
+    this.masteryContributors = new Set(); // premade honker ids that contributed
   }
 }
 

@@ -1,14 +1,14 @@
 /* Parts Dex (css/partsdex.css) */
-/* Partsdex */
+
 #screen-partsdex {
-  padding: 1.2rem;
+  padding: var(--sp-lg);
   align-items: center;
-  gap: .9rem;
+  gap: var(--sp-md);
 }
 
 .pdx-controls {
   display: flex;
-  gap: .45rem;
+  gap: .5rem;
   flex-wrap: wrap;
   justify-content: center;
   max-width: 980px;
@@ -18,10 +18,11 @@
 .pdx-ctl {
   background: var(--panel);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--r-md);
   color: var(--text);
-  padding: .45rem .55rem;
-  font-size: .72rem;
+  padding: .5rem .65rem;
+  font-size: var(--fs-sm);
+  font-family: 'Rajdhani', sans-serif;
   min-width: 120px;
 }
 
@@ -33,31 +34,33 @@
 
 .pdx-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: .6rem;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: .7rem;
   max-width: 980px;
   width: 100%;
 }
 
 .pdx-card {
   background: var(--panel);
-  border: 2px solid var(--border);
-  border-radius: 10px;
-  padding: .55rem;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: .65rem;
   display: flex;
-  gap: .55rem;
+  gap: .6rem;
   align-items: flex-start;
   transition: all .18s;
+  box-shadow: var(--shadow-sm);
 }
 
 .pdx-card:hover {
   transform: translateY(-2px);
-  border-color: #555;
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-card);
 }
 
 .pdx-card.pc-caught {
   border-color: var(--gold);
-  box-shadow: 0 0 12px rgba(255, 214, 0, .25);
+  box-shadow: 0 0 12px rgba(255, 214, 0, .2);
 }
 
 .pdx-card.pc-seen {
@@ -72,9 +75,9 @@
   width: 58px;
   height: 58px;
   flex-shrink: 0;
-  background: #0a0a12;
+  background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 7px;
+  border-radius: var(--r-sm);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -99,8 +102,9 @@
 }
 
 .pdx-name {
-  font-family: 'Press Start 2P', monospace;
-  font-size: .34rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: var(--fs-sm);
+  font-weight: 700;
   color: var(--text);
   white-space: nowrap;
   overflow: hidden;
@@ -108,7 +112,7 @@
 }
 
 .pdx-sub {
-  font-size: .62rem;
+  font-size: var(--fs-xs);
   color: var(--dim);
   margin-top: .2rem;
   display: flex;
@@ -117,25 +121,26 @@
 }
 
 .pdx-pill {
-  font-size: .54rem;
+  font-size: var(--fs-xs);
   font-weight: 700;
   border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: .06rem .35rem;
+  border-radius: var(--r-pill);
+  padding: .08rem .4rem;
 }
 
 .pdx-power {
-  font-family: 'Press Start 2P', monospace;
-  font-size: .32rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: var(--fs-xs);
+  font-weight: 700;
   color: var(--gold);
   margin-top: .25rem;
 }
 
 .pdx-stats {
-  font-size: .63rem;
-  color: #a9a9bf;
+  font-size: var(--fs-xs);
+  color: var(--text2);
   display: flex;
-  gap: .28rem;
+  gap: .3rem;
   flex-wrap: wrap;
   margin-top: .2rem;
 }

@@ -20,6 +20,11 @@ function getHonkerMaxHP(h) {
 
 function masteryStatMultiplier(level) {
   const lv = Math.max(0, Number(level) || 0);
+  if (lv === 0) return 1;
+  // Use tier-defined bonuses from mastery data when available
+  const tiers = typeof getMasteryTiers === 'function' ? getMasteryTiers() : [];
+  const tier = tiers.find(t => t.level === lv);
+  if (tier) return 1 + tier.statBonus;
   return 1 + (lv * 0.05);
 }
 function masteryAttackMultiplier(level) {

@@ -6,11 +6,25 @@
       "name": "Gerald",
       "emoji": "*",
       "type": "Normal",
-      "atk": 50,
-      "def": 55,
-      "spd": 55,
+      "atk": 80,
+      "def": 80,
+      "spd": 80,
       "lore": "Just a goose. No lore. He does his best.",
-      "passive": null
+      "isBoss": false,
+      "hp": 80,
+      "luck": 4,
+      "moveIds": [
+        "normal_peck",
+        "normal_quick_strike",
+        "normal_scratch",
+        "normal_wing_slap"
+      ],
+      "partIds": {
+        "head": "head-gerald_head",
+        "torso": "torso-gerald_torso",
+        "wings": "wings-gerald_wings",
+        "legs": "legs-gerald_legs"
+      }
     },
     {
       "dexNum": 2,

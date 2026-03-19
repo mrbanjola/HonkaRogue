@@ -164,12 +164,21 @@ function startStageBattle(stageIdx, isRetry=false) {
     if (BS.bFighters[1].shieldMax > 0) {
       log('ev', `\u{1F6E1}\uFE0F <b>${stage.enemy.name}</b> is protected by an <span style="color:${TC[stage.enemy.type] || '#7ad7ff'}">ENERGY SHIELD</span>!`);
     }
+    // Boss music
+    if (typeof GameAudio !== 'undefined') GameAudio.play('boss', 'Sounds/boss_fight.mp3');
+  } else {
+    // Stop any boss music for non-boss stages
+    if (typeof GameAudio !== 'undefined') GameAudio.stop();
   }
   // Show caught badge if already caught this dex entry
   const caughtBadge = document.getElementById('enemy-caught-badge');
   if (caughtBadge) {
     const alreadyCaught = stage.enemy.dexId && CAMPAIGN.dexCaught.includes(stage.enemy.dexId);
     caughtBadge.style.display = alreadyCaught ? '' : 'none';
+  }
+  // Register initial active honker as mastery contributor
+  if (typeof registerMasteryContributor === 'function') {
+    registerMasteryContributor(pb);
   }
   // Init XP bar
   updateBattleLevelBar();
@@ -188,6 +197,7 @@ function startStageBattle(stageIdx, isRetry=false) {
     });
   } else {
     BS.bPhase = 'p1';
+    renderMovePanel();
   }
 }
 
@@ -198,10 +208,8 @@ function afterLoot() {
 function toggleAuto() {
   if(BS.bDead) return;
   BS.bAutoOn=!BS.bAutoOn;
-  const btn=document.getElementById('btn-auto');
   if(BS.bAutoOn){
-    btn.textContent='⏸ PAUSE'; btn.className='btn btn-green active';
-    btn.style.animation='autoPls 1s ease-in-out infinite';
+    _movesExpanded = false;
     renderMovePanel();
     BS.bAutoTmr=setInterval(()=>{ if(BS.bDead){stopAuto();return;} autoStep(); },720);
   } else {
@@ -212,6 +220,6 @@ function toggleAuto() {
 function stopAuto(){
   if(BS.bAutoTmr){clearInterval(BS.bAutoTmr);BS.bAutoTmr=null;}
   BS.bAutoOn=false;
-  const b=document.getElementById('btn-auto');
-  if(b){b.textContent='▶ AUTO BATTLE';b.className='btn btn-green';b.style.animation='';}
+  _movesExpanded = false;
+  renderMovePanel();
 }

@@ -4,23 +4,9 @@
 // ============================================================================
 
 function updateCatchButton() {
-  const btn = document.getElementById('btn-catch');
-  if (!btn) return;
-  const enemy = BS.bFighters[1];
-  const stage = CAMPAIGN._currentStage;
-  const hpThresh = stage?.isBoss ? 0.20 : 0.35;
-  const canCatch = !BS.bDead
-    && (BS.bPhase === 'p1')
-    && !BS.bAutoOn
-    && enemy && enemy.hpPct < hpThresh;
-  btn.disabled = !canCatch;
-  btn.style.color = stage?.isBoss ? '#ffd700' : '';
-  btn.style.borderColor = stage?.isBoss ? '#ffd700' : '';
-  btn.textContent = stage?.isBoss ? 'Y CATCH BOSS' : 'Y CATCH';
-  btn.title = stage?.isBoss && enemy && enemy.hpPct >= 0.20 ? 'Weaken boss below 20% HP first (very hard to catch)'
-    : !stage?.isBoss && enemy && enemy.hpPct >= 0.35 ? 'Weaken enemy below 35% HP first'
-    : CAMPAIGN.party.length >= 6 ? 'Catch (will ask you to release one)'
-    : '';
+  // Catch state is now rendered dynamically by renderActionMenu()
+  // Just re-render the action menu if we're showing it (not in moves view)
+  if (!_movesExpanded) renderMovePanel();
 }
 
 function tryCatch() {
@@ -143,16 +129,34 @@ function onCatchSuccess(enemy) {
   }
   CAMPAIGN.totalXP += xpGain;
 
+  // Award mastery XP to contributing premade honkers (catch counts as win)
+  let masteryResults = [];
+  if (typeof awardBattleMastery === 'function') {
+    masteryResults = awardBattleMastery(xpGain);
+  }
+
   setTimeout(() => {
     addXP(xpGain, () => {
       saveCampaign();
-      log('g', `\uD83E\uDE99 +${coinGain} coins earned.`);
-      if (unlockedNow > 0) log('g', `\uD83E\uDDE9 Unlocked ${unlockedNow} new part${unlockedNow === 1 ? '' : 's'}!`);
-      if (CAMPAIGN.party.includes(caught)) {
-        showCaughtScreen(caught, xpGain);
+
+      const proceedToCatch = () => {
+        if (CAMPAIGN.party.includes(caught)) {
+          showCaughtScreen(caught, xpGain);
+        } else {
+          showReplaceScreen(caught, xpGain);
+        }
+      };
+
+      // Show animated results screen, then proceed to caught screen
+      if (typeof showBattleResults === 'function') {
+        showBattleResults({
+          xpGain, coinGain, masteryResults,
+          isBoss: !!CAMPAIGN._currentStage?.isBoss,
+          stageName: CAMPAIGN._currentStage?.name || 'Unknown',
+          stageN,
+        }, proceedToCatch);
       } else {
-        // Party was full  -  ask player to replace
-        showReplaceScreen(caught, xpGain);
+        proceedToCatch();
       }
     });
   }, 1200);

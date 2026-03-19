@@ -18,6 +18,7 @@
 <link rel="stylesheet" href="css/gameover.css">
 <link rel="stylesheet" href="css/dex.css">
 <link rel="stylesheet" href="css/partsdex.css">
+<link rel="stylesheet" href="css/results.css">
 <link rel="stylesheet" href="css/overlays.css">
 <link rel="stylesheet" href="css/responsive.css">
 </head>
@@ -28,21 +29,41 @@
 
 <!-- .. TITLE .. -->
 <div id="screen-title" class="screen">
-  <div style="margin:auto;text-align:center;padding:2rem;">
-    <div class="title-emblem">&#x1F986;</div>
-    <div class="game-title">HONKAROGUE</div>
-    <div class="title-sub" style="margin:.4rem 0 .3rem">CAMPAIGN OF THE HONKS</div>
-    <div class="title-tagline">Conquer the arena. Collect the loot. Survive the chaos.</div>
-    <div class="title-btns">
-      <button class="btn btn-gold" onclick="showScreen('screen-charselect')">&#x2694; NEW CAMPAIGN</button>
-      <button class="btn btn-blue" id="cont-btn" onclick="continueCampaign()" style="display:none">&#x25B6; CONTINUE</button>
-      <button class="btn btn-blue" id="dex-btn-title" onclick="showDex()">&#x1F4D6; HONK&#xC9;DEX</button>
-      <button class="btn btn-blue" onclick="showPartsDex('screen-title')">&#x1F9E9; PARTSDEX</button>
-      <button class="btn btn-blue" onclick="location.href='parts_editor.html'">&#x2699;&#xFE0F; PARTS EDITOR</button>
-      <button class="btn btn-blue" onclick="location.href='moves_editor.html'">&#x2694;&#xFE0F; MOVES EDITOR</button>
-      <button class="btn btn-blue" onclick="location.href='honker_editor.html'">&#x1F986; HONKER EDITOR</button>
-      <button class="btn btn-catch" onclick="showAssemblyScreen()">&#x1F527; ASSEMBLE HONKER</button>
+  <div class="title-backdrop"></div>
+  <div class="title-content">
+    <div class="title-hero">
+      <div class="title-emblem" id="title-emblem"></div>
+      <div class="game-title">HONKAROGUE</div>
+      <div class="title-sub">CAMPAIGN OF THE HONKS</div>
+      <div class="title-tagline">Conquer the arena. Collect the loot. Survive the chaos.</div>
     </div>
+
+    <div class="title-main-btns">
+      <button class="btn btn-gold title-btn-primary" onclick="showScreen('screen-charselect')">&#x2694; NEW CAMPAIGN</button>
+      <button class="btn btn-gold title-btn-primary" id="cont-btn" onclick="continueCampaign()" style="display:none">&#x25B6; CONTINUE</button>
+    </div>
+
+    <div class="title-menu-grid">
+      <button class="title-card" onclick="showDex()">
+        <span class="tc-icon">&#x1F4D6;</span>
+        <span class="tc-label">HONK&#xC9;DEX</span>
+      </button>
+      <button class="title-card" onclick="showPartsDex('screen-title')">
+        <span class="tc-icon">&#x1F9E9;</span>
+        <span class="tc-label">PARTSDEX</span>
+      </button>
+      <button class="title-card" onclick="showAssemblyScreen()">
+        <span class="tc-icon">&#x1F527;</span>
+        <span class="tc-label">ASSEMBLY</span>
+      </button>
+    </div>
+
+    <div class="title-tools">
+      <button class="title-tool-btn" onclick="location.href='parts_editor.html'">&#x2699;&#xFE0F; Parts Editor</button>
+      <button class="title-tool-btn" onclick="location.href='moves_editor.html'">&#x2694;&#xFE0F; Moves Editor</button>
+      <button class="title-tool-btn" onclick="location.href='honker_editor.html'">&#x1F986; Honker Editor</button>
+    </div>
+
     <div class="highscore-strip" id="highscore-strip"></div>
   </div>
 </div>
@@ -135,6 +156,13 @@
             <div class="starter-sub" id="starter-count">Pick 4 of 8</div>
           </div>
           <div class="starter-grid" id="starter-move-grid"></div>
+        </div>
+        <div class="starter-wrap" id="passive-selector-wrap" style="display:none">
+          <div class="starter-hdr">
+            <div class="starter-title">PASSIVE ABILITY</div>
+            <div class="starter-sub" id="passive-selector-sub">Unlock passives via Mastery</div>
+          </div>
+          <div class="starter-grid" id="passive-selector-grid"></div>
         </div>
       </div>
     </div>
@@ -249,7 +277,7 @@
         <div class="hp-lbl"><span>HP</span><span class="hp-val" id="hpv-left">200</span></div>
         <div class="hp-track"><div class="hp-fill hg" id="hpb-left" style="width:100%"></div></div>
       </div>
-      <div class="pp-dots" id="ppd-left"></div>
+      <div class="pp-dots" id="ppd-left" hidden></div>
       <div id="battle-xp-bar" style="display:flex;align-items:center;width:100%;margin-top:.25rem;min-height:16px"></div>
       <div class="passive-strip" id="passive-left" style="display:none"></div>
       <div class="status-badges" id="sb-left"></div>
@@ -274,7 +302,7 @@
         <div class="hp-lbl"><span>HP</span><span class="hp-val" id="hpv-right">200</span></div>
         <div class="hp-track"><div class="hp-fill hg" id="hpb-right" style="width:100%"></div></div>
       </div>
-      <div class="pp-dots" id="ppd-right"></div>
+      <div class="pp-dots" id="ppd-right" hidden></div>
       <div class="status-badges" id="sb-right"></div>
     </div>
   </div>
@@ -292,14 +320,14 @@
     <div class="mp-hdr"><span>&#x2694; CHOOSE A MOVE</span><span class="mp-hdr-name" id="mp-hdr-name"> - </span></div>
     <div id="mp-body"></div>
   </div>
-  <div class="battle-controls">
-    <button class="btn btn-green" id="btn-auto" onclick="toggleAuto()">&#x25B6;&#x25B6; AUTO BATTLE</button>
-    <button class="btn btn-catch" id="btn-catch" onclick="tryCatch()" disabled>&#x1F9A4; CATCH</button>
-    <button class="btn btn-blue" id="btn-swap" onclick="openBattleSwap()">&#x1F501; SWAP</button>
-    <button class="btn btn-red" onclick="goToCampaign()">&#x21A9; RETREAT</button>
-  </div>
+  <!-- battle controls now rendered inside move panel by renderMovePanel() -->
 </div>
 <div id="catch-flash"></div>
+
+<!-- .. BATTLE RESULTS .. -->
+<div id="screen-results" class="screen">
+  <div id="results-body"></div>
+</div>
 
 <!-- .. LOOT .. -->
 <div id="screen-loot" class="screen">
@@ -348,11 +376,32 @@
 <!-- .. POK?DEX .. -->
 <div id="screen-dex" class="screen">
   <div class="dex-header">
-    <div class="dex-title">Y"- HONK?DEX</div>
-    <div class="dex-progress" id="dex-progress">SEEN 0/30  ?  CAUGHT 0/30</div>
+    <div class="dex-title">HONKDEX</div>
+    <div class="dex-progress" id="dex-progress">SEEN 0/30  CAUGHT 0/30</div>
+    <div class="dex-controls">
+      <input id="dex-search" class="pdx-ctl pdx-search" placeholder="Search honker...">
+      <select id="dex-type-filter" class="pdx-ctl">
+        <option value="all">All Types</option>
+        <option value="Normal">Normal</option>
+        <option value="Fire">Fire</option>
+        <option value="Ice">Ice</option>
+        <option value="Lightning">Lightning</option>
+        <option value="Shadow">Shadow</option>
+      </select>
+      <select id="dex-status-filter" class="pdx-ctl">
+        <option value="all">All</option>
+        <option value="caught">Caught</option>
+        <option value="seen">Seen</option>
+        <option value="unseen">Unseen</option>
+      </select>
+    </div>
   </div>
   <div class="dex-grid" id="dex-grid"></div>
-  <button class="btn btn-blue" onclick="history.back()||showScreen('screen-title')" id="dex-back-btn" style="margin-bottom:1rem">? BACK</button>
+  <!-- Detail panel (shown when clicking a dex entry) -->
+  <div id="dex-detail-overlay" class="dex-detail-overlay">
+    <div class="dex-detail-panel" id="dex-detail-panel"></div>
+  </div>
+  <button class="btn btn-blue" onclick="history.back()||showScreen('screen-title')" id="dex-back-btn" style="margin-bottom:1rem">BACK</button>
 </div>
 
 <!-- .. PARTSDEX .. -->
@@ -439,6 +488,7 @@
 <script src="js/data/move-manager.js"></script>
 <script src="js/data/passive-manager.js"></script>
 <script src="js/data/dex-data.js"></script>
+<script src="js/data/mastery-manager.js"></script>
 <script src="js/data/loot-data.js"></script>
 
 <!-- Game -->
@@ -459,6 +509,7 @@
 <script src="js/ui/battle/battle-ui.js"></script>
 <script src="js/ui/battle/battle-events.js"></script>
 <script src="js/ui/battle/battle-catch.js"></script>
+<script src="js/ui/battle/battle-results.js"></script>
 <script src="js/ui/battle/battle-flow.js"></script>
 <script src="js/ui/battle/battle-party.js"></script>
 <script src="js/ui/battle/battle-gameover.js"></script>

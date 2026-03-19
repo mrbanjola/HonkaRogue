@@ -37,6 +37,10 @@ async function initTitle() {
       await loadLootData();
       console.log('[INIT] Loot data loaded:', CORE_LOOT_POOL?.length || 0);
     }
+    if (typeof loadMasteryData === 'function') {
+      await loadMasteryData();
+      console.log('[INIT] Mastery data loaded');
+    }
     await loadGlobalDex();
     console.log('[INIT] Global dex loaded');
     buildCharSelect();
@@ -51,6 +55,21 @@ async function initTitle() {
     }
     const dexBtn = document.getElementById('dex-btn-title');
     if (dexBtn) dexBtn.style.display = '';
+    // Render Kevin's composite sprite as the title emblem
+    const titleEmblem = document.getElementById('title-emblem');
+    if (titleEmblem && typeof getDexAssembledParts === 'function' && typeof renderCompositePreview === 'function') {
+      const kevinDex = (HONKER_DEX || []).find(d => d.id === 'kevin');
+      if (kevinDex) {
+        const kevinParts = getDexAssembledParts(kevinDex);
+        if (kevinParts) {
+          renderCompositePreview(kevinParts, titleEmblem, 'title-kevin');
+        } else {
+          titleEmblem.textContent = '\uD83E\uDD86';
+        }
+      } else {
+        titleEmblem.textContent = '\uD83E\uDD86';
+      }
+    }
     console.log('[INIT] About to show title screen');
     showScreen('screen-title');
     console.log('[INIT] Title screen shown successfully');

@@ -1,40 +1,196 @@
 /* Title Screen (css/title.css) */
-/* ..........................................
-   TITLE SCREEN
-.......................................... */
+
+/* ── Layout ──────────────────────────────────────────────────────────────── */
 #screen-title {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 2rem;
-  gap: 1rem;
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* ── Animated backdrop ───────────────────────────────────────────────────── */
+.title-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255, 106, 0, .10) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 20% 80%, rgba(160, 32, 240, .08) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 85% 20%, rgba(0, 200, 255, .06) 0%, transparent 50%);
+  animation: titleBgDrift 12s ease-in-out infinite alternate;
+}
+
+@keyframes titleBgDrift {
+  0%   { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.05) translate(-1%, 2%); }
+}
+
+/* ── Content wrapper ─────────────────────────────────────────────────────── */
+.title-content {
+  margin: auto;
+  padding: var(--sp-xl) var(--sp-lg);
+  max-width: 580px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-lg);
+  animation: titleFadeIn .8s ease-out;
+}
+
+@keyframes titleFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Hero section (emblem + title) ───────────────────────────────────────── */
+.title-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .15rem;
 }
 
 .title-emblem {
-  font-size: 4.5rem;
-  filter: drop-shadow(0 0 28px rgba(255, 214, 0, .9));
-  animation: floatBob 3s ease-in-out infinite;
-  margin-bottom: .3rem;
+  width: 140px;
+  height: 140px;
+  position: relative;
+  filter: drop-shadow(0 0 36px rgba(255, 214, 0, .85)) drop-shadow(0 8px 24px rgba(0,0,0,.5));
+  animation: titleEmblemFloat 3s ease-in-out infinite;
+}
+
+/* Fallback emoji if Kevin sprite can't load */
+.title-emblem:empty::after {
+  content: '\1F986';
+  font-size: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes titleEmblemFloat {
+  0%, 100% { transform: translateY(0) rotate(-3deg) scale(1); }
+  50%      { transform: translateY(-14px) rotate(3deg) scale(1.03); }
 }
 
 .title-tagline {
-  font-size: 1rem;
+  font-size: var(--fs-base);
   color: var(--dim);
-  margin: .5rem 0 2rem;
-  letter-spacing: .1em;
+  letter-spacing: .06em;
+  margin-top: .4rem;
+  line-height: 1.5;
 }
 
-.title-btns {
+/* ── Primary action buttons ──────────────────────────────────────────────── */
+.title-main-btns {
   display: flex;
-  gap: 1rem;
+  gap: var(--sp-md);
   flex-wrap: wrap;
   justify-content: center;
+  margin: .2rem 0;
 }
 
+.title-btn-primary {
+  font-size: var(--fs-md);
+  font-weight: 800;
+  padding: 1rem 2.6rem;
+  animation: titleBtnPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes titleBtnPulse {
+  0%, 100% { box-shadow: 0 4px 18px rgba(255, 100, 0, .45); }
+  50%      { box-shadow: 0 4px 28px rgba(255, 100, 0, .7), 0 0 40px rgba(255, 100, 0, .2); }
+}
+
+/* ── Menu card grid (Dex, Parts, Assembly) ────────────────────────────────── */
+.title-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .75rem;
+  width: 100%;
+}
+
+.title-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .4rem;
+  padding: 1rem .6rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  cursor: pointer;
+  transition: all .2s;
+  font-family: inherit;
+  color: inherit;
+  box-shadow: var(--shadow-sm);
+}
+
+.title-card:hover {
+  border-color: var(--gold);
+  box-shadow: 0 0 20px rgba(255, 215, 0, .18);
+  transform: translateY(-4px);
+}
+
+.tc-icon {
+  font-size: 2.2rem;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,.4));
+}
+
+.tc-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+/* ── Tool buttons (editors) ──────────────────────────────────────────────── */
+.title-tools {
+  display: flex;
+  gap: .6rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: .2rem;
+}
+
+.title-tool-btn {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--dim);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: .4rem .85rem;
+  cursor: pointer;
+  transition: all .2s;
+  letter-spacing: .04em;
+}
+
+.title-tool-btn:hover {
+  color: var(--text);
+  border-color: var(--dim);
+  background: rgba(255,255,255,.04);
+}
+
+/* ── Highscore strip ─────────────────────────────────────────────────────── */
 .highscore-strip {
-  margin-top: 1.5rem;
-  font-family: 'Press Start 2P', monospace;
-  font-size: .38rem;
+  margin-top: .6rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: var(--fs-sm);
+  font-weight: 700;
   color: var(--dim);
   letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .5rem 1rem;
+  border-top: 1px solid var(--border);
+  width: 100%;
 }

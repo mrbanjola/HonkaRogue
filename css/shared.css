@@ -1,10 +1,14 @@
 /* Shared Components (css/shared.css) */
-/* SCREEN SYSTEM */
+
+/* ── SCREEN SYSTEM ──────────────────────────────────────────────────────── */
 .screen {
   display: none;
   position: relative;
   z-index: 10;
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .screen.active {
@@ -12,16 +16,20 @@
   flex-direction: column;
 }
 
-/* SHARED COMPONENTS */
+/* ── BUTTONS ────────────────────────────────────────────────────────────── */
 .btn {
-  font-family: 'Press Start 2P', monospace;
-  font-size: .62rem;
-  padding: .8rem 1.8rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  padding: .65rem 1.6rem;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--r-md);
   cursor: pointer;
-  letter-spacing: .07em;
   transition: all .2s;
+  min-height: 44px;
+  line-height: 1.2;
 }
 
 .btn:disabled {
@@ -85,36 +93,37 @@
   transform: scale(1.03);
 }
 
-/* party */
+/* ── PARTY MINI CARDS ───────────────────────────────────────────────────── */
 .party-grid {
   display: flex;
   flex-direction: column;
-  gap: .35rem;
+  gap: var(--sp-sm);
 }
 
 .party-mini {
   background: var(--panel2);
   border: 2px solid var(--border);
-  border-radius: 8px;
-  padding: .38rem .5rem;
+  border-radius: var(--r-md);
+  padding: .5rem .65rem;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: .45rem;
+  gap: .55rem;
   transition: all .18s;
 }
 
 .party-mini:hover {
-  border-color: #666;
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-sm);
 }
 
 .party-mini.active-p {
   border-color: var(--gold);
-  box-shadow: 0 0 8px rgba(255, 214, 0, .25);
+  box-shadow: 0 0 10px rgba(255, 214, 0, .25);
 }
 
 .pm-emoji {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   flex-shrink: 0;
 }
 
@@ -124,8 +133,9 @@
 }
 
 .pm-name {
-  font-family: 'Press Start 2P', monospace;
-  font-size: .36rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: var(--fs-sm);
+  font-weight: 700;
   color: var(--text);
   white-space: nowrap;
   overflow: hidden;
@@ -133,12 +143,12 @@
 }
 
 .pm-type {
-  font-size: .62rem;
+  font-size: var(--fs-sm);
   font-weight: 700;
 }
 
 .pm-passive {
-  font-size: .58rem;
+  font-size: var(--fs-xs);
   color: var(--gold);
   margin-top: .1rem;
   white-space: nowrap;
@@ -146,7 +156,7 @@
   text-overflow: ellipsis;
 }
 
-/* catch flash */
+/* ── CATCH FLASH ────────────────────────────────────────────────────────── */
 #catch-flash {
   position: fixed;
   inset: 0;
@@ -162,25 +172,26 @@
   opacity: 1;
 }
 
-/* passive strip in arena */
+/* ── PASSIVE STRIP ──────────────────────────────────────────────────────── */
 .passive-strip {
-  font-size: .62rem;
+  font-size: var(--fs-xs);
   color: var(--gold);
   margin-top: .2rem;
   text-align: center;
   background: rgba(255, 214, 0, .07);
   border: 1px solid rgba(255, 214, 0, .2);
-  border-radius: 6px;
-  padding: .12rem .4rem;
-  max-width: 168px;
+  border-radius: var(--r-sm);
+  padding: .2rem .5rem;
+  max-width: 200px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/* ── GAME TITLE / SUBTITLE ──────────────────────────────────────────────── */
 .game-title {
   font-family: 'Press Start 2P', monospace;
-  font-size: clamp(.9rem, 3.5vw, 1.9rem);
+  font-size: clamp(1rem, 3.5vw, 1.9rem);
   color: var(--gold);
   text-shadow: 0 0 20px rgba(255, 214, 0, .9), 4px 4px 0 #7a3d00;
   line-height: 1.7;
@@ -188,66 +199,34 @@
 
 .title-sub {
   font-family: 'Press Start 2P', monospace;
-  font-size: clamp(.32rem, 1.1vw, .55rem);
+  font-size: clamp(.4rem, 1.2vw, .6rem);
   color: #ff6a00;
   letter-spacing: .2em;
   opacity: .9;
 }
 
+/* ── SHARED KEYFRAMES ───────────────────────────────────────────────────── */
 @keyframes floatBob {
-
-  0%,
-  100% {
-    transform: translateY(0) rotate(-3deg);
-  }
-
-  50% {
-    transform: translateY(-12px) rotate(3deg);
-  }
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50%      { transform: translateY(-12px) rotate(3deg); }
 }
 
 @keyframes pulse {
-
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: .35;
-  }
+  0%, 100% { opacity: 1; }
+  50%      { opacity: .35; }
 }
 
 @keyframes slideIn {
-  from {
-    transform: translateY(-30px);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  from { transform: translateY(-30px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
 }
 
 @keyframes popIn {
-  from {
-    transform: scale(.7);
-    opacity: 0;
-  }
-
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+  from { transform: scale(.7); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
 }
 
 @keyframes shimmer {
-  0% {
-    background-position: -200% center;
-  }
-
-  100% {
-    background-position: 200% center;
-  }
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
 }
